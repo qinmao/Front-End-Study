@@ -1,4 +1,3 @@
-'use strict';
 const WebpackHtmlPlugin = require('html-webpack-plugin');
 module.exports = { // 必须有的结构
     // 所有配置都在{}内部
