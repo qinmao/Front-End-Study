@@ -109,6 +109,7 @@
              p1.emit('ak47', 1223);
    3. 非父子组件通讯
         使用空的 Vue 实例作为中央事件总线
+   4. vuex
 ## 过滤器
  * 局部和全局过滤器
  * vue2.0中没有默认提供过滤器，代码坑小、非全家桶(渐进式)
@@ -231,3 +232,5 @@ $ vue init webpack my-project
 $ cd my-project
 $ npm install
 $ npm run dev
+
+## 响应式原理

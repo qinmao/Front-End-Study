@@ -84,7 +84,7 @@ Array.prototype.unique = function () {
     // })
     //  console.log(res) ;
 
-    
+
     (function () {
         var i = 0;
         return function () {
@@ -92,3 +92,51 @@ Array.prototype.unique = function () {
             console.log(i)
         }()
     }())
+
+
+// //接口端：  post xxx/user  有 firstName,lastName 字段
+
+
+// // 客户端：
+// // 要传入的参数 data
+// let data = {
+//     firstName: 'test',
+//     lastName: 'ggg'
+// }
+// var user = (data) => fecth.post('/user', data)
+
+
+
+export function loginByEmail(email, password) {
+  const data = {
+    email,
+    password
+  };
+
+  return fetch({
+    url: '/login/loginbyemail',
+    method: 'post',
+    data
+  });
+}
+// email password 因为传入的字段和接口的字段一样的所以可以简写
+// 这是es6 的新语法，简写属性：如果他们的字段相同的话
+
+// 原始的写法是这样的
+export function loginByEmail(em, pwd) {
+  const data = {
+    email:em,
+    password:pwd
+  };
+
+  return fetch({
+    url: '/login/loginbyemail',
+    method: 'post',
+    data 
+    // data相当于
+    //  {
+    //     email:email,
+    //     password:password
+    // }
+  });
+}

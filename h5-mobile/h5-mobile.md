@@ -237,6 +237,7 @@
         .css{font-size:20px}
 
         image-set设计Rentina背景图
+        
         image-set,webkit私有属性，也是CSS4的属性，为解决Rentina屏幕下的图像而生。
         .css {
             background: url(images/bg.jpg) no-repeat center;

@@ -5,6 +5,7 @@
     由于网络问题导致下载包会出问题，安装nrm来选择资源
     npm install -g nrm
     nrm test 选择网络延迟最少的
+    nvm 
 ## npm 
     npm init  创建package.json文件
     npm install  将package.json中的文件依赖的包从网上下载到本地

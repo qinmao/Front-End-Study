@@ -236,12 +236,17 @@
         background-image:radial-gradient(20px at 10px,red,green);
     14. transition:
         transition:过渡属性     过渡时间        过渡延迟     过渡速度
+
         transition-property ..-duration     ..-delay    transition-timing-function:ease  linear  ease-in ease-in-out
         
         transition: all 0.2s
         过渡all所有变化的属性  0.2s代表属性从初始变化到结束所用的时间
 
         事件:transitionend
+
+        cubic-bezier:
+            贝塞尔曲线 是animation-timing-function 和 transition-timing-function 中一个重要的内容。
+            主要是为 animation 生成速度曲线的函数，规定是 cubic-bezier(<x1>, <y1>, <x2>, <y2>)。
     15. 2D转换:
         1）位移 translateX(),translateY(),translate(X,Y)
         2) 旋转 rotate 值越大 是顺时针 反之则逆时针
@@ -268,7 +273,7 @@
             动画总时间   animation-duration 时间
             动画延迟     animation-delay    时间
             动画速度     animation-timing-function  ease ease-in  ease-in-out linear steps(n)
-            动画次数     animation-iteration-count  数字  infinite(无线)
+            动画次数     animation-iteration-count  数字  infinite(无限循环)
             动画播放状态   animation-play-state    running  paused
             动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的状态
             动画方向        animation-direction    reverse（反方向）
@@ -301,18 +306,18 @@
 
             设置换行后的排列方式
                 align-content ：
-                flex-start(起始点对齐)  
-                flex-end(终止点对齐) 
-                center(居中对齐)  
-                space-between(两端对齐)  
-                space-around(空间环绕)
+                    flex-start(起始点对齐)  
+                    flex-end(终止点对齐) 
+                    center(居中对齐)  
+                    space-between(两端对齐)  
+                    space-around(空间环绕)
 
             设置不换行的排列方式 
                 align-items(侧轴对齐) 
-                flex-start(起始点对齐)
-                flex-end(终止点对齐)
-                center(居中对齐) 
-                stretch(拉伸)
+                    flex-start(起始点对齐)
+                    flex-end(终止点对齐)
+                    center(居中对齐) 
+                    stretch(拉伸)
 
             伸缩项目 
                 1.伸缩项目在伸缩容器中所占的空间

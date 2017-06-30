@@ -27,7 +27,8 @@
     "webpack-dev-server": "^2.4.2"
   },
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot --open --port  9999"
+    "test": "webpack-dev-server --inline --hot --open 8080",
+    "build": "webpack"
   },
   "author": "mm",
   "license": "MIT"
