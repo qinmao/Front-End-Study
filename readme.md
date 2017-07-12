@@ -267,6 +267,7 @@
                 75%{}
                 100%{} 
             }
+            from{},to{} 类似0%-100%
         2)调用动画 
             复合属性:    animation:动画名称  动画总时间 动画延迟 动画速度
             动画名称     animation-name  自定义的
@@ -275,10 +276,10 @@
             动画速度     animation-timing-function  ease ease-in  ease-in-out linear steps(n)
             动画次数     animation-iteration-count  数字  infinite(无限循环)
             动画播放状态   animation-play-state    running  paused
-            动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的状态
+            动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的状态 none(default)不改变任何样式 both 动画将会执行 forwards 和 backwards 执行的动作
             动画方向        animation-direction    reverse（反方向）
         事件:animationend
-    18. 伸缩布局：
+    18. flex：
             ..容器    给某个元素设置display：flex 就是伸缩容器
             ..项目    伸缩容器中直接的子元素就是伸缩项目
             主  轴    默认水平方向，可调整
@@ -532,6 +533,9 @@
             ===:类型和值都相等
         21. dom 的操作
             appendChild removeChild replaceChild insertBefore
+        21. document.createDocumentFragment 创建一个新的空白的文档片段
+            文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能的作用(better performance)。兼容性良好
+
     2. js-oop
         1. 对象：
             1. 什么是对象？

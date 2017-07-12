@@ -35,7 +35,7 @@
          })
          
          eg:
-         Gulp.task(‘apptest’function(){
+         Gulp.task(‘apptest’，function(){
              Console.log(‘我是一个apptest的任务’)；
          })
     3. 执行gulp的任务
