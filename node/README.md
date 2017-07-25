@@ -67,7 +67,8 @@
         exports 就是module.exports 的别名
         初始值是空对象
     2. 通过模块间传递module.exports对象，来打破封装性
-
+## webpack 1.0 import/require  export/module.exports
+           2.0  成双成对 （第三方）    
 ## 进程和线程
     1. 进程：
         每一个正在运行的应用程序都被称之为进程

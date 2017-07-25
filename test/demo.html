@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .loginWrap {
+            width: 105px;
+            position: relative;
+        }
+
+        input {
+            width: 100px;
+        }
+
+        button {
+            display: block;
+            width: 40px;
+        }
+
+        li {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            width: 104px;
+            height: 40px;
+            line-height: 40px;
+            background: lightblue;
+            border-bottom: 1px solid gold;
+        }
+
+        span {
+            display: block;
+            color: white;
+            cursor: pointer;
+        }
+
+
+        .box {
+            position: absolute;
+            overflow: hidden;
+            position: absolute;
+            top: 8px;
+            right: 0;
+            width: 15px;
+            height: 11px;
+            cursor: pointer;
+            /*控制小三角的位置*/
+        }
+
+        .ico {
+            font-style: normal;
+            /*解决菱形倾斜*/
+            text-decoration: none;
+            position: absolute;
+            /*控制三角的大小和方向*/
+        }
+
+        .ico-top {
+            top: 0;
+        }
+
+        .ico-bottom {
+
+            top: -11px;
+        }
+
+        #list {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loginWrap">
+        <input type="text" value="小熊太可爱了" id="uname">
+        <i class="box">
+        <s class="ico  ico-bottom">◇</s>
+    </i>
+    </div>
+
+    <ul id="list">
+        <!-- <li data-Uid="1" data-uname="张三">张三<span>X</span></li>
+        <li data-Uid="2" data-uname="李四">李四<span>X</span></li>
+        <li data-Uid="3" data-uname="王五">王五<span>X</span></li> -->
+    </ul>
+    <script>
+        // 不兼容老的浏览器，
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var login = document.querySelector('#login')
+            var userName = document.getElementById('uname')
+            var list = document.getElementById('list')
+            var icoBox = document.querySelector('.box')
+
+            var dataList = [
+                { Uid: 1, uname: '张三' },
+                { Uid: 2, uname: '李四' },
+                { Uid: 3, uname: '王五' },
+            ]
+            let strHtml = ''
+            dataList.forEach(function (item) {
+                strHtml += ` <li data-Uid=${item.Uid} data-uname=${item.uname}>${item.uname}<span>X</span></li>`
+               
+            })
+            list.innerHTML=strHtml
+            icoBox.onclick = function () {
+                let self = this.children[0]
+                // 切换下拉框 和类名
+                if (self.classList.contains('ico-bottom')) {
+                    self.classList.remove('ico-bottom')
+                    self.classList.add('ico-top')
+                    list.style.display = 'block'
+                } else {
+                    self.classList.remove('ico-top')
+                    self.classList.add('ico-bottom')
+                    list.style.display = 'none'
+                }
+            }
+            list.addEventListener('click', function (e) {
+                let li = e.target.parentNode
+                if (e.target.tagName == 'LI') {
+                    let userInfo = e.target.dataset
+                    // console.log(userInfo)
+                    userName.value = userInfo.uname
+                } else {
+                    // 清除下拉框的一条记录
+                    // 清理本地缓存还是调接口根据你的业务
+                    list.removeChild(li)
+                }
+
+            })
+        }, false);
+    </script>
+</body>
+
+</html>

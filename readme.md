@@ -150,7 +150,7 @@
                 /*p:first-child  先找父元素 找到所有的子元素  在去找第一个子元素  匹配是不是p  如果不是无效的选择器*/
                 /*p:first-of-type 先找父元素 找到所有的p元素  找第一个*/
                 /*p:last-of-type 最后*/
-                /*p:nth-of-type 第几个*/
+                /*p:nth-of-type（） 第几个*/
                 /*p:nth-last-of-type 倒数第几个*/
         结构选择器：+ ~
             E[attrxxxx]+E   选择当前的元素 然后找到相邻的下一个元素
@@ -158,8 +158,7 @@
 
     2. 伪元素：
         ：before ：after
-        推荐单冒号兼容性好
-
+        推荐单冒号兼容性好       
         出现省略号：
         white-space:nowrap;
         overflow：hidden;
@@ -244,6 +243,10 @@
 
         事件:transitionend
 
+        node.addEvertListen('transitionend',()=>{
+            //do something
+        })
+
         cubic-bezier:
             贝塞尔曲线 是animation-timing-function 和 transition-timing-function 中一个重要的内容。
             主要是为 animation 生成速度曲线的函数，规定是 cubic-bezier(<x1>, <y1>, <x2>, <y2>)。
@@ -290,6 +293,9 @@
                 flex-direction: row-reverse;水平反向
                 flex-direction: column;竖直
                 flex-direction: column-reverse;竖直反向
+
+            
+
 
             伸缩项目在主轴上的对齐方式：
                 /*主轴对齐方式  开始点对齐*/
