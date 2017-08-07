@@ -1,46 +1,5 @@
 今天在国外的网站上看到了很多看似简单却又非常强大的纯CSS绘制的图形，里面有最简单的矩形、圆形和三角形，也有各种常见的多边形，甚至是阴阳太极和网站小图标，真的非常强大，分享给大家。
 
-## Square(正方形)
-
-![40个纯CSS绘制的图形0](http://www.webhek.com/wordpress/wp-content/uploads/2016/10/shape-square.png)
-
-```
-#square {
-    width: 100px;
-    height: 100px;
-    background: red;
-}
-```
-
-## Rectangle(矩形)
-
-![40个纯CSS绘制的图形1](http://www.webhek.com/wordpress/wp-content/uploads/2016/10/shape-rect.png)
-
-```
-#rectangle {
-    width: 200px;
-    height: 100px;
-    background: red;
-}
-```
-
-## Circle(圆形)
-
-![40个纯CSS绘制的图形2](http://www.webhek.com/wordpress/wp-content/uploads/2016/10/shape-circle.png)
-
-```
-#circle {
-    width: 100px;
-    height: 100px;
-    background: red;
-    -moz-border-radius: 50px;
-    -webkit-border-radius: 50px;
-    border-radius: 50px;
-}
-
-/* 可以使用百分比值(大于50%)，但是低版本的Android不支持 */
-```
-
 ## Oval(椭圆形)
 
 ![40个纯CSS绘制的图形3](http://www.webhek.com/wordpress/wp-content/uploads/2016/10/shape-oval.png)
