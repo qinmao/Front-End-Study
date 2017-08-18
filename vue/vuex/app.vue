@@ -3,6 +3,7 @@
         <!--年龄: {{this.$store.state.age}} 姓名是: {{this.$store.state.name}}-->
         年龄: {{this.$store.getters.getAge}} 姓名是: {{this.$store.getters.getName}}
     </div>
+
 </template>
 <script>
 export default {
