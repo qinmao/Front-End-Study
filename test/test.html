@@ -1,111 +1,88 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="font-size:100px;">
 
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
     <style>
-        table.grid-table {
-            font-family: verdana, arial, sans-serif;
-            font-size: 11px;
-            color: #333333;
-            border-width: 1px;
-            border-color: #666666;
-            border-collapse: collapse;
-        }
-        
-        table.grid-table th {
-            position: relative;
-            border-width: 1px;
-            padding: 8px;
-            border-style: solid;
-            border-color: #666666;
-            background-color: #dedede;
-        }
-        
-        table.grid-table td {
-            border-width: 1px;
-            padding: 8px;
-            border-style: solid;
-            border-color: #666666;
-            background-color: #ffffff;
-        }
-        
-        table.grid-table th a {
-            padding: 0 10px 0 10px;
-        }
-        
-        table.grid-table th span {
-            width: 0;
-            height: 0;
-            position: absolute;
+        label {
             display: block;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            right: 4px;
+            font-size: 0.14rem;
+            font-weight: 300;
+            color: #8e8e93;
         }
-        
-        table.grid-table th span.up {
-            top: -2px;
-            border-bottom-color: #736d6d;
+
+        #notip {
+            display: none;
         }
-        
-        table.grid-table th span.down {
-            bottom: -2px;
-            border-top-color: #736d6d;
+
+        .checkbox {
+            width: 0.16rem;
+            height: 0.16rem;
+            display: inline-block;
+            background-color: #ffffff;
+            border: solid 0.5px #c7c7cd;
+            border-radius: 50%;
+            vertical-align: middle;
         }
-        
-        table.grid-table th span.up:hover,
-        table.grid-table th span.onup {
-            border-bottom-color: #d47070;
+
+        #notip:checked~.checkbox {
+            background-color: #fe5c3b;
         }
-        
-        table.grid-table th span.down:hover,
-        table.grid-table th span.ondown {
-            border-top-color: #d47070;
+        /* label {
+            font-size: 12px;
+            vertical-align: 3px;
         }
-        ul{
-            width: 400px;
+        #test {
+            display: none;
+        }
+
+        .checkboxdiv {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            background-color: #ffffff;
+            border: solid 0.5px #c7c7cd;
+            border-radius: 50%;
+        }
+
+        #test:checked~.checkboxdiv {
+            background-color: red;
+        } */
+        a {
+            display: inline-block;
+            width: 10px;
+            height: 5px;
             background: red;
-            display: flex;
-            justify-content: space-between;
+            line-height: 0;
+            font-size: 0;
+            vertical-align: middle;
+            -webkit-transform: rotate(45deg);
         }
-        li{
-            width: 100px;
-            height: 100px;
+
+        a:after {
+            content: '/';
+            display: block;
+            width: 20px;
+            height: 5px;
+            background: red;
+            -webkit-transform: rotate(-90deg) translateY(-50%) translateX(50%);
         }
     </style>
 </head>
 
 <body>
-   <ul>
-       <li><a href="#">test</a></li>
-       <!-- <li><a href="#">test</a></li> -->
-       <li><a href="#">test</a></li>
-   </ul>
-    <!--<canvas id="canvas"></canvas>-->
-    <!--<script src="js/grid.js"></script>-->
-    <!--<script src="js/canvas.js"></script>-->
-    <script>
-        // var length = 10;
-        // function fn() {
-        //     console.log(this.length);
-        //     console.log(this);
-        // }
-        // var obj = {
-        //     length: 5,
-        //     method: function (f) {
-        //         // f();
-        //         arguments[0]();
-        //         console.log(arguments[0])
-        //         //arguments[0].call(this);
-        //     }
-        // }
-        // obj.method(fn);
-        
-    </script>
+    <a href="#"></a>
+    <label for="notip">
+         <input type="checkbox" id="notip"> 
+        <div class="checkbox"></div>
+        不再提示
+    </label>
+    <!-- <label for="test">
+        <input type="checkbox" id="test">
+        <div class="checkboxdiv"></div>
+        选择1
+    </label> -->
 </body>
 
 </html>

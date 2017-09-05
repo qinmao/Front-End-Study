@@ -1171,6 +1171,8 @@
             ```
 ## node
     Front-End-Study/node/README.md
+## http 深入
+    Front-End-Study/http/README.md
 ## seajs requirejs
  * commonjs:使用js语法要求的后端语言的规范,模块化、后端语言需要具备的一些要求，可以http、操作文件。。。。
      - require/module.exports
@@ -1205,6 +1207,7 @@
     2. 抽象工厂
     3. 单例
     4. 观察者
+    20种设计模式
 ## tool 
   1. git
         SSH： 一种加密协议，用于计算机之间的登录
