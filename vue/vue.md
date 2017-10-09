@@ -234,3 +234,16 @@ $ npm install
 $ npm run dev
 
 ## 响应式原理
+
+## 暴露的有用的属性
+    vm.$data === data // => true
+    vm.$el === document.getElementById('example') // => true
+    // $watch 是一个实例方法
+    vm.$watch('a', function (newValue, oldValue) {
+    // 这个回调将在 `vm.a` 改变后调用
+    })
+## 问题:
+1. 为什么组件中data是函数？
+每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
+都有它自己内部的状态了
+

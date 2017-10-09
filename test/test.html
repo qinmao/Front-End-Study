@@ -2,87 +2,28 @@
 <html lang="en" style="font-size:100px;">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <style>
-        label {
-            display: block;
-            font-size: 0.14rem;
-            font-weight: 300;
-            color: #8e8e93;
-        }
-
-        #notip {
-            display: none;
-        }
-
-        .checkbox {
-            width: 0.16rem;
-            height: 0.16rem;
-            display: inline-block;
-            background-color: #ffffff;
-            border: solid 0.5px #c7c7cd;
-            border-radius: 50%;
-            vertical-align: middle;
-        }
-
-        #notip:checked~.checkbox {
-            background-color: #fe5c3b;
-        }
-        /* label {
-            font-size: 12px;
-            vertical-align: 3px;
-        }
-        #test {
-            display: none;
-        }
-
-        .checkboxdiv {
-            width: 30px;
-            height: 30px;
-            display: inline-block;
-            background-color: #ffffff;
-            border: solid 0.5px #c7c7cd;
-            border-radius: 50%;
-        }
-
-        #test:checked~.checkboxdiv {
-            background-color: red;
-        } */
-        a {
-            display: inline-block;
-            width: 10px;
-            height: 5px;
-            background: red;
-            line-height: 0;
-            font-size: 0;
-            vertical-align: middle;
-            -webkit-transform: rotate(45deg);
-        }
-
-        a:after {
-            content: '/';
-            display: block;
-            width: 20px;
-            height: 5px;
-            background: red;
-            -webkit-transform: rotate(-90deg) translateY(-50%) translateX(50%);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Document</title>
 </head>
 
 <body>
-    <a href="#"></a>
-    <label for="notip">
-         <input type="checkbox" id="notip"> 
-        <div class="checkbox"></div>
-        不再提示
-    </label>
-    <!-- <label for="test">
-        <input type="checkbox" id="test">
-        <div class="checkboxdiv"></div>
-        选择1
-    </label> -->
+  
+  <script>
+    // let val = "18810797669"
+
+    // let str1 = '';
+    // [...val].forEach((i, index) => {
+    //   if (index == 4 || index == 5 || index == 6) {
+    //     i = "*"
+    //   }
+    //   str1 += i
+    // })
+    // console.log(str1)
+    
+      let str="84OP-V-00211"
+      let reg=/\w{4}-\w{1}-\w{6}/gi
+      console.log(reg.test(str))
+  </script>
 </body>
 
 </html>

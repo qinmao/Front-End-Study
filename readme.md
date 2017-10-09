@@ -1309,6 +1309,10 @@
 
             git branch -d branchName
 
+            // 远程分支
+            git branch -r -d origin/branch-name
+            git push origin :branch-name
+
 
         3. 分支的拉取推送 冲突解决
             1. git pull [remote url] branchName
