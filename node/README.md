@@ -40,6 +40,9 @@
     默认 npm start
     可以占用npm 中的命令 npm test
     可以自定义 npm run qm 
+
+    package.json 所有的字段
+    参考 http://www.mujiang.info/translation/npmjs/files/package.json.html
 ## windows 安装node 推荐使用nvm-windows
     详情参考  https://github.com/coreybutler/nvm-windows
 ## node ？
@@ -136,9 +139,6 @@
     1. 安装驱动
         由于已经使用nrm更改了淘宝的数据源所以直接使用npm install mongodb
     2. curd ..  Front-End-Study/node/node-mongoDB
-## JXcore 
-    1. what？
 
-    2. use？
 
 

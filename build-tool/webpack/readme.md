@@ -4,7 +4,6 @@
  2. 参考： 官网：http://webpack.github.io/docs/  先过这三个文档文档
     Webpack-handlebook: http://zhaoda.net/webpack-handbook/
     Gitbook: http://fakefish.github.io/react-webpack-cookbook/index.html
-    Github上的几十个example看一遍
 ## 为什么使用 webpack？
  1. 对 CommonJS 、 AMD 、ES6的语法做了兼容
  2. 对js、css、图片等资源文件都支持打包

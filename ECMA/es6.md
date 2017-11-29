@@ -80,7 +80,6 @@
     PI = 3;
     // TypeError: Assignment to constant variable.
     ```
-
    
 ## 解构赋值
     1. 数组的解构赋值

@@ -5,9 +5,30 @@
   <meta charset="UTF-8">
   <title>Document</title>
 </head>
+<style>
+  a {
+    display: inline-block;
+    width: 10px;
+    height: 5px;
+    background: red;
+    line-height: 0;
+    font-size: 0;
+    vertical-align: middle;
+    -webkit-transform: rotate(45deg);
+  }
+
+  a:after {
+    content: '/';
+    display: block;
+    width: 20px;
+    height: 5px;
+    background: red;
+    -webkit-transform: rotate(-90deg) translateY(-50%) translateX(50%);
+  }
+</style>
 
 <body>
-  
+  <a href=""></a>
   <script>
     // let val = "18810797669"
 
@@ -19,10 +40,10 @@
     //   str1 += i
     // })
     // console.log(str1)
-    
-      let str="84OP-V-00211"
-      let reg=/\w{4}-\w{1}-\w{6}/gi
-      console.log(reg.test(str))
+
+      // let str="84OP-V-00211"
+      // let reg=/\w{4}-\w{1}-\w{6}/gi
+      // console.log(reg.test(str))
   </script>
 </body>
 

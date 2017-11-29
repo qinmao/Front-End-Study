@@ -535,21 +535,3 @@
         1.减少HTTP请求；
         2.避免文件跨域；
         3.修改及时生效；
-
-android 2.3 bug
-   -webkit-keyframes 需要以0%开始100%结束，0%的百分号不能去掉
-   fter和before伪类无法使用动画animation
-   order-radius不支持%单位，如要兼容，可以给radius设置一下较大的值
-   ranslate百分比的写法和scale在一起会导致失效，例如：
-   ebkit-transform: translate(-50%,-50%) scale(-0.5, 1)
-android 4.x bug
-   1.三星 Galaxy S4中自带浏览器不支持border-radius缩写
-   2.同时设置border-radius和背景色的时候，背景色会溢出到圆角以外部分
-   3.部分手机(如三星)，a链接支持鼠标:visited事件，也就是说链接访问后文字变为紫色
-   4.android无法同时播放多音频audio
-    消除transition闪屏
-    .css {
-        -webkit-transform-style: preserve-3d;
-        -webkit-backface-visibility: hidden;
-        -webkit-perspective: 1000;
-    }

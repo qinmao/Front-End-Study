@@ -104,8 +104,7 @@
         （W3C CSS 2.1 规范中的一个概念,它是一个独立容器，决定了元素如何对其内容进行定位,以及与其他元素的关系和相互作用。）
 		 一个页面是由很多个 Box 组成的,元素的类型和 display 属性,决定了这个 Box 的类型。
 		 不同类型的 Box,会参与不同的 Formatting Context（决定如何渲染文档的容器）,因此Box内的元素会以不同的方式渲染,也就是说BFC内部的元素和外部的元素不会互相影响。
-    6. css hack
-         
+    6. css hack      
 ## html5 
     1. 什么是h5?
         狭义上:是html4的升级版本，是新一代web应用标准
@@ -173,7 +172,6 @@
         moz    firefox
         ms     IE
         o      老版opeara
-
     4. 透明色     
         rgba
         opacity 能继承 取值0-1
@@ -294,9 +292,6 @@
                 flex-direction: column;竖直
                 flex-direction: column-reverse;竖直反向
 
-            
-
-
             伸缩项目在主轴上的对齐方式：
                 /*主轴对齐方式  开始点对齐*/
                 justify-content:flex-start;
@@ -345,7 +340,6 @@
         r 是root  根元素的意思  html文档的根元素是  html标签
         基准值是相对于来根元素（html）来的
     20. media 
-        
 ## less sass
     Front-End-Study/less
 ## js 
@@ -382,6 +376,9 @@
                 转数字型：a,Number(变量) b,parseInt(变量) c,parseFloat(变量)
                 转布尔型：Boolean(变量)
                 几种转换为false的 undefined NaN Null 0 false ""
+
+            tip:使用parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不是简单的转换
+            简单的类型转换Number(08)=8 会比parseInt 快
 
         5. 短路操作：当操作数不是bool值时
             1）隐式转换
@@ -480,8 +477,6 @@
             getComputedStyle(el,null).width ie 不支持
             document.getElementById("btn").currentStyle.width ie提供的
     
-        
-
         12. 清空数组：
             1)arr.length=0
             2)arr=[] //推荐使用
@@ -514,7 +509,6 @@
         17. JSON  转换 
             1）object-->string   JSON.stringify()
             2) string--> object   JSON.parse()
-
         18. date-format
             1)日期格式化成指定格式
             例如： new Date().format("yyyy-MM-dd hh:mm:ss")
@@ -541,7 +535,6 @@
             appendChild removeChild replaceChild insertBefore
         21. document.createDocumentFragment 创建一个新的空白的文档片段
             文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能的作用(better performance)。兼容性良好
-
     2. js-oop
         1. 对象：
             1. 什么是对象？
@@ -570,8 +563,7 @@
                                 return new Student(name, age,sex);
                             }
                         var obj=initStu();
-                        ————这种方式创建对象避免new的操作
-        
+                        ————这种方式创建对象避免new的操作       
             3. 对象的属性
                 1）两种访问方式：
                     a: obj.propertyName  
@@ -689,8 +681,6 @@
                         * [数组] 含义：将数组中的元素 作为函数fn执行时传入的实参。可选的
                         * apply方法再执行的时候，fn函数也同时执行。同时，将函数fn内部的this替换成指定thisObj对象。
                     * 在该模式下，call|apply方法的第一参数即为 函数fn内的this指向      
-    
-
         3. js GC:      
             1. 引用计数法
                 当定义一个变量 （此时引用计数为0）并且 赋值为指定的数据时，该变量的引用计数 + 1；
@@ -731,7 +721,7 @@
             3. 原型的特性：
                 1. 在原型上的成员(属性和方法),都可以直接被其实例访问，object 是基原型
                 2. 实例不可以直接修改原型上的任何成员
-                3.  动态性
+                3. 动态性
                     * 如果在原有的原型上扩展成员，会直接反应到 已创建的对象和之后创建的对象上。
                     * 如果替换了原有的原型，新原型的成员 在之前已创建的对象是不能访问到的，
                         而在之后创建的对象是可以访问到的。
@@ -809,6 +799,8 @@
                     * eval创建变量的作用域 是由eval执行的作用域决定。 
                 __已不推荐使用。JSON.parse()
             11. 待补充
+        6. 类和模块
+        
     3. ES5 
         1. 新增的一些方法
             Front-End-Study/ECMA/es5.md
@@ -832,10 +824,9 @@
             zs.name = 'zhangsansan';
             console.log(zs.getName());
         4. 待续   
-
     4. es6
         Front-End-Study/ECMA/es6.md
-    5.  offset
+    5. offset
         offsetLeft
         offsetTop 
         offsetWidth 
@@ -1044,8 +1035,6 @@
                target：当前元素
            事件响应顺序
            ontouchstart  > ontouchmove  > ontouchend > onclick
-
-
 ## framework
     1. angular
         angular 1
@@ -1277,7 +1266,7 @@
                 * git reset -–soft：回退到某个版本，只回退了commit的信息，不会恢复暂存区。
                     如果还要提交，直接commit即可
                 * git reset –-hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容。
-
+                    git reset --hard head~ 可以回到合并之前的提交
         2. Git分支
             在初始化一个空的本地仓库时，默认是没有主分支（master分支）的，必须在主分支上提交至少一次版本，Git才会创建master分支。
             Git在创建分支时，必须保证当前仓库必须有master分支。
@@ -1386,7 +1375,6 @@
         
         配置：Front-End-Study/note/eslint.md
         参考 http://eslint.org/
-
 ## mac 的常用指令
     1. 打开host  vim /etc/hosts
     2. brew包管理工具
@@ -1399,7 +1387,6 @@
             4. brew install tree 生成项目的文件结构
 
         tree -L 2 >README.md  把一个目录的结构树导出到文件 Readme.md 
-
 ## vue 插件开发
     1. 数字滚动
     2. 侧滑（删除）

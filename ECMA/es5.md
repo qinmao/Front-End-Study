@@ -29,7 +29,7 @@ arr.map(function (x) {
 //空数组时 some 返回false every 返回true
 // some 存在一个满足条件就返回true
 arr.some(function (x) {
-    return x = 2   //true
+    return x == 2   //true
 })
 ```
 ## every
