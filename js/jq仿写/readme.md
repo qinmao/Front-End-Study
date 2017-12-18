@@ -1,12 +1,3 @@
-<p style="border-bottom:1px solid #ccc;font-size:2.5em;font-weight:bold;">JS原生框架第1天</p>
-<hr>
-
-# 课程内容
-
-## 课程笔记
-
-### 课程内容
-
 1. 查询Dom的方法
 
 2. 操作Domd的方法
