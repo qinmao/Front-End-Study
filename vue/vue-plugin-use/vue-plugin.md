@@ -1,12 +1,8 @@
 # vue中如何结合常用插件的使用
 1. 移动端click屏幕产生200-300 ms的延迟响应（fastclick）
 ```javascript
-    import FastClick from 'fastclick'
-    if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function () {
-        FastClick.attach(document.body);
-    }, false);
-    }
+    let FastClick = require('fastclick')
+    FastClick.attach(document.body);
 ```
 2. axios 插件的安装使用
 ```javascript

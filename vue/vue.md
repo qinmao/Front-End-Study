@@ -228,7 +228,7 @@
 $ npm install --global vue-cli
 # 创建一个基于 webpack 模板的新项目
 $ vue init webpack my-project
-# 安装依赖，走你
+# 安装依赖
 $ cd my-project
 $ npm install
 $ npm run dev
@@ -242,6 +242,7 @@ $ npm run dev
     vm.$watch('a', function (newValue, oldValue) {
     // 这个回调将在 `vm.a` 改变后调用
     })
+    this.$set(this.someObject,'b',2)
 ## 问题:
 1. 为什么组件中data是函数？
 每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
