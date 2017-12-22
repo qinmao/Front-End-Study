@@ -535,3 +535,12 @@
         1.减少HTTP请求；
         2.避免文件跨域；
         3.修改及时生效；
+26, 判断是苹果系统的版本(取两位版本
+    export const iosOsVersion=()=>{
+        // navigator.userAgent.match(/os\s+(\d+)/i)[1] - 0
+        let ua = navigator.userAgent;
+        // let ver = ua.match(/cpu iphone os (.*?) like mac os/)[1].replace(/_/g,".");
+        let ver = ua.match(/os (.*?) like mac os/i)[1];
+        let tempArr= ver.split('_');
+        return tempArr[0]+"."+tempArr[1]
+    }

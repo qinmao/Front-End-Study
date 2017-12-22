@@ -1349,8 +1349,18 @@
         yarn add 类似npm
   3. gulp
         Front-End-Study/build-tool/gulp
-  4. webpack 结合 babel 使用
-        Project/Front-End-Study/webpack-babel
+  4. webpack 
+  webpack1支持CMD和AMD，同时拥有丰富的plugin和loader，webpack逐渐得到广泛应用。
+
+    webpack2相对于webpack最大的改进就是支持ES Module，可以直接分析ES Module之间的依赖关系，而webpack1必须将ES Module转换成CommonJS模块之后，才能使用webpack进行下一步处理。除此之外webpack2支持tree sharking，与ES Module的设计思路高度契合。
+
+    webpack3相对于webpack2，过渡相对平稳，但是新的特性大都围绕ES Module提出，如Scope Hoisting和Magic Comment；
+    webpack3 新特性
+    1)Scope Hoisting-作用域提升
+        webpack2处理后的每个模块均被一个函数包裹,降低浏览器中JS执行效率，这主要是闭包函数降低了JS引擎解析速度
+    2)在webpack2中引入了Code Splitting-Async的新方法import()，用于动态引入ES Module，webpack将传入import方法的模块打包到一个单独的代码块（chunk），但是却不能像require.ensure一样，为生成的chunk指定chunkName，因此在webpack3中提出了Magic Comment用于解决该问题，用法如下：
+        import(/* webpackChunkName: "my-chunk-name" */ 'module');
+
   5. Emmet 语法
         div.className
         div#idName
