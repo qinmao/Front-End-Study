@@ -134,7 +134,6 @@
         由于已经使用nrm更改了淘宝的数据源所以直接使用npm install mysql
     2. curd ..  Front-End-Study/node/node-mysql  
     3. node orm 
-    
 ## node.js mongoDB
     1. 安装驱动
         由于已经使用nrm更改了淘宝的数据源所以直接使用npm install mongodb
