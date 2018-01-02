@@ -12,12 +12,10 @@
     // 设置Axios 的默认全局设置
     axios.defaults.timeout = 3000;    //响应时间
     axios.defaults.baseURL = baseUrl; //配置接口地址
-    // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-
     //POST传参序列化(添加请求拦截器)
     axios.interceptors.request.use((config) => {
         if (config.method === 'post') {
+            // axios contentType 默认的的传输方式是json qs.stringify 转成form 提交的方式
             config.data = qs.stringify(config.data);
         }
         return config;

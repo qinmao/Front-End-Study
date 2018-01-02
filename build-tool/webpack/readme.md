@@ -1,4 +1,4 @@
-## webpack（完整版）
+## webpack
 ## webpack是什么？
  1. webpack是一个module bundler(模块打包工具)，其可以兼容多种js书写规范，且可以处理模块间的依赖关系，具有更强大的js模块化的功能。Webpack对它们进行统 一的管理以及打包发布
  2. 参考： 官网：http://webpack.github.io/docs/  先过这三个文档文档

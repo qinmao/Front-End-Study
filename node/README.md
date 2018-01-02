@@ -5,7 +5,7 @@
     由于网络问题导致下载包会出问题，安装nrm来选择资源
     npm install -g nrm
     nrm test 选择网络延迟最少的
-    nvm 
+    nvm 来切换node 版本
 ## npm 
     npm init  创建package.json文件
     npm install  将package.json中的文件依赖的包从网上下载到本地
@@ -14,6 +14,8 @@
     npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去
     npm install  包名 -g  全局安装
     npm docs 包名 查看包的文档
+
+    现在推荐使用yarn 
 
     语义化版本号
         1.2.3
@@ -131,13 +133,15 @@
         简单的说 就是基于REST 架构的 Web Services 即是 RESTful
 ## node.js mysql
     1. 安装驱动
-        由于已经使用nrm更改了淘宝的数据源所以直接使用npm install mysql
+        npm install mysql
     2. curd ..  Front-End-Study/node/node-mysql  
     3. node orm 
 ## node.js mongoDB
     1. 安装驱动
-        由于已经使用nrm更改了淘宝的数据源所以直接使用npm install mongodb
+       npm install mongodb
     2. curd ..  Front-End-Study/node/node-mongoDB
+## node 应用场景
+
 
 
 
