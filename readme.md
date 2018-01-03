@@ -1191,12 +1191,10 @@
   Front-End-Study/proxy
 ## 正则表达式
     Front-End-Study/note/reg.md
-## 常用的设计模式
-    1. 工厂
-    2. 抽象工厂
-    3. 单例
-    4. 观察者
-    20种设计模式
+## 模式
+    设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
+    编码模式:js 特有的模式
+    反模式:常见的，引发问题比解决问题更多的一种方法
 ## tool 
   1. git
         SSH： 一种加密协议，用于计算机之间的登录
@@ -1350,17 +1348,15 @@
   3. gulp
         Front-End-Study/build-tool/gulp
   4. webpack 
-  webpack1支持CMD和AMD，同时拥有丰富的plugin和loader，webpack逐渐得到广泛应用。
+    webpack1支持CMD和AMD，同时拥有丰富的plugin和loader
+    webpack2相对于webpack最大的改进就是支持ES Module，可以直接分析ES Module之间依赖关系，而webpack1必须将ES Module转换成CommonJS模块之后，才能使用webpack行下一步处理。除此之外webpack2支持tree sharking，与ES Module的设计思路高度合。
 
-    webpack2相对于webpack最大的改进就是支持ES Module，可以直接分析ES Module之间的依赖关系，而webpack1必须将ES Module转换成CommonJS模块之后，才能使用webpack进行下一步处理。除此之外webpack2支持tree sharking，与ES Module的设计思路高度契合。
-
-    webpack3相对于webpack2，过渡相对平稳，但是新的特性大都围绕ES Module提出，如Scope Hoisting和Magic Comment；
+    webpack3相对于webpack2，过渡相对平稳，但是新的特性大都围绕ES Module提出，Scope Hoisting和Magic Comment；
     webpack3 新特性
     1)Scope Hoisting-作用域提升
         webpack2处理后的每个模块均被一个函数包裹,降低浏览器中JS执行效率，这主要是闭包函数降低了JS引擎解析速度
-    2)在webpack2中引入了Code Splitting-Async的新方法import()，用于动态引入ES Module，webpack将传入import方法的模块打包到一个单独的代码块（chunk），但是却不能像require.ensure一样，为生成的chunk指定chunkName，因此在webpack3中提出了Magic Comment用于解决该问题，用法如下：
+    2)在webpack2中引入了nCode Splitting-Asyc的新方法import()，用于动态引入ESModule，webpack将传入import方法的模块打包到一个单独的代码块（chunk），但是却能像require.ensure一样，为生成的chunk指定chunkName，因此在webpack3中提出Magic Comment用于解决该问题，用法如下：
         import(/* webpackChunkName: "my-chunk-name" */ 'module');
-
   5. Emmet 语法
         div.className
         div#idName
@@ -1414,4 +1410,11 @@
         用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
 ## 常见的面试题
     Front-End-Study/面试
-    
+## 好玩的东西
+webGL
+webVR
+blender
+D3.js大数据可视化
+threejs 
+微信小程序 
+PWA    
