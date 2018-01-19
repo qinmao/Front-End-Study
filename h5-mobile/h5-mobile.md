@@ -27,13 +27,6 @@
     H5空白页基本meta标签
         <!-- 设置缩放 -->
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui" />
-        <!-- 可隐藏地址栏，仅针对IOS的Safari（注：IOS7.0版本以后，safari上已看不到效果） -->
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <!-- 仅针对IOS的Safari顶端状态条的样式（可选default/black/black-translucent ） -->
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <!-- IOS中禁用将数字识别为电话号码/忽略Android平台中对邮箱地址的识别 -->
-        <meta name="format-detection"content="telephone=no, email=no" />
-
     PC端基础meta标签
         <!-- 页面关键词-->
         <meta name="keywords" content="your tags" />
@@ -529,18 +522,9 @@
 25, 渲染优化
     1.禁止使用iframe（阻塞父文档onload事件）
     2.禁止使用gif图片实现loading效果（降低CPU消耗，提升渲染性能）
-    3,使用CSS3代码代替JS动画；
-    4,开启GPU加速；
-    5,对于一些小图标，可以使用base64位编码，以减少网络请求。但不建议大图使用，比较耗费CPU。小图标优势在于：
+    3.使用CSS3代码代替JS动画；
+    4.开启GPU加速；
+    5.对于一些小图标，可以使用base64位编码，以减少网络请求。但不建议大图使用，比较耗费CPU。小图标优势在于：
         1.减少HTTP请求；
         2.避免文件跨域；
         3.修改及时生效；
-26, 判断是苹果系统的版本(取两位版本
-    export const iosOsVersion=()=>{
-        // navigator.userAgent.match(/os\s+(\d+)/i)[1] - 0
-        let ua = navigator.userAgent;
-        // let ver = ua.match(/cpu iphone os (.*?) like mac os/)[1].replace(/_/g,".");
-        let ver = ua.match(/os (.*?) like mac os/i)[1];
-        let tempArr= ver.split('_');
-        return tempArr[0]+"."+tempArr[1]
-    }

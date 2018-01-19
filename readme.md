@@ -383,7 +383,6 @@
             4) Math.max() Math.min() 返回最大最小的值
             5）Math.abs(x)返回一个绝对值
             6）Math.round(x) 四舍五入
-
         4. 数据类型转换
             1）隐式转换 变量在运算过程中发生的类型转换
                 !!   console.log(!!"abc")
@@ -395,7 +394,6 @@
 
             tip:使用parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不是简单的转换
             简单的类型转换Number(08)=8 会比parseInt 快
-
         5. 短路操作：当操作数不是bool值时
             1）隐式转换
             2）从左往右
@@ -409,13 +407,11 @@
             2. 短路或（||）
                 只要有一个true，就返回 该 值true的子表达式的值
                 短路或：可以方便给变量赋初值
-        
         6. 类型检测
             var arr=[];
             1）Array.isArray(arr) 有兼容性问题
             2）arr instanceof Array 推荐使用
             3) Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() 可检测任意类型
-
         7. 节点类型
             总共有12种，但要记住几个常用的
                 * nodeType = 1，元素节点
@@ -424,7 +420,6 @@
                 * nodeType = 8，注释节点
                 * nodeType = 9，document对象
                 * nodeType = 11，documentFragment文档片段
-
         8. 函数变量提升：先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
             'use strict';
             function foo() {
@@ -449,7 +444,6 @@
             }
             fun()
             console.log(num) //10
-
         9. this 指向问题
             1. 普通函数执行模式
             直接拿到函数的名字 加上 圆括号。
@@ -488,11 +482,9 @@
             sort(function(a,b){
                     return b-a
             })
-
         11. 原生js获取样式
             getComputedStyle(el,null).width ie 不支持
             document.getElementById("btn").currentStyle.width ie提供的
-    
         12. 清空数组：
             1)arr.length=0
             2)arr=[] //推荐使用
@@ -511,7 +503,6 @@
         14. 事件冒泡和事件捕获   
             事件冒泡：从里向外执行，遇到相同的事件及执行
             事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
-
         15. 事件的对象作用：(event.target)记录当前事件触发时的一些信息
             btn.onclick=function(event){} 
             event.target 真正触发事件的元素
@@ -534,7 +525,6 @@
                 (new Date()).getTime();
 
             参见 Front-End-Study/js/date-format.js
-
         19. 异常
             js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
             
@@ -551,6 +541,10 @@
             appendChild removeChild replaceChild insertBefore
         21. document.createDocumentFragment 创建一个新的空白的文档片段
             文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能的作用(better performance)。兼容性良好
+        22. js.map 文件是干啥的？
+        源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码粗了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。详情可参照: Fundebug支持Source Map
+        作者：Stefan Fundebug
+        链接：https://www.zhihu.com/question/21980664/answer/148755964
     2. js-oop
         1. 对象：
             1. 什么是对象？
@@ -816,7 +810,6 @@
                 __已不推荐使用。JSON.parse()
             11. 待补充
         6. 类和模块
-        
     3. ES5 
         1. 新增的一些方法
             Front-End-Study/ECMA/es5.md
@@ -1201,8 +1194,6 @@
      、systemjs：万能模块打包工具、跟angular抱大腿，angular4用了
 ## Hybrid App
     Front-End-Study/Hybrid-App
-## 微信开发
-    待续
 ## node proxy 
   Front-End-Study/proxy
 ## 正则表达式
