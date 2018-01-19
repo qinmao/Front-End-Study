@@ -224,12 +224,28 @@
         url("images/bg4.png") left bottom,
         url("images/bg5.png") center center;
     13. gradient
-        线性:
-        （方向，颜色 位置，颜色 位置）
-        background-image:linear-gradient(to right,red,green);
-        background-image:linear-gradient(0deg,red,green);
-        径向：
-        （半径 at 位置，颜色 位置，颜色 位置）
+    参考：http://www.mrszhao.com/post/58.html
+        线性渐变:
+        linear-gradient( 
+            [ <angle> | to <side-or-corner> ,]? <color-stop> [, <color-stop>]+ )
+            \---------------------------------/ \----------------------------/
+            Definition of the gradient line        List of color stops  就是渐变条上的色块列表
+            就是定义渐变线的意思，可以通过角度或者指定上右下左等方位来控制渐变线的方向。
+            where <side-or-corner> = [left | right] || [top | bottom]
+            and <color-stop>     = <color> [ <percentage> | <length> ]?
+        example:
+            45度三色线性渐变，初始值为黄色，中间值为绿色，结束值为粉色。角度可以设置负数
+            没有设置颜色的具体位置时，三个色块默认平均分布。
+            1. background-image:linear-gradient(45deg,#D1EE4D,#1ABF22,#F389B7);}
+            不设置任何的角度和方位，则默认是从上往下。可以为某个颜色设置具体的位置，可以是百分比，或者是具体的像素
+            2. background-image:linear-gradient(#F8F86D,#239C23 50%,#298C1E 51%,#D1E710)
+               background-image:linear-gradient(to right,red,orange,yellow,green,cyan,blue,purple)
+               background-image:linear-gradient(to bottom right,red,yellow)
+               background-image:linear-gradient(to bottom left,#FC3,rgba(255,255,255,0))
+               background:linear-gradient(to bottom left,#FC3,rgba(255,255,255,0)),url(images/1957.jpg)
+        径向渐变:
+        example:
+
         background-image:radial-gradient(20px at 10px,red,green);
     14. transition:
         transition:过渡属性     过渡时间        过渡延迟     过渡速度
@@ -1348,14 +1364,14 @@
   3. gulp
         Front-End-Study/build-tool/gulp
   4. webpack 
-    webpack1支持CMD和AMD，同时拥有丰富的plugin和loader
-    webpack2相对于webpack最大的改进就是支持ES Module，可以直接分析ES Module之间依赖关系，而webpack1必须将ES Module转换成CommonJS模块之后，才能使用webpack行下一步处理。除此之外webpack2支持tree sharking，与ES Module的设计思路高度合。
-
-    webpack3相对于webpack2，过渡相对平稳，但是新的特性大都围绕ES Module提出，Scope Hoisting和Magic Comment；
-    webpack3 新特性
-    1)Scope Hoisting-作用域提升
+    webpack1:支持CMD和AMD，同时拥有丰富的plugin和loader
+    webpack2:
+        1)支持ES Module,可直接分析ES Module之间依赖关系，而webpack1必须将ES Module转换成CommonJS模块之后，才能使用webpack行下一步处理。
+        2)webpack2支持 tree sharking 将没有使用的模块干掉掉，这样来达到删除无用代码的目的
+    webpack3: 相对于webpack2，过渡相对平稳，但是新的特性大都围绕ES Module提出
+        1)Scope Hoisting-作用域提升
         webpack2处理后的每个模块均被一个函数包裹,降低浏览器中JS执行效率，这主要是闭包函数降低了JS引擎解析速度
-    2)在webpack2中引入了nCode Splitting-Asyc的新方法import()，用于动态引入ESModule，webpack将传入import方法的模块打包到一个单独的代码块（chunk），但是却能像require.ensure一样，为生成的chunk指定chunkName，因此在webpack3中提出Magic Comment用于解决该问题，用法如下：
+        2)在webpack2中引入了Code Splitting-Asyc的新方法import()，用于动态引入ESModule，webpack将传入import方法的模块打包到一个单独的代码块（chunk），但是却能像require.ensure一样，为生成的chunk指定chunkName，因此在webpack3中提出Magic Comment用于解决该问题，用法如下：
         import(/* webpackChunkName: "my-chunk-name" */ 'module');
   5. Emmet 语法
         div.className
@@ -1381,8 +1397,61 @@
         
         配置：Front-End-Study/note/eslint.md
         参考 http://eslint.org/
-## mac 的常用指令
-    1. 打开host  vim /etc/hosts
+## mac 
+    1. 的常用终端命令
+        1）sudo －s 获取root权限
+        2）打开host  vim /etc/hosts
+            1. 在默认的"指令模式"下按 i 进入编辑模式 
+            2. 在非指令模式下按 ESC 返回指令模式 
+            3. 在"指令模式"下输入: 
+            :w	保存当前文件 
+            :q 退出编辑,如果文件为保存需要用强制模式 
+            :q!	强制退出不保存修改 
+            :wq	组合指令, 保存并退出 
+            4. 在"指令模式"下移动: 
+            h	左 
+            j	下 
+            k	上 
+            l	右 
+        3) ls 参数 目录名 列出文件
+        参数 -w 显示中文，-l 详细信息， -a 包括隐藏文件
+        4) cd 转换目录
+        5）建立新目录 mkdir 目录名 
+        6) 拷贝文件 cp 参数 源文件 目标文件 
+        例：想把桌面的Natit.kext 拷贝到驱动目录中 
+        cp -R /User/用户名/Desktop/Natit.kext/System/Library/Extensions 
+        参数R表示对目录进行递归操作，kext在图形界面下看起来是个文件，实际上是个文件夹。 
+        把驱动目录下的所有文件备份到桌面backup 
+        cp -R /System/Library/Extensions/* /User/用户名/Desktop/backup 
+        7) 删除文件 rm 参数 文件 
+            例：想删除驱动的缓存 
+            rm -rf /System/Library/Extensions.kextcache 
+            rm -rf /System/Library/Extensions.mkext 
+            参数－rf 表示递归和强制，千万要小心使用，如果执行了 rm -rf / 你的系统就全没了 
+        8) 移动文件 mv 文件 
+            例：想把AppleHDA.Kext 移到桌面 
+            mv /System/Library/Extensions/AppleHDA.kext /User/用户名/Desktop 
+            想把AppleHDA.Kext 移到备份目录中 
+            mv /System/Library/Extensions/AppleHDA.kext /System/Library/Extensions/backup 
+        9) 更改文件权限 chmod 参数 权限 文件 
+            例：把驱动目录下所有文件设定到root读写，其他用户只读 
+            chmod -R 755 /System/Library/Extensions 
+            参数R 表示递归，755表示各用户的权限 
+            更改文件属主 
+            chown 参数 用户:组 文件 
+            例：把驱动目录下的所有文件属主改成根用户 
+            chown -R root:wheel /System/Library/Extensions 
+            参数R 表示递归操作 
+            修复整个系统中文件的权限 
+            diskutil repairpermissions / 
+            严格的说这不是一个unix 命令，而是osx一个软件，记得修改或添加的驱动就执行一次。
+        10) 运行脚本命令 sh 脚本文件名 
+        11) 查看命令的详细帮助 
+            man 命令名 
+            比如要看看 ls 命令的详细用法，执行 man ls
+        clear  清除屏幕或窗口内容 
+           
+
     2. brew包管理工具
         官网:http://brew.sh/index_zh-cn.html
         安装: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

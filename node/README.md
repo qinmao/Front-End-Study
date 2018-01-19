@@ -121,8 +121,47 @@
         实体层（Physical Layer） 双绞线、光缆
 ## node framework
     1. express
-        
-    2. 
+       1) install:
+        Cli:npm install -g express-generator@4
+        Usage: express [options] [dir]
+       自动生成项目
+       2) 中间件(核心)
+        内置中间件:
+        第三方中间件:
+        功能：
+            错误处理
+            应用级
+            路由级
+        3) 参数获取
+            1. req.params 
+            //用get请求传输过来的参数
+            app.get('/user/:id', function(req, res){
+            res.send('user ' + req.params.id);
+            });
+            注意点：取带冒号的参数
+            2. req.body
+                依赖bodyParser
+                获取post 参数
+            3. req.query
+                1. // GET /search?q=tobi+ferret
+                    req.query.q
+                    // => "tobi ferret"
+
+                2. // GET /shoes?order=desc&shoe[color]=blue&shoe[type] =converse
+                    req.query.order
+                    // => "desc"
+
+                    req.query.shoe.color
+                    // => "blue"
+
+                    req.query.shoe.type
+                    // => "converse"
+
+                3. 变态的写法
+                    // POST /search?q=tobi+ferret 
+                    req.query.q
+                    // => "tobi ferret"
+    2. koa
 ## Node.js RESTful API
     1. 什么是 REST？
         REST即表述性状态传递（英文：Representational State Transfer，简称REST）是Roy Fielding博士在2000年他的博士论文中提出来的一种软件架构风格。
@@ -140,7 +179,33 @@
     1. 安装驱动
        npm install mongodb
     2. curd ..  Front-End-Study/node/node-mongoDB
+## Node.js的核心模块
+    1. http：提供HTTP服务器功能。
+    2. url：解析URL。
+    3. fs：与文件系统交互。
+    4. querystring：解析URL的查询字符串。
+    5. child_process：新建子进程。
+    6. util：提供一系列实用小工具。
+    7. path：处理文件路径。
+    8. crypto：提供加密和解密功能，基本上是对OpenSSL的包装。
+## 优缺点
+    优点:
+        1. 高并发
+        2. 适合I/O密集型应用
+    缺点:
+        1. 不适合CPU 密集型应用，由于JavaScript单线程的原因，如果有长时间运行的计算（比如大循环），将会导致CPU时间片不能释放，使得后续I/O无法发起；  
+        解决：分解大型运算任务为多个小任务，使得运算能够适时释放，不阻塞I/O调用的发起；
+        2. 只支持单核CPU，不能充分利用CPU
+        3. 可靠性低：单进程，单线程
+        4. 开源组件库质量参差不齐，更新快，向下不兼容
 ## node 应用场景
+    NodeJS适合运用在高并发、I/O密集、少量业务逻辑的场景
+    1. RESTful API
+    这是NodeJS最理想的应用场景，可以处理数万条连接，本身没有太多的逻辑，只需要请求API，组织数据进行返回即可。它本质上只是从某个数据库中查找一些值并将它们组成一个响应。由于响应是少量文本，入站请求也是少量的文本，因此流量不高，一台机器甚至也可以处理最繁忙的公司的API需求。
+    2. 统一Web应用的UI层
+    做前后端的依赖分离。如果所有的关键业务逻辑都封装成REST调用，就意味着在上层只需要考虑如何用这些REST接口构建具体的应用。那些后端程序员们根本不操心具体数据是如何从一个页面传递到另一个页面的，他们也不用管用户数据更新是通过Ajax异步获取的还是通过刷新页面。
+    3. 大量Ajax请求的应用
+
 
 
 

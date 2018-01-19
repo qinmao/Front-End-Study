@@ -55,7 +55,6 @@
  * 使用该组件
      - 组件名大写的，可以在template中转换成-小写
  * 子组件也是组件，写法和其他组件一样的结构
-
 ## 组件通讯
    1. 父向子组件传值
        * 原理，就是通过属性来传递参数
@@ -121,7 +120,6 @@
  * 全局的声明方式
      - `Vue.filter(过滤器名称字符串,function(data){   return xxxx;});`
  * 注意实现: 如果存在全局和局部同名的过滤器时，优先以局部为准
-
 ## vue-router
  * 概念
     - 路由:前端路由、后端路由（url+请求方式的判断和分发)
@@ -213,7 +211,6 @@
     * 1:声明一个actions中的一个属性 属性名就是action的名称
     * 2:接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
     * 3:this.$store.dispatch('action的名称');
-
 ## 单向数据绑定 v->M
 * 给元素添加输入事件，如果键盘按下，将值赋给M(内存中的对象)
 
@@ -232,9 +229,7 @@ $ vue init webpack my-project
 $ cd my-project
 $ npm install
 $ npm run dev
-
 ## 响应式原理
-
 ## 暴露的有用的属性
     vm.$data === data // => true
     vm.$el === document.getElementById('example') // => true
@@ -247,4 +242,45 @@ $ npm run dev
 1. 为什么组件中data是函数？
 每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
 都有它自己内部的状态了
+2. 引入远程的js资源
+import Vue from 'vue';
+Vue.component('remote-js', {
+  render(createElement) {
+    return createElement('script', {
+      attrs: {
+        type: 'text/javascript',
+        src: this.src
+      }
+    });
+  },
+  props: {
+    src: {
+      type: String,
+      required: true,
+    },
+  },
+  mounted() {
+    if (this.$el.readyState) {
+        //IE
+        this.$el.onreadystatechange = ()=> {
+          if (
+            this.$el.readyState == "loaded" ||
+            this.$el.readyState == "complete"
+          ) {
+            this.$el.onreadystatechange = null;
+            this.scriptLoad();
+          }
+        };
+      } else {
+        //Others
+        this.$el.onload =()=>{
+           this.$emit('scriptLoad')
+        }
+      }
+  },
+})
 
+## 服务器端渲染(SSR)
+1. 为什么？
+* 更好的 SEO，由于搜索引擎爬虫抓取工具可以直接查看完全渲染的页面。
+* 更快的内容到达时间(time-to-content)，特别是对于缓慢的网络情况或运行缓慢的设备
