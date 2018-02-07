@@ -1300,7 +1300,7 @@
             将指定分支 合并到 当前分支
 
             5. 删除分支
-
+            // 本地
             git branch -d branchName
 
             // 远程分支
@@ -1441,8 +1441,6 @@
             man 命令名 
             比如要看看 ls 命令的详细用法，执行 man ls
         clear  清除屏幕或窗口内容 
-           
-
     2. brew包管理工具
         官网:http://brew.sh/index_zh-cn.html
         安装: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

@@ -199,7 +199,6 @@
   * mutatiions中如果出现同名的mutation就会后面的覆盖前面的
   * mutation必须在同步中
   * 我们通过调用$store.commit(mutation的名字);就能触发数据的改变
-
  5. 优雅的获取数据getters
     * 默认我们可以通过this.$store.state.属性名获取数据的，也能修改数据
         - 但是，这样不好，修改数据建议要使用mutations的方式修改
@@ -211,14 +210,6 @@
     * 1:声明一个actions中的一个属性 属性名就是action的名称
     * 2:接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
     * 3:this.$store.dispatch('action的名称');
-## 单向数据绑定 v->M
-* 给元素添加输入事件，如果键盘按下，将值赋给M(内存中的对象)
-
-## 利用setter数据劫持  M ->V
-* setter会在该属性被赋值的时候触发
-
-## 简单双向数据绑定
-* vue: compile编译模板 observe(观察对象(setter/getter)) Watcher(观察者)
 
 ## vue-cli
 # 全局安装 vue-cli
@@ -230,6 +221,19 @@ $ cd my-project
 $ npm install
 $ npm run dev
 ## 响应式原理
+    如一个对象a传给vue实例的data属性后，vue会遍历a的所有属性，并使用es5的Object.defineProperty 把属性转换成getter/setter
+    每个组件实例都有watcher实例对象，它会记录这些依赖，某个属性setter改变 watcher 观测到之后通知render函数重新渲染virtual dom tree
+    1. 为什么新加的属性不是响应式的？
+     因为JavaScript 的限制 (以及废弃 Object.observe) vue 不能检测到属性的添加和删除，只能在实例化的时候把属性转换成getter/setter
+    解决方案:
+        可以使用 Vue.set(object, key, value) 方法将响应属性添加到嵌套的对象上
+        this.$set(this.someObject,'b',2)
+        向原有的对象上添加属性： this.someObject = Object.assign({}, this.someObject, { a: 1, b: 2 })
+## 异步更新
+    Vue 异步执行 DOM 更新
+    观察到数据变化，Vue 将开启一个队列，在下一个的事件循环“tick”中，Vue 刷新队列并执行实际 (已去重的) 工作。Vue 在内部尝试对异步队列使用原生的 Promise.then 和 MessageChannel，如果执行环境不支持，会采用 setTimeout(fn, 0) 代替。
+    出现的问题：数据更新之后dom没有刷新的问题？
+    为了在数据变化之后等待 Vue 完成更新 DOM ，可以在数据变化之后立即使用 Vue.nextTick(callback) 。这样回调函数在 DOM 更新完成后就会调用
 ## 暴露的有用的属性
     vm.$data === data // => true
     vm.$el === document.getElementById('example') // => true
@@ -237,7 +241,7 @@ $ npm run dev
     vm.$watch('a', function (newValue, oldValue) {
     // 这个回调将在 `vm.a` 改变后调用
     })
-    this.$set(this.someObject,'b',2)
+   
 ## 问题:
 1. 为什么组件中data是函数？
 每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
@@ -279,7 +283,46 @@ Vue.component('remote-js', {
       }
   },
 })
-
+3. 异步文件上传
+axios
+multipart 添加之后选择多图
+<input type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
+```javascript
+ async upload(e) {
+      let files = e.target.files;
+      if (files[0].size / 1024 / 1024 > 2) {
+       // 大小限制
+      }
+      if (!files.length) return;
+        //  模拟表单提交
+      let formData = new FormData();
+      formData.append("file", files[0]);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      };
+      let fetch = this.$fecth.create();
+      fetch.interceptors.request.use(config => {
+        return config;
+      });
+      let res = await fetch.post("ur", formData, config);
+      res = res.data;
+      if (res.code == 0) {
+        this.loadImage(files[0]);
+      } else {
+       
+      }
+    },
+    // 预览本地上传的图片
+    loadImage(file) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = e => { 
+        // e.target.result 图片的地址
+      };
+    },
+```
 ## 服务器端渲染(SSR)
 1. 为什么？
 * 更好的 SEO，由于搜索引擎爬虫抓取工具可以直接查看完全渲染的页面。
