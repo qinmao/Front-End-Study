@@ -210,7 +210,7 @@
     * 2:接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
     * 3:this.$store.dispatch('action的名称');
 ## vue-cli
-## vue-load
+## vue-loader
 what: 是一个 webpack 的 loader，通过解析文件，提取每个语言块，如有必要会通过其它 loader 处理，最后将他们组装成一个 CommonJS 模块，module.exports 出一个 Vue.js 组件对象。
 1. 兼容原生html 的写法
 <template src="../html/demo.html">  
