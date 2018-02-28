@@ -1,11 +1,12 @@
 {
   "name": "node",
   "version": "1.0.0",
-  "description": "inti",
+  "description": "test",
   "main": "node-first.js",
   "dependencies": {
     "mongodb": "^2.2.25",
-    "mysql": "^2.13.0"
+    "mysql": "^2.13.0",
+    "node-study123": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {

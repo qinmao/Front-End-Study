@@ -1,7 +1,3 @@
-/**
- * 心态软
- */
-
 function getPageX(e) {
     //先检测是否存在pageX
     if (e.pageX) {

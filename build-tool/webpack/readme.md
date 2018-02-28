@@ -14,7 +14,7 @@
  7. 具有强大的Plugin接口，大多是内部插件，使用起来比较灵活
  8. webpack 使用异步 IO 并具有多级缓存。这使得 webpack 很快且在增量编译上更加快
 ## 安装
- npm  install  webpack  -g // 全局安装webpack
+ npm  install  webpack  -g 
 ## 配置文件
  在项目根目录创建三个或多个webpack配置文件
  1. webpack.base.config.js  //公用的配置放在这里面（可通过插件继承）

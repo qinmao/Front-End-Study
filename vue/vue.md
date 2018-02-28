@@ -1,5 +1,4 @@
 # vue study
-  开车
 ## 前置知识
   由于vue2 使用大量的es6语法;常见的如下
   * import 注意事项
@@ -9,7 +8,7 @@
         + export default xxx;
             * import xxxx from './xxx.js';// 默认导出和导入名称可以不一样
     - 按需加载
-        + export var fn = fn(){};  var xxx= 1;  export { xxx}
+        + export const fn = fn(){};  var xxx= 1;  export { xxx}
         + import {fn,xxx} from './xxx.js';
             * 接下来就可以直接使用fn 和xxx
             * 以上方式注意，名称和写法{}一定要对应
@@ -111,7 +110,7 @@
    4. vuex
 ## 过滤器
  * 局部和全局过滤器
- * vue2.0中没有默认提供过滤器，代码坑小、非全家桶(渐进式)
+ * vue2.0中没有默认提供过滤器
  * 属性 `filters:{  key(过滤器名称):function(data){ return xxx;} }` 
      - filters是固定的属性名
          + key是我们自定义的过滤器名称
@@ -210,16 +209,32 @@
     * 1:声明一个actions中的一个属性 属性名就是action的名称
     * 2:接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
     * 3:this.$store.dispatch('action的名称');
-
 ## vue-cli
+## vue-load
+what: 是一个 webpack 的 loader，通过解析文件，提取每个语言块，如有必要会通过其它 loader 处理，最后将他们组装成一个 CommonJS 模块，module.exports 出一个 Vue.js 组件对象。
+1. 兼容原生html 的写法
+<template src="../html/demo.html">  
+</template>
+<script src="../html/demo.js">
+</script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style src="../html/demo.css" scoped>
+</style>
+2. 深度作用选择器
+scoped 样式中的一个选择器能够作用得“更深”，例如影响子组件，你可以使用 >>> 操作符：
+```javascript
+    <style scoped>
+    .a >>> .b { /* ... */ }
+    </style>
+    // 编译后结果
+    .a[data-v-f3f3eg9] .b { /* ... */ }
+    SASS 之类的预处理器无法正确解析 >>>。这种情况下你可以使用 /deep/ 操作符取而代之——这是一个 >>> 的别名，同样可以正常工作。
+    通过 v-html 创建的 DOM 内容不受作用域内的样式影响，但是你仍然可以通过深度作用选择器来为他们设置样式。
+```
 # 全局安装 vue-cli
 $ npm install --global vue-cli
-# 创建一个基于 webpack 模板的新项目
+# 创建一个基于 webpack 模板的新项目（vue-cli 3.0 以前）
 $ vue init webpack my-project
-# 安装依赖
-$ cd my-project
-$ npm install
-$ npm run dev
 ## 响应式原理
     如一个对象a传给vue实例的data属性后，vue会遍历a的所有属性，并使用es5的Object.defineProperty 把属性转换成getter/setter
     每个组件实例都有watcher实例对象，它会记录这些依赖，某个属性setter改变 watcher 观测到之后通知render函数重新渲染virtual dom tree
@@ -241,7 +256,6 @@ $ npm run dev
     vm.$watch('a', function (newValue, oldValue) {
     // 这个回调将在 `vm.a` 改变后调用
     })
-   
 ## 问题:
 1. 为什么组件中data是函数？
 每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
@@ -272,7 +286,7 @@ Vue.component('remote-js', {
             this.$el.readyState == "complete"
           ) {
             this.$el.onreadystatechange = null;
-            this.scriptLoad();
+            this.$emit('scriptLoad')
           }
         };
       } else {
@@ -306,7 +320,7 @@ multipart 添加之后选择多图
       fetch.interceptors.request.use(config => {
         return config;
       });
-      let res = await fetch.post("ur", formData, config);
+      let res = await fetch.post("url", formData, config);
       res = res.data;
       if (res.code == 0) {
         this.loadImage(files[0]);

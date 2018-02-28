@@ -1,50 +1,8 @@
 # node-study
     node base use
 ##  安装注意问题
-    node 安装完成后
-    由于网络问题导致下载包会出问题，安装nrm来选择资源
-    npm install -g nrm
-    nrm test 选择网络延迟最少的
-    nvm 来切换node 版本
-## npm 
-    npm init  创建package.json文件
-    npm install  将package.json中的文件依赖的包从网上下载到本地
-    npm shrinkwrap 保证任何机器上安装的都是同样版本的模块（不管嵌套多少层）,存在则优先将npm-shrinkwrap.json 文件依赖的包进行安装，没有则package.json
-    npm install  包名 -save 将包下载下来并且加载到dependencies中去
-    npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去
-    npm install  包名 -g  全局安装
-    npm docs 包名 查看包的文档
-
-    现在推荐使用yarn 
-
-    语义化版本号
-        1.2.3
-        1表示重大更新
-        2表示向下兼容
-        3表示补丁包更新
-    
-    dependencies 
-    -  包名：“版本号” 
-    -  > +版本号   下载大于某个版本号，npm会下最新版
-    -  < +版本号   下载小于某个版本号，npm会下小于这个版本号最新版
-    -  <= 小于等于 一定会下你写的这个版本，除非没有你写的这个版本
-    -  >= 大于等于  下载最新版
-    -   *、" "、X  任意 npm会给你下最新版
-    -   ^ +版本号  不跃迁版本下载，^2.1.0 npm会下载大版本不变，去下载2.x.x版本里的最近版
-    -   ~ +版本号  会去下约等于这个版本的最新版，在大版本不变的情况下下一个比较新的版本
-
-    npm 启动 node 
-    "scripts": {
-    "start": "node ./bin/www",
-    "test": "node ./bin/test",
-    "qm":"node ./bin/test"
-    },
-    默认 npm start
-    可以占用npm 中的命令 npm test
-    可以自定义 npm run qm 
-
-    package.json 所有的字段
-    参考 http://www.mujiang.info/translation/npmjs/files/package.json.html
+    node 安装完成后 npm 默认安装
+    推荐安装nvm 来切换node 版本
 ## windows 安装node 推荐使用nvm-windows
     详情参考  https://github.com/coreybutler/nvm-windows
 ## node ？

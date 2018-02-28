@@ -154,7 +154,6 @@
         结构选择器：+ ~
             E[attrxxxx]+E   选择当前的元素 然后找到相邻的下一个元素
             E[attrxxxx]~E   选择当前的元素 然后后面所有的元素
-
     2. 伪元素：
         ：before ：after
         推荐单冒号兼容性好       
@@ -166,7 +165,6 @@
         ::first-letter 选择首字母
         ::first-line   第一行
         ::selection    选中的区域  只能变color和background-color  
-
     3. 私有前缀
         webkit chrome  safari 新版opera
         moz    firefox
@@ -197,11 +195,9 @@
             扩展半径  可以为负值，值越大，扩展半径越大
             颜色 
             内阴影  inset(可选)
-
     6. box-sizing
         content-box 盒子的尺寸=CSS中的尺寸+padding+border
         border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸     
-
     7. border-radius
         border-radius:x x x x/y y y y
         正圆:border-radius:50%;
@@ -1371,7 +1367,6 @@
         h1{text}
         a[href="#"]
         ul>li*3>a[href="#"]
-
   6. ie注释语句
         cc:ie6
   7. eslint
@@ -1454,7 +1449,9 @@
 ## vue 插件开发
     1. 数字滚动
     2. 侧滑（删除）
-    3. 
+    3. 复制到剪切板
+    4. ios 手动长按复制
+    5. 引入远程脚本
 ## vscode 
     1. 本地服务端调试
         安装: 如果npm install -g live-server安装报错就用npm install live-server -gf安装，
