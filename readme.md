@@ -837,21 +837,22 @@
         offsetWidth 
         OffsetHeight //除了margin以外所有的高度
         OffsetParent //获取到当前元素外面的定位父盒子
-
+    6. scroll
         scrollWidth（内部内容的真实宽度） 
         scrollHeight 计算方式相同，
         
         scrollTop 被卷曲的内容高度
         scrollLeft 同理
 
- 获取卷曲的高度
-    Window.onscroll=function(){
-        //短路操作
-        var topVal=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop
-        var leftVal=window.pageYOffset||document.documentElement.scrollLeft||document.body.scrollLeft
-    }
-    clientHeight (内部空间的高度 )
-    clientWidth（元素内部的真实宽度）
+        获取卷曲的高度
+        Window.onscroll=function(){
+            //短路操作
+            var topVal=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop
+            var leftVal=window.pageYOffset||document.documentElement.scrollLeft||document.body.scrollLeft
+        }
+    7. client
+        clientHeight (内部空间的高度 )
+        clientWidth（元素内部的真实宽度）
 ## jquery
   1. 本质：
       源码分析得知是一个伪数组对象，在自然数的索引上存储的是查询到所有DOM元素。 $本质是jQuery原型上的init这个工厂构造函数的实例，根据传入的参数不同实现不同的功能。
@@ -1165,8 +1166,6 @@
             ```
 ## node
     Front-End-Study/node/README.md
-## http 深入
-    Front-End-Study/http/README.md
 ## seajs requirejs
  * commonjs:使用js语法要求的后端语言的规范,模块化、后端语言需要具备的一些要求，可以http、操作文件。。。。
      - require/module.exports

@@ -1,5 +1,4 @@
 # es6知识点
-    
 ## let
     1. let 用法类似var.只在代码块内有效
     ```javascript
@@ -80,7 +79,6 @@
     PI = 3;
     // TypeError: Assignment to constant variable.
     ```
-   
 ## 解构赋值
     1. 数组的解构赋值
         let [foo, [[bar], baz]] = [1, [[2], 3]];
@@ -238,7 +236,6 @@
         // 字符串中嵌入变量
         var name = "Bob", time = "today";
         `Hello ${name}, how are you ${time}?`
-
 ## 数组的扩展
     1. Array.from()
         Array.from方法用于将两类对象转为真正的数组：类似数组的对象（array-like object）和可遍历（iterable）的对象（包括ES6新增的数据结构Set和Map）
@@ -570,7 +567,6 @@
     10. 对象的扩展运算符
     11. Object.getOwnPropertyDescriptors()
     12. Null 传导运算符
-## Proxy
 ## Promise
   1. what?
         Promise 是异步编程的一种解决方案
@@ -594,5 +590,130 @@
 	// await 表示在这里等待promise返回结果了，再继续执行。
 	// await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
 	//await命令就是内部then命令的语法糖。
+## Symbol
+    ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值
+    Symbol 值通过Symbol函数生成
+    Symbol函数可以接受一个字符串作为参数，表示对 Symbol 实例的描述
+    Symbol函数的参数只是表示对当前 Symbol 值的描述，因此相同参数的Symbol函数的返回值是不相等的。
+    ```javascript
+        // 没有参数的情况
+        let s1 = Symbol();
+        let s2 = Symbol();
+
+        s1 === s2 // false
+
+        // 有参数的情况
+        let s1 = Symbol('foo');
+        let s2 = Symbol('foo');
+
+        s1 === s2 // false
+
+        let mySymbol = Symbol();
+
+        // 第一种写法
+        let a = {};
+        a[mySymbol] = 'Hello!';
+
+        // 第二种写法
+        let a = {
+        [mySymbol]: 'Hello!'
+        };
+
+        // 第三种写法
+        let a = {};
+        Object.defineProperty(a, mySymbol, { value: 'Hello!' });
+
+        // 以上写法都得到同样结果
+        a[mySymbol] // "Hello!"
+```
+## class
+    ```javascript
+        //1. 定义类
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            toString() {
+                return '(' + this.x + ', ' + this.y + ')';
+            }
+        }
+        // 2. 表达式形式的类
+        const MyClass = class Me {
+        getClassName() {
+            return Me.name; // name属性总是返回紧跟在class关键字后面的类名。
+        }
+        let inst = new MyClass();
+        inst.getClassName() // Me 
+        Me.name // ReferenceError: Me is not defined
+        // 这个类的名字是MyClass而不是Me，Me只在 Class 的内部代码可用，指代当前类。
+        // 类的内部没用到的话，可以省略Me
+        };
+        // 2.1 可以写出立即执行的 Class。
+        let person = new class {
+            constructor(name) {
+                this.name = name;
+            }
+            sayName() {
+                console.log(this.name);
+            }
+        }('张三');
+        person.sayName(); // "张三"
+        // 2.2 私有方法、属性
+            const bar = Symbol('bar');
+            const snaf = Symbol('snaf');
+
+            export default class myClass{
+
+            // 公有方法
+            foo(baz) {
+                this[bar](baz);
+            }
+
+            // 私有方法
+            [bar](baz) {
+                return this[snaf] = baz;
+            }
+
+            };
+           //  上面代码中，bar和snaf都是Symbol值，导致第三方无法获取到它们，因此达到了私有方法和私有属性的效果。
+        // 2.3 静态方法加static 指向类本身而非实例
+        
+        // 3 继承
+        // 3.1
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            toString() {
+                return '(' + this.x + ', ' + this.y + ')';
+            }
+            hello(){
+                console.log('lalala')
+            }
+        }
+        child.hello() // 打印lalala
+        // 3.2 super
+        class Point {
+        }
+        class ColorPoint extends Point {
+        }
+        // 由于没有部署任何代码，所以这两个类完全一样，等于复制了一个Point类
+        class ColorPoint extends Point {
+            constructor(x, y, color) {
+                super(x, y); // 调用父类的constructor(x, y)
+                this.color = color;
+            }
+            toString() {
+                return this.color + ' ' + super.toString(); // 调用父类的toString()
+            }
+            // super它在这里表示父类的构造函数，用来新建父类的this对象。
+
+            // 注意：子类必须在constructor方法中调用super方法，否则新建实例时会报错。这是因为子类没有自己的this对象，而是继承父类的this对象，然后对其进行加工。如果不调用super方法，子类就得不到this对象。
+        }
+        // es5 与es6 继承的区别:
+        // ES5 的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面（Parent.apply(this)）。ES6 的继承机制完全不同，实质是先创造父类的实例对象this（所以必须先调用super方法），然后再用子类的构造函数修改this。
+    ```
 ## 参考 
     阮一峰的es6入门
