@@ -1,5 +1,3 @@
-今天在国外的网站上看到了很多看似简单却又非常强大的纯CSS绘制的图形，里面有最简单的矩形、圆形和三角形，也有各种常见的多边形，甚至是阴阳太极和网站小图标，真的非常强大，分享给大家。
-
 ## Oval(椭圆形)
 
 ![40个纯CSS绘制的图形3](http://www.webhek.com/wordpress/wp-content/uploads/2016/10/shape-oval.png)

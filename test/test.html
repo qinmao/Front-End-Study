@@ -15,7 +15,8 @@
       width: 5000%;
     }
 
-    #scroll_begin,#scroll_end {
+    #scroll_begin,
+    #scroll_end {
       /* display: flex;
       justify-content: flex-start; */
       float: left;
@@ -30,64 +31,33 @@
       list-style: none;
 
     }
+
+    #triangle-down {
+      width: 10px;
+      height: 10px;
+      border-left: 1px solid #ffd000;
+      border-top: 1px solid transparent;
+      border-right: 1px solid transparent;
+      border-bottom: 1px solid #ffd000;
+      transform: rotate(-45deg)
+    }
   </style>
 </head>
 
 <body>
-  <div id="scroll_div" class="scroll_div">
-    <div class="wrap">
-      <div id="scroll_begin">
-       <ul >
-          <li>aaaaaaa</li>
-          <li>bbbbbbbbbbbbbbbbbbbbb</li>
-          <li>ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc</li>
-        </ul>
-      </div>
-      
-      <div id="scroll_end"></div>
-    </div>
+  <script>
+    let arr = [1]
+    sendMsg(arr[0])
 
-  </div>
-  <script type="text/javascript">
-    //取对象的封装
-    function $(eleStr) {
-      //为了区分，不同的取对象方式，以加前缀的方式来区分
-      //id加#  class加.  name加_  tagName不加前缀  
-      switch (eleStr.substr(0, 1)) {
-        case "#":
-          return document.getElementById(eleStr.substr(1));
-          break;
-        case ".":
-          return document.getElementsByClassName(eleStr.substr(1));
-          break;
-        case "_":
-          return document.getElementsByName(eleStr.substr(1));
-          break;
-        default:
-          return document.getElementsByTagName(eleStr);
-          break;
+    function sendMsg(i) {
+      console.log(i)
+      if (arr.length > 0) {
+        arr.push(i)
+        setTimeout(() => {
+          sendMsg(arr.shift())
+        }, 2000);
       }
     }
-
-    function horizontalScroll() {
-      var speed = 20; //滚动速度
-      var scroll_begin = $("#scroll_begin");
-      var scroll_end = $("#scroll_end");
-      var scroll_div = $("#scroll_div");
-      scroll_end.innerHTML = scroll_begin.innerHTML;
-
-      function Marquee() {
-        // offsetwidth:是元素相对父元素的偏移宽度。等于border+padding+width
-        // scrollLeft:设置或获取位于对象左边界和窗口中目前可见内容的最左端之间的距离
-        if (scroll_div.scrollLeft - scroll_end.offsetWidth >= 0)
-          scroll_div.scrollLeft -= scroll_begin.offsetWidth;
-        else {
-          scroll_div.scrollLeft++;
-        }
-      }
-      setInterval(Marquee, speed);
-    }
-    horizontalScroll()
   </script>
 
 </body>

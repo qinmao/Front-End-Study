@@ -282,7 +282,7 @@
             }
             from{},to{} 类似0%-100%
         2)调用动画 
-            复合属性:    animation:动画名称  动画总时间 动画延迟 动画速度
+            复合属性:    animation: animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction 和 animation-fill-mode.
             动画名称     animation-name  自定义的
             动画总时间   animation-duration 时间
             动画延迟     animation-delay    时间
@@ -940,8 +940,7 @@
                "mouseenter":function(){
                    ...
                }
-           })
-           
+           })   
    2. 事件委托（或者叫代理）
        1. 以上bind 绑定事件会出现一个问题及新创建的元素没有事件？
        2. 如何解决？
@@ -1267,6 +1266,8 @@
                     如果还要提交，直接commit即可
                 * git reset –-hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容。
                     git reset --hard head~ 可以回到合并之前的提交
+            * 合并没有历史关联的分支
+            git merge dev --allow-unrelated-histories  
         2. Git分支
             在初始化一个空的本地仓库时，默认是没有主分支（master分支）的，必须在主分支上提交至少一次版本，Git才会创建master分支。
             Git在创建分支时，必须保证当前仓库必须有master分支。
