@@ -1,5 +1,4 @@
 #  前端技术栈
-    以下是个人前端学习总纲
 ## html css
     1. 基本html标签
     2. css语法
@@ -1256,7 +1255,8 @@
             * git reset [option] 回退版本
                 * git reset --hard '版本id-sha值' 将指定版本内的文件替换掉工作目录内文件，实现版本的回退。
                 --hard 参数表示，同时更改暂存区。
-                * git reset [option] HEAD^ 回退到上一个版本 git reset HEAD^^ 回退到上上一个版本
+                * git reset [option] HEAD^ 回退到上一个版本 
+                git reset HEAD^^ 回退到上上一个版本
                 git reset [option] HEAD~2
 
             reset命令有3种方式：
