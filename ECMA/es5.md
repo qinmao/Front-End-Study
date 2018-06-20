@@ -49,7 +49,19 @@ arr.every(function (x) {
 ```
 ## reduce
 ```javascript
+    reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
 
+    reduce() 可以作为一个高阶函数，用于函数的 compose。
+
+    注意: reduce() 对于空数组是不会执行回调函数的。
+    var numbers = [65, 44, 12, 4];
+ 
+    function getSum(total, num) {
+        return total + num;
+    }
+    function myFunction(item) {
+        document.getElementById("demo").innerHTML = numbers.reduce(getSum);
+    }
 ```
 ## reduceRight
 ```javascript
