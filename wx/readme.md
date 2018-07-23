@@ -17,3 +17,15 @@
 3. 对于小游戏包内资源，小游戏环境内并不是按需加载的，而是一次性加载所有包内资源，然后再启动页面。
 4. 不可以从远程服务器下载脚本文件
 微信还为 Cocos 社区提供了一发重要的子弹：如果开发者没有 appid 又需要体验，可以填写 wx6ac3f5090a6b99c5 这个作为 appid 进入调试！
+
+
+
+### 微信开发的优化手段
+1. setData 更改部分数据（数组，或对象的某项值）
+```javascript
+taskDataList=[]
+const taskItem = 'taskDataList[' + index + '].downTime'
+this.setData({
+    [taskItem]: Date.now()
+    })
+```
