@@ -1,4 +1,4 @@
-#  前端技术栈
+# 前端技术栈
 ## html css
     1. 基本html标签
     2. css语法
@@ -351,6 +351,11 @@
         r 是root  根元素的意思  html文档的根元素是  html标签
         基准值是相对于来根元素（html）来的
     20. media 
+        @media (min-width: 750px) {
+            html {
+                font-size: 100px;
+            }
+        }
 ## less sass
     Front-End-Study/less
 ## js 
@@ -1444,8 +1449,6 @@
             2. brew list 可以查看所有安装的软件
             3. brew info 软件名
             4. brew install tree 生成项目的文件结构
-
-        tree -L 2 >README.md  把一个目录的结构树导出到文件 Readme.md 
 ## vue 插件开发
     1. 数字滚动
     2. 侧滑（删除）

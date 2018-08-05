@@ -3,7 +3,6 @@
   由于vue2 使用大量的es6语法;常见的如下
   * import 注意事项
     - 不能放在函数内部
-    - __import尽量都放在代码的上方，绝对不要放在函数体内部__
     - 默认导出方式：
         + export default xxx;
             * import xxxx from './xxx.js';// 默认导出和导入名称可以不一样
@@ -32,7 +31,7 @@
          + `v-text="表达式或者是data中的对象" `
     - 2:先隐藏该元素，再移除该元素样式
         + 在元素上声明 v-cloak指令
-        + 同时制定style [v-cloak] { display:none;}
+        + 同时style [v-cloak] { display:none;}
 ## class结合v-bind使用
  * 1：绑定单个class v-bind:class="三元表达式" `:class="isShow?'red':'green'"`
  * 2：绑定多个class v-bind:class="对象"
@@ -261,42 +260,8 @@ $ vue init webpack my-project
 每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
 都有它自己内部的状态了
 2. 引入远程的js资源
-import Vue from 'vue';
-Vue.component('remote-js', {
-  render(createElement) {
-    return createElement('script', {
-      attrs: {
-        type: 'text/javascript',
-        src: this.src
-      }
-    });
-  },
-  props: {
-    src: {
-      type: String,
-      required: true,
-    },
-  },
-  mounted() {
-    if (this.$el.readyState) {
-        //IE
-        this.$el.onreadystatechange = ()=> {
-          if (
-            this.$el.readyState == "loaded" ||
-            this.$el.readyState == "complete"
-          ) {
-            this.$el.onreadystatechange = null;
-            this.$emit('scriptLoad')
-          }
-        };
-      } else {
-        //Others
-        this.$el.onload =()=>{
-           this.$emit('scriptLoad')
-        }
-      }
-  },
-})
+ 自封装 v-remote-js
+ npm i v-remote-js -S
 3. 异步文件上传
 axios
 multipart 添加之后选择多图

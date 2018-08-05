@@ -7,11 +7,9 @@
     4，便于团队开发和维护
 ## 2,Doctype 作用：
     告诉浏览器用什么文档标准解析
-
 ## 3,HTML5 为什么只需要写 <!DOCTYPE HTML>？
     h5 不基于SGML 不需要对DTD 应用
     h4基于SGML 需要DTD引用才能识别文档类型
-
 ## 4,元素的分类：
     行内元素：a b span img input select strong
     块级元素：div ul li ol dl dt dd h1-h5 p
