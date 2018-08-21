@@ -29,3 +29,5 @@ this.setData({
     [taskItem]: Date.now()
     })
 ```
+2. canvas合成的图片不清晰css设置canvas样式 object-fit: contain;
+3. 1rpx 无法显示，设置1px

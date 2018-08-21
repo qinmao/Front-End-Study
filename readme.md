@@ -164,6 +164,15 @@
         ::first-letter 选择首字母
         ::first-line   第一行
         ::selection    选中的区域  只能变color和background-color  
+
+        word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
+        https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
+        1)normal
+        使用默认的断行规则。
+        2)break-all
+        对于non-CJK (CJK 指中文/日文/韩文) 文本，可在任意字符间断行。
+        3)keep-all
+        CJK 文本不断行。 Non-CJK 文本表现同 normal。
     3. 私有前缀
         webkit chrome  safari 新版opera
         moz    firefox
@@ -1192,8 +1201,6 @@
      、systemjs：万能模块打包工具、跟angular抱大腿，angular4用了
 ## Hybrid App
     Front-End-Study/Hybrid-App
-## node proxy 
-  Front-End-Study/proxy
 ## 正则表达式
     Front-End-Study/note/reg.md
 ## 模式
@@ -1466,8 +1473,6 @@
     3. 插件完成后，将其导入到Chrome中
         首先将所有相关文件都放到一个文件夹中
         用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
-## 常见的面试题
-    Front-End-Study/面试
 ## 好玩的东西
 webGL
 webVR
