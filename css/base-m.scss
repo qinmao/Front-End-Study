@@ -101,14 +101,6 @@ body {
     width: 100%;
 }
 
-.fl {
-    float: left;
-}
-
-.fr {
-    float: right;
-}
-
 .clearfix::before,
 .clearfix::after {
     content: " ";
@@ -142,19 +134,4 @@ body {
     /*-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 
     display: -webkit-box; 将对象作为弹性伸缩盒子模型显示 。
     -webkit-box-orient 设置或检索伸缩盒对象的子元素的排列方式 。*/
-}
-
-//滚动条问题
-body {
-    overflow: hidden;
-}
-
-.pagebox {
-    height: 100%;
-}
-
-.scroll_y {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    height: 100%
 }

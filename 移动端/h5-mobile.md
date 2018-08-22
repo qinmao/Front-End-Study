@@ -246,9 +246,6 @@
     android用户点击一个链接，会出现一个边框或者半透明灰色遮罩, 不同生产商定义出来额效果不一样，
     可设置-webkit-tap-highlight-color的alpha值为0去除部分机器自带的效果；
 
-    winphone系统,点击标签产生的灰色半透明背景，
-    通过设置<meta name="msapplication-tap-highlight" content="no">去掉；
-
     特殊说明：有些机型去除不了，如小米2。对于按钮类还有个办法，不使用a或者input标签，直接用div标签
     a,button,input,textarea { 
         -webkit-tap-highlight-color: rgba(0,0,0,0); 
@@ -256,9 +253,6 @@
     }   
      也可以 
     * { -webkit-tap-highlight-color: rgba(0,0,0,0); }
-
-    winphone下
-    <meta name="msapplication-tap-highlight" content="no">
 
 7，表单元素
     一、使用appearance改变webkit浏览器的默认外观
@@ -282,19 +276,6 @@
             <input type="text" autocapitalize="off" />
         关闭iOS输入自动修正
             <input type="text" autocorrect="off" />
-    二、winphone下，使用伪元素改变表单元素默认外观
-        1.禁用select默认箭头，::-ms-expand修改表单控件下拉箭头，设置隐藏并使用背景图片来修饰
-            select::-ms-expand { display:none; }
-
-        2.禁用radio和checkbox默认样式，::-ms-check修改表单复选框或单选框默认图标，设置隐藏并使用背景图片来修饰
-            input[type=radio]::-ms-check,
-            input[type=checkbox]::-ms-check { display:none; }
-
-        3.禁用pc端表单输入框默认清除按钮，::-ms-clear修改清除按钮，设置隐藏并使用背景图片来修饰
-            input[type=text]::-ms-clear,
-            input[type=tel]::-ms-clear,
-            input[type=number]::-ms-clear { display:none; }
-
 8，移动端click屏幕产生200-300 ms的延迟响应
     解决方案：
     fastclick可以解决在手机上点击事件的300ms延迟
