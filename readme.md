@@ -549,7 +549,7 @@
         21. dom 的操作
             appendChild removeChild replaceChild insertBefore
         21. document.createDocumentFragment 创建一个新的空白的文档片段
-            文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能的作用(better performance)。兼容性良好
+            文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
         22. js.map 文件是干啥的？
         源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码粗了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。详情可参照: Fundebug支持Source Map
         作者：Stefan Fundebug

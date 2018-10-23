@@ -63,7 +63,3 @@ arr.every(function (x) {
         document.getElementById("demo").innerHTML = numbers.reduce(getSum);
     }
 ```
-## reduceRight
-```javascript
-
-```
