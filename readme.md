@@ -1473,14 +1473,18 @@
     3. 插件完成后，将其导入到Chrome中
         首先将所有相关文件都放到一个文件夹中
         用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
-## 好玩的东西
-webGL
-webVR
-blender
-D3.js大数据可视化
-threejs 
-微信小程序 
-PWA    
+## webGL
+    three.js
+## webVR
+
+## D3.js大数据可视化
+    echarts
+    highcharts
+## 微信小程序 
+
+## 微信小游戏
+    游戏引擎：cocos2d-x
+## PWA    
 ## tree 目录生成命令
 1. 安装 :brew install tree  ||  apt-get install tree
 2. exmple: tree -L 3 -I "node_modules"

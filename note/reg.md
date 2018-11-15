@@ -128,7 +128,7 @@
 
     //trim是字符串方法
   var str = "  a a   ";
-  console.log(str.trim());
+  console.log(str.trim()); //a a
   
   var str = "   a    a   ";
   // \s 不可见字符
