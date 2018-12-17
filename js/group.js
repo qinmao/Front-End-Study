@@ -13,4 +13,4 @@ groupBy(array, f) {
             data: groups[group]
         };
     });
-},
+}
