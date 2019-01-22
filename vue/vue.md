@@ -1,28 +1,4 @@
 # vue study
-## 前置知识
-  由于vue2 使用大量的es6语法;常见的如下
-  * import 注意事项
-    - 不能放在函数内部
-    - 默认导出方式：
-        + export default xxx;
-            * import xxxx from './xxx.js';// 默认导出和导入名称可以不一样
-    - 按需加载
-        + export const fn = fn(){};  var xxx= 1;  export { xxx}
-        + import {fn,xxx} from './xxx.js';
-            * 接下来就可以直接使用fn 和xxx
-            * 以上方式注意，名称和写法{}一定要对应
-  * 函数简写
-      - var obj = { add:function(){ }  }
-      - var obj = { add(){}            }
-  * 对象属性的简写
-
-  ```javascript
-  var name = 'abc';
-
-  var person = {
-      name    //代表着person.name = 'abc'
-  }
-  ```
 ## 解决闪烁问题
  * v-text 将属性值赋给元素的innerText
  * v-cloak 显示前移除该元素的隐藏样式

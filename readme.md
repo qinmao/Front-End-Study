@@ -1178,27 +1178,6 @@
             ```
 ## node
     Front-End-Study/node/README.md
-## seajs requirejs
- * commonjs:使用js语法要求的后端语言的规范,模块化、后端语言需要具备的一些要求，可以http、操作文件。。。。
-     - require/module.exports
-     - 计算器案例： 
-         +  +-*/ -> cal.js
-         +  index.js 作为页面中动态操作主文件，使用cal.js内部的功能
-         +  index.html 引入顺序
-         +  两大问题: 文件依赖顺序、全局函数命名冲突
- * 2009年，commonjs规范还未出来，此时前端开发人员编写的代码都是非模块化的，
-     - 那个时候开发人员经常需要十分留意文件加载顺序所带来的依赖问题
- * 与此同时 nodejs开启了js全栈大门，而requirejs在国外也带动着前端逐步实现模块化
-     - 同时国内seajs也进行了大力推广
-     - AMD 异步模块定义 requirejs
-     - CMD seajs和nodejs非常相似
-         + commonjs包含模块定义，和CMD比较相似
- * npm集中包管理的方式备受青睐，12年bower、browserify诞生
-     - browserify 最大的功能是为了让require的语法能够在浏览器中运行
-     - 并且有相关的一些插件可以结合使用 gulp、ES6语法转化
-     - 此时爆发大量前端工具 webpack也在其中，其是一款模块打包工具
-         - 压缩、合并、混淆 + 结合插件的代码转化 ，自动化一气呵成
-     、systemjs：万能模块打包工具、跟angular抱大腿，angular4用了
 ## Hybrid App
     Front-End-Study/Hybrid-App
 ## 正则表达式
@@ -1476,12 +1455,11 @@
 ## webGL
     three.js
 ## webVR
-
+## WebAssembly
 ## D3.js大数据可视化
     echarts
     highcharts
 ## 微信小程序 
-
 ## 微信小游戏
     游戏引擎：cocos2d-x
 ## PWA    

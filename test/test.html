@@ -1,65 +1,21 @@
 ﻿<!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>文字横向滚动</title>
-  <style type="text/css">
-    #scroll_div {
-      width: 200px;
-      overflow: hidden;
-      border: 1px solid red;
-    }
-
-    .wrap {
-      width: 5000%;
-    }
-
-    #scroll_begin,
-    #scroll_end {
-      /* display: flex;
-      justify-content: flex-start; */
-      float: left;
-    }
-
-    ul {
-      display: flex;
-      justify-content: flex-start;
-    }
-
-    li {
-      list-style: none;
-
-    }
-
-    #triangle-down {
-      width: 10px;
-      height: 10px;
-      border-left: 1px solid #ffd000;
-      border-top: 1px solid transparent;
-      border-right: 1px solid transparent;
-      border-bottom: 1px solid #ffd000;
-      transform: rotate(-45deg)
-    }
-  </style>
+  <title>Document</title>
 </head>
-
+<style>
+  .close {
+    font-size: 18px;
+    top: 10px;
+    right: 10px;
+}
+/* use cross as close button */
+.close::before {
+    content: "\2716";
+}
+</style>
 <body>
-  <script>
-    let arr = [1]
-    sendMsg(arr[0])
-
-    function sendMsg(i) {
-      console.log(i)
-      if (arr.length > 0) {
-        arr.push(i)
-        setTimeout(() => {
-          sendMsg(arr.shift())
-        }, 2000);
-      }
-    }
-  </script>
-
+  <span class="close"></span>
 </body>
-
 </html>
