@@ -1,144 +1,115 @@
-// 1. 移动端样式重置
-// 移动端样式重置（常用标签）原则：就是reset 只是需要的一些，不是无脑一刀切
-// 参考:张鑫旭css-reset 做了修改 https://www.zhangxinxu.com/wordpress/2010/04/css-reset%E7%9A%84%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86-%E9%81%BF%E5%85%8D%E6%A0%B7%E5%BC%8F%E9%87%8D%E7%BD%AE/
-*,
-::before,
-::after {
-    //  容器的大小从边框开始计算
-    box-sizing: border-box;
-}
+ /* 1. 移动端样式重置 移动端样式重置（常用标签）原则：就是reset 只是需要的一些，不是无脑一刀切 参考:张鑫旭css-reset 做了修改 https: //www.zhangxinxu.com/wordpress/2010/04/css-reset%E7%9A%84%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86-%E9%81%BF%E5%85%8D%E6%A0%B7%E5%BC%8F%E9%87%8D%E7%BD%AE/ */
+ *, ::before, ::after {
+     /*   容器的大小从边框开始计算 */
+     box-sizing: border-box;
+ }
 
-html {
-    color: #000;
-    overflow-y: scroll;
-}
+ html, body {
+     color: #000;
+     width: 100%;
+     height: 100%;
+ }
 
-//  margin padding 重置
-body,
-ul,
-dl,
-dd,
-p,
-ol,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-table,
-header,
-nav,
-footer,
-section,
-aside {
-    margin: 0;
-    padding: 0;
-}
+   /* margin padding 重置 */
+ body, ul, dl, dd, p, ol, h1, h2, h3, h4, h5, h6, table, header, nav, footer, section, aside {
+     margin: 0;
+     padding: 0;
+ }
 
-//  body
-body {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    // 禁止选中文字
-    -webkit-user-select: none;
-    /* iPhone 和 Android 的浏览器纵向 (Portrate mode) 和橫向 (Landscape mode) 模式皆有自动调整字体大小的功能。控制它的就是 CSS 中的 -webkit-text-size-adjust。关闭字体大小自动调整功能*/
-    -webkit-text-size-adjust: 100%;
-    -webkit-overflow-scrolling: touch; // 滚动和回弹的效果
-    // ios 
-    // 默认中文字体是Heiti SC
-    // 默认英文字体是Helvetica
-    // 默认数字字体是HelveticaNeue
+  /* body */
+ body {
+     -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // 禁止选中文字
+     -webkit-user-select: none;
+     /* iPhone 和 Android 的浏览器纵向 (Portrate mode) 和橫向 (Landscape mode) 模式皆有自动调整字体大小的功能。控制它的就是 CSS 中的 -webkit-text-size-adjust。关闭字体大小自动调整功能*/
+     -webkit-text-size-adjust: 100%;
+     -webkit-overflow-scrolling: touch; // 滚动和回弹的效果
+     // ios 
+     // 默认中文字体是Heiti SC
+     // 默认英文字体是Helvetica
+     // 默认数字字体是HelveticaNeue
+     // android
+     // 默认中文字体是Droidsansfallback
+     // 默认英文和数字字体是Droid Sans
+     // iOS 9+ Safari开始支持 -apple-system 参数， Chrome 使用 BlinkMacSystemFont ，兼容 iOS ／ MacOS
+     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+ }
 
-    // android
-    // 默认中文字体是Droidsansfallback
-    // 默认英文和数字字体是Droid Sans
+ //  a标签默认的样式
+ a {
+     text-decoration: none;
+     color: #000
+ }
 
-    // iOS 9+ Safari开始支持 -apple-system 参数， Chrome 使用 BlinkMacSystemFont ，兼容 iOS ／ MacOS
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+ //  清除掉按下时会有一个灰色阴影
+ a, input, button {
+     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+ }
 
-}
+ //  清除掉ios自带圆角
+ input, button {
+     -webkit-appearance: none; //消除输入框核按钮的默认外观
+     border-radius: 0;
+ }
 
+ input {
+     outline: none;
+ }
 
-//  a标签默认的样式
-a {
-    text-decoration: none;
-    color: #000
-}
+ // 列表标签
+ ul, ol {
+     list-style: none;
+ }
 
-//  清除掉按下时会有一个灰色阴影
-a,
-input,
-button {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+ // 图片
+ img {
+     border: 0;
+     vertical-align: middle; // 禁止保存或拷贝图像（IOS）根据需要设置
+     // -webkit-touch-callout: none; 
+ }
 
-//  清除掉ios自带圆角
-input,
-button {
-    -webkit-appearance: none; //消除输入框核按钮的默认外观
-    border-radius: 0;
-}
+ //  表格
+ table {
+     border-collapse: collapse;
+     border-spacing: 0
+ }
 
-input {
-    outline: none;
-}
+ //  段落
+ p {
+     word-wrap: break-word
+ }
 
-// 列表标签
-ul,
-ol {
-    list-style: none;
-}
+ // 2. common 样式
+ .clearfix::before, .clearfix::after {
+     content: " ";
+     height: 0;
+     line-height: 0;
+     clear: both;
+     display: block;
+     visibility: hidden;
+ }
 
-// 图片
-img {
-    border: 0;
-    vertical-align: middle;
-    // 禁止保存或拷贝图像（IOS）根据需要设置
-    // -webkit-touch-callout: none; 
-}
+ .clearfix {
+     zoom: 1;
+ }
 
-//  表格
-table {
-    border-collapse: collapse;
-    border-spacing: 0
-}
+ /*省略号*/
 
-//  段落
-p {
-    word-wrap: break-word
-}
-// 2. common 样式
-.clearfix::before,
-.clearfix::after {
-    content: " ";
-    height: 0;
-    line-height: 0;
-    clear: both;
-    display: block;
-    visibility: hidden;
-}
+ .ellipsis {
+     overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+ }
 
-.clearfix {
-    zoom: 1;
-}
+ /*多行省略号  */
 
-/*省略号*/
-
-.ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/*多行省略号  */
-
-.mul-ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    /* -webkit-line-clamp: 2; */
-    /*-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 
+ .mul-ellipsis {
+     overflow: hidden;
+     text-overflow: ellipsis;
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     /* -webkit-line-clamp: 2; */
+     /*-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 
     display: -webkit-box; 将对象作为弹性伸缩盒子模型显示 。
     -webkit-box-orient 设置或检索伸缩盒对象的子元素的排列方式 。*/
-}
+ }
+//  vue 项目中在app.vue 中引入使用 @import './assets/styles/index.scss';不要使用@import url('..')，不然无法编译
