@@ -316,9 +316,9 @@ es6 发布之后提供了通用的模块解决方案。
             // 可以使用具名输入的形式
         // 3. 同时加载多个模块
             Promise.all([
-            import('./module1.js'),
-            import('./module2.js'),
-            import('./module3.js'),
+                import('./module1.js'),
+                import('./module2.js'),
+                import('./module3.js'),
             ])
             .then(([module1, module2, module3]) => {
             ···
@@ -414,6 +414,7 @@ es6 发布之后提供了通用的模块解决方案。
 ## node framework
     1. express
     2. koa
+    http://www.ruanyifeng.com/blog/2017/08/koa.html
     3. egg
 ## Node.js RESTful API
     1. 什么是 REST？
@@ -452,88 +453,11 @@ es6 发布之后提供了通用的模块解决方案。
     2. 统一Web应用的UI层
     做前后端的依赖分离。如果所有的关键业务逻辑都封装成REST调用，就意味着在上层只需要考虑如何用这些REST接口构建具体的应用。那些后端程序员们根本不操心具体数据是如何从一个页面传递到另一个页面的，他们也不用管用户数据更新是通过Ajax异步获取的还是通过刷新页面。
     3. 大量Ajax请求的应用
-## 部署
+## docker+jenkins 自动化部署
 前置知识:
-1. Linux的常用命令
-1) yum 命令:前端软件包管理器
-    1.列出所有可更新的软件清单命令：yum check-update
-    2.更新所有软件命令：yum update
-    3.仅安装指定的软件命令：yum install <package_name>
-    4.仅更新指定的软件命令：yum update <package_name>
-    5.列出所有可安裝的软件清单命令：yum list
-    6.删除软件包命令：yum remove <package_name>
-    7.查找软件包 命令：yum search <keyword>
-    8.清除缓存命令:
-        yum clean packages: 清除缓存目录下的软件包
-        yum clean headers: 清除缓存目录下的 headers
-        yum clean oldheaders: 清除缓存目录下旧的 headers
-        yum clean, yum clean all (= yum clean packages; yum clean oldheaders) :清除缓存目录下的软件包及旧的headers
-    国内 yum 源
-    网易（163）yum源是国内最好的yum源之一 ，无论是速度还是软件版本，都非常的不错。
-    将yum源设置为163 yum，可以提升软件包安装和更新的速度，同时避免一些常见软件版本无法找到。
-    如何设置：http://www.runoob.com/linux/linux-yum.html
-Docker:
-(CentOS7)
-0. 安装/启动:
- 1) yum update -y 
- 2) yum install docker -y
- 3) service docker start
-    service docker restart  // 重启docker服务
-    service docker stop     // 停止docker服务
-1. what Docker?
-Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口
+1. Linux
 
-docker 的常用命令:
-    镜像仓库:
-        1. login 登陆到一个Docker镜像仓库,未指定镜像仓库地址，默认为官方仓库 Docker Hub
-        例子:docker login -u 用户名 -p 密码
-            docker logout
-        2. pull xxx:下载这xxx这个镜像
-        3. push 将本地的镜像上传到镜像仓库,要先登陆到镜像仓库
-        例子:docker push myapache:v1
-        4. search:从 Docker Hub 网站来搜索镜像,找适合的下载
-    本地镜像管理
-        1. docker images: 来列出本地主机上的镜像。
-        2. rmi 删除本地一个或多个镜像。
-       例子: docker rmi -f runoob/ubuntu:v4      -f :强制删除；
-
-    docker info 显示 Docker 系统信息，包括镜像和容器数
-    
-    docker create ：创建一个新的容器但不启动它
-    例子：使用docker镜像nginx:latest创建一个容器,并将容器命名为myrunoob
-    docker create  --name myrunoob  nginx:latest 
-2. Docker的应用场景
-Web 应用的自动化打包和发布。
-
-自动化测试和持续集成、发布。
-
-在服务型环境中部署和调整数据库或其他的后台应用。
-
-Docker 的主要用途，目前有三大类。
-（1）提供一次性的环境。比如，本地测试他人的软件、持续集成的时候提供单元测试和构建的环境。
-
-（2）提供弹性的云服务。因为 Docker 容器可以随开随关，很适合动态扩容和缩容。
-
-（3）组建微服务架构。通过多个容器，一台机器可以跑多个服务，因此在本机就可以模拟出微服务架构。
-
-3. 使用Docker部署的步骤？
-把源码zip包上传至服务器
-
-登录服务器
-
-解压zip包
-
-安装最新Docker
-
-设置国内镜像加速器
-
-编写Dockerfile
-
-构建镜像
-
-编写启动容器脚本
-
-执行脚本，检查部署情况
+2. Docker:
 
 
 

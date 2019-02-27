@@ -1375,66 +1375,13 @@
         配置：Front-End-Study/note/eslint.md
         参考 http://eslint.org/
 ## mac 
-    1. 的常用终端命令
-        1）sudo －s 获取root权限
-        2）打开host  vim /etc/hosts
-            1. 在默认的"指令模式"下按 i 进入编辑模式 
-            2. 在非指令模式下按 ESC 返回指令模式 
-            3. 在"指令模式"下输入: 
-            :w	保存当前文件 
-            :q 退出编辑,如果文件为保存需要用强制模式 
-            :q!	强制退出不保存修改 
-            :wq	组合指令, 保存并退出 
-            4. 在"指令模式"下移动: 
-            h	左 
-            j	下 
-            k	上 
-            l	右 
-        3) ls 参数 目录名 列出文件
-        参数 -w 显示中文，-l 详细信息， -a 包括隐藏文件
-        4) cd 转换目录
-        5）建立新目录 mkdir 目录名 
-        6) 拷贝文件 cp 参数 源文件 目标文件 
-        例：想把桌面的Natit.kext 拷贝到驱动目录中 
-        cp -R /User/用户名/Desktop/Natit.kext/System/Library/Extensions 
-        参数R表示对目录进行递归操作，kext在图形界面下看起来是个文件，实际上是个文件夹。 
-        把驱动目录下的所有文件备份到桌面backup 
-        cp -R /System/Library/Extensions/* /User/用户名/Desktop/backup 
-        7) 删除文件 rm 参数 文件 
-            例：想删除驱动的缓存 
-            rm -rf /System/Library/Extensions.kextcache 
-            rm -rf /System/Library/Extensions.mkext 
-            参数－rf 表示递归和强制，千万要小心使用，如果执行了 rm -rf / 你的系统就全没了 
-        8) 移动文件 mv 文件 
-            例：想把AppleHDA.Kext 移到桌面 
-            mv /System/Library/Extensions/AppleHDA.kext /User/用户名/Desktop 
-            想把AppleHDA.Kext 移到备份目录中 
-            mv /System/Library/Extensions/AppleHDA.kext /System/Library/Extensions/backup 
-        9) 更改文件权限 chmod 参数 权限 文件 
-            例：把驱动目录下所有文件设定到root读写，其他用户只读 
-            chmod -R 755 /System/Library/Extensions 
-            参数R 表示递归，755表示各用户的权限 
-            更改文件属主 
-            chown 参数 用户:组 文件 
-            例：把驱动目录下的所有文件属主改成根用户 
-            chown -R root:wheel /System/Library/Extensions 
-            参数R 表示递归操作 
-            修复整个系统中文件的权限 
-            diskutil repairpermissions / 
-            严格的说这不是一个unix 命令，而是osx一个软件，记得修改或添加的驱动就执行一次。
-        10) 运行脚本命令 sh 脚本文件名 
-        11) 查看命令的详细帮助 
-            man 命令名 
-            比如要看看 ls 命令的详细用法，执行 man ls
-        clear  清除屏幕或窗口内容 
-    2. brew包管理工具
-        官网:http://brew.sh/index_zh-cn.html
-        安装: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        brew 
-            1. brew install 软件名  brew uninstall  软件名称
-            2. brew list 可以查看所有安装的软件
-            3. brew info 软件名
-            4. brew install tree 生成项目的文件结构
+brew包管理工具
+    官网:http://brew.sh/index_zh-cn.html
+    安装: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    brew 
+        1. brew install 软件名  brew uninstall  软件名称
+        2. brew list 可以查看所有安装的软件
+        3. brew info 软件名
 ## vue 插件开发
     1. 数字滚动
     2. 侧滑（删除）
@@ -1463,6 +1410,8 @@
 ## 微信小游戏
     游戏引擎：cocos2d-x
 ## PWA    
+## linux
+## docker
 ## tree 目录生成命令
 1. 安装 :brew install tree  ||  apt-get install tree
 2. exmple: tree -L 3 -I "node_modules"
