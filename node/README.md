@@ -456,10 +456,40 @@ es6 发布之后提供了通用的模块解决方案。
 ## docker+jenkins 自动化部署
 前置知识:
 1. Linux
-
 2. Docker:
+## 安装
+    npm install pm2 -g 
+## pm2部署的优点:
+1. 使用pm2管理的node程序的好处
+2. 监听文件变化，自动重启程序
+3. 支持性能监控
+4. 负载均衡
+5. 程序崩溃自动重启
+6. 服务器重新启动时自动重新启动
+7. 自动化部署项目
+## 常用命令：
+1. 启动一个node程序
+pm2 start start.js
+2. 启动进程并指定应用的程序名
+pm2 start app.js --name application
+3. 添加进程监视（在文件改变的时候会重新启动程序）
+pm2 start app.js --name start --watch
+4. 进程管理
+pm2 ls 
+// pm2 delete [appname] | id
+pm2 delete app  // 指定进程名删除
+pm2 delete 0    // 指定进程id删除
+pm2 delete all
+
+pm2 describe app 查看某个进程具体情况
+pm2 monit 查看进程的资源消耗情况
+
+pm2 restart app // 重启指定名称的进程
+pm2 restart all // 重启所有进程
+
+pm2 logs app    // 查看该名称进程的日志
+pm2 logs all    // 查看所有进程的日志
 
 
-
-
-
+pm2 startup centos 设置pm2开机自启
+pm2 save 保存设置

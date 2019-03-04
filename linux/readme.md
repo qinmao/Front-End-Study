@@ -38,6 +38,22 @@ rm: 移除文件或目录
     rm -rf /var/log/httpd/access
 mv: 移动文件与目录，或修改文件与目录的名称
 
+scp :命令用于Linux之间复制文件和目录
+    -r： 递归复制整个目录。
+1) 本地到远程
+    scp local_file remote_username@remote_ip:remote_folder 
+    或者 
+    scp local_file remote_username@remote_ip:remote_file 
+    或者 
+    scp local_file remote_ip:remote_folder 
+    或者 
+    scp local_file remote_ip:remote_file 
+    例子:
+        'scp -r dist/* root@39.96.190.20:/data/www/static' 
+2）远程到本地
+        scp remote_username@remote_ip:remote_folder  local_file
+        scp -r www.runoob.com:/home/root/others/ /home/space/music/
+        
 使用 man [命令] 来查看各个命令的使用文档，如 ：man cp。
 
 cat  由第一行开始显示文件内容
@@ -90,3 +106,12 @@ Shell 注释:以 # 开头的行就是注释，会被解释器忽略。
 
 获取参数：
 脚本内获取参数的格式为：$n。n 代表一个数字
+
+虚拟机安装Linux 并且设置静态ip时 注意事项
+1）找到虚拟机网络设置，不能设置与本机mac共享网络，选择wifi
+2）不能与本机ip 设置成一样 
+并在本地ping 你要设置的静态IP 看有没有被别人占用
+3）GATEWAY 要与本地dns 一样
+
+## CentOS添加环境变量
+当我们在服务器上安装了一些全局性的包例如node yarn 等，要记住设置环境变量，否则容易下次登录时找不到命令
