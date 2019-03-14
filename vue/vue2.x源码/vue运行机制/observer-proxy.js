@@ -49,8 +49,7 @@ class Vue {
     }
 }
 
-let app = new Vue({
-    el: '#app',
+let vm = new Vue({
     data: {
         text: 'test'
     },

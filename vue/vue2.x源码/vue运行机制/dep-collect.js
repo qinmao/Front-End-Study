@@ -16,8 +16,6 @@ class Dep {
             sub.update();
         })
     }
-    // 用 addSub 方法可以在目前的 Dep 对象中增加一个 Watcher 的订阅操作；
-    // 用 notify 方法通知目前 Dep 对象的 subs 中的所有 Watcher 对象触发更新操作。
 }
 class Watcher {
     constructor() {
@@ -34,7 +32,7 @@ class Watcher {
 Dep.target = null;
 
 function defineReactive (obj, key, val) {
-    /* 一个Dep类对象 */
+    /* 一个Dep类实例 */
     const dep = new Dep();
     
     Object.defineProperty(obj, key, {
@@ -42,7 +40,10 @@ function defineReactive (obj, key, val) {
         configurable: true,
         get: function reactiveGetter () {
             /* 将Dep.target（即当前的Watcher对象存入dep的subs中） */
-            dep.addSub(Dep.target);
+            // 注意为了方便理解，这里省略了多个属性去重的操作
+            if (Dep.target){
+                dep.addSub(Dep.target);
+            }
             return val;         
         },
         set: function reactiveSetter (newVal) {
@@ -62,10 +63,17 @@ function observe(value) {
 class Vue {
     constructor(options) {
         this._data = options.data;
-        observer(this._data);
+        observe(this._data);
         /* 新建一个Watcher观察者对象，这时候Dep.target会指向这个Watcher对象 */
         new Watcher();
-        /* 在这里模拟render的过程，为了触发test属性的get函数 */
-        console.log('render~', this._data.test);
     }
 }
+let vm = new Vue({
+    data:{
+        test:'hello'
+    }
+})
+console.log(vm._data.test)
+// 1.触发test属性的get函数
+// 2.修改test的值，触发依赖更新视图
+// vm._data.test='world'
