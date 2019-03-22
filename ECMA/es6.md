@@ -589,7 +589,7 @@
 	// async 表示这是一个async函数，await只能用在这个函数里面。
 	// await 表示在这里等待promise返回结果了，再继续执行。
 	// await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
-	//await命令就是内部then命令的语法糖。
+	// await命令就是内部then命令的语法糖。
 ## Symbol
     ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值
     Symbol 值通过Symbol函数生成

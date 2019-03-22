@@ -1,24 +1,28 @@
-## linux 学习(CentOS)
-1) yum 命令:前端软件包管理器
-    1.列出所有可更新的软件清单命令：yum check-update
-    2.更新所有软件命令：yum update
-    3.仅安装指定的软件命令：yum install <package_name>
-    4.仅更新指定的软件命令：yum update <package_name>
-    5.列出所有可安裝的软件清单命令：yum list
-    6.删除软件包命令：yum remove <package_name>
-    7.查找软件包 命令：yum search <keyword>
-    8.清除缓存命令:
-        yum clean packages: 清除缓存目录下的软件包
-        yum clean headers: 清除缓存目录下的 headers
-        yum clean oldheaders: 清除缓存目录下旧的 headers
-        yum clean, yum clean all (= yum clean packages; yum clean oldheaders) :清除缓存目录下的软件包及旧的headers
-
+# linux 学习(CentOS)
+## yum 命令:前端软件包管理器
+1. 列出所有可更新的软件清单命令：yum check-update
+2. 更新所有软件命令：yum update
+3. 仅安装指定的软件命令：yum install <package_name>
+4. 仅更新指定的软件命令：yum update <package_name>
+5. 列出所有可安裝的软件清单命令：yum list
+6. 删除软件包命令：yum remove <package_name>
+7. 查找软件包 命令：yum search <keyword>
+8. 清除缓存命令:
+    yum clean packages: 清除缓存目录下的软件包
+    yum clean headers: 清除缓存目录下的 headers
+    yum clean oldheaders: 清除缓存目录下旧的 headers
+    yum clean, yum clean all (= yum clean packages; yum clean oldheaders) :清除缓存目录下的软件包及旧的headers
     国内 yum 源
     网易（163）yum源是国内最好的yum源之一 ，无论是速度还是软件版本，都非常的不错。
     将yum源设置为163 yum，可以提升软件包安装和更新的速度，同时避免一些常见软件版本无法找到。
     如何设置：http://www.runoob.com/linux/linux-yum.html
-
-2）文件操作
+## 网络
+1. 网卡接口关闭与激活
+ifdown eth0 #关闭网络
+ifup eth0 #启动网络
+2. 网络服务启动与关闭
+service network restart #重启网络服务
+## 文件操作
 
 ls: 列出目录
 
@@ -57,8 +61,7 @@ scp :命令用于Linux之间复制文件和目录
 使用 man [命令] 来查看各个命令的使用文档，如 ：man cp。
 
 cat  由第一行开始显示文件内容
-
-3）vim  编辑器使用
+## vim  编辑器使用
 vim 共分为三种模式，分别是
 命令模式（Command mode）:启动Vim，进入了命令模式，按下i，切换到输入模式。
 输入模式（Insert mode）:
@@ -75,9 +78,8 @@ vim 共分为三种模式，分别是
 底线命令模式（Last line mode）:
 在输入模式下：wq 保存文件退出程序
 例如:打开host  vim /etc/hosts
-
-4) shell 脚本编程
-像 #!/bin/sh，它同样也可以改为 #!/bin/bash。
+## shell 脚本编程
+    像 #!/bin/sh，它同样也可以改为 #!/bin/bash。
     #! 告诉系统其后路径所指定的程序即是解释此脚本文件的 Shell 程序。
 1. 运行:
  chmod +x ./test.sh  #使脚本具有执行权限
@@ -112,6 +114,5 @@ Shell 注释:以 # 开头的行就是注释，会被解释器忽略。
 2）不能与本机ip 设置成一样 
 并在本地ping 你要设置的静态IP 看有没有被别人占用
 3）GATEWAY 要与本地dns 一样
-
 ## CentOS添加环境变量
 当我们在服务器上安装了一些全局性的包例如node yarn 等，要记住设置环境变量，否则容易下次登录时找不到命令

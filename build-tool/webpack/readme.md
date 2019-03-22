@@ -1,7 +1,7 @@
 ## webpack
 ## webpack是什么？
  1. webpack是一个module bundler(模块打包工具)，其可以兼容多种js书写规范，且可以处理模块间的依赖关系，具有更强大的js模块化的功能。Webpack对它们进行统 一的管理以及打包发布
- 2. 参考： 官网：http://webpack.github.io/docs/  先过这三个文档文档
+ 2. 参考： 官网：https://webpack.docschina.org/ 先过这三个文档文档
     Webpack-handlebook: http://zhaoda.net/webpack-handbook/
     Gitbook: http://fakefish.github.io/react-webpack-cookbook/index.html
 ## 为什么使用 webpack？
@@ -15,6 +15,16 @@
  8. webpack 使用异步 IO 并具有多级缓存。这使得 webpack 很快且在增量编译上更加快
 ## 安装
  npm  install  webpack  -g 
+## webpack 中的核心概念
+1. Entry 
+2. Output
+3. Loaders: 
+由于webpack只能处理javascript，所以我们需要对一些非js文件处理成webpack能够处理的模块，比如sass文件
+4. Plugins:
+从打包优化和压缩，一直到重新定义环境中的变量。比如对js文件进行压缩优化的UglifyJsPlugin插件
+5. Chunk:
+coding split的产物，我们可以对一些代码打包成一个单独的chunk，比如某些公共模块，去重，更好的利用缓存。或者按需加载某些功能模块，优化加载时间。在webpack3及以前我们都利用CommonsChunkPlugin将一些公共代码分割成一个chunk，实现单独加载。在webpack4 中CommonsChunkPlugin被废弃，使用SplitChunksPlugin
+
 ## 配置文件
  在项目根目录创建三个或多个webpack配置文件
  1. webpack.base.config.js  //公用的配置放在这里面（可通过插件继承）
@@ -62,15 +72,6 @@
     (1)用webpack-dev-server生成bundle.js文件是在内存中的，并没有实际生成
     (2)如果引用的文件夹中已经有bundle.js就不会自动刷新了，你需要先把bundle.js文件手动删除
     （3）用webstorm的注意了，因为他是自动保存的，所以可能识别的比较慢，你需要手动的ctrl+s一下
-## 加载器 loader
- Loader：这是webpack准备的一些预处理工具，以下是一些常用的 常见配置参见配置文件
- 1. 编译jsx和ES6到原生js
-    先安装依赖npm install babel-loader babel-core babel-preset-env webpack --save-dev
- 2. css 
- 3. less
- 4. sass
- 5. photo
- 6. file
 ## 部署
  "publish": " webpack --config webpack.publish.config.js  -p",
 	指向生产的配置文件，并且加上了webpack的cli的-p,他会自动做一些优化

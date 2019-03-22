@@ -1420,4 +1420,8 @@ brew包管理工具
     tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
     tree > tree.md 将项目结构输出到tree.md这个文件。
 
+应用试客
+榜乐小程序
+微信小游戏
+
 
