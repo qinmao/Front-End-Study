@@ -24,7 +24,8 @@
 从打包优化和压缩，一直到重新定义环境中的变量。比如对js文件进行压缩优化的UglifyJsPlugin插件
 5. Chunk:
 coding split的产物，我们可以对一些代码打包成一个单独的chunk，比如某些公共模块，去重，更好的利用缓存。或者按需加载某些功能模块，优化加载时间。在webpack3及以前我们都利用CommonsChunkPlugin将一些公共代码分割成一个chunk，实现单独加载。在webpack4 中CommonsChunkPlugin被废弃，使用SplitChunksPlugin
-
+6. mode 
+通过选择 development, production 或 none 之中的一个，来设置 mode 参数，你可以启用 webpack 内置在相应环境下的优化。其默认值为 production。
 ## 配置文件
  在项目根目录创建三个或多个webpack配置文件
  1. webpack.base.config.js  //公用的配置放在这里面（可通过插件继承）

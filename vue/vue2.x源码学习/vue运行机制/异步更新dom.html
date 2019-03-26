@@ -9,6 +9,7 @@
 
 <body>
     <div id="app">
+        <div id="pp">{{message}}</div>
         <button @click="handleClick">{{ message }}</button>
         <button @click="handleClick">{{ number }}</button>
     </div>
@@ -22,7 +23,7 @@
             methods: {
                 handleClick() {
                     this.message = 'end';
-                    console.log(document.getElementById('app').innerText); 
+                    console.log(document.getElementById('pp').innerText); 
                 },
                 clickNum(){
                     for(let i = 0; i < 1000; i++) {
