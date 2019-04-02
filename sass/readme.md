@@ -1,17 +1,72 @@
 ## SASS允许使用变量，所有变量以$开头。
+```css
 　　$blue : #1875e7;　
 　　div {
 　　　color : $blue;
 　　}
-## 如果变量需要镶嵌在字符串之中，就必须需要写在#{}之中。
+
 　　$side : left;
 　　.rounded {
 　　　　border-#{$side}-radius: 5px;
 　　}
+```
 ## 计算功能
-SASS允许在代码中使用算式：
+```css
 　　body {
 　　　　margin: (14px/2);
 　　　　top: 50px + 100px;
 　　　　right: $var * 10%;
 　　}
+```
+## 嵌套
+```css
+/* 1 */
+div h1 {
+　　　　color : red;
+　　}
+/* 2 */
+div {
+　　　　hi {
+　　　　　　color:red;
+　　　　}
+　　}
+/* 在嵌套的代码块内，可以使用&引用父元素。比如a:hover伪类 */
+a {
+　　　　&:hover { color: #ffb3ff; }
+　　}
+```
+## 代码的重用
+### 继承
+```css
+.class1 {
+　　　　border: 1px solid #ddd;
+　　}
+
+/* class2要继承class1，就要使用@extend命令： */
+.class2 {
+　　　　@extend .class1;
+　　　　font-size:120%;
+　　}
+
+```
+### Mixin
+Mixin有点像C语言的宏（macro），是可以重用的代码块。
+```css
+@mixin left {
+　　　　float: left;
+　　　　margin-left: 10px;
+　　}
+
+div {
+　　　　@include left;
+　　}
+
+@mixin left($value: 10px) {
+　　　　float: left;
+　　　　margin-right: $value;
+　　}
+
+div {
+　　　　@include left(20px);
+　　}
+```

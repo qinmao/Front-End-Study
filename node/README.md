@@ -6,8 +6,21 @@
     详情参考  https://github.com/coreybutler/nvm-windows
 ## npm nrm nvm 
     由于网络问题导致下载包会出问题，安装nrm来选择资源
-    npm install -g nrm
-    nrm test 选择网络延迟最少的
+    1. 使用nrm 来test 选择最好的源
+        npm install  nrm -g
+        nrm test 选择网络延迟最少的
+        nrm use cnpm  //switch registry to cnpm
+        nrm ls 查看所有
+        nrm add 命令添加公司私有npm源
+        例子：nrm add qihoo http://registry.npm.360.org
+        
+    2. 手动更改源
+    1）npm config set registry https://registry.npm.taobao.org
+    2）npm config set registry http://r.cnpmjs.org
+
+    科学上网后或者发布时移掉
+    npm config rm registry
+    
 ### 1.初始化package.json文件
     npm init  创建package.json文件
     npm init --yes 获得默认值
