@@ -127,109 +127,132 @@
         8. mobile
             Front-End-Study/note/h5-mobile.md
 ## css3
-    1. selector
-        属性选择器：
-            E[attr=val]
-            E[attr]
-            E[attr^=val] 属性值以val开头
-            E[attr$=val] 属性值以val结尾
-            E[attr*m=val]属性值含有val,不管在什么位置
-        伪类选择器：
-            E：first-child 选中父元素中的第一个E子元素
-            E:last-child  选中父元素中的最后一个E子元素
-            E:nth-child(n)  选中父元素中第n个子元素（元素0开始，n从0开始）n(数字，表达式 -5+n,2n+1,odd,even)
-            E:nth-last-child(n)  选中父元素中倒数第n个子元素（元素0开始，n从0开始）
+### selector
+1. 属性选择器：
+    E[attr=val]
+    E[attr]
+    E[attr^=val] 属性值以val开头
+    E[attr$=val] 属性值以val结尾
+    E[attr*m=val]属性值含有val,不管在什么位置
+    
+2. 伪类选择器：
+    E：first-child 选中父元素中的第一个E子元素
+    E:last-child  选中父元素中的最后一个E子元素
+    E:nth-child(n)  选中父元素中第n个子元素（元素0开始，n从0开始）n(数字，表达式 -5+n,2n+1,odd,even)
+    E:nth-last-child(n)  选中父元素中倒数第n个子元素（元素0开始，n从0开始）
 
-            E:empty 选中内容为空，或没有子元素
-            E:target    选中锚点的的目标元素
-            E:not(选择器)
-
-            eg:
-                /*p:first-child  先找父元素 找到所有的子元素  在去找第一个子元素  匹配是不是p  如果不是无效的选择器*/
-                /*p:first-of-type 先找父元素 找到所有的p元素  找第一个*/
-                /*p:last-of-type 最后*/
-                /*p:nth-of-type（） 第几个*/
-                /*p:nth-last-of-type 倒数第几个*/
-        结构选择器：+ ~
-            E[attrxxxx]+E   选择当前的元素 然后找到相邻的下一个元素
-            E[attrxxxx]~E   选择当前的元素 然后后面所有的元素
-    2. 伪元素：
-        ：before ：after
-        推荐单冒号兼容性好       
-        出现省略号：
+    E:empty 选中内容为空，或没有子元素
+    E:target    选中锚点的的目标元素
+    E:not(选择器)
+```css
+    eg:
+        p:first-child   
+        /* 先找父元素 找到所有的子元素  在去找第一个子元素  匹配是不是p  如果不是无效的选择器 */
+        p:first-of-type 
+        /* 先找父元素 找到所有的p元素  找第一个 */
+        p:last-of-type 
+        /* 最后一个 */
+        p:nth-of-type（） 
+        /* 第几个 */
+        p:nth-last-of-type 
+        /* 倒数第几个 */
+```        
+3.  结构选择器：+ ~
+    E[attrxxxx]+E   选择当前的元素 然后找到相邻的下一个元素
+    E[attrxxxx]~E   选择当前的元素 然后后面所有的元素    
+   
+### 伪元素：
+1. :before :after 推荐单冒号兼容性好       
+    
+2. 出现省略号：
         white-space:nowrap;
         overflow：hidden;
         text-overflow：ellipsis;
+3. 选中
+    ::first-letter 选择首字母
+    ::first-line   第一行
+    ::selection    选中的区域  只能变color和background-color  
 
-        ::first-letter 选择首字母
-        ::first-line   第一行
-        ::selection    选中的区域  只能变color和background-color  
+### word-break
+word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
+https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
 
-        word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
-        https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
-        1)normal
-        使用默认的断行规则。
-        2)break-all
-        对于non-CJK (CJK 指中文/日文/韩文) 文本，可在任意字符间断行。
-        3)keep-all
-        CJK 文本不断行。 Non-CJK 文本表现同 normal。
-    3. 私有前缀
-        webkit chrome  safari 新版opera
-        moz    firefox
-        ms     IE
-        o      老版opeara
-    4. 透明色     
-        rgba
-        opacity 能继承 取值0-1
-        transparent 完全透明
-        hsla
-            h 色调
-            s 饱和度0-100%
-            l 亮度 0-100%
-            a alpha 透明度
-    5. shadow
-        文字阴影:
-            text-shadow:水平位移  垂直位移  模糊程度 颜色
-            水平位移 值越大越往右 反之往左
-            垂直位移 值越大越往下 反之往上
-            模糊程度 值从0开始，越大越模糊
-            颜色   
+* normal
+    使用默认的断行规则。
+* break-all
+    对于non-CJK (CJK 指中文/日文/韩文) 文本，可在任意字符间断行。
+* keep-all
+    CJK 文本不断行。 Non-CJK 文本表现同 normal。
 
-        盒子阴影:
-            box-shadow:水平位移  垂直位移  模糊程度 扩展半径 颜色 内阴影（inset）
-            水平位移  
-            垂直位移  
-            模糊程度 
-            扩展半径  可以为负值，值越大，扩展半径越大
-            颜色 
-            内阴影  inset(可选)
-    6. box-sizing
-        content-box 盒子的尺寸=CSS中的尺寸+padding+border
-        border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸     
-    7. border-radius
-        border-radius:x x x x/y y y y
-        正圆:border-radius:50%;
-    8. border-image
-        border-image-source:url();
-        切割图片 border-image-slice:
-        border-image-repeat:round;
-    9. background-size:
-        数字，百分比，
-        cover 完全覆盖整个元素，不考虑图片内容是否损失
-        contain 完全显示图片，不考虑是否覆盖整个元素
-    10. background-origin 
-        背景原点(默认是padding-box)
-    11. background-clip 
-        背景图片的显示位置
-    12. background-image：
-        url("images/bg1.png") left top,
-        url("images/bg2.png") right top,
-        url("images/bg3.png") right bottom,
-        url("images/bg4.png") left bottom,
-        url("images/bg5.png") center center;
-    13. gradient
+### 私有前缀
+1. webkit chrome  safari 新版opera
+2. moz    firefox
+3. ms     IE
+4. o      老版opeara
+
+### 透明色     
+1. rgba
+2. opacity 能继承 取值0-1
+3. transparent 完全透明
+4. hsla
+    h 色调
+    s 饱和度0-100%
+    l 亮度 0-100%
+    a alpha 透明度
+
+### shadow
+1. 文字阴影:
+    text-shadow:水平位移  垂直位移  模糊程度 颜色
+
+    水平位移 值越大越往右 反之往左
+    垂直位移 值越大越往下 反之往上
+    模糊程度 值从0开始，越大越模糊
+    颜色   
+2. 盒子阴影:
+    box-shadow:水平位移  垂直位移  模糊程度 扩展半径 颜色 内阴影（inset）
+
+    水平位移  
+    垂直位移  
+    模糊程度 
+    扩展半径  可以为负值，值越大，扩展半径越大
+    颜色 
+    内阴影  inset(可选)
+
+### box-sizing
+    1. content-box 盒子的尺寸=CSS中的尺寸+padding+border
+    2. border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸
+
+### border-radius
+    border-radius:x x x x/y y y y
+    正圆:border-radius:50%;
+
+### border-image
+    border-image-source:url();
+    切割图片 border-image-slice:
+    border-image-repeat:round;
+
+### background-size
+    数字，百分比，
+    cover 完全覆盖整个元素，不考虑图片内容是否损失
+    contain 完全显示图片，不考虑是否覆盖整个元素
+
+### background-origin 
+背景原点(默认是padding-box)
+
+### background-clip 
+    背景图片的显示位置
+
+### background-image：
+    url("images/bg1.png") left top,
+    url("images/bg2.png") right top,
+    url("images/bg3.png") right bottom,
+    url("images/bg4.png") left bottom,
+    url("images/bg5.png") center center;
+
+### gradient
     参考：http://www.mrszhao.com/post/58.html
-        线性渐变:
+
+1. 线性渐变:
         linear-gradient( 
             [ <angle> | to <side-or-corner> ,]? <color-stop> [, <color-stop>]+ )
             \---------------------------------/ \----------------------------/
@@ -237,134 +260,160 @@
             就是定义渐变线的意思，可以通过角度或者指定上右下左等方位来控制渐变线的方向。
             where <side-or-corner> = [left | right] || [top | bottom]
             and <color-stop>     = <color> [ <percentage> | <length> ]?
+
         example:
             45度三色线性渐变，初始值为黄色，中间值为绿色，结束值为粉色。角度可以设置负数
             没有设置颜色的具体位置时，三个色块默认平均分布。
+
             1. background-image:linear-gradient(45deg,#D1EE4D,#1ABF22,#F389B7);}
+
             不设置任何的角度和方位，则默认是从上往下。可以为某个颜色设置具体的位置，可以是百分比，或者是具体的像素
+
             2. background-image:linear-gradient(#F8F86D,#239C23 50%,#298C1E 51%,#D1E710)
                background-image:linear-gradient(to right,red,orange,yellow,green,cyan,blue,purple)
                background-image:linear-gradient(to bottom right,red,yellow)
                background-image:linear-gradient(to bottom left,#FC3,rgba(255,255,255,0))
                background:linear-gradient(to bottom left,#FC3,rgba(255,255,255,0)),url(images/1957.jpg)
-        径向渐变:
+
+2. 径向渐变:
         example:
-
         background-image:radial-gradient(20px at 10px,red,green);
-    14. transition:
-        transition:过渡属性     过渡时间        过渡延迟     过渡速度
 
-        transition-property ..-duration     ..-delay    transition-timing-function:ease  linear  ease-in ease-in-out
-        
-        transition: all 0.2s
-        过渡all所有变化的属性  0.2s代表属性从初始变化到结束所用的时间
+### transition:
+1. transition:过渡属性     过渡时间        过渡延迟     过渡速度
 
-        事件:transitionend
+    transition-property ..-duration     ..-delay    transition-timing-function:ease  linear ease-in ease-in-out
+    
+    transition: all 0.2s
+    过渡all所有变化的属性  0.2s代表属性从初始变化到结束所用的时间
 
-        node.addEvertListen('transitionend',()=>{
-            //do something
-        })
+2. transitionend
+    node.addEvertListen('transitionend',()=>{
+        //do something
+    })
 
-        cubic-bezier:
-            贝塞尔曲线 是animation-timing-function 和 transition-timing-function 中一个重要的内容。
-            主要是为 animation 生成速度曲线的函数，规定是 cubic-bezier(<x1>, <y1>, <x2>, <y2>)。
-    15. 2D转换:
-        1）位移 translateX(),translateY(),translate(X,Y)
-        2) 旋转 rotate 值越大 是顺时针 反之则逆时针
-        3）缩放 scale   值越大 放大 反之缩小
-        4）倾斜 skewX skewY skew
-    16. 3D转换：
-        translateZ() translate(X,Y,Z)
-        视角：perspective
-        3d转换：transform-style:
+3. cubic-bezier:
+    贝塞尔曲线 是animation-timing-function 和 transition-timing-function 中一个重要的内容。
+    主要是为 animation 生成速度曲线的函数，规定是 cubic-bezier(<x1>, <y1>, <x2>, <y2>)。
+
+4. 2D转换:
+    * 位移 translateX(),translateY(),translate(X,Y)
+    * 旋转 rotate 值越大 是顺时针 反之则逆时针
+    * 缩放 scale   值越大 放大 反之缩小
+    * 倾斜 skewX skewY skew
+
+5. 3D转换：
+    translateZ() translate(X,Y,Z)
+    视角：perspective
+    3d转换：transform-style:
             flat 2d平面呈现
             perserve-3d 3d空间呈现 
-    17. animation:
-        1)定义动画：
-            格式：@keyframes 动画名称{
-                0%{}
-                25%{}
-                50%{}
-                75%{}
-                100%{} 
-            }
-            from{},to{} 类似0%-100%
-        2)调用动画 
-            复合属性:    animation: animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction 和 animation-fill-mode.
-            动画名称     animation-name  自定义的
-            动画总时间   animation-duration 时间
-            动画延迟     animation-delay    时间
-            动画速度     animation-timing-function  ease ease-in  ease-in-out linear steps(n)
-            动画次数     animation-iteration-count  数字  infinite(无限循环)
-            动画播放状态   animation-play-state    running  paused
-            动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的状态 none(default)不改变任何样式 both 动画将会执行 forwards 和 backwards 执行的动作
-            动画方向        animation-direction    reverse（反方向）
-        事件:animationend
-    18. flex：
-            ..容器    给某个元素设置display：flex 就是伸缩容器
-            ..项目    伸缩容器中直接的子元素就是伸缩项目
-            主  轴    默认水平方向，可调整
-            侧  轴    永远垂直主轴
 
-            主轴方向：
-                flex-direction: row;默认水平 
-                flex-direction: row-reverse;水平反向
-                flex-direction: column;竖直
-                flex-direction: column-reverse;竖直反向
+### animation:
+1. 定义动画：
+    * @keyframes 动画名称{
+            0%{}
+            25%{}
+            50%{}
+            75%{}
+            100%{} 
+        }
+    * from{},to{} 类似0%-100%
 
-            伸缩项目在主轴上的对齐方式：
-                /*主轴对齐方式  开始点对齐*/
-                justify-content:flex-start;
-                /*结束点对齐*/
-                justify-content: flex-end;
-                    /*中心对齐*/
-                justify-content: center;
-                    /*两端对齐*/
-                justify-content: space-between;
-                    /*空间环绕*/
-                justify-content: space-around;
+2. 调用动画 
+     * 复合属性:    animation: animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction 和 animation-fill-mode.
 
-            flex-wrap  nowrap(不换行) wrap(换行) 默认不换
+     * 动画名称     animation-name  自定义的
+     * 动画总时间   animation-duration 时间
+     * 动画延迟     animation-delay    时间
+     * 动画速度     animation-timing-function  ease ease-in  ease-in-out linear steps(n)
+     * 动画次数     animation-iteration-count  数字  infinite(无限循环)
+     * 动画播放状态   animation-play-state    running  paused
+     * 动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的状态 none(default)不改变任何样式 both 动画将会执行 forwards 和 * * backwards 执行的动作
+     * 动画方向        animation-direction    reverse（反方向）
 
-            设置换行后的排列方式
-                align-content ：
-                    flex-start(起始点对齐)  
-                    flex-end(终止点对齐) 
-                    center(居中对齐)  
-                    space-between(两端对齐)  
-                    space-around(空间环绕)
+3. 事件:animationend
 
-            设置不换行的排列方式 
-                align-items(侧轴对齐) 
-                    flex-start(起始点对齐)
-                    flex-end(终止点对齐)
-                    center(居中对齐) 
-                    stretch(拉伸)
+### flex
+1. flex容器:
+    * 给div这类块状元素元素设置display:flex
+    * 给span这类内联元素设置display:inline-flex
+    * 这些元素称为flex容器，里面的子元素称为flex子项。
 
-            伸缩项目 
-                1.伸缩项目在伸缩容器中所占的空间
-                    flex:伸缩项目在伸缩容器剩余空间的比例
-                    css3中关于"flex:1"的"占满"布局的分析 ？
-                        1、子元素之间的等比例空间分配；
-                        2、子元素所占剩余空间分配；
-                2.自己排列自己的对齐方式
-                    align-self:
-                    flex-start(起始点对齐) 
-                    flex-end(终止点对齐) 
-                    center(居中对齐) 
-                3.定义自己的排列顺序
-                    order  值越小，越靠前
-    19. em rem:
-        em:的基准值  16px  默认的字体大小是16px,基准值是相对于父元素来的
-        rem：的基准值  16px  默认的字体大小是16px
+2. Flex布局相关属性正好分为两拨，一拨作用在flex容器上，一拨作用在flex子项上,无论作用在flex容器上，还是作用在flex子项，都是控制的flex子项的呈现，前者控制的是整体，后者控制个体。
+
+* 作用在flex容器上:
+    + flex-direction
+        - flex-direction: row(默认) | row-reverse | column | column-reverse;
+        - 用来控制子项整体布局方向，是从左往右还是从右往左，是从上往下还是从下往
+
+    + flex-wrap
+        - flex-wrap: nowrap(默认值) | wrap | wrap-reverse;
+        - 控制子项整体单行显示还是换行显示，如果换行，则下面一行是否反方向显示
+
+    + flex-flow
+        - flex-flow: <‘flex-direction’> || <‘flex-wrap’>
+        - 上面两属性的缩写
+
+    + justify-content
+        - justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly;
+        - 属性决定了水平方向子项的对齐和分布方式
+        - around是环绕的意思，意思是每个flex子项两侧都环绕互不干扰的等宽的空白间距，最终视觉上边缘两侧的空白只有中间空白宽度一半
+        - evenly是匀称、平等的意思。也就是视觉上，每个flex子项两侧空白间距完全相等
+
+    + align-items
+        - align-items: stretch（默认值，子项拉伸） | flex-start | flex-end | center | baseline;
+        - 指flex子项们相对于flex容器在垂直方向上的对齐方式
+        - baseline 表现为所有flex子项都相对于flex容器的基线对齐。
+
+    + align-content
+        - align-content: stretch | flex-start | flex-end | center | space-between | space-around | space-evenly;
+        - 与justify-content相似且对立的属性，align-content则是指明垂直方向每一行flex元素的对齐和分布方式，flex子项只有一行，则align-content属性是没有任何效果
+
+* 作用在flex子项上:
+    + order
+        - order: <integer>; /* 整数值，默认值是 0 */
+        - order改变某一个flex子项的排序位置
+        - 某一个flex子项在最前面显示，可以设置比0小的整数，如-1就可以了。
+    + flex-grow
+        - flex-grow: <number>; /* 数值，可以是小数，默认值是 0 不能为负数*/
+        - 表示不占用剩余的空白间隙扩展自己的宽度。如果flex-grow大于0，则flex容器剩余空间的分配就会发生
+        - 所有剩余空间总量是1、
+        - 单个子项设置了flex-grow，大于1独享所有剩余空间、小于1则扩展的空间就总剩余空间和这个比例的计算值
+        - 
+    + flex-shrink
+        - flex-shrink: <number>; /* 数值，默认值是 1 不支持负值*/
+        - flex-shrink主要处理当flex容器空间不足时候，单个元素的收缩比例。
+    + flex-basis
+        - flex-basis: <length> | auto; /* 默认值是 auto */
+        - 定义了在分配剩余空间之前元素的默认大小
+    + flex
+        - flex: none | auto | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
+        - flex属性是flex-grow，flex-shrink和flex-basis的缩写。
+        - 第2和第3个参数（flex-shrink和flex-basis）是可选的。默认值为0 1 auto。
+    + align-self
+        - align-self: auto | flex-start | flex-end | center | baseline | stretch;
+        - 指控制单独某一个flex子项的垂直对齐方式
+        - 继承自flex容器的align-items属性
+
+* 其他
+    + 在Flex布局中，flex子元素的设置float，clear以及vertical-align属性都是没有用的。
+    + Flexbox布局最适合应用程序的组件和小规模布局（一维布局）
+    + Grid布局则适用于更大规模的布局（二维布局）
+    
+### Grid
+
+### em rem:
+ 1. em:的基准值  16px  默认的字体大小是16px,基准值是相对于父元素来的
+ 2. rem：的基准值  16px  默认的字体大小是16px
         r 是root  根元素的意思  html文档的根元素是  html标签
         基准值是相对于来根元素（html）来的
-    20. media 
-        @media (min-width: 750px) {
-            html {
+### media 
+    @media (min-width: 750px) {
+        html {
                 font-size: 100px;
-            }
         }
+    }
 ## less sass
     Front-End-Study/less
 ## js 
@@ -1419,9 +1468,5 @@ brew包管理工具
     tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
     tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
     tree > tree.md 将项目结构输出到tree.md这个文件。
-
-应用试客
-榜乐小程序
-微信小游戏
 
 
