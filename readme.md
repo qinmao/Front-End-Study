@@ -1,4 +1,5 @@
 # 前端技术栈
+> 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点。
 ## html+css
 ### 基本html标签
 
@@ -76,7 +77,7 @@
         
       - 绘制
 
-      - 详细参考：http://www.cnblogs.com/dojo-lzz/p/3983335.html
+      - [详细参考](http://www.cnblogs.com/dojo-lzz/p/3983335.html)
 
  * repaint&reflow
     + reflow(重排):当DOM变化影响了元素的几何属性（宽、高改变等等） 浏览器此时需要重新计算元素几何属性 并且面中其他元素的几何属性可能会受影响 这样渲染树就发生了改变，也就是重新构造RenderTree渲染树 这个过程叫做重排
@@ -104,27 +105,29 @@
  * css hack   
 
 ## html5 
-    1. 什么是h5?
-        狭义上:是html4的升级版本，是新一代web应用标准
-        广义上：H5其实指的是一个泛称，它是由HTML5 + CSS3 + JsApi等技术组合而成的一个应用开发平台。
+### 什么是h5?
+ * 狭义上: 是html4的升级版本，是新一代web应用标准
+ * 广义上: H5其实指的是一个泛称，它是由HTML5 + CSS3 + JsApi等技术组合而成的一个应用开发平台。
 
-    2. html5技术:       
-        1. 常用新增的语义标签    
-            header nav main aside section (独立的区块) article footer
-        2. 新增dom API
-            参见 Front-End-Study/html/html5/dom.html
-        3. 定位
-            .. Front-End-Study/html/html5/geolocation.html
-        4. canvas
-            Front-End-Study/canvas
-        5. 网络检测
-            Front-End-Study/html/html5/online.html
-        6. 客户端数据的缓存机制
-            Front-End-Study/html/html5/webStorage.html
-        7. video (api 使用)
-            Front-End-Study/html/html5/media
-        8. mobile
-            Front-End-Study/note/h5-mobile.md
+ * html5技术:       
+    1. 常用新增的语义标签    
+
+        header nav main aside section (独立的区块) article footer
+
+    2. [新增dom API](html/html5/dom.html)
+         
+    3. [定位](html/html5/geolocation.html)
+
+    4. [canvas](canvas/canvas-base.html)
+
+    5. [网络检测](html/html5/online.html)
+
+    6. [客户端数据的缓存机制](html/html5/webStorage.html)
+
+    7. [video (api 使用)](html/html5/media)
+
+    8. [mobile](mobile/h5-mobile)
+        
 
 ## css3
 ### selector
@@ -144,19 +147,18 @@
     E:empty 选中内容为空，或没有子元素
     E:target    选中锚点的的目标元素
     E:not(选择器)
-```css
-    eg:
-        p:first-child   
-        /* 先找父元素 找到所有的子元素  在去找第一个子元素  匹配是不是p  如果不是无效的选择器 */
-        p:first-of-type 
-        /* 先找父元素 找到所有的p元素  找第一个 */
-        p:last-of-type 
-        /* 最后一个 */
-        p:nth-of-type（） 
-        /* 第几个 */
-        p:nth-last-of-type 
-        /* 倒数第几个 */
-```        
+    ```css
+     p:first-child   
+     /* 先找父元素 找到所有的子元素  在去找第一个子元素  匹配是不是p  如果不是无效的选择器 */
+     p:first-of-type 
+     /* 先找父元素 找到所有的p元素  找第一个 */
+     p:last-of-type 
+     /* 最后一个 */
+     p:nth-of-type（） 
+     /* 第几个 */
+     p:nth-last-of-type 
+     /* 倒数第几个 */
+    ```        
 3.  结构选择器：+ ~
     E[attrxxxx]+E   选择当前的元素 然后找到相邻的下一个元素
     E[attrxxxx]~E   选择当前的元素 然后后面所有的元素    
@@ -174,8 +176,8 @@
     ::selection    选中的区域  只能变color和background-color  
 
 ### word-break
-word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
-https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
+* word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
+  - [word-break 详细](https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break)
 
 * normal
     使用默认的断行规则。
@@ -250,8 +252,6 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
     url("images/bg5.png") center center;
 
 ### gradient
-    参考：http://www.mrszhao.com/post/58.html
-
 1. 线性渐变:
         linear-gradient( 
             [ <angle> | to <side-or-corner> ,]? <color-stop> [, <color-stop>]+ )
@@ -278,6 +278,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
 2. 径向渐变:
         example:
         background-image:radial-gradient(20px at 10px,red,green);
+ * [参考](http://www.mrszhao.com/post/58.html)
 
 ### transition:
 1. transition:过渡属性     过渡时间        过渡延迟     过渡速度
@@ -417,196 +418,222 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
     }
 
 ## less sass
-    Front-End-Study/less
+* [less](css/less/less.md)
+* [sass](css/sass/readme.md)
 
-## js 
-    1. ECMA+Dom+Bom  
-        1. undefined,NaN，Null,infinity
-            1) undefined 是undefined 类型
-                var a;  //声明变量后不赋值
-                typeof 类型判断方法
-                console.log(typeof(a))  undefined
-            2) NaN 是 number 型 表示不是一个数字
-                var a=123;
-                var b="abc";
-                a-b   得到NaN
-                console.log(typeof(a-b))  number
-            3) Null   空指针类型  没有指向任何一个对象 
-            4) infinity 是number 类型 表示无穷大 除数为0可得
-        2. js精度问题
-            number.toFixed(参数)  设置保留小数位数 1.528.toFixed(2) =1.53
-        3. Math 对象常用几个函数
-            1）天花板函数 ceil Math.ceil(1.23)=2 向上返回最小的整数
-            2）地板函数 floor Math.floor(1.23)=1 向下返回最小的整数
-            3）随机数
-                Math.random() 返回0-1 的随机数
-                Math.floor(Math.random()*10) 返回0-9 的随机数
-            4) Math.max() Math.min() 返回最大最小的值
-            5）Math.abs(x)返回一个绝对值
-            6）Math.round(x) 四舍五入
-        4. 数据类型转换
-            1）隐式转换 变量在运算过程中发生的类型转换
-                !!   console.log(!!"abc")
-            2）显示（强制）转换:
-                转字符串：a,（String）变量 b,变量.toString()
-                转数字型：a,Number(变量) b,parseInt(变量) c,parseFloat(变量)
-                转布尔型：Boolean(变量)
-                几种转换为false的 undefined NaN Null 0 false ""
+## 基本js 
+### 数据类型
+* undefined 是undefined 类型
+```javascript
+    var a;  // 声明变量后不赋值
+    console.log(typeof(a))  undefined
+```
+* NaN 是 number 型 表示不是一个数字
+```javascript
+    var a=123;
+    var b="abc";
+    console.log(typeof(a-b))  number
+```
+* Null   空指针类型  没有指向任何一个对象 
+* infinity 是number 类型 表示无穷大 除数为0可得
 
-            tip:使用parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不是简单的转换
-            简单的类型转换Number(08)=8 会比parseInt 快
-        5. 短路操作：当操作数不是bool值时
-            1）隐式转换
-            2）从左往右
-            3) 哪个操作数可以决定结果，就返回这个原操作数
+* 数据类型转换
+    + 隐式转换 变量在运算过程中发生的类型转换
+      - console.log(!!"abc")
+    + 显示（强制）转换:
+       - 转字符串：a,（String）变量 b,变量.toString()
+       - 转数字型：a,Number(变量) b,parseInt(变量) c,parseFloat(变量)
+       - 转布尔型：Boolean(变量)
+       - 几种转换为false的 undefined NaN Null 0 false ""
 
-            1. 短路与 （&&）
-                只要有一个false，就返回 该 值false的子表达式的值
-                短路与：可以保证某个变量有值，在参与运算
+    > tip:使用parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不简单的转换,简单的类型转换Number(08)=8 会比parseInt 快
 
-                eg: Object.create&&Object.create(obj)
-            2. 短路或（||）
-                只要有一个true，就返回 该 值true的子表达式的值
-                短路或：可以方便给变量赋初值
-        6. 类型检测
-            var arr=[];
-            1）Array.isArray(arr) 有兼容性问题
-            2）arr instanceof Array 推荐使用
-            3) Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() 可检测任意类型
-        7. 节点类型
-            总共有12种，但要记住几个常用的
-                * nodeType = 1，元素节点
-                * nodeType = 2，属性节点
-                * nodeType = 3，文本节点
-                * nodeType = 8，注释节点
-                * nodeType = 9，document对象
-                * nodeType = 11，documentFragment文档片段
-        8. 函数变量提升：先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
-            'use strict';
-            function foo() {
-                var x = 'Hello, ' + y;
-                alert(x);
-                var y = 'Bob';
-            }
-            foo();
-            虽然是strict模式，但语句var x = 'Hello, ' + y;并不报错，原因是变量y在稍后申明了。
-            但是alert显示Hello, undefined，说明变量y的值为undefined。
-            这正是因为JavaScript引擎自动提升了变量y的声明，但不会提升变量y的赋值。
-            变量提升后代码：
-                function foo() {
-                var y; // 提升变量y的申明
-                var x = 'Hello, ' + y;
-                alert(x);
-                y = 'Bob';
-            }     
-            函数内变量的怪异声明模式:
-            function fun(){
-                num=10   //没写var 就相当于全局变量
-            }
-            fun()
-            console.log(num) //10
-        9. this 指向问题
-            1. 普通函数执行模式
-            直接拿到函数的名字 加上 圆括号。
-            在该模式下，函数内部this的指向为 window
+* 类型检测
+```javascript
+    var arr=[];
+    Array.isArray(arr) // 有兼容性问题
+    arr instanceof Array // 推荐使用
+    Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() // 可检测任意类型
+```
+### 清空数组
+    1. arr.length=0
+    2. arr=[] //推荐使用
+    3. arr.splice(0,arr.length)
 
-            2. 构造函数模式
-                调用函数时，配合着new关键字来执行某个函数，此时该函数的执行模式为 构造函数模式
-                函数内部的this指向为 当前创建出来的实例。
+### js精度问题
+1. number.toFixed(参数)  
+    设置保留小数位数 1.528.toFixed(2) =1.53
+2. 浮点型涉及精度问题：推荐都乘100最后除100 用整数运算
 
-            3. 方法调用模式
-                将一个函数 赋值给 某个对象的属性，然后通过该对象去执行函数，此时该函数的执行模式为
-                    方法调用模式；
-                在该模式下，this的指向为 方法的调用者
+### Math 对象常用几个函数
+ * 天花板函数 ceil Math.ceil(1.23)=2 向上返回最小的整数
+ * 地板函数 floor Math.floor(1.23)=1 向下返回最小的整数
+ * 随机数
+    - Math.random() 返回0-1 的随机数
+    - Math.floor(Math.random()*10) 返回0-9 的随机数
+ * Math.max() Math.min() 返回最大最小的值
+ * Math.abs(x)返回一个绝对值
+ * Math.round(x) 四舍五入
+ 
+### 短路操作
+* 执行过程(当操作数不是bool值时)
+  1. 隐式转换
+  2. 从左往右
+  3. 哪个操作数可以决定结果，就返回这个原操作数
 
-            4. call/apply（上下文）模式: 改变this的指向
-                * fn.call(thisObj, [arg1~argN])
-                    * thisObj 表示 改变后的this指向
-                    * arg1~argN 是fn执行时，传入的实参。可选的。
-                    * call方法再执行的时候，fn函数也同时执行，同时，将函数fn内部的this替换成指定thisObj对象。
-                * fn.apply(thisObj, [数组]);
-                    * thisObj 表示 改变后的this指向
-                    * [数组] 含义：将数组中的元素 作为函数fn执行时传入的实参。可选的
-                    * apply方法再执行的时候，fn函数也同时执行。同时，将函数fn内部的this替换成指定thisObj对象。
-                * 在该模式下，call|apply方法的第一参数即为 函数fn内的this指向
-        10. sort 排序的坑
-            1）Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
-            2）默认 按照根据ASCII码进行排序
-            3）sort 是一个高阶函数，sort（function(){
-                //写具体的实现逻辑
-            }）
-            // 升序
-            sort(function(a,b){
-                return a-b
-            })
-            //降序
-            sort(function(a,b){
-                    return b-a
-            })
-        11. 原生js获取样式
-            getComputedStyle(el,null).width ie 不支持
-            document.getElementById("btn").currentStyle.width ie提供的
-        12. 清空数组：
-            1)arr.length=0
-            2)arr=[] //推荐使用
-            3)arr.splice(0,arr.length)
-        13. 避免事件被覆盖的方法（ie9 以下不支持）false默认冒泡 true 捕获
-            标签.addEventListener(enventType,fn，flase)
-            function fun(){
-                alert("你好")
-            }
-            eg:btn.addEventListener("click",fun)
-            移除事件监听(参数必须一致)
-            btn.removeEventListener("click",fun)
-            ie-6-10(enventType 加on)
-            标签.attachEvent(enventType,fn)
-            标签.detachEvent(enventType,fn)
-        14. 事件冒泡和事件捕获   
-            事件冒泡：从里向外执行，遇到相同的事件及执行
-            事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
-        15. 事件的对象作用：(event.target)记录当前事件触发时的一些信息
-            btn.onclick=function(event){} 
-            event.target 真正触发事件的元素
-            event.type="click"
-            event.clinetX/clinetY 
-            ie 低版本不兼容
-            var tar=e.target||e.srcElement
-        16. 阻止事件冒泡
-            e.stopPropagation()
-            ie 中阻止事件传播 cancelBubble=true
-        17. JSON  转换 
-            1）object-->string   JSON.stringify()
-            2) string--> object   JSON.parse()
-        18. date-format
-            1)日期格式化成指定格式
-            例如： new Date().format("yyyy-MM-dd hh:mm:ss")
-            2）两日期间隔
-            例如：d1.dateDiff(d2, 'd')
-            3)获取当前时间戳
-                (new Date()).getTime();
+* 短路与&&
+    - 只要有一个false，就返回 该 值false的子表达式的值
+    - 短路与：可以保证某个变量有值，在参与运算
+    - eg: Object.create&&Object.create(obj)
 
-            参见 Front-End-Study/js/date-format.js
-        19. 异常
-            js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
+* 短路或||
+    - 只要有一个true，就返回 该 值true的子表达式的值
+    - 短路或：可以方便给变量赋初值
+
+### dom常用的节点类型
+* nodeType = 1，元素节点
+* nodeType = 2，属性节点
+* nodeType = 3，文本节点
+* nodeType = 8，注释节点
+* nodeType = 9，document对象
+* nodeType = 11，documentFragment文档片段
+
+### 预解析（浏览器）
+1. 语法分析：保证js代码符合语法规则，能被正确的执行。
+2. 变量名以及函数名提升
+3. 确定变量的作用域。
+
+### 函数变量提升
+>先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
+```javascript
+    'use strict';
+    function foo() {
+        var x = 'Hello, ' + y;
+        alert(x);
+        var y = 'Bob';
+    }
+    foo();
+
+    // 虽然是strict模式，但语句var x = 'Hello, ' + y;并不报错，原因是变量y在稍后申明了。
+    // 但是alert显示Hello, undefined，说明变量y的值为undefined。
+    // 这正是因为JavaScript引擎自动提升了变量y的声明，但不会提升变量y的赋值。
+
+    // 变量提升后代码：
+    function foo() {
+        var y; // 提升变量y的申明
+        var x = 'Hello, ' + y;
+        alert(x);
+        y = 'Bob';
+    }     
+    // 函数内变量的怪异声明模式:
+    function fun(){
+        num=10   //没写var 就相当于全局变量
+    }
+
+    fun()
+    console.log(num) //10
+
+```
+
+### sort
+* Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
+* 默认 按照根据ASCII码进行排序
+* sort 是一个高阶函数，sort（function(){
+    // 写具体的实现逻辑
+}）
+* 升序
+    ```javascript
+    sort(function(a,b){
+        return a-b
+    })
+    ```
+* 降序
+    ```javascript
+    sort(function(a,b){
+        return b-a
+    })
+    ```
+
+### 原生js获取样式 
+```javascript
+    // ie 不支持
+    getComputedStyle(el,null).width 
+    // ie提供的
+    document.getElementById("btn").currentStyle.width 
+```
+
+### 事件冒泡和事件捕获   
+* 事件冒泡：从里向外执行，遇到相同的事件及执行
+* 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
+
+### 事件监听（避免事件被覆盖的方法）
+>ie9 以下不支持 false默认冒泡 true 捕获
+```javascript
+    node.addEventListener(enventType,fn，false)
+
+    btn.addEventListener("click",fun)
+    // 移除事件监听(参数必须一致)
+    btn.removeEventListener("click",fun)
+           
+    // ie-6-10(enventType 加on)
+    node.attachEvent(enventType,fn)
+    node.detachEvent(enventType,fn)
+```
+
+### 事件的对象作用：(event.target)记录当前事件触发时的一些信息
+ * btn.onclick=function(event){} 
+    - event.target 真正触发事件的元素
+    - event.type="click"
+    - event.clinetX/clinetY 
+    - ie 低版本不兼容 var tar=e.target||e.srcElement
+       
+    + 阻止事件冒泡
+        - e.stopPropagation()
+        - ie中阻止事件传播 cancelBubble=true
+
+### JSON  转换 
+ * object-->string   JSON.stringify()
+ * string--> object   JSON.parse()
+
+### date-format
+ * 日期格式化成指定格式
+    - new Date().format("yyyy-MM-dd hh:mm:ss")
+
+ * 两日期间隔
+    - d1.dateDiff(d2, 'd')
+
+ * 获取当前时间戳
+    (new Date()).getTime();
+
+ * [封装常用时间处理](js/date-format.js)
+ 
+### js异常
+>js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
+ * EvalError  运行时异常。 eval 函数调用时发生的异常
+ * RangeError 运行时异常 超出数据范围
+ * ReferenceError 运行时异常 未定义变量
+ * SyntanxError  预解析,语法错误
+ * typeError 运行时异常，类型异常
+ * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
+
+### == === 
+ * ==: 如果操作数为对象，则转换成基本类型。优先使用valueOf() 失败的话则用toString()
+ * ===: 类型和值都相等
+
+### dom 基础操作
+* appendChild 
+* removeChild 
+* replaceChild 
+* insertBefore
+
+### document.createDocumentFragment 
+>创建一个新的空白的文档片段
+文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
             
-            1）EvalError :运行时异常。 eval 函数调用时发生的异常
-            2）RangeError ：运行时异常 超出数据范围
-            3）ReferenceError 运行时异常 未定义变量
-            4）SyntanxError  预解析,语法错误
-            5) typeError: 运行时异常，类型异常
-            6) URIError：运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
-        20. == ===转换问题
-            ==：如果操作数为对象，则转换成基本类型。优先使用valueOf() 失败的话则用toString()
-            ===:类型和值都相等
-        21. dom 的操作
-            appendChild removeChild replaceChild insertBefore
-        21. document.createDocumentFragment 创建一个新的空白的文档片段
-            文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
-        22. js.map 文件是干啥的？
-        源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。详情可参照: Fundebug支持Source Map
-        作者：Stefan Fundebug
-        链接：https://www.zhihu.com/question/21980664/answer/148755964
-    2. js-oop
+### js.map 文件是干啥的？
+源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
+        
+## js 面向对象
         1. 对象：
             1. 什么是对象？
                 无序属性的集合，可以看成键值对
@@ -664,12 +691,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
 
                     4. 变量的搜索原则：类似下面的属性搜索原则，先在当前作用域，找不到然后上一层，最后到全局作用域。找不到抛异常。
                 
-                预解析：
-                    1. 语法分析：保证js代码符合语法规则，能被正确的执行。
-                    2. 变量名以及函数名提升
-                            在变量名和函数名提升时，将变量的定义，以及函数的定义包括函数体部分都提升到当前作用域的最顶端。
-                            函数名提升时，相当于 定义一个变量即该函数的名字，在将函数的引用赋值给该变量
-                    3. 确定变量的作用域。
+                
             3. 函数属性
                 1. arguments 
                     * 伪数组对象
@@ -994,6 +1016,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
            原理：在服务器响应了响应头: Access-Control-Allow-Origin http 协议规定.
            header("Access-Control-Allow-Origin:*");
   9. animation
+
 ## Event（事件绑定，事件代理，事件委托）
    1. 事件绑定： 绑定多个事件
            1)$("#box").bind(""click mouseenter",function(){
@@ -1086,6 +1109,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
                3，return false 不仅可以阻止默认效果，还能阻止事件冒泡
 
            ___更详细的后面会写一篇博客关于事件这块。
+
    3. 移动端事件
        1. 移动端touch事件（区分webkit和winphone）
            /* 当用户手指放在移动设备在屏幕上滑动会触发的touch事件 */
@@ -1106,6 +1130,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
                target：当前元素
            事件响应顺序
            ontouchstart  > ontouchmove  > ontouchend > onclick
+
 ## framework
     1. angular
         angular 1
@@ -1230,17 +1255,21 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
             </div>
             ```
 ## node
-    Front-End-Study/node/README.md
+ * [node](node/README.md)
+ 
 ## Hybrid App
-    Front-End-Study/Hybrid-App
+ * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
+
 ## 正则表达式
-    Front-End-Study/note/reg.md
+ * [正则表达式](note/reg.md)
+
 ## 模式
     设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
     编码模式:js 特有的模式
     反模式:常见的，引发问题比解决问题更多的一种方法
+
 ## tool 
-  1. git
+ * git
         SSH： 一种加密协议，用于计算机之间的登录
         1. 对称性加密
         在加密和解密时，使用同一个秘钥。
@@ -1388,13 +1417,13 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break
             eg：我要修改登录超时问题，此时可以考虑创建一个Bug分支，名字为 bug-loginTimeout
 
             __如果出现冲突必须手动将冲突解决掉，然后在重新提交版本，然后解决冲突后的文件保存成一个版本__
-  2. bower/npm/yarn
-        bower 前端的包管理器
-        npm node 的包管理器
-        yarn add 类似npm
-  3. gulp
-        Front-End-Study/build-tool/gulp
-  4. webpack 
+ * 包管理
+    - bower
+    - npm 
+    - yarn 
+ * gulp
+    [gulp](build-tool/gulp/readme.md)
+ * webpack 
     webpack1:支持CMD和AMD，同时拥有丰富的plugin和loader
     webpack2:
         1)支持ES Module,可直接分析ES Module之间依赖关系，而webpack1必须将ES Module转换成CommonJS模块之后，才能使用webpack行下一步处理。
@@ -1435,16 +1464,19 @@ brew包管理工具
         1. brew install 软件名  brew uninstall  软件名称
         2. brew list 可以查看所有安装的软件
         3. brew info 软件名
+
 ## vue 插件开发
     1. 数字滚动
     2. 侧滑（删除）
     3. 复制到剪切板
     4. ios 手动长按复制
     5. 引入远程脚本
-## vscode 
+
+## 开发工具：vscode 
     1. 本地服务端调试
         安装: 如果npm install -g live-server安装报错就用npm install live-server -gf安装，
         https://github.com/tapio/live-server#readme
+
 ## chrome插件的开发
     1. 首先要有一个manifest.json清单文件
         参数列表:http://chrome.liuyixi.com/manifest.html
@@ -1452,19 +1484,29 @@ brew包管理工具
     3. 插件完成后，将其导入到Chrome中
         首先将所有相关文件都放到一个文件夹中
         用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
+
 ## webGL
     three.js
+
 ## webVR
+
 ## WebAssembly
+
 ## D3.js大数据可视化
     echarts
     highcharts
+
 ## 微信小程序 
+
 ## 微信小游戏
     游戏引擎：cocos2d-x
-## PWA    
+
+## PWA  
+
 ## linux
+
 ## docker
+
 ## tree 目录生成命令
 1. 安装 :brew install tree  ||  apt-get install tree
 2. exmple: tree -L 3 -I "node_modules"
