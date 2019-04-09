@@ -3,34 +3,34 @@
 * require 需要的意思  link href
 * */
 /*返回的是一个对象*/
-var gulp=require("gulp");
+var gulp=require("./node_modules/gulp");
 /*我需要引入这个gulp-less 来实现编译*/
-var gulpless=require("gulp-less");
+var gulpless=require("./node_modules/gulp-less");
 /*我引入gulp-autoprefixer 这个插件*/
-var autoprefixer=require("gulp-autoprefixer");
+var autoprefixer=require("./node_modules/gulp-autoprefixer");
 /*引入css 压缩 gulp-cssmin*/
-var cssmin=require("gulp-cssmin");
+var cssmin=require("./node_modules/gulp-cssmin");
 
 /*引入的图片压缩*/
-var imagemin=require("gulp-imagemin");
+var imagemin=require("./node_modules/gulp-imagemin");
 
 /*引入js 的压缩文件*/
-var uglify=require("gulp-uglify");
+var uglify=require("./node_modules/gulp-uglify");
 /*引进的是文件合并*/
-var concat=require("gulp-concat");
+var concat=require("./node_modules/gulp-concat");
 /*引入html 的压缩包*/
-var htmlmin=require("gulp-htmlmin");
+var htmlmin=require("./node_modules/gulp-htmlmin");
 /*生成版本*/
-var rev=require("gulp-rev");
+var rev=require("./node_modules/gulp-rev");
 /*文件替换*/
-var collector=require("gulp-rev-collector");
+var collector=require("./node_modules/gulp-rev-collector");
 
 /*对文件合并以及重命名.*/
-var useref=require("gulp-useref");
+var useref=require("./node_modules/gulp-useref");
 
 /*gulp-if 引入*/
 
-var giif=require("gulp-if");
+var giif=require("./node_modules/gulp-if");
 
 
 

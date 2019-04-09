@@ -194,20 +194,16 @@ $ npm install --global vue-cli
 ## 创建一个基于 webpack 模板的新项目（vue-cli 3.0 以前）
 $ vue init webpack my-project
 ## 暴露的有用的属性
-    vm.$data === data // => true
-    vm.$el === document.getElementById('example') // => true
-    // $watch 是一个实例方法
-    vm.$watch('a', function (newValue, oldValue) {
-    // 这个回调将在 `vm.a` 改变后调用
+ * vm.$data === data // => true
+ * vm.$el === document.getElementById('example') // => true
+ * vm.$watch('a', function (newValue, oldValue) {
+      这个回调将在 `vm.a` 改变后调用
     })
 ## 问题:
 1. 为什么组件中data是函数？
 每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
 都有它自己内部的状态了
-2. 引入远程的js资源
- 自封装 v-remote-js
- npm i v-remote-js -S
-3. 异步文件上传
+2. 异步文件上传
 axios
 multipart 添加之后选择多图
 <input type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
@@ -304,6 +300,14 @@ this.$emit('update:title', newTitle)
 </base-layout>
 // v-slot 只能添加在一个 <template> 上
 ```
+## vue 插件开发
+1. 数字滚动
+2. 侧滑（删除）
+3. 复制到剪切板
+4. ios 手动长按复制
+5. 引入远程脚本
+ - npm i v-remote-js -S
+
 ## 服务器端渲染(SSR)
 1. 为什么？
 * 更好的 SEO，由于搜索引擎爬虫抓取工具可以直接查看完全渲染的页面。

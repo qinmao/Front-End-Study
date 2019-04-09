@@ -1,5 +1,5 @@
 # 前端技术栈
-> 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点。
+> 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点，构建自己的知识网络。
 ## html+css
 ### 基本html标签
 
@@ -626,637 +626,608 @@
 * replaceChild 
 * insertBefore
 
-### document.createDocumentFragment 
->创建一个新的空白的文档片段
-文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
-            
-### js.map 文件是干啥的？
-源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
-        
-## js 面向对象
-        1. 对象：
-            1. 什么是对象？
-                无序属性的集合，可以看成键值对
-            2. 如何创建？
-                1) 字面量或者叫直接量
-                var obj={};
-                2) 构造函数创建对象
-                    function Student(name, age, sex) {
-                        this.name = name
-                        this.age = age
-                        this.sex = sex
-                        this.sayHi = function () {
-                            console.log("你好" + this.name)
-                        }
-                    var s1 = new Student("小明", "12", "男");
+### offset
+ * offsetLeft
+ * offsetTop 
+ * offsetWidth 
+ * offsetHeight 
+ * offsetParent //获取到当前元素外面的定位父盒子
 
-                    构造函数的执行过程（如何创建对象的）：
-                        1）创建一个空对象obj
-                        2）将上面的创建的空对象obj赋值给this
-                        3）执行代码块（给属性赋值等等）
-                        4）隐式返回 return this
-                        5）在构造函数中 有显示的return 语句，若返回值的类型是基本数据类型，会被忽略，复合数据类型不会    
-                3)  工厂模式创建对象 就是用一个方法实现对象的实例化
-                        function initStu(name, age,sex) {
-                                return new Student(name, age,sex);
-                            }
-                        var obj=initStu();
-                        ————这种方式创建对象避免new的操作       
-            3. 对象的属性
-                1）两种访问方式：
-                    a: obj.propertyName  
-                    b: obj["propertyName"] __遍历属性并赋值时常用到  
-                2）检测：
-                　　　hasOwnProperty方法
-                        1. 语法：<对象>.hasOwnProperty('propertyName')
-                        2. 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
-                　　    eg:obj.hasOwnProperty("name") //true
-        2. 函数
-            1. 创建
-                * 声明式
-                　　function fn(){}
-                * 表达式
-                    var fn=function(){}
-                * 构造函数
-                　　var fn = new Function([arg1~argN, body]);
-                　　eg:var f = new Function('n', 'console.log(n);');
-            2. 变量作用域和预解析：
-                作用域
-                    1. 变量的作用域：变量起作用的区域，也就说变量可以被访问到的区域。
-                    2. ...种类：
-                    　　1）全局变量，生命周期 是随着页面存在而存在，页面销毁而销毁。
-                    　　2）局部变量，在函数内声明的变量，称为局部变量。 作用范围是在指定函数内，生命周期 是函数执行完毕就会被销毁。
-                    3. 词法作用域：在js预解析阶段，确定变量的作用域。变量的作用域由 其定义的位置决定 而不是由其使用的位置。在词法作用域下，只有函数可以限定作用域。
-                        ___es6中新增了块级作用域let(详细参见es6)
-
-                    4. 变量的搜索原则：类似下面的属性搜索原则，先在当前作用域，找不到然后上一层，最后到全局作用域。找不到抛异常。
-                
-                
-            3. 函数属性
-                1. arguments 
-                    * 伪数组对象
-                    * 以数组形式，存储实参
-                    * callee 返回正在被执行函数; 匿名函数的递归调用
-                    * length 实参个数
-
-                2. caller: 返回调用函数的 函数
-
-                3. length: 定义形参的个数
-
-                4. name: 存储函数的名字
-            
-            4. 闭包：　
-                1. 实质：就是能够读取其他函数内部变量的函数。
-                2. 写法：
-                     function foo() {
-                         var obj = {};                            
-                         return function() {
-                             return obj;
-                         };             
-                3. 闭包的应用：
-                    1. 缓存：
-                        function outer() {
-                                var cache;
-                                function inner() {
-                                    // 代码块
-                                    // 使用cache
-                                }
-                                return inner;
-                            }
-                            var fn = outer();
-                    2. 私有变量：
-                        在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
-                        function person(name) {
-                                return {
-                                    getName: function() {
-                                        return name;
-                                    },
-                                    setName: function(val) {
-                                        name= val;
-                                    }
-                                };
-                        }
-                    3. 沙箱模式：
-                        防止全局变量和全局对象的污染，引出沙箱模式
-                        实质就是匿名的自执行函数
-                        (function(global){
-                            //代码块
-                            //自执行
-                            //在内部声明的变量与外部隔离
-                            //把常用的全局变量，当做实参传入进来
-                            //目的：1，减少变量的搜索过程，提高js 性能
-                            //     2,利于代码压缩
-                        }(window));
-                4. 闭包使用中的问题：
-                     本质上就是让数据常驻内存。如此，使用闭包就增大内存开销，使用不当就会造成内存泄漏。
-                5. 如何解决：使用完闭包后，及时清除。（将闭包变量 赋值为 null）    
-            5. 函数调用和this指向
-                1. 普通函数执行模式
-                    直接拿到函数的名字 加上 圆括号。
-                    在该模式下，函数内部this的指向为 window
-
-                2. 构造函数模式
-                    调用函数时，配合着new关键字来执行某个函数，此时该函数的执行模式为 构造函数模式
-                    函数内部的this指向为 当前创建出来的实例。
-
-                3. 方法调用模式
-                    将一个函数 赋值给 某个对象的属性，然后通过该对象去执行函数，此时该函数的执行模式为
-                        方法调用模式；
-                    在该模式下，this的指向为 方法的调用者
-
-                4. call/apply（上下文）模式: 改变this的指向
-                    * fn.call(thisObj, [arg1~argN])
-                        * thisObj 表示 改变后的this指向
-                        * arg1~argN 是fn执行时，传入的实参。可选的。
-                        * call方法再执行的时候，fn函数也同时执行，同时，将函数fn内部的this替换成指定thisObj对象。
-                    * fn.apply(thisObj, [数组]);
-                        * thisObj 表示 改变后的this指向
-                        * [数组] 含义：将数组中的元素 作为函数fn执行时传入的实参。可选的
-                        * apply方法再执行的时候，fn函数也同时执行。同时，将函数fn内部的this替换成指定thisObj对象。
-                    * 在该模式下，call|apply方法的第一参数即为 函数fn内的this指向      
-        3. js GC:      
-            1. 引用计数法
-                当定义一个变量 （此时引用计数为0）并且 赋值为指定的数据时，该变量的引用计数 + 1；
-                如果该数据，有其他对象或函数使用，引用计数 + 1；
-                如果使用该数据的对象或函数，被GC回收掉，那么引用计数 - 1；
-                如果该变量手动赋值为null，此时引用计数 - 1；
-                当GC对象寻访到该变量时，如果计数为0，GC对象就直接回收该变量所占用的内存。
-                如果函数正在执行或还没有执行完毕，内部定义的数据都是不可回收的，不论引用计数是否为0。
-                引用计数的缺陷：容易产生循环引用，导致变量无法被GC回收。
-            2. 标记清除法
-              从文档的根节点（window对象）出发，找到至少一条路径可以到达该变量，那么该变量被标记为 “不可回收”；否则，该变量标记为 “可回收”。
-              当GC对象寻访到该变量，如果被标记为 “可回收”，那么，就会立即回收掉其所占用的内存。
-
-              标记清除法的缺陷：性能比较低。
-
-            3. 当代浏览器，同时使用两种机制。优先使用引用计数法，在相隔一定周期后使用标记清除法来释放变量的内存空间。
-            4. 区别与联系
-                    * 前者性能较高，但是有循环引用的缺陷
-                    * 后者性能较低，但是不会产生循环引用问题
-                    * 在当代浏览器配合两种机制，去释放变量的内存空间。
-        4. js线程
-            1. js本质 是 单线程的。
-            2. js语言为什么设计成单线程的？
-                * 避免多线程操作同一文件（资源）产生冲突。
-                * 提高js性能
-            3. js在执行的时候，保证主线程上的代码先执行完毕。
-            4. 在js中有三个主线程
-                * 页面渲染主线程
-                * js执行主线程，可以阻塞页面渲染主线程。
-                    任务队列的结构-存储异步代码、以及事件的处理程序
-                * 事件循环主线程：监听页面触发的事件处理程序。
-                    当用户触发某个事件时，事件循环主线程，获取到对应的事件处理程序，将其添加到js执行主线程中“任务队列”中。等待执行。
-        5. 原型prototype：
-            1. 什么是原型？
-                函数对象的prototype属性所引用的对象。
-            2. 原型的本质：就是对象。一般函数都有prototype属性，也就是说函数都有原型。
-                声明一个函数时，原型就随之而产生。此时默认原型 是一个空对象。但是具有一个默认的属性constructor，该属性指向其构造函数.
-            3. 原型的特性：
-                1. 在原型上的成员(属性和方法),都可以直接被其实例访问，object 是基原型
-                2. 实例不可以直接修改原型上的任何成员
-                3. 动态性
-                    * 如果在原有的原型上扩展成员，会直接反应到 已创建的对象和之后创建的对象上。
-                    * 如果替换了原有的原型，新原型的成员 在之前已创建的对象是不能访问到的，
-                        而在之后创建的对象是可以访问到的。
-                    * 如果置换了原型，就可能会在新的原型上丢失默认的constructor属性
-                        如果想要其有该属性，就只能自己手动添加上。
-                4. 所有的实例 只能共享一个原型。
-            4. 获取原型的方式：
-                1. 通过函数：<fnName>.prototype；
-                2. 通过对象：<object>.__proto__ ，__proto__  是浏览器中的，是一个非标准属性；
-            5. 原型链：
-                原型的本质是对象，那么就具有__proto__的属性，所以原型对象也有原型。通过这个属性一层层找下去，就是当前对象的原型链。    
-                原型链的尽头 Object.prototype 所以js实现继承就靠原型链
-            6. 对象的属性搜索原则：
-                首先找自己，若找到，停止搜索直接使用，否则一层层往原型上找，找到，停止搜索，直接使用，一直到
-                Object.prototype上 如果找到 就返回该属性的值，如果依然没有找到，就返回undefined。
-                
-            7. 实现继承方式（利用原型实现继承）：
-                1. 实例继承原生原型对象
-                    function Fn() {}
-                    Fn.prototype.name = 'qm';
-                    var obj = new Fn();
-                2.  实例继承自定义的原型对象
-                    function Fn() {}
-                    Fn.prototype={name:'qm'};
-                    var obj = new Fn();
-                3.  组合式继承(开发中常用的)
-                    function extend(obj, obj2) {
-                        for (var key in obj2) {
-                            obj[key] = obj2[key];
-                        }
-                    }
-                    extent({},{name:"qm",age:18})
-
-                4.  es5 提供的Object.create(obj) 的经典继承                    
-                    var obj = Object.create(obj1);
-                    //原理是置换原型
-                    var create = function (obj) {
-                    if (!Object.create) {
-                        Object.create = function (obj) {
-                            function F() { }
-                            F.prototype = obj
-                            return new F()
-                        }
-                    } else {
-                        return Object.create(obj)
-                    }
-                }
-
-            8. Object.prototype 上的一些方法
-                1）hasOwnProperty方法
-                    1. 语法：<对象>.hasOwnProperty('propertyName')
-                    2. 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
-                2）propertyIsEnumerable
-                    语法：<对象>.propertyIsEnumerable("propName")
-                    功能：可枚举 指定的属性是对象本身的。
-                3）isPrototypeOf
-                    * 语法：<对象a>.isPrototypeOf(对象b)
-                    * 功能：判断对象a是不是对象b的原型
-                4）valueOf
-                    * 语法: <对象>.valueOf()
-                    * 功能：将指定对象类型的数据 转换成 基本数据类型
-                    * 规则：
-                        * 如果该对象是 基本数据的包装类型 会转换成 其对应的基本数据类型
-                        * 否则为其他对象类型，就直接返回该对象。
-            9. instanceof 
-                1) 语法：<对象> instanceof 函数
-                2) 功能：判断对象 是否为 指定函数的实例
-                3) 运算规则 
-                    若函数的原型，出现在该对象的原型链上 表达式返回true 否则false 
-            10. eval方法
-                1，可以使用eval来将json字符串 转换成 js对象。
-                2， 在没有严格模式，eval可以随意指定一段字符串来当做js代码来执行。
-                    * 脚本注入
-                    * 全局变量以及全局对象污染
-                    * eval创建变量的作用域 是由eval执行的作用域决定。 
-                __已不推荐使用。JSON.parse()
-            11. 待补充
-        6. 类和模块
-    3. ES5 
-        1. 新增的一些方法
-            Front-End-Study/ECMA/es5.md
-        2. ES5 的严格模式
-            Front-End-Study/ECMA/strict.md
-        3.  ES5 读写器
-            function person(name, age) {
-            return {
-                get name() {
-                    return name;
-                },
-                get age() {
-                    return age;
-                },
-                set age(val) {
-                    age = val;
-                }
-            }
-        }
-            var zs = person('zhangsan', 19);
-            zs.name = 'zhangsansan';
-            console.log(zs.getName());
-        4. 待续   
-    4. es6
-        Front-End-Study/ECMA/es6.md
-    5. offset
-        offsetLeft
-        offsetTop 
-        offsetWidth 
-        OffsetHeight //除了margin以外所有的高度
-        OffsetParent //获取到当前元素外面的定位父盒子
-    6. scroll
-        scrollWidth（内部内容的真实宽度） 
-        scrollHeight 计算方式相同，
-        
-        scrollTop 被卷曲的内容高度
-        scrollLeft 同理
-
-        获取卷曲的高度
-        Window.onscroll=function(){
+### scroll
+ * scrollWidth（内部内容的真实宽度） 
+ * scrollHeight 计算方式相同，
+ * scrollTop 被卷曲的内容高度
+ * scrollLeft 
+    ```javascript
+        // 获取卷曲的高度
+        Window.onscroll= function(){
             //短路操作
             var topVal=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop
             var leftVal=window.pageYOffset||document.documentElement.scrollLeft||document.body.scrollLeft
         }
-    7. client
-        clientHeight (内部空间的高度 )
-        clientWidth（元素内部的真实宽度）
+    ```
+
+### client
+ * clientHeight 
+ * clientWidth（元素内部的真实宽度）
+
+### document.createDocumentFragment 
+>创建一个新的空白的文档片段
+文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
+
+### requestAnimationFrame 请求动画帧
+ * 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。使用一个回调函数作为参数，该回调函数会在浏览器重绘之前调用。
+
+ * 语法：window.requestAnimationFrame(callback);
+
+ * 返回值：一个 long 整数，请求 ID ，是回调列表中唯一的标识。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
+ 
+ * 优点：运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
+
+
+### js.map 文件是干啥的？
+源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
         
-## jquery
-  1. 本质：
-      源码分析得知是一个伪数组对象，在自然数的索引上存储的是查询到所有DOM元素。 $本质是jQuery原型上的init这个工厂构造函数的实例，根据传入的参数不同实现不同的功能。
-  2. 特性：
-        jquery 有两大特性
-            隐式迭代
-            链式编程
-  3. jquery 与 dom 对象转化：
-      dom->jquery $() 包裹一个dom对象
-      jquery->dom   
-          1)var $box=$("#box") 通过索引取出$box[0]
-          2)$box.get(0)
-  4. 清空元素
-      1. html():
-          $(“div”).html("");//使用html方法来清空元素，不推荐使用，会造成内存泄漏,绑定的事件不会被清除。
-      2.empty():
-           $(“div”).empty();//清空div的所有内容（推荐使用，会清除子元素上绑定的内容）
-      3. remove():
-           $(“div”).remove();自身也删除   
-  5. attr,prop 区别
-      1. attr("box",值) 设置单个属性
-          attr({})    设置多个属性
-          取表单值属性时会得到undefined
-      2.  这里可以使用prop 
-          自定义属性使用attr,自带属性使用prop
-  6. selecor
-  7. dom 操作的方法
-  8. ajax/jsonp
-     1. ajax :
-         $.ajax({
-             type: "method",
-             url: "url",
-             data: "data",
-             dataType: "dataType",
-             success: function (response) {
-                 
+## js 面向对象
+ * 对象：
+    + 什么是对象？
+       - 无序属性的集合，可以看成键值对
+    + 如何创建？
+       - 字面量或者叫直接量
+        var obj={};
+       - 构造函数创建对象
+       ```javacript
+         function Student(name, age, sex) {
+             this.name = name
+             this.age = age
+             this.sex = sex
+             this.sayHi = function () {
+                 console.log("你好" + this.name)
              }
-         });
-         $.get("url", data,
-             function (data, textStatus, jqXHR) {
-                 
-             },
-             "dataType"
-         );
-         $.post("url", data,
-             function (data, textStatus, jqXHR) {
-                 
-               },
-               "dataType"
-           );
-       2. jsonp:
-           原理：
-               利用了<script src=""></script>标签具有可跨域的特性，
-               由服务端返回一个预先定义好的Javascript函数的调用，并且将服务器数据以该函数参数的形式传递过来
-               只能以GET方式请求
-           $.ajax({
-               //请求方式必须是get
-               type:'get',
-               //请求地址
-               url:'http://api.map.baidu.com/telematics/v3/weather',
-               //请求数据
-               data:{'name':'test'},
-               //请求方式  如果想要实现jsonp跨域，必须声明是dataType:'jsonp'
-               dataType:'jsonp',
-               //成功时的回调
-               success:function(data){
+         var s1 = new Student("小明", "12", "男");
+        ```
+    + 构造函数的执行过程（如何创建对象的）
+        1. 创建一个空对象obj
+        2. 将上面的创建的空对象obj赋值给this
+        3. 执行代码块（给属性赋值等等）
+        4. 隐式返回 return this
+        5. 在构造函数中 有显示的return 语句，若返回值的类型是基本数据类型，会被忽略，复合数据类型不会    
 
-               }
-           })
-       3. cors 
-           ajax 的jsonp 有个缺陷就是只能发get 请求不能发post,所以可以使用cors.get/post 都支持
+    +  工厂模式创建对象 就是用一个方法实现对象的实例化
+        ```javascript
+            function initStu(name, age,sex) {
+                return new Student(name, age,sex);
+                }
+            var obj=initStu();
 
-           原理：在服务器响应了响应头: Access-Control-Allow-Origin http 协议规定.
-           header("Access-Control-Allow-Origin:*");
-  9. animation
+            // 这种方式创建对象避免new的操作    
+        ```   
+    + 对象的属性
+        - 两种访问方式：
+            1. obj.propertyName  
+            2. obj["propertyName"] __遍历属性并赋值时常用到  
 
-## Event（事件绑定，事件代理，事件委托）
-   1. 事件绑定： 绑定多个事件
-           1)$("#box").bind(""click mouseenter",function(){
-               ...
-           })
-           2)$("#box").bind({
-               "click":function(){
-                   ...
-               },
-               "mouseenter":function(){
-                   ...
-               }
-           })   
-   2. 事件委托（或者叫代理）
-       1. 以上bind 绑定事件会出现一个问题及新创建的元素没有事件？
-       2. 如何解决？
-           jq 推出新的事件的添加方式delegate
-               $("#box").delegate("p","click",function(){
-                   .....
-               })
-       3. 这就是事件委托或者叫事件代理
-           本质：就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
+        - 检测:
+            hasOwnProperty方法
+            1. 语法：<对象>.hasOwnProperty('propertyName')
+            2. 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
+            eg:obj.hasOwnProperty("name") //true
 
-       4. 新版本jq 统一使用on(v1.7后)
-           1. 简单事件添加
-               $("#box").on("click",function(){
-                   ...
-               })
-           2. 同时添加多个事件
-               $("#box").on({
-               "click":function(){
-                   ...
-               },
-               "mouseenter":function(){
-                   ...
-               }
-           })
-           3. 事件委托 一般只添加一次事件委托
-               $("#box").on("click","p",function(){
-                   .....
-               })
-           4. 事件委托好处：
-               提高性能
-                   应用场景：
-                       给dom元素循环遍历绑定事件
-                       1. 减少了事件的注册，内存开销减少了
-                       2. 元素的增减不会影响事件的绑定
-                       3. js和DOM节点之间的关联变少了，减少了因循环引用(GC中引用计数法的缺陷)而带来的内存泄漏发生的概率。
+ * 函数
+    + 创建
+        1. 声明式
+            function fn(){}
+        2. 表达式
+            var fn=function(){}
+        3. 构造函数
+            var fn = new Function([arg1~argN, body]);
+            eg:var f = new Function('n', 'console.log(n);');
 
-               注意：不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可以使用。例如mouseover 由于事件对象target 频繁改动会有性能问题
+    + 变量作用域
+        - 变量的作用域：变量起作用的区域，也就说变量可以被访问到的区域。
+        - 种类
+            1. 全局变量，生命周期 是随着页面存在而存在，页面销毁而销毁。
+            2. 局部变量，在函数内声明的变量，称为局部变量。 作用范围是在指定函数内，生命周期 是函数执行完毕就会被销毁。
 
-           5. 事件流
-               场景： 一个标签添加了自身的事件，又添加了委托事件执行顺序？
-                   委托事件先执行，然后自身事件执行（冒泡）
-               执行的流程：
-                   以这个为例： 
-                    $("#box").on("p","click",function(){
-                       .....
-                   })
-                    $("p").on("click",function(){
-                   ...
-               })
+        - 词法作用域：在js预解析阶段，确定变量的作用域。变量的作用域由 其定义的位置决定 而不是由其使用的位置。在词法作用域下，只有函数可以限定作用域。
+        ___es6中新增了块级作用域let(详细参见es6)
 
-               未完待续
+        - 变量的搜索原则：类似下面的属性搜索原则，先在当前作用域，找不到然后上一层，最后到全局作用域。找不到抛异常。
+                
+    + 函数属性
+        - arguments 
+            * 伪数组对象
+            * 以数组形式，存储实参
+            * callee 返回正在被执行函数; 匿名函数的递归调用
+            * length 实参个数
+
+        - caller: 返回调用函数的 函数
+
+        - length: 定义形参的个数
+
+        - name: 存储函数的名字
+            
+    + 闭包：　
+        - 实质：就是能够读取其他函数内部变量的函数。
+        - 写法：
+        ```javascript
+            function foo() {
+                var obj = {};                            
+                return function() {
+                    return obj;
+                }  
+            }
+        ```           
+        - 应用：
+            1. 缓存：
+                ```javascript
+                    function outer() {
+                            var cache;
+                            function inner() {
+                                // 代码块
+                                // 使用cache
+                            }
+                            return inner;
+                        }
+                    var fn = outer();
+                ```
+            2. 私有变量：
+                - 在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
+                ```javascript
+                    function person(name) {
+                        return {
+                            getName: function() {
+                                return name;
+                            },
+                            setName: function(val) {
+                                name= val;
+                            }
+                        };
+                    }
+                ```
+            + 闭包使用中的问题：
+                - 本质上就是让数据常驻内存。如此，使用闭包就增大内存开销，使用不当就会造成内存泄漏。
+                - 如何解决：使用完闭包后，及时清除。（将闭包变量 赋值为 null） 
+
+    + 沙箱模式：
+        - 防止全局变量和全局对象的污染，引出沙箱模式,实质就是匿名的自执行函数
+        ```javascript
+            (function(global){
+                //代码块
+                //自执行
+                //在内部声明的变量与外部隔离
+                //把常用的全局变量，当做实参传入进来
+                //目的：1，减少变量的搜索过程，提高js 性能
+                //     2,利于代码压缩
+            }(window));
+            // 一般开发插件时会用，jq
+        ```
+               
+
+    + 函数调用和this指向
+        1. 普通函数执行模式
+            - 直接拿到函数的名字 加上 圆括号。
+            - 在该模式下，函数内部this的指向为 window
+
+        2. 构造函数模式
+            - 调用函数时，配合着new关键字来执行某个函数，此时该函数的执行模式为 构造函数模式
+            - 函数内部的this指向为 当前创建出来的实例。
+
+        3. 方法调用模式
+            - 将一个函数 赋值给 某个对象的属性，然后通过该对象去执行函数，此时该函数的执行模式为方法调用模式；
+            - 在该模式下，this的指向为 方法的调用者
+
+        4. call/apply（上下文）模式: 改变this的指向
+            + fn.call(thisObj, [arg1~argN])
+                - thisObj 表示 改变后的this指向
+                - arg1~argN 是fn执行时，传入的实参。可选的。
+                - call方法再执行的时候，fn函数也同时执行，同时，将函数fn内部的this替换成指定thisObj对象。
+
+            + fn.apply(thisObj, [数组]);
+                - thisObj 表示 改变后的this指向
+                - [数组] 含义：将数组中的元素 作为函数fn执行时传入的实参。可选的
+                - apply方法再执行的时候，fn函数也同时执行。同时，将函数fn内部的this替换成指定thisObj对象。
+                - 在该模式下，call|apply方法的第一参数即为 函数fn内的this指向    
+
+        5. bind 方法创建一个新的函数, 当被调用时，将其this关键字设置为提供的值
+            - fun.bind(thisArg[, arg1[, arg2[, ...]]])
+            - 返回值：返回由指定的this值和初始化参数改造的原函数拷贝
+            - 应用场景：
+                JavaScript新手经常犯的一个错误是将一个方法从对象中拿出来，然后再调用，希望方法中的 this 是原来的对象。（比如在回调中传入这个方法。）如果不做特殊处理的话，一般会丢失原来的对象。
+
+### prototype
+ * 什么是原型？
+    - 函数对象的prototype属性所引用的对象。
+
+ * 原型的本质：就是对象。一般函数都有prototype属性，也就是说函数都有原型。
+    - 声明一个函数时，原型就随之而产生。此时默认原型 是一个空对象。但是具有一个默认的属性constructor，该属性指向其构造函数
+
+ * 原型的特性：
+    1. 在原型上的成员(属性和方法),都可以直接被其实例访问，object 是基原型
+
+    2. 实例不可以直接修改原型上的任何成员
+
+    3. 动态性
+        * 如果在原有的原型上扩展成员，会直接反应到 已创建的对象和之后创建的对象上。
+        * 如果替换了原有的原型，新原型的成员 在之前已创建的对象是不能访问到的，而在之后创建的对象是可以访问到的。
+        * 如果置换了原型，就可能会在新的原型上丢失默认的constructor属性,如果想要其有该属性，就只能自己手动添加上。
+
+    4. 所有的实例 只能共享一个原型。
+
+ * 获取原型的方式：
+    - 通过函数：<fnName>.prototype；
+    - 通过对象：<object>.__proto__ ，__proto__  是浏览器中的，是一个非标准属性；
+
+ * 原型链：
+    - 原型的本质是对象，那么就具有__proto__的属性，所以原型对象也有原型。通过这个属性一层层找下去，就是当前对象的原型链。
+    - 原型链的尽头 Object.prototype 所以js实现继承就靠原型链
+
+ * 对象的属性搜索原则：
+    - 首先找自己，若找到，停止搜索直接使用，否则一层层往原型上找，找到，停止搜索，直接使用，一直到 Object.prototype上 如果找到 就返回该属性的值，如果依然没有找到，就返回undefined。
+
+ * 实现继承方式（利用原型实现继承）
+    1. 实例继承原生原型对象
+    ```
+        function Fn() {}
+        Fn.prototype.name = 'qm';
+        var obj = new Fn();
+    ```
+    2.  实例继承自定义的原型对象
+    ```
+        function Fn() {}
+        Fn.prototype={name:'qm'};
+        var obj = new Fn();
+    ```
+    3.  组合式继承(开发中常用的)
+    ```javascript
+        function extend(obj, obj2) {
+            for (var key in obj2) {
+                obj[key] = obj2[key];
+            }
+        }
+        extent({},{name:"qm",age:18})
+    ```
+    4.  es5 提供的Object.create(obj) 的经典继承   
+    ```javascript
+        var obj = Object.create(obj1);
+        // 原理是置换原型
+        var create = function (obj) {
+        if (!Object.create) {
+            Object.create = function (obj) {
+                function F() { }
+                F.prototype = obj
+                return new F()
+            }
+        } else {
+            return Object.create(obj)
+        }
+    }
+    ```
+
+* Object.prototype 上的一些方法
+    + hasOwnProperty方法
+        - 语法：<对象>.hasOwnProperty('propertyName')
+        - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
+
+    + propertyIsEnumerable
+        - 语法：<对象>.propertyIsEnumerable("propName")
+        - 功能：可枚举 指定的属性是对象本身的。
+
+    + isPrototypeOf
+        - 语法：<对象a>.isPrototypeOf(对象b)
+        - 功能：判断对象a是不是对象b的原型
+
+    + valueOf
+        - 语法: <对象>.valueOf()
+        - 功能：将指定对象类型的数据 转换成 基本数据类型
+        + 规则：
+            - 如果该对象是 基本数据的包装类型 会转换成 其对应的基本数据类型
+            - 否则为其他对象类型，就直接返回该对象。
+
+ * instanceof 
+    - 语法：<对象> instanceof 函数
+    - 功能：判断对象 是否为 指定函数的实例
+    - 运算规则:若函数的原型，出现在该对象的原型链上 表达式返回true 否则false 
+
+ * eval方法
+    - 可以使用eval来将json字符串 转换成 js对象。
+    - 在没有严格模式，eval可以随意指定一段字符串来当做js代码来执行。
+        * 脚本注入
+        * 全局变量以及全局对象污染
+        * eval创建变量的作用域 是由eval执行的作用域决定。 
+    - 已不推荐使用。JSON.parse()
+
+## js GC:      
+ * 引用计数法
+    - 当定义一个变量 （此时引用计数为0）并且 赋值为指定的数据时，该变量的引用计数 + 1；
+    - 如果该数据，有其他对象或函数使用，引用计数 + 1；
+    - 如果使用该数据的对象或函数，被GC回收掉，那么引用计数 - 1；
+    - 如果该变量手动赋值为null，此时引用计数 - 1；
+    - 当GC对象寻访到该变量时，如果计数为0，GC对象就直接回收该变量所占用的内存。
+    - 如果函数正在执行或还没有执行完毕，内部定义的数据都是不可回收的，不论引用计数是否为0。
+    - 引用计数的缺陷：容易产生循环引用，导致变量无法被GC回收。
+
+ * 标记清除法
+    - 从文档的根节点（window对象）出发，找到至少一条路径可以到达该变量，那么该变量被标记为 “不可回收”；否则，该变量标记为 “可回收”。
+    - 当GC对象寻访到该变量，如果被标记为 “可回收”，那么，就会立即回收掉其所占用的内存。
+
+    - 标记清除法的缺陷：性能比较低。
+
+ * 当代浏览器，同时使用两种机制。优先使用引用计数法，在相隔一定周期后使用标记清除法来释放变量的内存空间。
+
+ * 区别与联系
+    - 前者性能较高，但是有循环引用的缺陷
+    - 后者性能较低，但是不会产生循环引用问题
+    - 在当代浏览器配合两种机制，去释放变量的内存空间。
+
+## js执行机制
+* JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：
+
+* js语言为什么设计成单线程的？
+    - 避免多线程操作同一文件（资源）产生冲突。
+    - 提高js性能
+
+* 事件循环
+    1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+    2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+    3. 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+    4. 主线程不断重复上面的第三步。
+    主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。 规范中规定 task 分为两大类，分别是 macro task 和 micro task，并且每个 macro task 结束后，都要清空所有的 micro task。
 
 
+## ES5 
+ * 新增的一些方法
+    - [方法](ECMA/es5.md)
 
-           6. 解绑事件：
-               1）解绑普通事件
-                   $("#box").off("click")
-               2)解绑多个
-                   $("#box").off("mouseenter click")
-               3)解绑委托事件
-                   $("#box").off("click","**")
-               4）$("#box").off() //接除box盒子所有的事件
-             
-           7. 事件触发:
-               1. 简单事件触发：
-                   $(selector).click(); //触发 click事件
-               2. trigger方法触发事件
-                   $(selector).trigger(“click”);
-               3. triggerHandler触发 事件响应方法，不触发浏览器行为
-                   $(selector).triggerHandler(“focus”);
+ * ES5 的严格模式
+    - [strict](ECMA/strict.md)
 
-           8. jq中阻止事件冒泡：
-               1，阻止事件传播
-                   e.stopPropagation();   
-               2，阻止事件触发的默认效果
-                   e.preventDefault();
-               3，return false 不仅可以阻止默认效果，还能阻止事件冒泡
+ * ES5 读写器
+ ```javascript
+    function person(name, age) {
+        return {
+            get name() {
+                return name;
+            },
+            get age() {
+                return age;
+            },
+            set age(val) {
+                age = val;
+            }
+        }
+    }
+    var zs = person('zhangsan', 19);
+    zs.name = 'zhangsansan';
+    console.log(zs.getName());
+ ```
 
-           ___更详细的后面会写一篇博客关于事件这块。
+## es6
+- [es6](ECMA/es6.md)
 
-   3. 移动端事件
-       1. 移动端touch事件（区分webkit和winphone）
-           /* 当用户手指放在移动设备在屏幕上滑动会触发的touch事件 */
-           以下支持webkit
-           touchstart——当手指触碰屏幕时候发生。不管当前有多少只手指
-           touchmove——当手指在屏幕上滑动时连续触发。通常我们再滑屏页面，会调用event的preventDefault()可以阻止默认情况的发生：阻止页面滚动
-           touchend——当手指离开屏幕时触发
-           touchcancel——系统停止跟踪触摸时候会触发。例如在触摸过程中突然页面alert()一个提示框，此时会触发该事件，这个事件比较少用
+## 移动端事件
+ * 移动端touch事件
+    - 当用户手指放在移动设备在屏幕上滑动会触发的touch事件
+    - touchstart——当手指触碰屏幕时候发生。不管当前有多少只手指
+    - touchmove——当手指在屏幕上滑动时连续触发。通常我们再滑屏页面，会调用event的preventDefault()可以阻止默认情况的发生：阻止页面滚动
+    - touchend——当手指离开屏幕时触发
+    - touchcancel——系统停止跟踪触摸时候会触发。例如在触摸过程中突然页面alert()一个提示框，此时会触发该事件，这个事件比较少用
 
-       2. TouchEvent说明：
-           touches：屏幕上所有手指的信息
-           targetTouches：手指在目标区域的手指信息
-           changedTouches：最近一次触发该事件的手指信息
-           touchend时，touches与targetTouches信息会被删除，changedTouches保存的最后一次的信息，最好用于计算手指信息
+ * TouchEvent说明：
+    + touches：屏幕上所有手指的信息
+        - targetTouches：手指在目标区域的手指信息
+        - changedTouches：最近一次触发该事件的手指信息
+        - touchend时，touches与targetTouches信息会被删除，changedTouches保存的最后一次的信息，最好用于计算手指信息
 
-           参数信息(changedTouches[0])
-               clientX、clientY在显示区的坐标
-               target：当前元素
-           事件响应顺序
-           ontouchstart  > ontouchmove  > ontouchend > onclick
+        + 参数信息(changedTouches[0])
+            - clientX、clientY在显示区的坐标
+            - target：当前元素
+
+    + 事件响应顺序
+        - ontouchstart  > ontouchmove  > ontouchend > onclick
 
 ## framework
-    1. angular
-        angular 1
-            Front-End-Study/angular1
-        angular 2
-    2. vue
-        Front-End-Study/vue
-    3. react
-        Front-End-Study/React/readme.md
-    4. bootstrap
-        bootstrap常用样式
-        3.1 container类   
-            用于定义一个固定宽度且居中的版心    
+> 前端常用的框架
+### jquery(传统的dom操作框架)
+ * 本质：
+    - 源码分析得知是一个伪数组对象，在自然数的索引上存储的是查询到所有DOM元素。$本质是jQuery原型上的init这个工厂构造函数的实例，根据传入的参数不同实现不同的功能。
+  * 特性：
+    - 隐式迭代
+    - 链式编程
+ * jquery 与 dom 对象转化：
+    - dom->jquery $() 包裹一个dom对象
+    + jquery->dom   
+        - var $box=$("#box") 通过索引取出$box[0]
+        - $box.get(0)
+ * 清空元素
+    1. html():
+        $(“div”).html("");// 使用html方法来清空元素，不推荐使用，会造成内存泄漏,绑定的事件不会被清除。
+    2.empty():
+        $(“div”).empty(); // 清空div的所有内容（推荐使用，会清除子元素上绑定的内容）
+    3. remove():
+        $(“div”).remove();自身也删除
 
-            push  pull  offset
+ * attr,prop 区别
+    1. attr("box",值) 设置单个属性
+        attr({})    设置多个属性
+        取表单值属性时会得到undefined
 
+    2. 这里可以使用prop 
+        自定义属性使用attr,自带属性使用prop
 
-            hidden 类
-            hidden-xs,hidden-sm,hidden-md,hidden-lg在不同的屏幕下隐藏。
+ * selecor
 
-            text-* 类
-                text-center 文本居中
-                text-left 文本左对齐
-                text-right 文本右对齐
+ * dom 操作的方法
 
-            pull-* 类
-            pull-left 左浮动类
-            pull-right 右浮动类
-                
-            center-block 类
-            让一个固定宽度的元素居中。
+ * ajax/jsonp
+    ```javascript
+    //  1. ajax :
+    $.ajax({
+        type: "method",
+        url: "url",
+        data: "data",
+        dataType: "dataType",
+        success: function (response) {
+            
+        }
+    });
 
-        3.2 栅格系统
-            - Bootstrap中定义了一套响应式的网格系统，
-            - 其使用方式就是将一个容器划分成12列，
-            - 然后通过col-xx-xx的类名控制每一列的占比
+    $.get("url", data,
+        function (data, textStatus, jqXHR) {
+            
+        },
+        "dataType"
+    );
 
-        3.3 row类
+    $.post("url", data,
+        function (data, textStatus, jqXHR) {
+            
+          },
+          "dataType"
+      );
 
-            - 因为每一个列默认有一个15px的左右外边距
-            - row类的一个作用就是通过左右-15px屏蔽掉这个边距
+    // 2. jsonp:
+        //    原理：
+        //        利用了<script src=""></script>标签具有可跨域的特性，
+        //        由服务端返回一个预先定义好的Javascript函数的调用，并且将服务器数据以该函数参数的形式传递过来
+        //        只能以GET方式请求
+    $.ajax({
+        //请求方式必须是get
+        type:'get',
+        //请求地址
+        url:'http://api.map.baidu.com/telematics/v3/weather',
+        //请求数据
+        data:{'name':'test'},
+        //请求方式  如果想要实现jsonp跨域，必须声明是dataType:'jsonp'
+        dataType:'jsonp',
+        //成功时的回调
+        success:function(data){
 
-            ```html
-            <div class="container">
-            <div class="row"></div>
-            </div>
-            ```
+        }
+    })
+    ```
 
-        3.4 col-*\*-\*类
+ * cors 
+    - ajax 的jsonp 有个缺陷就是只能发get 请求不能发post,所以可以使用cors.get/post 都支持
+    - 原理：在服务器响应了响应头: Access-Control-Allow-Origin http 协议规定 header("Access-Control-Allow-Origin:*");
 
-            - col-xs-[列数]：在超小屏幕下展示几份
-            - col-sm-[列数]：在小屏幕下展示几份
-            - col-md-[列数]：在中等屏幕下展示几份
-            - col-lg-[列数]：在大屏幕下展示几份
-            - __xs__ : 超小屏幕 手机 (<768px)  
-            - __sm__ : 小屏幕 平板 (≥768px) 
-            - __md__ : 中等屏幕 桌面显示器 (≥992px) 
-            - __lg__ : 大屏幕 大桌面显示器 (≥1200px)
+ * jq事件绑定： 
+    - 绑定多个事件
+    ```javascript
+        $("#box").bind("click mouseenter",function(){
+            ...
+        })
 
-            ```html
-            <div class="row">
-            <div class="col-md-2 text-center"></div>
-            <div class="col-md-5 text-center"></div>
-            <div class="col-md-2 text-center"></div>
-            <div class="col-md-3 text-center"></div>
-            </div>
-            ```
+        $("#box").bind({
+            "click":function(){
+                ...
+            },
+            "mouseenter":function(){
+                ...
+            }
+        })  
+    ``` 
 
+ * jq事件委托（或者叫事件代理）
+    + 以上bind 绑定事件会出现一个问题及新创建的元素没有事件？
+    + 如何解决？
+    ```javascript
+        // jq 推出新的事件的添加方式delegate
+        $("#box").delegate("p","click",function(){
+                ...
+        })
+    ```
+    + 这就是事件委托或者叫事件代理
+        - 本质：就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
 
+    + 新版本jq 统一使用on(v1.7后)
+        - 简单事件添加
+        ```javascript
+            $("#box").on("click",function(){
+                ...
+            })
+        ```
+        -  同时添加多个事件
+        ```javascript
+            $("#box").on({
+                "click":function(){
+                    ...
+                },
+                "mouseenter":function(){
+                    ...
+                }
+            })
+        ``` 
+        - 事件委托 一般只添加一次事件委托
+        ```
+            $("#box").on("click","p",function(){
+                .....
+            })
+        ```
+        - 应用场景：给dom元素循环遍历绑定事件
+            1. 减少了事件的注册，内存开销减少了
+            2. 元素的增减不会影响事件的绑定
+            3. js和DOM节点之间的关联变少了，减少了因循环引用(GC中引用计数法的缺陷)而带来的内存泄漏发生的概率。
 
+        - 注意：不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可用。例如mouseover 由于事件对象target 频繁改动会有性能问题
 
-        3.5 Bootstrap中轮播图插件叫作Carousel
+ * 事件流
+    + 场景： 
+        - 一个标签添加了自身的事件，又添加了委托事件执行顺序？
+        - 委托事件先执行，然后自身事件执行（冒泡）
+    + 执行的流程：
+    ```
+        $("#box").on("p","click",function(){
+            .....
+        })
+        $("p").on("click",function(){
+        ...
+        })
+    ```
 
-            ```html
-            <!-- 
-            以下容器就是整个轮播图组件的整体，
-            注意该盒子必须加上 class="carousel slide" data-ride="carousel" 表示当前是一个轮播图
-            bootstrap.js会自动为当前元 素添加图片轮播的特效
-            -->
-            <div id="轮播图的ID" class="carousel slide" data-ride="carousel">
-            <!-- ol标签是图片轮播的控制点 -->
-            <ol class="carousel-indicators">
-                <!-- 
-                每一个li就是一个单独的控制点
-                    data-target属性就是指定当前控制点控制的是哪一个轮播图，其目的是如果界面上有多个轮播图，便于区分到底控制哪一个
-                    data-slide-to属性是指当前的li元素绑定的是第几个轮播项
-                注意，默认必须给其中某个li加上active，展示的时候就是焦点项目
-                -->
-                <li data-target="#轮播图的ID" data-slide-to="0" class="active"></li>
-                <li data-target="#轮播图的ID" data-slide-to="1"></li>
-                <!-- ...更多的 -->
-            </ol>
-            <!-- 
-                .carousel-inner是所有轮播项的容器盒子，
-                注意role="listbox"代表当前div是一个列表盒子，作用就是给当前div添加一个语义
-            -->
-            <div class="carousel-inner" role="listbox">
-                <!-- 每一个.item就是单个轮播项目，注意默认要给第一个轮播项目加上active，表示为焦点 -->
-                <div class="item active">
-                <!-- 轮播项目中展示的图片 -->
-                <img src="example.jpg" alt="示例图片">
-                <div class="carousel-caption">
-                    <!-- 标题或说明性文字，如果不需要，直接删除当前div.carousel-caption -->
-                </div>
-                </div>
-                <div class="item">
-                <!-- ... -->
-                </div>
-                <!-- ... -->
-            </div>
-            <!-- 图片轮播上左右两个控制按钮，分别点击可以滚动到上一张和下一张 -->
-            <!-- 此处需要注意的是 该a链接的href属性必须指向需要控制的轮播图ID -->
-            <!-- 另外a链接中的data-slide="prev"代表点击该链接会滚到上一张，如果设置为next的话则相反 -->
-            <a class="left carousel-control" href="#轮播图的ID" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">上一张</span>
-            </a>
-            <a class="right carousel-control" href="#轮播图的ID" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">下一张</span>
-            </a>
-            </div>
-            ```
+ * jq事件解绑：
+    + 解绑普通事件
+        - $("#box").off("click")
+    + 解绑多个
+        - $("#box").off("mouseenter click")
+    + 解绑委托事件
+        - $("#box").off("click","**")
+    + $("#box").off() 
+        - 接除box盒子所有的事件
+             
+ * jq事件触发:
+    + 简单事件触发：
+        - $(selector).click(); 触发 click事件
+    + trigger方法触发事件
+        - $(selector).trigger(“click”);
+    + triggerHandler触发 事件响应方法，不触发浏览器行为
+        - $(selector).triggerHandler(“focus”);
+
+ * jq阻止事件冒泡：
+    1. 阻止事件传播
+       - e.stopPropagation();   
+    2. 阻止事件触发的默认效果
+       - e.preventDefault();
+    3. return false 
+       - 不仅可以阻止默认效果，还能阻止事件冒泡
+
+           
+### angular
+ * [angular1](angular1/angular-base.html)
+ * [angular2](angular2/angular.md)
+
+### vue
+ * [vue](vue/vue.md)
+
+### react
+ * [react](react/readme.md)
+
 ## node
  * [node](node/README.md)
- 
+
 ## Hybrid App
  * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
 
@@ -1264,255 +1235,236 @@
  * [正则表达式](note/reg.md)
 
 ## 模式
-    设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
-    编码模式:js 特有的模式
-    反模式:常见的，引发问题比解决问题更多的一种方法
+    - 设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
+    - 编码模式:js 特有的模式
+    - 反模式:常见的，引发问题比解决问题更多的一种方法
 
 ## tool 
- * git
-        SSH： 一种加密协议，用于计算机之间的登录
-        1. 对称性加密
-        在加密和解密时，使用同一个秘钥。
-        2. 非对称性加密
-        在加密和解密时，使用不同的秘钥。一般具有一对秘钥，一个被称为是 公钥；另一个被称为 私钥；
-        如果明文使用了私钥加密，必须使用与其对应的公钥才能解密成功。
-        如果明文使用了公钥加密，必须使用与其对应的私钥才能解密成功。
+ > git 基本使用
+ * SSH： 一种加密协议，用于计算机之间的登录
+ * 对称性加密
+    - 在加密和解密时，使用同一个秘钥。
+ * 非对称性加密
+    - 在加密和解密时，使用不同的秘钥。一般具有一对秘钥，一个被称为是 公钥；另一个被称为 私钥；
+    - 如果明文使用了私钥加密，必须使用与其对应的公钥才能解密成功。
+    - 如果明文使用了公钥加密，必须使用与其对应的私钥才能解密成功。
 
-        1. 初始化本地仓库
-            * git init
-            * 如果想要让git去管理某个目录下的文件，就在该目录下 执行上述命令。
-            * 在该目录下，就是本地的工作空间
+ * 初始化本地仓库
+    - git init
+    - 如果想要让git去管理某个目录下的文件，就在该目录下 执行上述命令。
+    - 在该目录下，就是本地的工作空间
 
-            git 在管理文件时，所有文件都具有三种状态
-            * 已修改
-            * 已暂存
-            * 已提交
+    + git 在管理文件时，所有文件都具有三种状态
+        - 已修改
+        - 已暂存
+        - 已提交
 
-            在上述三种状态，又对应三种目录空间
-            * 已修改 -> 工作目录
-            * 已暂存 -> 本地仓库的暂存区，通常就是在.git目录下的HEAD或INDEX文件
-            * 已提交 -> 本地仓库的版本库
+    + 在上述三种状态，又对应三种目录空间
+        - 已修改 -> 工作目录
+        - 已暂存 -> 本地仓库的暂存区，通常就是在.git目录下的HEAD或INDEX文件
+        - 已提交 -> 本地仓库的版本库
 
-            Git的基本工作流程
-            * 使用git init 或者 git clone 初始化 本地仓库；让git管理该目录下所有文件
-            * 在工作目录下，修改文件，新增文件，完成功能开发
-            * 将工作目录的文件提交到本地仓库的暂存区；
-            * 最后，再将暂存区文件 提交到 版本库，形成一个版本保存起来。
-                每一次，从暂存区 提交到 版本库 都会形成一个新的版本。然后同指令来做版本的控制
+ * Git的基本工作流程
+    - 使用git init 或者 git clone 初始化 本地仓库；让git管理该目录下所有文件
+    - 在工作目录下，修改文件，新增文件，完成功能开发
+    - 将工作目录的文件提交到本地仓库的暂存区；
+    - 最后，再将暂存区文件 提交到 版本库，形成一个版本保存起来。
+    > 每一次，从暂存区 提交到 版本库 都会形成一个新的版本。然后同指令来做版本的控制
 
-        2. 配置用户
-            * git config [option]
-                * --global: 全局配置，在当前用户下的所有仓库都共享同一个用户的配置信息
-                * --system：系统配置，在该电脑下的所有仓库都共享同一个用户的配置信息
-                * --local： 本地配置，在该仓库下使用当前配置的用户信息
-            * 通常： git config --global user.name 'xx'
-                    git config --global user.email 'xxx@xxx.com'
-            * 查看： git config --get user.name | git config --get user.email
-            * 替换：想要修改或者替换掉原先的用户信息，可以重新配置来实现
+ * 配置用户
+    + git config [option]
+        - --global: 全局配置，在当前用户下的所有仓库都共享同一个用户的配置信息
+        - --system：系统配置，在该电脑下的所有仓库都共享同一个用户的配置信息
+        - --local： 本地配置，在该仓库下使用当前配置的用户信息
+    + 通常： 
+        - git config --global user.name 'xx'
+        - git config --global user.email 'xxx@xxx.com'
+    + 查看： 
+        - git config --get user.name | git config --get user.email
+    + 替换：
+        - 想要修改或者替换掉原先的用户信息，可以重新配置来实现
 
+    + 在本地仓库中，如果新添加了一个文件，想要git 追踪 该文件的状态变化，必须要使用git add 指令将其添加到暂存区。之后，在修改文件，可以通过 
+    + git status指令 查看文件的当前状态。
 
-        在本地仓库中，如果新添加了一个文件，想要git 追踪 该文件的状态变化，必须要使用git add 指令将其添加到暂存区。之后，在修改文件，可以通过 git status指令 查看文件的当前状态。
+ * git 指令
+    + git status 查看文件状态，注意：会忽略空的目录
+    + git add [option] 将文件添加到暂存区
+        - git add * 或者 git add -A 将工作目录下所有文件 提交到 暂存区
+        - git add filename 指定某个文件 添加到 暂存区
+    + git commit [option] -m '当前版本的描述信息'
+        - 在做版本回退操作时，要根据版本描述信息定位到 要回退的版本。
+        - 提交当个文件到版本库，形成一个新的版本。git commit filename -m '版本的信息'
+    - git log 查看提交的历史版本 
+    - git reflog --oneline 查看所有历史提交版本
+    - git checkout filename 撤销指定文件的修改
+        > 在撤销更改的时候，如果暂存区有该文件的话，就恢复暂存区的文件到工作目录；如果暂存区没有该文件，就从版本库中恢复。
+    + git reset [option] 回退版本
+        - git reset --hard '版本id-sha值' 将指定版本内的文件替换掉工作目录内文件，实现版本的回退。--hard 参数表示，同时更改暂存区。
+        - git reset [option] HEAD^ 回退到上一个版本 
+        - git reset HEAD^^ 回退到上上一个版本
+        - git reset [option] HEAD~2
 
-        1. git 指令
-            * git status 查看文件状态，注意：会忽略空的目录
-            * git add [option] 将文件添加到暂存区
-                * git add * 或者 git add -A 将工作目录下所有文件 提交到 暂存区
-                * git add filename 指定某个文件 添加到 暂存区
-            * git commit [option] -m '当前版本的描述信息'
-                * 在做版本回退操作时，要根据版本描述信息定位到 要回退的版本。
-                * 提交当个文件到版本库，形成一个新的版本。git commit filename -m '版本的信息'
-            * git log 查看提交的历史版本 git reflog --oneline 查看所有历史提交版本
-            * git checkout filename 撤销指定文件的修改
-                * 在撤销更改的时候，如果暂存区有该文件的话，就恢复暂存区的文件到工作目录；
-                如果暂存区没有该文件，就从版本库中恢复。
-            * git reset [option] 回退版本
-                * git reset --hard '版本id-sha值' 将指定版本内的文件替换掉工作目录内文件，实现版本的回退。
-                --hard 参数表示，同时更改暂存区。
-                * git reset [option] HEAD^ 回退到上一个版本 
-                git reset HEAD^^ 回退到上上一个版本
-                git reset [option] HEAD~2
+    + reset命令有3种方式：
+        * git reset -–mixed：此为默认方式，不带任何参数的git reset。
+            版本区和暂存区变化，工作区不变
+        * git reset -–soft：回退到某个版本，只回退了commit的信息，不会恢复暂存区。
+            如果还要提交，直接commit即可
+        * git reset –-hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容。
+            git reset --hard head~ 可以回到合并之前的提交
 
-            reset命令有3种方式：
-                * git reset -–mixed：此为默认方式，不带任何参数的git reset。
-                    版本区和暂存区变化，工作区不变
-                * git reset -–soft：回退到某个版本，只回退了commit的信息，不会恢复暂存区。
-                    如果还要提交，直接commit即可
-                * git reset –-hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容。
-                    git reset --hard head~ 可以回到合并之前的提交
-            * 合并没有历史关联的分支
-            git merge dev --allow-unrelated-histories  
-        2. Git分支
-            在初始化一个空的本地仓库时，默认是没有主分支（master分支）的，必须在主分支上提交至少一次版本，Git才会创建master分支。
-            Git在创建分支时，必须保证当前仓库必须有master分支。
-            1. 创建分支
+    + 合并没有历史关联的分支
+        - git merge dev --allow-unrelated-histories  
 
-            git branch name
-            创建分支
+ * git分支管理
+    - 在初始化一个空的本地仓库时，默认是没有主分支（master分支）的，必须在主分支上提交至少一次版本，Git才会创建master分支。Git在创建分支时，必须保证当前仓库必须有master分支。
+    1. 创建分支
+        - git branch name
+        - git checkout -b branchName 创建并切换到新分支上。
 
-            git checkout -b branchName
-            创建并切换到新分支上。
+    2. 查看分支
+        - git branch
+        -有 * 标记的分支，表示当前工作目录所处的分支。
 
-            2. 查看分支
+    3. 切换分支
+        -git checkout branchName
 
-            git branch
+    4. 合并分支
+        - git merge branchName
+        - 将指定分支 合并到 当前分支
 
-            有 * 标记的分支，表示当前工作目录所处的分支。
+    5. 删除分支
+        +  本地删除
+            - git branch -d branchName()
+        + 删除远程
+            - git branch -r -d origin/branch-name
+            - git push origin :branch-name
 
-            3. 切换分支
+    6. 分支的拉取推送 冲突解决
+        1. git pull [remote url] branchName
+        从远程服务器上 获取指定仓库的分支，并且与工作目录的分支进行合并操作。
+        如果出现冲突，就手动解决即可。
 
-            git checkout branchName
+        2. git push [remote url] branchName
+        如果本地开发工作完成，要将本地仓库的版本提交到远程仓库，实现共享与项目合并。此时，就使用该指令。
 
-            4. 合并分支
+        3. git fetch [remote url] branchName
 
-            git merge branchName
+        4. git remote add shortName remoteUrl
+        以 shortName 变量去存取 远程仓库的地址remoteUrl
 
-            将指定分支 合并到 当前分支
+    7. Git分支策略
+        在实际开发时，虽然Git分支很强大，但是也不能肆意使用。通常按照一定的策略来使用分支，提高开发的效率。
+        1. 要保证主分支的稳定性，也就说要保证主分支的代码 是 无Bug的、功能完整。
+        不能在主分支上进行开发。
 
-            5. 删除分支
-            // 本地
-            git branch -d branchName
+        2. 如果需要开发新的功能，那么就要创建一个开发该功能的分支。然后在该分支上进行代码编写。
+        当功能开发完毕，并且测试无Bug，将该分支上的代码合并 到 主分支上。
 
-            // 远程分支
-            git branch -r -d origin/branch-name
-            git push origin :branch-name
+        该分支命名的一般规范为：
+        所有的开发分支 都已 'dev-' + 相关功能描述的单词
+        eg：我要开发登录功能，此时可以考虑创建一个开发分支，名字为 dev-login
 
+        3. 如果遇到协同开发，就要创建协同开发分支，在该分支上去编写代码。
+        当代码合并时，可能会出现文件冲突。一旦出现冲突，Git是解决不了的，只能人为的手动去处理。
 
-        3. 分支的拉取推送 冲突解决
-            1. git pull [remote url] branchName
-            从远程服务器上 获取指定仓库的分支，并且与工作目录的分支进行合并操作。
-            如果出现冲突，就手动解决即可。
+        该分支命名的一般规范为：
+        所有的开发分支 都已 'feature-' + 相关功能描述的单词
+        eg：我要开发主页功能，此时可以考虑创建一个协同开发分支，名字为 feature-index
 
-            2. git push [remote url] branchName
-            如果本地开发工作完成，要将本地仓库的版本提交到远程仓库，实现共享与项目合并。此时，就使用该指令。
+        4. 如果在开发时，接到一个临时修改Bug的任务，此时不要在主分支或者当前未完成的分支，进行Bug修改任务。此时要创建一Bug分支，在该分支上去修改出现Bug的代码。修改完成后，在其合并到主分支。
 
-            3. git fetch [remote url] branchName
+        该分支命名的一般规范为：
+        所有的开发分支 都已 'bug-' + 相关功能描述的单词
+        eg：我要修改登录超时问题，此时可以考虑创建一个Bug分支，名字为 bug-loginTimeout
 
-            4. git remote add shortName remoteUrl
-            以 shortName 变量去存取 远程仓库的地址remoteUrl
+        __如果出现冲突必须手动将冲突解决掉，然后在重新提交版本，然后解决冲突后的文件保存成一个版本__
 
-
-        4. Git分支策略
-            在实际开发时，虽然Git分支很强大，但是也不能肆意使用。通常按照一定的策略来使用分支，提高开发的效率。
-            1. 要保证主分支的稳定性，也就说要保证主分支的代码 是 无Bug的、功能完整。
-            不能在主分支上进行开发。
-
-            2. 如果需要开发新的功能，那么就要创建一个开发该功能的分支。然后在该分支上进行代码编写。
-            当功能开发完毕，并且测试无Bug，将该分支上的代码合并 到 主分支上。
-
-            该分支命名的一般规范为：
-            所有的开发分支 都已 'dev-' + 相关功能描述的单词
-            eg：我要开发登录功能，此时可以考虑创建一个开发分支，名字为 dev-login
-
-            3. 如果遇到协同开发，就要创建协同开发分支，在该分支上去编写代码。
-            当代码合并时，可能会出现文件冲突。一旦出现冲突，Git是解决不了的，只能人为的手动去处理。
-
-            该分支命名的一般规范为：
-            所有的开发分支 都已 'feature-' + 相关功能描述的单词
-            eg：我要开发主页功能，此时可以考虑创建一个协同开发分支，名字为 feature-index
-
-            4. 如果在开发时，接到一个临时修改Bug的任务，此时不要在主分支或者当前未完成的分支，进行Bug修改任务。此时要创建一个Bug分支，在该分支上去修改出现Bug的代码。修改完成后，在其合并到主分支。
-
-            该分支命名的一般规范为：
-            所有的开发分支 都已 'bug-' + 相关功能描述的单词
-            eg：我要修改登录超时问题，此时可以考虑创建一个Bug分支，名字为 bug-loginTimeout
-
-            __如果出现冲突必须手动将冲突解决掉，然后在重新提交版本，然后解决冲突后的文件保存成一个版本__
  * 包管理
     - bower
     - npm 
     - yarn 
- * gulp
-    [gulp](build-tool/gulp/readme.md)
- * webpack 
-    webpack1:支持CMD和AMD，同时拥有丰富的plugin和loader
-    webpack2:
-        1)支持ES Module,可直接分析ES Module之间依赖关系，而webpack1必须将ES Module转换成CommonJS模块之后，才能使用webpack行下一步处理。
-        2)webpack2支持 tree sharking 将没有使用的模块干掉掉，这样来达到删除无用代码的目的
-    webpack3: 相对于webpack2，过渡相对平稳，但是新的特性大都围绕ES Module提出
-        1)Scope Hoisting-作用域提升
-        webpack2处理后的每个模块均被一个函数包裹,降低浏览器中JS执行效率，这主要是闭包函数降低了JS引擎解析速度
-        2)在webpack2中引入了Code Splitting-Asyc的新方法import()，用于动态引入ESModule，webpack将传入import方法的模块打包到一个单独的代码块（chunk），但是却能像require.ensure一样，为生成的chunk指定chunkName，因此在webpack3中提出Magic Comment用于解决该问题，用法如下：
-        import(/* webpackChunkName: "my-chunk-name" */ 'module');
-  5. Emmet 语法
-        div.className
-        div#idName
-        div.className#idName
-        h1{text}
-        a[href="#"]
-        ul>li*3>a[href="#"]
-  6. ie注释语句
-        cc:ie6
-  7. eslint
-        是nodejs编写，提供一种代码编写规范。
-        1. 对代码静态分析，不用执行就可以查找不符合语法规则的代码。
-        2. 可以自定义代码编写的规则
 
-        先全局或者本地安装
-        npm i -g eslint
-        vscode 中 安装eslint 插件
+ * [gulp](build-tool/gulp/readme.md)
+    
+ * [webpack](build-tool/webpack/readme.md)
+    
+ * Emmet 语法(常用)
+    - div.className
+    - div#idName
+    - div.className#idName
+    - h1{text}
+    - a[href="#"]
+    - ul>li*3>a[href="#"]
 
-        terminal 中执行 eslint --init
-        vscode use ESlint:http://www.cnblogs.com/IPrograming/p/VsCodeESLint.html
-        
-        配置：Front-End-Study/note/eslint.md
-        参考 http://eslint.org/
+ * eslint
+    - 是nodejs编写，提供一种代码编写规范。
+    - 对代码静态分析，不用执行就可以查找不符合语法规则的代码。
+    - 可以自定义代码编写的规则
+
+    - 先全局或者本地安装
+      npm i -g eslint
+    - vscode 中 安装eslint 插件
+    - terminal 中执行 eslint --init
+    - [vscode use](http://www.cnblogs.com/IPrograming/p/VsCodeESLint.html)
+    - [配置](note/eslint.md)
+    - [参考](http://eslint.org/)
+
 ## mac 
-brew包管理工具
-    官网:http://brew.sh/index_zh-cn.html
-    安装: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew 
-        1. brew install 软件名  brew uninstall  软件名称
-        2. brew list 可以查看所有安装的软件
-        3. brew info 软件名
+ * brew[官网](http://brew.sh/index_zh-cn.html)
+ 
+ * 安装:
+ ``` 
+ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
 
-## vue 插件开发
-    1. 数字滚动
-    2. 侧滑（删除）
-    3. 复制到剪切板
-    4. ios 手动长按复制
-    5. 引入远程脚本
+ * brew
+    - brew install 软件名  brew uninstall  软件名称
+    - brew list 可以查看所有安装的软件
+    - brew info 软件名
 
 ## 开发工具：vscode 
-    1. 本地服务端调试
-        安装: 如果npm install -g live-server安装报错就用npm install live-server -gf安装，
-        https://github.com/tapio/live-server#readme
+ * 前端本地服务端调试
+   - npm install -g live-server 
+   - 安装报错就用npm install live-server -gf安装，
+   - [详情](https://github.com/tapio/live-server#readme)
 
 ## chrome插件的开发
-    1. 首先要有一个manifest.json清单文件
-        参数列表:http://chrome.liuyixi.com/manifest.html
-    2. 在清单文件中提供了代码文件
-    3. 插件完成后，将其导入到Chrome中
-        首先将所有相关文件都放到一个文件夹中
-        用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
+ * 首先要有一个manifest.json清单文件
+    - [参数列表](http://chrome.liuyixi.com/manifest.html)
+ * 在清单文件中提供了代码文件
+ * 插件完成后，将其导入到Chrome中
+    - 首先将所有相关文件都放到一个文件夹中
+    - 用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，- 确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
+
+## 数据图表
+- [echarts](https://echarts.baidu.com/examples/index.html)
+- [highcharts](https://www.highcharts.com.cn/)
 
 ## webGL
-    three.js
+ * three.js
 
 ## webVR
 
 ## WebAssembly
 
-## D3.js大数据可视化
-    echarts
-    highcharts
-
 ## 微信小程序 
 
 ## 微信小游戏
-    游戏引擎：cocos2d-x
+- 游戏引擎：cocos2d-x
 
-## PWA  
+## PWA/spa  
 
-## linux
+## [linux](linux/readme.md)
 
-## docker
+## [docker](docker/readme.md)
 
 ## tree 目录生成命令
-1. 安装 :brew install tree  ||  apt-get install tree
-2. exmple: tree -L 3 -I "node_modules"
-    tree -d 只显示文件夹；
-    tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
-    tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
-    tree > tree.md 将项目结构输出到tree.md这个文件。
+ 1. 安装 :brew install tree  ||  apt-get install tree
+ 2. exmple: tree -L 3 -I "node_modules"
+    - tree -d 只显示文件夹；
+    - tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
+    - tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
+    - tree > tree.md 将项目结构输出到tree.md这个文件。
 
 

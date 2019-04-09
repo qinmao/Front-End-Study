@@ -83,8 +83,8 @@
     <div class="loginWrap">
         <input type="text" value="小熊太可爱了" id="uname">
         <i class="box">
-        <s class="ico  ico-bottom">◇</s>
-    </i>
+            <s class="ico  ico-bottom">◇</s>
+        </i>
     </div>
 
     <ul id="list">
@@ -101,17 +101,26 @@
             var list = document.getElementById('list')
             var icoBox = document.querySelector('.box')
 
-            var dataList = [
-                { Uid: 1, uname: '张三' },
-                { Uid: 2, uname: '李四' },
-                { Uid: 3, uname: '王五' },
+            var dataList = [{
+                Uid: 1,
+                uname: '张三'
+            },
+            {
+                Uid: 2,
+                uname: '李四'
+            },
+            {
+                Uid: 3,
+                uname: '王五'
+            },
             ]
             let strHtml = ''
             dataList.forEach(function (item) {
-                strHtml += ` <li data-Uid=${item.Uid} data-uname=${item.uname}>${item.uname}<span>X</span></li>`
-               
+                strHtml +=
+                    ` <li data-Uid=${item.Uid} data-uname=${item.uname}>${item.uname}<span>X</span></li>`
+
             })
-            list.innerHTML=strHtml
+            list.innerHTML = strHtml
             icoBox.onclick = function () {
                 let self = this.children[0]
                 // 切换下拉框 和类名
