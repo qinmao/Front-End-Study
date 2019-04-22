@@ -466,21 +466,30 @@ es6 发布之后提供了通用的模块解决方案。
     2. 统一Web应用的UI层
     做前后端的依赖分离。如果所有的关键业务逻辑都封装成REST调用，就意味着在上层只需要考虑如何用这些REST接口构建具体的应用。那些后端程序员们根本不操心具体数据是如何从一个页面传递到另一个页面的，他们也不用管用户数据更新是通过Ajax异步获取的还是通过刷新页面。
     3. 大量Ajax请求的应用
-## docker+jenkins 自动化部署
-前置知识:
-1. Linux
-2. Docker:
-## 安装
-    npm install pm2 -g 
-## pm2部署的优点:
-1. 使用pm2管理的node程序的好处
-2. 监听文件变化，自动重启程序
-3. 支持性能监控
-4. 负载均衡
-5. 程序崩溃自动重启
-6. 服务器重新启动时自动重新启动
-7. 自动化部署项目
-## 常用命令：
+
+## 生产环境远程自动部署（代码要先推送到远程托管仓库）
+* SSH keys
+    - SSH key 可以让你在你的电脑和Code服务器之间建立安全的加密连接
+    - cat ~/.ssh/id_rsa.pub 判断是否已经存在本地公钥
+    - ssh-keygen -t rsa  生成公钥和私钥
+    
+1. 本机与服务器做授权,免密登录
+    - cat ~/.ssh/id_rsa.pub 判断是否已经存在本地公钥
+    - 把公钥复制到远程主机上：ssh-copy-id -i ~/.ssh/id_rsa.pub root@你的IP地址，输入密码后，下次登录就不用输入密码了
+    
+2. 代码远程托管仓库和服务器要做授权
+   - 复制这个公钥放到你的个人设置中的SSH/My SSH Keys下，请完整拷贝从ssh-开始直到你的用户名和主机名为止的内容。
+## pm2
+### 安装
+npm install pm2 -g
+### pm2部署的优点:
+1. 监听文件变化，自动重启程序
+2. 支持性能监控
+3. 负载均衡
+4. 程序崩溃自动重启
+5. 服务器重新启动时自动重新启动
+6. 自动化部署项目
+### 常用命令：
 1. 启动一个node程序
 pm2 start start.js
 2. 启动进程并指定应用的程序名
@@ -503,6 +512,13 @@ pm2 restart all // 重启所有进程
 pm2 logs app    // 查看该名称进程的日志
 pm2 logs all    // 查看所有进程的日志
 
-
 pm2 startup centos 设置pm2开机自启
 pm2 save 保存设置
+- pm2 init 生成一个 ecosystem.config.js 模版
+- 一次性启动，停止，重启并重载您的所有应用程序：
+```
+pm2 start ecosystem.config.js
+pm2 stop ecosystem.config.js
+pm2 restart ecosystem.config.js
+pm2 reload ecosystem.config.js
+```

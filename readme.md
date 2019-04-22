@@ -1,9 +1,7 @@
 # 前端技术栈
 > 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点，构建自己的知识网络。
-## html+css
-### 基本html标签
 
-### css
+## css
  * css 三大特性：
     + 层叠性
     + 继承性
@@ -55,6 +53,8 @@
         - 以body标签可视区域作为参照
         - 脱标
         - 实现模式转换的效果
+    * 粘性定位 sticky
+        - 可以被认为是相对定位和固定定位的混合。元素在跨越特定阈值前为相对定位，之后为固定定位
     * z-index
         - 定位的元素有层级关系
         - 只有给定位的元素才能设z-index
@@ -111,9 +111,8 @@
 
  * html5技术:       
     1. 常用新增的语义标签    
-
-        header nav main aside section (独立的区块) article footer
-
+        - header nav main aside section (独立的区块) article footer
+        
     2. [新增dom API](html/html5/dom.html)
          
     3. [定位](html/html5/geolocation.html)
@@ -404,11 +403,18 @@
     
 ### Grid
 
-### em rem:
+### em rem vw:
  1. em:的基准值  16px  默认的字体大小是16px,基准值是相对于父元素来的
- 2. rem：的基准值  16px  默认的字体大小是16px
+
+ 2. rem:的基准值  16px  默认的字体大小是16px
         r 是root  根元素的意思  html文档的根元素是  html标签
         基准值是相对于来根元素（html）来的
+
+ 3. vw:vw是基于Viewport视窗的长度单位，这里的视窗（Viewport）指的就是浏览器可视化的区域，而这个可视区域是window.innerWidth/window.innerHeight的大小
+    - vw：是Viewport's width的简写,1vw等于window.innerWidth的1%
+    - vh：和vw类似，是Viewport's height的简写，1vh等于window.innerHeihgt的1%
+    - vmin：vmin的值是当前vw和vh中较小的值
+    - vmax：vmax的值是当前vw和vh中较大的值
 
 ### media 
     @media (min-width: 750px) {
@@ -455,6 +461,7 @@
     arr instanceof Array // 推荐使用
     Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() // 可检测任意类型
 ```
+
 ### 清空数组
     1. arr.length=0
     2. arr=[] //推荐使用
@@ -650,6 +657,9 @@
 ### client
  * clientHeight 
  * clientWidth（元素内部的真实宽度）
+
+### innerWidth，innerHeight
+- 视口宽度 window.innerWidth 和视口高度 window.innerHeight
 
 ### document.createDocumentFragment 
 >创建一个新的空白的文档片段
@@ -1029,6 +1039,9 @@
     + 事件响应顺序
         - ontouchstart  > ontouchmove  > ontouchend > onclick
 
+## 移动端适配
+ * [适配](mobile/适配/readme.md)
+
 ## framework
 > 前端常用的框架
 ### jquery(传统的dom操作框架)
@@ -1231,15 +1244,16 @@
 ## Hybrid App
  * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
 
+## gulp
+ * [gulp](build-tool/gulp/readme.md)
+
+## webpack
+ * [webpack](build-tool/webpack/readme.md)
+
 ## 正则表达式
  * [正则表达式](note/reg.md)
 
-## 模式
-    - 设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
-    - 编码模式:js 特有的模式
-    - 反模式:常见的，引发问题比解决问题更多的一种方法
-
-## tool 
+## git 
  > git 基本使用
  * SSH： 一种加密协议，用于计算机之间的登录
  * 对称性加密
@@ -1380,16 +1394,14 @@
 
         __如果出现冲突必须手动将冲突解决掉，然后在重新提交版本，然后解决冲突后的文件保存成一个版本__
 
- * 包管理
+## 包管理
     - bower
     - npm 
     - yarn 
-
- * [gulp](build-tool/gulp/readme.md)
     
- * [webpack](build-tool/webpack/readme.md)
-    
- * Emmet 语法(常用)
+## Emmet
+> 常用
+```
     - div.className
     - div#idName
     - div.className#idName
@@ -1397,6 +1409,7 @@
     - a[href="#"]
     - ul>li*3>a[href="#"]
 
+```
  * eslint
     - 是nodejs编写，提供一种代码编写规范。
     - 对代码静态分析，不用执行就可以查找不符合语法规则的代码。
@@ -1429,6 +1442,11 @@
    - 安装报错就用npm install live-server -gf安装，
    - [详情](https://github.com/tapio/live-server#readme)
 
+## 前端的工具
+* Fontmin
+* ImageOptim
+* charles
+
 ## chrome插件的开发
  * 首先要有一个manifest.json清单文件
     - [参数列表](http://chrome.liuyixi.com/manifest.html)
@@ -1441,12 +1459,6 @@
 - [echarts](https://echarts.baidu.com/examples/index.html)
 - [highcharts](https://www.highcharts.com.cn/)
 
-## webGL
- * three.js
-
-## webVR
-
-## WebAssembly
 
 ## 微信小程序 
 
@@ -1455,9 +1467,22 @@
 
 ## PWA/spa  
 
+## webGL
+ * three.js
+
+## webVR
+
+## WebAssembly
+
 ## [linux](linux/readme.md)
 
 ## [docker](docker/readme.md)
+
+## 模式
+    - 设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
+    - 编码模式:js 特有的模式
+    - 反模式:常见的，引发问题比解决问题更多的一种方法
+    - [js中的设计模式](desin/-patterns/)
 
 ## tree 目录生成命令
  1. 安装 :brew install tree  ||  apt-get install tree

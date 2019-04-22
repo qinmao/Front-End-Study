@@ -106,6 +106,7 @@ docker 部署步骤:
 
 以上是手动原始的构建，可以使用docker-compose 这个大杀器来构建
 https://www.cnblogs.com/neptunemoon/p/6512121.html#toc_30
+
 ## jenkins
 
 1）先写简单的node koa的项目并上传到GitHub上备用，拉取最新的jenkins镜像，并启动

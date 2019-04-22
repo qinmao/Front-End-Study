@@ -28,9 +28,9 @@ coding split的产物，我们可以对一些代码打包成一个单独的chunk
 通过选择 development, production 或 none 之中的一个，来设置 mode 参数，你可以启用 webpack 内置在相应环境下的优化。其默认值为 production。
 ## 配置文件
  在项目根目录创建三个或多个webpack配置文件
- 1. webpack.base.config.js  //公用的配置放在这里面（可通过插件继承）
- 2. webpack.develop.config.js  //开发环境中用到的配置文件
- 3. webpack.publish.config.js   //生产环境中用到的配置文件
+ 1. webpack.common.config.js  
+ 2. webpack.dev.config.js  
+ 3. webpack.prod.config.js   
 ## 运行（打包构建）
  1. 通过配置文件运行（通用）Cmd 运行 Webpack 命令默认会去查找名称为webpack.config.js的文件执行，如果没有就会报配置信息没有配置的错误。把运行命令配置到npm的script中在 package.json 中设置 scripts 的值就可以了。
     "scripts": {
@@ -121,11 +121,14 @@ coding split的产物，我们可以对一些代码打包成一个单独的chunk
 描述移除 JavaScript 上下文中的未引用代码(dead-code)。它依赖于 ES2015 模块语法的 静态结构 特性，
 例如 import 和 export。这个术语和概念实际上是由 ES2015 模块打包工具 rollup 普及起来的。
 ## webpack 提高构建速度？
+
 官方提高构建性能的最佳实践
 https://webpack.docschina.org/guides/build-performance/
+
 ### 通用环境
 1. 使用最新的 webpack 版本。我们会经常进行性能优化。
 2. 将 Node.js 更新到最新版本，也有助于提高性能。除此之外，将你的 package 管理工具（例如 npm 或者 yarn）更新到最新版本，也有助于提高性能。较新的版本能够建立更高效的模块树以及提高解析速度。
+
 ### 具体步骤
 1. 多入口情况下，使用CommonsChunkPlugin来提取公共代码
 2. 通过externals配置来提取常用库
