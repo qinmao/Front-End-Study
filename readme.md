@@ -36,29 +36,29 @@
         - overflow用法：默认值 visible  hidden|scroll|auto (根据内容判断是否添加滚动条)
 
  * position    
-    * 静态（static）
+    + 静态（static）
         - 标准流下的显示方式，
         - 可转换成其他定位方式
-    * 绝对 （absolute）
+    + 绝对 （absolute）
         - 标准流下的盒子，设置绝对定位以body 为参照
         - 除了父盒子设置static ，其他定位方式，子盒子以父盒子为参照
         - 绝对定位的元素脱标
         - 实现模式转换的效果
         - 使用场景：1，盒子压盒子 2，绝对定位可以使用 margin padding
-    * 相对（relative）：
+    + 相对（relative）：
         - 相对自己作为参照，
         - 不会脱标
         - 通常使用 子绝父相
-    * 固定（fixed）：
+    + 固定（fixed）：
         - 以body标签可视区域作为参照
         - 脱标
         - 实现模式转换的效果
-    * 粘性定位 sticky
+    + 粘性 sticky（兼容性问题）
         - 可以被认为是相对定位和固定定位的混合。元素在跨越特定阈值前为相对定位，之后为固定定位
-    * z-index
+    + z-index
         - 定位的元素有层级关系
         - 只有给定位的元素才能设z-index
-        + 特点:
+        - 特点:
             - 元素设置定位后有个默认的z-index ：auto（除去static）
             - z-index 值相同 元素后来居上
             - z-index 值越大 当前的元素层级越高
@@ -429,43 +429,77 @@
 
 ## 基本js 
 ### 数据类型
-* undefined 是undefined 类型
-```javascript
-    var a;  // 声明变量后不赋值
-    console.log(typeof(a))  undefined
-```
-* NaN 是 number 型 表示不是一个数字
-```javascript
-    var a=123;
-    var b="abc";
-    console.log(typeof(a-b))  number
-```
-* Null   空指针类型  没有指向任何一个对象 
-* infinity 是number 类型 表示无穷大 除数为0可得
+* 6种原始类型（原始类型存储的都是值，是没有函数可以调用）
+    + boolean
+    + null
+        - 空指针类型  没有指向任何一个对象 
+    + undefined
+        - 声明变量后不赋值
+    + number
+        - NaN 是 number 型 表示不是一个数字
+        - ```javascript
+            var a=123;
+            var b="abc";
+            console.log(typeof(a-b)) // NaN  number
+            ```
+        - infinity 是number 类型 表示无穷大 除数为0可得
+    + string
+    + symbol
 
-* 数据类型转换
+* 类型检测
+    + typeof
+        - 对于原始类型来说，除了 null 都可以显示正确的类型
+        - 对于对象来说，除了函数都会显示 object，所以说 typeof 并不能准确判断变量到底是什么类型
+    + instanceof
+        - 内部机制是通过原型链来判断的
+        - 一般来判断对象，不能直接用来判断原始类型
+        - ```javascript
+            var arr=[];
+            Array.isArray(arr) // 有兼容性问题
+            arr instanceof Array // 推荐使用
+            ```
+    + 可检测任意类型
+        -  ```
+            Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+           ```
+
+* 类型转换
     + 隐式转换 变量在运算过程中发生的类型转换
       - console.log(!!"abc")
+
     + 显示（强制）转换:
-       - 转字符串：a,（String）变量 b,变量.toString()
-       - 转数字型：a,Number(变量) b,parseInt(变量) c,parseFloat(变量)
-       - 转布尔型：Boolean(变量)
-       - 几种转换为false的 undefined NaN Null 0 false ""
+       - 转字符串：对象转字符串 x.toString()
+       - 转数字型：parseInt parseFloat
+       - 转布尔型：
+       - 几种转换为false undefined NaN Null 0 -0 false "",其余全为true
 
     > tip:使用parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不简单的转换,简单的类型转换Number(08)=8 会比parseInt 快
 
-* 类型检测
-```javascript
-    var arr=[];
-    Array.isArray(arr) // 有兼容性问题
-    arr instanceof Array // 推荐使用
-    Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() // 可检测任意类型
-```
+   + == vs === 
+       - == 如果对比双方的类型不一样的话，就会进行类型转换(判断流程如下)
+        1. 首先会判断两者类型是否相同。相同的话就是比大小了
+        2. 类型不相同的话，那么就会进行类型转换
+        3. 会先判断是否在对比 null 和 undefined，是的话就会返回 true
+        4. 判断两者类型是否为 string 和 number，是的话就会将字符串转换为 number
+        5. 判断其中一方是否为 boolean，是的话就会把 boolean 转为 number 再进行判断
+        6. 判断其中一方是否为 object 且另一方为 string、number 或者 symbol，是的话就会把 object 转为原始类型再进行判断，对象转换成基础类型，利用它的toString或者valueOf方法
+        ```javascript
+        1. []==![] // true
 
-### 清空数组
-    1. arr.length=0
-    2. arr=[] //推荐使用
-    3. arr.splice(0,arr.length)
+            1）看见 ![ ]这个是要对空数组转成布尔类型结果得到![ ] = false,
+            2) 发现此时符合第5条，即Number(false),结果为 Number(false) = 0。
+            3）此时得到 [] == 0比较，此时符合第6条 即 [].toString()；结果为[].toString() = ” ”;
+            4)此时得到 ” ” == 0,发现符合第4条即Number(“ ”)；结果为Number(” ”) = 0;
+            5）此时得到 0 == 0 两个同时为数值类型比较所以结果为true;
+        2. [] == false // true
+            1) false -->Number(false),结果为 Number(false) = 0。
+            2) []== 0-->[].toString() 结果为[].toString() = ” ”;
+            3) ' '==0-->Number(' ') = 0;
+            4)0==0 true
+        ```
+       - ===: 类型和值都相等
+
+
 
 ### js精度问题
 1. number.toFixed(参数)  
@@ -496,14 +530,6 @@
 * 短路或||
     - 只要有一个true，就返回 该 值true的子表达式的值
     - 短路或：可以方便给变量赋初值
-
-### dom常用的节点类型
-* nodeType = 1，元素节点
-* nodeType = 2，属性节点
-* nodeType = 3，文本节点
-* nodeType = 8，注释节点
-* nodeType = 9，document对象
-* nodeType = 11，documentFragment文档片段
 
 ### 预解析（浏览器）
 1. 语法分析：保证js代码符合语法规则，能被正确的执行。
@@ -561,6 +587,34 @@
     })
     ```
 
+### date-format
+ * 日期格式化成指定格式
+    - new Date().format("yyyy-MM-dd hh:mm:ss")
+
+ * 两日期间隔
+    - d1.dateDiff(d2, 'd')
+
+ * 获取当前时间戳
+    (new Date()).getTime();
+
+ * [封装常用时间处理](js/date-format.js)
+ 
+
+## Dom
+### dom常用的节点类型
+* nodeType = 1，元素节点
+* nodeType = 2，属性节点
+* nodeType = 3，文本节点
+* nodeType = 8，注释节点
+* nodeType = 9，document对象
+* nodeType = 11，documentFragment文档片段
+
+### 基础操作
+* appendChild 
+* removeChild 
+* replaceChild 
+* insertBefore
+
 ### 原生js获取样式 
 ```javascript
     // ie 不支持
@@ -598,40 +652,7 @@
         - e.stopPropagation()
         - ie中阻止事件传播 cancelBubble=true
 
-### JSON  转换 
- * object-->string   JSON.stringify()
- * string--> object   JSON.parse()
 
-### date-format
- * 日期格式化成指定格式
-    - new Date().format("yyyy-MM-dd hh:mm:ss")
-
- * 两日期间隔
-    - d1.dateDiff(d2, 'd')
-
- * 获取当前时间戳
-    (new Date()).getTime();
-
- * [封装常用时间处理](js/date-format.js)
- 
-### js异常
->js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
- * EvalError  运行时异常。 eval 函数调用时发生的异常
- * RangeError 运行时异常 超出数据范围
- * ReferenceError 运行时异常 未定义变量
- * SyntanxError  预解析,语法错误
- * typeError 运行时异常，类型异常
- * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
-
-### == === 
- * ==: 如果操作数为对象，则转换成基本类型。优先使用valueOf() 失败的话则用toString()
- * ===: 类型和值都相等
-
-### dom 基础操作
-* appendChild 
-* removeChild 
-* replaceChild 
-* insertBefore
 
 ### offset
  * offsetLeft
@@ -661,128 +682,102 @@
 ### innerWidth，innerHeight
 - 视口宽度 window.innerWidth 和视口高度 window.innerHeight
 
-### document.createDocumentFragment 
->创建一个新的空白的文档片段
-文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
-
-### requestAnimationFrame 请求动画帧
- * 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。使用一个回调函数作为参数，该回调函数会在浏览器重绘之前调用。
-
- * 语法：window.requestAnimationFrame(callback);
-
- * 返回值：一个 long 整数，请求 ID ，是回调列表中唯一的标识。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
- 
- * 优点：运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
-
-
-### js.map 文件是干啥的？
-源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
         
 ## js 面向对象
- * 对象：
-    + 什么是对象？
-       - 无序属性的集合，可以看成键值对
-    + 如何创建？
-       - 字面量或者叫直接量
-        var obj={};
-       - 构造函数创建对象
-       ```javacript
-         function Student(name, age, sex) {
-             this.name = name
-             this.age = age
-             this.sex = sex
-             this.sayHi = function () {
-                 console.log("你好" + this.name)
+### 对象：
+ + 什么是对象？
+    - 无序属性的集合，可以看成键值对
+ + 如何创建？
+    - 字面量或者叫直接量
+     var obj={};
+    - 构造函数创建对象
+    ```javacript
+      function Student(name, age, sex) {
+          this.name = name
+          this.age = age
+          this.sex = sex
+          this.sayHi = function () {
+              console.log("你好" + this.name)
+          }
+      var s1 = new Student("小明", "12", "男");
+     ```
+ + 构造函数的执行过程（如何创建对象的）
+     1. 创建一个空对象obj
+     2. 将上面的创建的空对象obj赋值给this
+     3. 执行代码块（给属性赋值等等）
+     4. 隐式返回 return this
+     5. 在构造函数中 有显示的return 语句，若返回值的类型是基本数据类型，会被忽略，复合数据类型不会    
+ + 工厂模式创建对象 就是用一个方法实现对象的实例化
+     ```javascript
+         function initStu(name, age,sex) {
+             return new Student(name, age,sex);
              }
-         var s1 = new Student("小明", "12", "男");
-        ```
-    + 构造函数的执行过程（如何创建对象的）
-        1. 创建一个空对象obj
-        2. 将上面的创建的空对象obj赋值给this
-        3. 执行代码块（给属性赋值等等）
-        4. 隐式返回 return this
-        5. 在构造函数中 有显示的return 语句，若返回值的类型是基本数据类型，会被忽略，复合数据类型不会    
+         var obj=initStu();
+         // 这种方式创建对象避免new的操作    
+     ```   
+ + 对象的属性
+     - 两种访问方式：
+         1. obj.propertyName  
+         2. obj["propertyName"] __遍历属性并赋值时常用到  
+     - 检测:(hasOwnProperty)
+        1. 语法：<对象>.hasOwnProperty('propertyName')
+        2. 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
+        3. eg:obj.hasOwnProperty("name") //true
 
-    +  工厂模式创建对象 就是用一个方法实现对象的实例化
-        ```javascript
-            function initStu(name, age,sex) {
-                return new Student(name, age,sex);
-                }
-            var obj=initStu();
-
-            // 这种方式创建对象避免new的操作    
-        ```   
-    + 对象的属性
-        - 两种访问方式：
-            1. obj.propertyName  
-            2. obj["propertyName"] __遍历属性并赋值时常用到  
-
-        - 检测:
-            hasOwnProperty方法
-            1. 语法：<对象>.hasOwnProperty('propertyName')
-            2. 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
-            eg:obj.hasOwnProperty("name") //true
-
- * 函数
-    + 创建
-        1. 声明式
-            function fn(){}
-        2. 表达式
-            var fn=function(){}
-        3. 构造函数
-            var fn = new Function([arg1~argN, body]);
-            eg:var f = new Function('n', 'console.log(n);');
-
-    + 变量作用域
-        - 变量的作用域：变量起作用的区域，也就说变量可以被访问到的区域。
-        - 种类
-            1. 全局变量，生命周期 是随着页面存在而存在，页面销毁而销毁。
-            2. 局部变量，在函数内声明的变量，称为局部变量。 作用范围是在指定函数内，生命周期 是函数执行完毕就会被销毁。
-
-        - 词法作用域：在js预解析阶段，确定变量的作用域。变量的作用域由 其定义的位置决定 而不是由其使用的位置。在词法作用域下，只有函数可以限定作用域。
-        ___es6中新增了块级作用域let(详细参见es6)
-
-        - 变量的搜索原则：类似下面的属性搜索原则，先在当前作用域，找不到然后上一层，最后到全局作用域。找不到抛异常。
-                
-    + 函数属性
-        - arguments 
-            * 伪数组对象
-            * 以数组形式，存储实参
-            * callee 返回正在被执行函数; 匿名函数的递归调用
-            * length 实参个数
-
-        - caller: 返回调用函数的 函数
-
-        - length: 定义形参的个数
-
-        - name: 存储函数的名字
-            
-    + 闭包：　
-        - 实质：就是能够读取其他函数内部变量的函数。
-        - 写法：
-        ```javascript
-            function foo() {
-                var obj = {};                            
-                return function() {
-                    return obj;
-                }  
-            }
-        ```           
-        - 应用：
-            1. 缓存：
-                ```javascript
-                    function outer() {
-                            var cache;
-                            function inner() {
-                                // 代码块
-                                // 使用cache
-                            }
-                            return inner;
-                        }
-                    var fn = outer();
-                ```
-            2. 私有变量：
-                - 在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
+### 函数
+ + 创建
+     1. 声明式
+         function fn(){}
+     2. 表达式
+         var fn=function(){}
+     3. 构造函数
+         var fn = new Function([arg1~argN, body]);
+         eg:var f = new Function('n', 'console.log(n);');
+ + 变量作用域
+     - 变量的作用域：变量起作用的区域，也就说变量可以被访问到的区域。
+     - 种类
+         1. 全局变量，生命周期 是随着页面存在而存在，页面销毁而销毁。
+         2. 局部变量，在函数内声明的变量，称为局部变量。 作用范围是在指定函数内，生命周期 是函数执行完毕就会被销毁。
+     - 词法作用域：在js预解析阶段，确定变量的作用域。变量的作用域由 其定义的位置决定 而不是由其使用的位置。在词法作用域下，只有函数可以限定作用域。
+     ___es6中新增了块级作用域let(详细参见es6)
+     - 变量的搜索原则：类似下面的属性搜索原则，先在当前作用域，找不到然后上一层，最后到全局作用域。找不到抛异常。
+             
+ + 函数属性
+     - arguments 
+         * 伪数组对象
+         * 以数组形式，存储实参
+         * callee 返回正在被执行函数; 匿名函数的递归调用
+         * length 实参个数
+     - caller: 返回调用函数的 函数
+     - length: 定义形参的个数
+     - name: 存储函数的名字
+         
+ + 闭包：　
+     - 实质：就是能够读取其他函数内部变量的函数。
+     - 写法：
+     ```javascript
+         function foo() {
+             var obj = {};                            
+             return function() {
+                 return obj;
+             }  
+         }
+     ```           
+     - 应用：
+         1. 缓存：
+             ```javascript
+                 function outer() {
+                         var cache;
+                         function inner() {
+                             // 代码块
+                             // 使用cache
+                         }
+                         return inner;
+                     }
+                 var fn = outer();
+             ```
+         2. 私有变量：
+             - 在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
                 ```javascript
                     function person(name) {
                         return {
@@ -799,51 +794,104 @@
                 - 本质上就是让数据常驻内存。如此，使用闭包就增大内存开销，使用不当就会造成内存泄漏。
                 - 如何解决：使用完闭包后，及时清除。（将闭包变量 赋值为 null） 
 
-    + 沙箱模式：
-        - 防止全局变量和全局对象的污染，引出沙箱模式,实质就是匿名的自执行函数
-        ```javascript
-            (function(global){
-                //代码块
-                //自执行
-                //在内部声明的变量与外部隔离
-                //把常用的全局变量，当做实参传入进来
-                //目的：1，减少变量的搜索过程，提高js 性能
-                //     2,利于代码压缩
-            }(window));
-            // 一般开发插件时会用，jq
-        ```
-               
+ + 沙箱模式：
+     - 防止全局变量和全局对象的污染，引出沙箱模式,实质就是匿名的自执行函数
+     ```javascript
+         (function(global){
+             //代码块
+             //自执行
+             //在内部声明的变量与外部隔离
+             //把常用的全局变量，当做实参传入进来
+             //目的：1，减少变量的搜索过程，提高js 性能
+             //     2,利于代码压缩
+         }(window));
+         // 一般开发插件时会用，jq
+     ```
+            
 
-    + 函数调用和this指向
-        1. 普通函数执行模式
-            - 直接拿到函数的名字 加上 圆括号。
-            - 在该模式下，函数内部this的指向为 window
+ + 函数调用和this指向
+    1. 普通函数执行模式
+        - 直接拿到函数的名字 加上 圆括号。
+        - 在该模式下，函数内部this的指向为 window
 
-        2. 构造函数模式
-            - 调用函数时，配合着new关键字来执行某个函数，此时该函数的执行模式为 构造函数模式
-            - 函数内部的this指向为 当前创建出来的实例。
+    2. 构造函数模式
+        - 调用函数时，配合着new关键字来执行某个函数，此时该函数的执行模式为 构造函数模式
+        - 函数内部的this指向为 当前创建出来的实例。
 
-        3. 方法调用模式
-            - 将一个函数 赋值给 某个对象的属性，然后通过该对象去执行函数，此时该函数的执行模式为方法调用模式；
-            - 在该模式下，this的指向为 方法的调用者
+    3. 方法调用模式
+        - 将一个函数 赋值给 某个对象的属性，然后通过该对象去执行函数，此时该函数的执行模式为方法调用模式；
+        - 在该模式下，this的指向为 方法的调用者
 
-        4. call/apply（上下文）模式: 改变this的指向
-            + fn.call(thisObj, [arg1~argN])
-                - thisObj 表示 改变后的this指向
-                - arg1~argN 是fn执行时，传入的实参。可选的。
-                - call方法再执行的时候，fn函数也同时执行，同时，将函数fn内部的this替换成指定thisObj对象。
+    4. call/apply/bind（上下文）模式
+       > 这三都是改变this的指向,方法的第一参数即为 函数fn内的this指向   
+        + fn.call(thisObj, [arg1~argN])
 
-            + fn.apply(thisObj, [数组]);
-                - thisObj 表示 改变后的this指向
-                - [数组] 含义：将数组中的元素 作为函数fn执行时传入的实参。可选的
-                - apply方法再执行的时候，fn函数也同时执行。同时，将函数fn内部的this替换成指定thisObj对象。
-                - 在该模式下，call|apply方法的第一参数即为 函数fn内的this指向    
+        + fn.apply(thisObj, [数组]);
 
-        5. bind 方法创建一个新的函数, 当被调用时，将其this关键字设置为提供的值
+        + bind 方法创建一个新的函数, 当被调用时，将其this关键字设置为提供的值
             - fun.bind(thisArg[, arg1[, arg2[, ...]]])
             - 返回值：返回由指定的this值和初始化参数改造的原函数拷贝
-            - 应用场景：
-                JavaScript新手经常犯的一个错误是将一个方法从对象中拿出来，然后再调用，希望方法中的 this 是原来的对象。（比如在回调中传入这个方法。）如果不做特殊处理的话，一般会丢失原来的对象。
+
+    5. 箭头函数
+        - 箭头函数其实是没有 this 的
+        - 箭头函数中的 this 只取决包裹箭头函数的第一个普通函数的 this
+
+### 对象类型和原始类型的不同
+ > 原始类型存储的是值，对象类型存储的是地址（指针）,根据该特性，我们以后会遇到一些问题
+ * 函数参数是对象，外部变量的值发生了改变
+    - ```javascript
+        function test(person) {
+            person.age = 26
+            person = {
+                name: 'yyy',
+                age: 30
+            }
+            return person
+        }
+        const p1 = {
+            name: 'yck',
+            age: 25
+        }
+        const p2 = test(p1)
+        console.log(p1) // -> ?
+        console.log(p2) // -> ?
+        // 解析：
+        // 1. 传入的参数是p1的地址拷贝a1，age 赋值时，p1与a1指向的地址值已经被改了，此时age为26,p1的值为name:yck,age:26
+        // 2. 之后重新把a1的指向地址改成了新的对象地址，并返回所以，p1的值为name:yck,age:26,p2的值为name:yyy,age:30
+
+        ```
+
+ * 深拷贝、浅拷贝
+    >为了解决外部对象参数的值被修改
+    + 浅拷贝
+        1. Object.assign
+            - 只会拷贝所有的属性值到新的对象中，如果属性值是对象的话，拷贝的是地址，所以并不是深拷贝。
+            -  ```js
+                let a = {
+                    age: 1
+                }
+                let b = Object.assign({}, a)
+                a.age = 2
+                console.log(b.age) // 1
+              ```
+        2. 展开运算符 ... 
+            - ```js
+                let a = {
+                age: 1
+                }
+                let b = { ...a }
+                a.age = 2
+                console.log(b.age) // 1
+              ```
+    + 深拷贝
+        > 通常浅拷贝就能解决大部分问题了，当对象属性也是对象的话，就要用深拷贝了
+        1. 通常使用JSON.parse(JSON.stringify(object)) 来解决
+            + 该方法也是有局限性的
+                - 会忽略 undefined
+                - 会忽略 symbol
+                - 不能序列化函数
+                - 不能解决循环引用的对象
+
 
 ### prototype
  * 什么是原型？
@@ -947,6 +995,10 @@
         * eval创建变量的作用域 是由eval执行的作用域决定。 
     - 已不推荐使用。JSON.parse()
 
+### JSON 转换 
+ * object-->string   JSON.stringify()
+ * string--> object   JSON.parse()
+
 ## js GC:      
  * 引用计数法
     - 当定义一个变量 （此时引用计数为0）并且 赋值为指定的数据时，该变量的引用计数 + 1；
@@ -969,6 +1021,16 @@
     - 前者性能较高，但是有循环引用的缺陷
     - 后者性能较低，但是不会产生循环引用问题
     - 在当代浏览器配合两种机制，去释放变量的内存空间。
+
+## js异常
+>js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
+ * EvalError  运行时异常。 eval 函数调用时发生的异常
+ * RangeError 运行时异常 超出数据范围
+ * ReferenceError 运行时异常 未定义变量
+ * SyntanxError  预解析,语法错误
+ * typeError 运行时异常，类型异常
+ * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
+
 
 ## js执行机制
 * JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：
@@ -1017,6 +1079,23 @@
 
 ## es6
 - [es6](ECMA/es6.md)
+
+## document.createDocumentFragment 
+>创建一个新的空白的文档片段
+文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
+
+## requestAnimationFrame 请求动画帧
+ * 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。使用一个回调函数作为参数，该回调函数会在浏览器重绘之前调用。
+
+ * 语法：window.requestAnimationFrame(callback);
+
+ * 返回值：一个 long 整数，请求 ID ，是回调列表中唯一的标识。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
+ 
+ * 优点：运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
+
+
+## js.map 文件是干啥的？
+源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
 
 ## 移动端事件
  * 移动端touch事件
@@ -1297,7 +1376,8 @@
         - git config --get user.name | git config --get user.email
     + 替换：
         - 想要修改或者替换掉原先的用户信息，可以重新配置来实现
-
+    + 删除仓库： 
+        - rm -rf .git  
     + 在本地仓库中，如果新添加了一个文件，想要git 追踪 该文件的状态变化，必须要使用git add 指令将其添加到暂存区。之后，在修改文件，可以通过 
     + git status指令 查看文件的当前状态。
 
