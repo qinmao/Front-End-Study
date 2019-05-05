@@ -10,6 +10,12 @@ module.exports = merge(common, {
         publicPath: '/',
         chunkFilename: 'js/[name].[contenthash:8].js'
     },
+    // 避免降外部的模块打包进应用程序
+    externals: {
+        vue: 'Vue',
+        axios: 'axios',
+        'vue-router': 'VueRouter'
+    },
     plugins: [
         // 用来防止vendor文件的 hash 在构建保持一致
         new Webpack.HashedModuleIdsPlugin({
@@ -17,14 +23,14 @@ module.exports = merge(common, {
         }),
         new Webpack.DefinePlugin(
             {
-              'process.env': {
-                NODE_ENV: '"production"',
-                VUE_APP_BASE_URL: '/api',
-                VUE_APP_VERSION: '1.0.0',
-                BASE_URL: '/'
-              }
+                'process.env': {
+                    NODE_ENV: '"production"',
+                    VUE_APP_BASE_URL: '/api',
+                    VUE_APP_VERSION: '1.0.0',
+                    BASE_URL: '/'
+                }
             }
-          ),
+        ),
     ],
     optimization: {
         minimizer: [{
@@ -93,8 +99,5 @@ module.exports = merge(common, {
             }
         }
     },
-    // 避免降外部的模块打包进应用程序
-    externals: {
 
-    }
 })

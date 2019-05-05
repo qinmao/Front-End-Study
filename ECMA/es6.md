@@ -1,84 +1,4 @@
 # es6知识点
-## let
-    1. let 用法类似var.只在代码块内有效
-    ```javascript
-        {
-            let a=10,
-            var b=1
-        }
-        a // ReferenceError: a is not defined.
-        b // 1
-    ```
-    2. 不存在变量提升
-    ```javascript
-        var tmp = 123;
-
-        if (true) {
-        tmp = 'abc'; // ReferenceError
-        let tmp;
-        }
-
-        if (true) {
-        // TDZ开始
-        tmp = 'abc'; // ReferenceError
-        console.log(tmp); // ReferenceError
-
-        let tmp; // TDZ结束
-        console.log(tmp); // undefined
-
-        tmp = 123;
-        console.log(tmp); // 123
-        }
-    ```
-    3. 暂时性死区
-        ES6明确规定.如果区块中存在let和const命令.这个区块对这些命令声明的变量.从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量.就会报错。
-        总之.在代码块内.使用let命令声明变量之前.该变量都是不可用的。这在语法上.称为“暂时性死区”（temporal dead zone.简称 TDZ）。
-
-    4. 不允许重复声明
-        let不允许在相同作用域内.重复声明同一个变量。
-    ```javascript
-        // 报错
-        function () {
-        let a = 10;
-        var a = 1;
-        }
-
-    // 报错
-    function () {
-    let a = 10;
-    let a = 1;
-    }
-    因此.不能在函数内部重新声明参数。
-
-    function func(arg) {
-    let arg; // 报错
-    }
-
-    function func(arg) {
-    {
-        let arg; // 不报错
-    }
-    }
-    ```
-    顶层对象
-     ```javascript
-        var a = 1;
-        // 如果在Node的REPL环境.可以写成global.a
-        // 或者采用通用方法.写成this.a
-        window.a // 1
-
-        let b = 1;
-        window.b // undefined
-    ```
-## const声明一个只读的常量。一旦声明.常量的值就不能改变。
-    const的作用域与let命令相同：只在声明所在的块级作用域内有效。
-    ```javascript
-    const PI = 3.1415;
-    PI // 3.1415
-
-    PI = 3;
-    // TypeError: Assignment to constant variable.
-    ```
 ## 解构赋值
     1. 数组的解构赋值
         let [foo, [[bar], baz]] = [1, [[2], 3]];
@@ -204,6 +124,7 @@
         }
     （7）输入模块的指定方法
         const { SourceMapConsumer, SourceNode } = require("source-map");
+
 ## 字符串的扩展
     includes(), startsWith(), endsWith()
 
@@ -236,6 +157,7 @@
         // 字符串中嵌入变量
         var name = "Bob", time = "today";
         `Hello ${name}, how are you ${time}?`
+
 ## 数组的扩展
     1. Array.from()
         Array.from方法用于将两类对象转为真正的数组：类似数组的对象（array-like object）和可遍历（iterable）的对象（包括ES6新增的数据结构Set和Map）
@@ -359,6 +281,7 @@
         function ArrayOf(){
         return [].slice.call(arguments);
         }
+
 ## 函数的扩展
     1. 函数参数的默认值
             es6 之前使用短路或操作给参数赋初值
@@ -502,6 +425,7 @@
         var sum = (num1, num2) => { return num1 + num2; }
 
         注意this指向 不需要在函数外捕获this
+
 ## 对象的扩展
     1. 属性的简洁表示法
         var foo = 'bar';
@@ -567,6 +491,7 @@
     10. 对象的扩展运算符
     11. Object.getOwnPropertyDescriptors()
     12. Null 传导运算符
+
 ## Promise
   1. what?
         Promise 是异步编程的一种解决方案
@@ -590,6 +515,7 @@
 	// await 表示在这里等待promise返回结果了，再继续执行。
 	// await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
 	// await命令就是内部then命令的语法糖。
+
 ## Symbol
     ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值
     Symbol 值通过Symbol函数生成
@@ -625,7 +551,8 @@
 
         // 以上写法都得到同样结果
         a[mySymbol] // "Hello!"
-```
+    ```
+
 ## class
     ```javascript
         //1. 定义类
@@ -715,5 +642,5 @@
         // es5 与es6 继承的区别:
         // ES5 的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面（Parent.apply(this)）。ES6 的继承机制完全不同，实质是先创造父类的实例对象this（所以必须先调用super方法），然后再用子类的构造函数修改this。
     ```
-## 参考 
-    阮一峰的es6入门
+## [详情参考](http://es6.ruanyifeng.com/)
+    

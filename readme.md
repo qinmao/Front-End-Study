@@ -1,6 +1,6 @@
 # 前端技术栈
 > 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点，构建自己的知识网络。
-
+> 同时我也在不断的思考前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？
 ## css
  * css 三大特性：
     + 层叠性
@@ -334,7 +334,16 @@
 
 3. 事件:animationend
 
-### flex
+4. requestAnimationFrame 请求动画帧
+ * 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。使用一个回调函数作为参数，该回调函数会在浏览器重绘之前调用。
+
+ * 语法：window.requestAnimationFrame(callback);
+
+ * 返回值：一个 long 整数，请求 ID ，是回调列表中唯一的标识。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
+ 
+ * 优点：运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
+
+## flex
 1. flex容器:
     * 给div这类块状元素元素设置display:flex
     * 给span这类内联元素设置display:inline-flex
@@ -423,9 +432,9 @@
         }
     }
 
-## less sass
-* [less](css/less/less.md)
-* [sass](css/sass/readme.md)
+## less/sass
+ * [less](css/less/less.md)
+ * [sass](css/sass/readme.md)
 
 ## 基本js 
 ### 数据类型
@@ -491,6 +500,7 @@
             3）此时得到 [] == 0比较，此时符合第6条 即 [].toString()；结果为[].toString() = ” ”;
             4)此时得到 ” ” == 0,发现符合第4条即Number(“ ”)；结果为Number(” ”) = 0;
             5）此时得到 0 == 0 两个同时为数值类型比较所以结果为true;
+
         2. [] == false // true
             1) false -->Number(false),结果为 Number(false) = 0。
             2) []== 0-->[].toString() 结果为[].toString() = ” ”;
@@ -498,8 +508,6 @@
             4)0==0 true
         ```
        - ===: 类型和值都相等
-
-
 
 ### js精度问题
 1. number.toFixed(参数)  
@@ -568,24 +576,11 @@
 
 ```
 
-### sort
-* Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
-* 默认 按照根据ASCII码进行排序
-* sort 是一个高阶函数，sort（function(){
-    // 写具体的实现逻辑
-}）
-* 升序
-    ```javascript
-    sort(function(a,b){
-        return a-b
-    })
-    ```
-* 降序
-    ```javascript
-    sort(function(a,b){
-        return b-a
-    })
-    ```
+### Var Let Const区别 
+ - var 在浏览器预解析时存在变量提升，未声明可以使用
+ - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
+ - const声明一个只读的常量。一旦声明常量的值就不能改变。
+
 
 ### date-format
  * 日期格式化成指定格式
@@ -600,7 +595,7 @@
  * [封装常用时间处理](js/date-format.js)
  
 
-## Dom
+## dom
 ### dom常用的节点类型
 * nodeType = 1，元素节点
 * nodeType = 2，属性节点
@@ -616,12 +611,16 @@
 * insertBefore
 
 ### 原生js获取样式 
-```javascript
-    // ie 不支持
-    getComputedStyle(el,null).width 
-    // ie提供的
-    document.getElementById("btn").currentStyle.width 
-```
+    ```javascript
+        // ie 不支持
+        getComputedStyle(el,null).width 
+        // ie提供的
+        document.getElementById("btn").currentStyle.width 
+    ```
+
+### document.createDocumentFragment 
+> 创建一个新的空白的文档片段
+- 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
 
 ### 事件冒泡和事件捕获   
 * 事件冒泡：从里向外执行，遇到相同的事件及执行
@@ -652,8 +651,6 @@
         - e.stopPropagation()
         - ie中阻止事件传播 cancelBubble=true
 
-
-
 ### offset
  * offsetLeft
  * offsetTop 
@@ -683,7 +680,7 @@
 - 视口宽度 window.innerWidth 和视口高度 window.innerHeight
 
         
-## js 面向对象
+## js面向对象
 ### 对象：
  + 什么是对象？
     - 无序属性的集合，可以看成键值对
@@ -836,7 +833,95 @@
         - 箭头函数其实是没有 this 的
         - 箭头函数中的 this 只取决包裹箭头函数的第一个普通函数的 this
 
-### 对象类型和原始类型的不同
+### 一些高级函数
+ * Array 的常用函数
+    + forEach
+        ```javascript
+            var arr = [1, 2, 2, 2, 2, 6, 9]
+            var sum = 0
+            arr.forEach(function (value,i,a) {
+                sum += value
+            })
+        ```
+
+    + map
+        ```javascript
+        //类似foreach 有返回值 返回一个新数组
+        arr.map(function (x) {
+            return x + 1
+        })
+        ```
+
+    + filter 过滤器
+        ```javascript
+            //返回指定条件的新数组
+            arr.filter(function (x) {
+                return x < 2
+            })
+        ```
+
+    + some
+        ```javascript
+        //空数组时 some 返回false every 返回true
+        // some 存在一个满足条件就返回true
+        arr.some(function (x) {
+            return x == 2   //true
+        })
+        ```
+
+    + every
+        ```javascript
+            //返回true false 
+        arr.every(function (x) {
+            return x > 10 //false
+        })
+        ```
+
+    + indexOf
+        ```javascript
+
+        ```
+
+    + reduce
+        ```javascript
+            // reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
+
+            // reduce() 可以作为一个高阶函数，用于函数的 compose。
+
+            // 注意: reduce() 对于空数组是不会执行回调函数的。
+            var numbers = [65, 44, 12, 4];
+        
+            function getSum(total, num) {
+                return total + num;
+            }
+            function myFunction(item) {
+                document.getElementById("demo").innerHTML = numbers.reduce(getSum);
+            }
+        ```
+
+    + sort
+        * Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
+        * 默认 按照根据ASCII码进行排序
+        * sort 是一个高阶函数，sort（function(){
+            // 写具体的实现逻辑
+        }）
+        * 升序
+            ```javascript
+            sort(function(a,b){
+                return a-b
+            })
+            ```
+        * 降序
+            ```javascript
+            sort(function(a,b){
+                return b-a
+            })
+            ```
+ * String
+
+ * Object
+
+### 对象类型和原始类型的不同?
  > 原始类型存储的是值，对象类型存储的是地址（指针）,根据该特性，我们以后会遇到一些问题
  * 函数参数是对象，外部变量的值发生了改变
     - ```javascript
@@ -864,6 +949,7 @@
  * 深拷贝、浅拷贝
     >为了解决外部对象参数的值被修改
     + 浅拷贝
+        >所谓的浅拷贝，只是拷贝了基本类型的数据，对于引用的类型数据，复制后也是会发生引用
         1. Object.assign
             - 只会拷贝所有的属性值到新的对象中，如果属性值是对象的话，拷贝的是地址，所以并不是深拷贝。
             -  ```js
@@ -877,20 +963,21 @@
         2. 展开运算符 ... 
             - ```js
                 let a = {
-                age: 1
+                 age: 1
                 }
                 let b = { ...a }
                 a.age = 2
                 console.log(b.age) // 1
               ```
     + 深拷贝
+        > 利用递归,将原对象的各个属性逐个复制出去，而且将原对象各个属性所包含的对象也依次采用深复制的方法递归复制到新对象上
         > 通常浅拷贝就能解决大部分问题了，当对象属性也是对象的话，就要用深拷贝了
-        1. 通常使用JSON.parse(JSON.stringify(object)) 来解决
-            + 该方法也是有局限性的
-                - 会忽略 undefined
-                - 会忽略 symbol
-                - 不能序列化函数
-                - 不能解决循环引用的对象
+        1. 通常使用JSON.parse(JSON.stringify(object)) 来解决, 该方法也是有局限性
+            - 会忽略 undefined
+            - 会忽略 symbol
+            - 不能序列化函数
+            - 不能解决循环引用的对象
+        2. 自己手动实现或者用loadash 等一些库
 
 
 ### prototype
@@ -913,7 +1000,7 @@
     4. 所有的实例 只能共享一个原型。
 
  * 获取原型的方式：
-    - 通过函数：<fnName>.prototype；
+    - 通过函数：<fnName>.prototype
     - 通过对象：<object>.__proto__ ，__proto__  是浏览器中的，是一个非标准属性；
 
  * 原型链：
@@ -1033,7 +1120,7 @@
 
 
 ## js执行机制
-* JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：
+* JS 执行是单线程的，它是基于事件循环的。
 
 * js语言为什么设计成单线程的？
     - 避免多线程操作同一文件（资源）产生冲突。
@@ -1050,49 +1137,8 @@
     主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。 规范中规定 task 分为两大类，分别是 macro task 和 micro task，并且每个 macro task 结束后，都要清空所有的 micro task。
 
 
-## ES5 
- * 新增的一些方法
-    - [方法](ECMA/es5.md)
-
- * ES5 的严格模式
-    - [strict](ECMA/strict.md)
-
- * ES5 读写器
- ```javascript
-    function person(name, age) {
-        return {
-            get name() {
-                return name;
-            },
-            get age() {
-                return age;
-            },
-            set age(val) {
-                age = val;
-            }
-        }
-    }
-    var zs = person('zhangsan', 19);
-    zs.name = 'zhangsansan';
-    console.log(zs.getName());
- ```
-
 ## es6
 - [es6](ECMA/es6.md)
-
-## document.createDocumentFragment 
->创建一个新的空白的文档片段
-文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
-
-## requestAnimationFrame 请求动画帧
- * 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。使用一个回调函数作为参数，该回调函数会在浏览器重绘之前调用。
-
- * 语法：window.requestAnimationFrame(callback);
-
- * 返回值：一个 long 整数，请求 ID ，是回调列表中唯一的标识。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
- 
- * 优点：运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
-
 
 ## js.map 文件是干啥的？
 源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
@@ -1333,147 +1379,8 @@
  * [正则表达式](note/reg.md)
 
 ## git 
- > git 基本使用
- * SSH： 一种加密协议，用于计算机之间的登录
- * 对称性加密
-    - 在加密和解密时，使用同一个秘钥。
- * 非对称性加密
-    - 在加密和解密时，使用不同的秘钥。一般具有一对秘钥，一个被称为是 公钥；另一个被称为 私钥；
-    - 如果明文使用了私钥加密，必须使用与其对应的公钥才能解密成功。
-    - 如果明文使用了公钥加密，必须使用与其对应的私钥才能解密成功。
-
- * 初始化本地仓库
-    - git init
-    - 如果想要让git去管理某个目录下的文件，就在该目录下 执行上述命令。
-    - 在该目录下，就是本地的工作空间
-
-    + git 在管理文件时，所有文件都具有三种状态
-        - 已修改
-        - 已暂存
-        - 已提交
-
-    + 在上述三种状态，又对应三种目录空间
-        - 已修改 -> 工作目录
-        - 已暂存 -> 本地仓库的暂存区，通常就是在.git目录下的HEAD或INDEX文件
-        - 已提交 -> 本地仓库的版本库
-
- * Git的基本工作流程
-    - 使用git init 或者 git clone 初始化 本地仓库；让git管理该目录下所有文件
-    - 在工作目录下，修改文件，新增文件，完成功能开发
-    - 将工作目录的文件提交到本地仓库的暂存区；
-    - 最后，再将暂存区文件 提交到 版本库，形成一个版本保存起来。
-    > 每一次，从暂存区 提交到 版本库 都会形成一个新的版本。然后同指令来做版本的控制
-
- * 配置用户
-    + git config [option]
-        - --global: 全局配置，在当前用户下的所有仓库都共享同一个用户的配置信息
-        - --system：系统配置，在该电脑下的所有仓库都共享同一个用户的配置信息
-        - --local： 本地配置，在该仓库下使用当前配置的用户信息
-    + 通常： 
-        - git config --global user.name 'xx'
-        - git config --global user.email 'xxx@xxx.com'
-    + 查看： 
-        - git config --get user.name | git config --get user.email
-    + 替换：
-        - 想要修改或者替换掉原先的用户信息，可以重新配置来实现
-    + 删除仓库： 
-        - rm -rf .git  
-    + 在本地仓库中，如果新添加了一个文件，想要git 追踪 该文件的状态变化，必须要使用git add 指令将其添加到暂存区。之后，在修改文件，可以通过 
-    + git status指令 查看文件的当前状态。
-
- * git 指令
-    + git status 查看文件状态，注意：会忽略空的目录
-    + git add [option] 将文件添加到暂存区
-        - git add * 或者 git add -A 将工作目录下所有文件 提交到 暂存区
-        - git add filename 指定某个文件 添加到 暂存区
-    + git commit [option] -m '当前版本的描述信息'
-        - 在做版本回退操作时，要根据版本描述信息定位到 要回退的版本。
-        - 提交当个文件到版本库，形成一个新的版本。git commit filename -m '版本的信息'
-    - git log 查看提交的历史版本 
-    - git reflog --oneline 查看所有历史提交版本
-    - git checkout filename 撤销指定文件的修改
-        > 在撤销更改的时候，如果暂存区有该文件的话，就恢复暂存区的文件到工作目录；如果暂存区没有该文件，就从版本库中恢复。
-    + git reset [option] 回退版本
-        - git reset --hard '版本id-sha值' 将指定版本内的文件替换掉工作目录内文件，实现版本的回退。--hard 参数表示，同时更改暂存区。
-        - git reset [option] HEAD^ 回退到上一个版本 
-        - git reset HEAD^^ 回退到上上一个版本
-        - git reset [option] HEAD~2
-
-    + reset命令有3种方式：
-        * git reset -–mixed：此为默认方式，不带任何参数的git reset。
-            版本区和暂存区变化，工作区不变
-        * git reset -–soft：回退到某个版本，只回退了commit的信息，不会恢复暂存区。
-            如果还要提交，直接commit即可
-        * git reset –-hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容。
-            git reset --hard head~ 可以回到合并之前的提交
-
-    + 合并没有历史关联的分支
-        - git merge dev --allow-unrelated-histories  
-
- * git分支管理
-    - 在初始化一个空的本地仓库时，默认是没有主分支（master分支）的，必须在主分支上提交至少一次版本，Git才会创建master分支。Git在创建分支时，必须保证当前仓库必须有master分支。
-    1. 创建分支
-        - git branch name
-        - git checkout -b branchName 创建并切换到新分支上。
-
-    2. 查看分支
-        - git branch
-        -有 * 标记的分支，表示当前工作目录所处的分支。
-
-    3. 切换分支
-        -git checkout branchName
-
-    4. 合并分支
-        - git merge branchName
-        - 将指定分支 合并到 当前分支
-
-    5. 删除分支
-        +  本地删除
-            - git branch -d branchName()
-        + 删除远程
-            - git branch -r -d origin/branch-name
-            - git push origin :branch-name
-
-    6. 分支的拉取推送 冲突解决
-        1. git pull [remote url] branchName
-        从远程服务器上 获取指定仓库的分支，并且与工作目录的分支进行合并操作。
-        如果出现冲突，就手动解决即可。
-
-        2. git push [remote url] branchName
-        如果本地开发工作完成，要将本地仓库的版本提交到远程仓库，实现共享与项目合并。此时，就使用该指令。
-
-        3. git fetch [remote url] branchName
-
-        4. git remote add shortName remoteUrl
-        以 shortName 变量去存取 远程仓库的地址remoteUrl
-
-    7. Git分支策略
-        在实际开发时，虽然Git分支很强大，但是也不能肆意使用。通常按照一定的策略来使用分支，提高开发的效率。
-        1. 要保证主分支的稳定性，也就说要保证主分支的代码 是 无Bug的、功能完整。
-        不能在主分支上进行开发。
-
-        2. 如果需要开发新的功能，那么就要创建一个开发该功能的分支。然后在该分支上进行代码编写。
-        当功能开发完毕，并且测试无Bug，将该分支上的代码合并 到 主分支上。
-
-        该分支命名的一般规范为：
-        所有的开发分支 都已 'dev-' + 相关功能描述的单词
-        eg：我要开发登录功能，此时可以考虑创建一个开发分支，名字为 dev-login
-
-        3. 如果遇到协同开发，就要创建协同开发分支，在该分支上去编写代码。
-        当代码合并时，可能会出现文件冲突。一旦出现冲突，Git是解决不了的，只能人为的手动去处理。
-
-        该分支命名的一般规范为：
-        所有的开发分支 都已 'feature-' + 相关功能描述的单词
-        eg：我要开发主页功能，此时可以考虑创建一个协同开发分支，名字为 feature-index
-
-        4. 如果在开发时，接到一个临时修改Bug的任务，此时不要在主分支或者当前未完成的分支，进行Bug修改任务。此时要创建一Bug分支，在该分支上去修改出现Bug的代码。修改完成后，在其合并到主分支。
-
-        该分支命名的一般规范为：
-        所有的开发分支 都已 'bug-' + 相关功能描述的单词
-        eg：我要修改登录超时问题，此时可以考虑创建一个Bug分支，名字为 bug-loginTimeout
-
-        __如果出现冲突必须手动将冲突解决掉，然后在重新提交版本，然后解决冲突后的文件保存成一个版本__
-
+ * [git基本使用](git/readme.md)
+ 
 ## 包管理
     - bower
     - npm 
@@ -1545,7 +1452,7 @@
 ## 微信小游戏
 - 游戏引擎：cocos2d-x
 
-## PWA/spa  
+## pwa/spa/mba
 
 ## webGL
  * three.js
@@ -1557,6 +1464,12 @@
 ## [linux](linux/readme.md)
 
 ## [docker](docker/readme.md)
+
+## 测试
+
+## ci/cd
+
+## 监控
 
 ## 模式
     - 设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
