@@ -126,11 +126,10 @@
         const { SourceMapConsumer, SourceNode } = require("source-map");
 
 ## 字符串的扩展
-    includes(), startsWith(), endsWith()
-
-    includes()：返回布尔值.表示是否找到了参数字符串。
-    startsWith()：返回布尔值.表示参数字符串是否在源字符串的头部。
-    endsWith()：返回布尔值.表示参数字符串是否在源字符串的尾部。 
+- includes()：返回布尔值.表示是否找到了参数字符串。
+- startsWith()：返回布尔值.表示参数字符串是否在源字符串的头部。
+- endsWith()：返回布尔值.表示参数字符串是否在源字符串的尾部。 
+    ```js
         var s = 'Hello world!';
 
         s.startsWith('Hello') // true
@@ -142,8 +141,8 @@
         s.startsWith('world', 6) // true
         s.endsWith('Hello', 5) // true
         s.includes('Hello', 6) // false
-
-    模板字符串
+    ```
+* 模板字符串
         // 普通字符串
         `In JavaScript '\n' is a line-feed.`
 
@@ -494,27 +493,30 @@
 
 ## Promise
   1. what?
-        Promise 是异步编程的一种解决方案
-        从语法上说，Promise 是一个对象
-        Promise对象代表一个异步操作
-        ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
+    - Promise 是异步编程的一种解决方案
+    - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
+
   2. 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
+    ```js
+        var promise = new Promise(function(resolve, reject) {
+        // ... some code
 
-    var promise = new Promise(function(resolve, reject) {
-     // ... some code
+        if (/* 异步操作成功 */){
+            resolve(value);
+        } else {
+            reject(error);
+        }
+        });
+    ```
 
-     if (/* 异步操作成功 */){
-         resolve(value);
-     } else {
-         reject(error);
-     }
-     });
-## async 函数
-    // es2017
-	// async 表示这是一个async函数，await只能用在这个函数里面。
-	// await 表示在这里等待promise返回结果了，再继续执行。
-	// await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
-	// await命令就是内部then命令的语法糖。
+## async await函数
+ * async
+    - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
+
+ * await 
+    - 表示在这里等待promise返回结果了，再继续执行。
+    - await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
+    - await 命令就是内部then命令的语法糖。
 
 ## Symbol
     ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值
@@ -642,5 +644,293 @@
         // es5 与es6 继承的区别:
         // ES5 的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面（Parent.apply(this)）。ES6 的继承机制完全不同，实质是先创造父类的实例对象this（所以必须先调用super方法），然后再用子类的构造函数修改this。
     ```
-## [详情参考](http://es6.ruanyifeng.com/)
+    
+## 模块（module）
+* es6 模块的语法:
+    ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";
+    模块功能主要由两个命令构成：export 和 import。export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。
+    es6 模块写法:
+    ```javascript
+        // 1. profile.js
+        var firstName = 'Michael';
+        var lastName = 'Jackson';
+        var year = 1958;
+        export {firstName, lastName, year};
+        // 使用大括号指定所要输出的一组变量(推荐写法)
+        // 等价于
+        // profile.js
+        export var firstName = 'Michael';
+        export var lastName = 'Jackson';
+        export var year = 1958;
+
+        // 2. export命令除了输出变量，还可以输出函数或类（class）。
+        function v1() { ... }
+        function v2() { ... }
+        export {
+            v1 as streamV1,
+            v2 as streamV2,
+            v2 as streamLatestVersion
+        };
+        // as关键字可重命名
+    ```
+    * import 注意事项
+    - 1. 需要特别注意的是，export命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系。
+    - 2. import命令具有提升效果，会提升到整个模块的头部，首先执行。
+    ```javascript
+        foo();
+        import { foo } from 'my_module';
+        // 上面的代码不会报错，因为import的执行早于foo的调用。这种行为的本质是，import命令是编译阶段执行的，在代码运行之前
+    ```
+    - 3. 错误的写法
+    ```javascript
+        // 报错
+        export 1;
+        // 报错
+        var m = 1;
+        export m;
+
+        正确写法：
+        // 写法一
+        export var m = 1;
+        // 写法二
+        var m = 1;
+        export {m};
+        // 写法三
+        var n = 1;
+        export {n as m};
+
+        同样的，function和class的输出，也必须遵守这样的写法。
+    ```
+    - 4. import 语句会执行所加载的模块
+    ```javascript
+    import 'lodash';
+    // 代码仅仅执行lodash模块，但是不输入任何值。
+    ```
+    - 5. Singleton 模式
+    ```javascript
+        import { foo } from 'my_module';
+        import { bar } from 'my_module';
+        // 等同于
+        import { foo, bar } from 'my_module';
+        // 虽然 foo 和 bar 在两个语句中加载，但是它们对应的是同一个my_module实例。也就是说，import语句是 Singleton 模式。
+    ```
+    * export 注意事项 
+    - export命令可以出现在模块的任何位置，只要处于模块顶层就可以。如果处于块级作用域内，就会报错，
+    - import命令也是如此。
+    * 模块的整体加载  
+    ```javascript
+        // circle.js
+        export function area(radius) {
+            return Math.PI * radius * radius;
+        }
+        export function circumference(radius) {
+            return 2 * Math.PI * radius;
+        }
+        // main.js 中 整体加载的写法如下
+        import * as circle from './circle';
+        console.log('圆面积：' + circle.area(4));
+        console.log('圆周长：' + circle.circumference(14));
+        // circle 应该是可以静态分析的，所以不允许运行时改变
+    ```
+    *  默认导出方式：给用户提供方便,不需要知道所要加载的变量名或函数名
+        export default xxx; 
+        // 命令只能使用一次,所以，import命令后面才不用加大括号，因为只可能唯一对应export default命令。
+        // 本质上，export default就是输出一个叫做default的变量或方法,系统允许你为它取任意名字
+        import xxx from './xxx.js';// xxx 可以任意名称
+    * import()函数 
+    * 目的：为了解决在运行时无法加载模块以下是具体的应用场景
+    - 1.按需加载
+    ```javascript
+    button.addEventListener('click', event => {
+        import('./dialogBox.js')
+        .then(dialogBox => {
+            dialogBox.open();
+        })
+        .catch(error => {
+            /* Error handling */
+        })
+        });
+        // import()方法放在click事件的监听函数之中，只有用户点击了按钮，才会加载这个模块。
+    ```
+    - 2.条件加载
+    ```javascript
+        if (condition) {
+            import('moduleA').then(...);
+            } else {
+            import('moduleB').then(...);
+        }
+    ```
+    - 3. 动态的模块路径
+    ```javascript
+        import(f())
+        .then(...);
+        // 根据函数f的返回结果，加载不同的模块。
+    ```
+    * 注意:import()加载模块成功以后，这个模块会作为一个对象，当作then方法的参数。可以使用对象解构赋值的语法，获取输出接口。
+    ```javascript
+        // 1. export1和export2都是 myModule.js的输出接口，可以解构获得
+        import('./myModule.js')
+            .then(({export1, export2}) => {
+            // ...·
+            });
+        // 2. default输出接口，可以用参数直接获得
+        import('./myModule.js')
+            .then(myModule => {
+            console.log(myModule.default);
+            });
+
+        import('./myModule.js')
+            .then(({default: theDefault}) => {
+            console.log(theDefault);
+            });
+            // 可以使用具名输入的形式
+        // 3. 同时加载多个模块
+            Promise.all([
+                import('./module1.js'),
+                import('./module2.js'),
+                import('./module3.js'),
+            ])
+            .then(([module1, module2, module3]) => {
+            ···
+            });
+        // 4. 使用 async 函数
+            async function main() {
+                const myModule = await import('./myModule.js');
+                const {export1, export2} = await import('./myModule.js');
+                const [module1, module2, module3] =
+                    await Promise.all([
+                        import('./module1.js'),
+                        import('./module2.js'),
+                        import('./module3.js'),
+                    ]);
+            }
+            main();
+    ```
+
+* Module 的加载实现
+    - 默认情况下，浏览器是同步加载js脚本,为了解决脚本过大导致卡死的问题，所以脚本引入了异步加载
+        <script src="path/to/myModule.js" defer></script>
+        <script src="path/to/myModule.js" async></script>
+
+    defer与async的区别是：一句话，defer是“渲染完再执行”，async是“下载完就执行”
+    es6 module 的加载规则：
+    <script type="module" src="./foo.js"></script>
+    浏览器对于带有type="module"的<script>，都是异步加载，等同于defer
+    - ES6 模块也允许内嵌在网页中，语法行为与加载外部脚本完全一致。
+    <script type="module">
+        import utils from "./utils.js";
+        // other code
+    </script>
+
+    - ES6 模块与 CommonJS 模块的差异
+        - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
+        - CommonJS 是同步导入，es 是异步的
+
+    - node 加载:
+        module.exports是全局的对象 可简写成exports node 帮我们实现了var exports=module.exports
+        exports 就是 module.exports 的别名，初始值是空对象
+
+## proxy
+ * 概述：
+    - 这个词的原意是代理，表示由它来“代理”某些操作，可以译为“代理器”
+    - 在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写
+
+ * 语法：
+    - let p = new Proxy(target, handler);Proxy 构造函数，用来生成 Proxy 实例
+    - target 表示所要拦截的目标对象
+    - handler 一个对象，用来定制拦截行为。
+    - 例子：
+        ```javascript
+        // 拦截target的属性的访问请求，访问任何属性都得到35
+        var proxy = new Proxy({}, {
+            get: function(target, property) {
+                return 35;
+            }
+        });
+        proxy.time // 35
+        proxy.name // 35
+        proxy.title // 35
+
+        // handler没有设置任何拦截，那就等同于直接通向原对象
+        var target = {};
+        var handler = {};
+        var proxy = new Proxy(target, handler);
+        proxy.a = 'b';
+        target.a // "b"
+
+        ```
+
+ * Proxy 实例方法
+    + get(target, propKey, receiver) 拦截对象属性的读取
+        - receiver 可选参数proxy 实例本身 
+        - get 拦截
+            ```js
+                var person = {
+                    name: "张三"
+                };
+
+                var proxy = new Proxy(person, {
+                get: function(target, property) {
+                    if (property in target) {
+                        return target[property];
+                    } else {
+                        throw new ReferenceError("Property \"" + property + "\" does not exist.");
+                    }
+                }
+                });
+
+                proxy.name // "张三"
+                proxy.age // 抛出一个错误
+            ```
+    + set(target, propKey, value, receiver) 拦截对象属性的设置
+        - receiver 可选
+        - 数据验证的例子
+            ```js
+                let validator = {
+                set: function(obj, prop, value) {
+                    if (prop === 'age') {
+                        if (!Number.isInteger(value)) {
+                            throw new TypeError('The age is not an integer');
+                        }
+                        if (value > 200) {
+                            throw new RangeError('The age seems invalid');
+                        }
+                    }
+                    // 对于满足条件的 age 属性以及其他属性，直接保存
+                    obj[prop] = value;
+                    }
+                };
+
+                let person = new Proxy({}, validator);
+
+                person.age = 100;
+
+                person.age // 100
+                person.age = 'young' // 报错
+                person.age = 300 // 报错
+            ```
+    + has(target, propKey) 拦截propKey in proxy的操作，返回一个布尔值。
+        - has方法不判断一个属性是对象自身的属性，还是继承的属性
+    + deleteProperty(target, propKey)：拦截delete proxy[propKey]的操作，返回一个布尔值。
+    + ownKeys(target)：拦截
+        - Object.getOwnPropertyNames(proxy)
+        - Object.getOwnPropertySymbols(proxy)
+        - Object.keys(proxy)、
+        - for...in循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属性。
+
+    - getOwnPropertyDescriptor(target, propKey)：拦截Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象。
+    + defineProperty(target, propKey, propDesc)：拦截
+        - Object.defineProperty(proxy, propKey, propDesc）、
+        - Object.defineProperties(proxy, propDescs)，返回一个布尔值。
+
+    - preventExtensions(target)：拦截Object.preventExtensions(proxy)，返回一个布尔值。
+    - getPrototypeOf(target)：拦截Object.getPrototypeOf(proxy)，返回一个对象。
+    - isExtensible(target)：拦截Object.isExtensible(proxy)，返回一个布尔值。
+    - setPrototypeOf(target, proto)：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
+    - apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作，比如proxy(...args)、proxy.call(object, ...args)、proxy.apply(...)。
+    - construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作，比如new proxy(...args)。
+
+
+## 详情参考
+[详情参考](http://es6.ruanyifeng.com/)
     

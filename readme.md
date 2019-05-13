@@ -220,38 +220,39 @@
     内阴影  inset(可选)
 
 ### box-sizing
-    1. content-box 盒子的尺寸=CSS中的尺寸+padding+border
-    2. border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸
+ * content-box 盒子的尺寸=CSS中的尺寸+padding+border
+ * border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸
+    
+### border
+ * border-radius
+    - border-radius:x x x x/y y y y
+    - 正圆:border-radius:50%;
 
-### border-radius
-    border-radius:x x x x/y y y y
-    正圆:border-radius:50%;
+ * border-image
+    - border-image-source:url();
+    - 切割图片 border-image-slice:
+    - border-image-repeat:round;
 
-### border-image
-    border-image-source:url();
-    切割图片 border-image-slice:
-    border-image-repeat:round;
-
-### background-size
-    数字，百分比，
-    cover 完全覆盖整个元素，不考虑图片内容是否损失
-    contain 完全显示图片，不考虑是否覆盖整个元素
-
-### background-origin 
-背景原点(默认是padding-box)
-
-### background-clip 
-    背景图片的显示位置
-
-### background-image：
+### background
+ * background-image：
     url("images/bg1.png") left top,
     url("images/bg2.png") right top,
     url("images/bg3.png") right bottom,
     url("images/bg4.png") left bottom,
     url("images/bg5.png") center center;
+ * background-size
+    - 数字，百分比，
+    - cover 完全覆盖整个元素，不考虑图片内容是否损失
+    - contain 完全显示图片，不考虑是否覆盖整个元素
+
+ * background-origin 
+    - 背景原点(默认是padding-box)
+
+ * background-clip 
+    - 背景图片的显示位置
 
 ### gradient
-1. 线性渐变:
+ * 线性渐变:
         linear-gradient( 
             [ <angle> | to <side-or-corner> ,]? <color-stop> [, <color-stop>]+ )
             \---------------------------------/ \----------------------------/
@@ -274,7 +275,7 @@
                background-image:linear-gradient(to bottom left,#FC3,rgba(255,255,255,0))
                background:linear-gradient(to bottom left,#FC3,rgba(255,255,255,0)),url(images/1957.jpg)
 
-2. 径向渐变:
+ * 径向渐变:
         example:
         background-image:radial-gradient(20px at 10px,red,green);
  * [参考](http://www.mrszhao.com/post/58.html)
@@ -343,7 +344,30 @@
  
  * 优点：运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
 
-## flex
+### em rem vw:
+ 1. em:的基准值  16px  默认的字体大小是16px,基准值是相对于父元素来的
+
+ 2. rem:的基准值  16px  默认的字体大小是16px
+        r 是root  根元素的意思  html文档的根元素是  html标签
+        基准值是相对于来根元素（html）来的
+
+ 3. vw:vw是基于Viewport视窗的长度单位，这里的视窗（Viewport）指的就是浏览器可视化的区域，而这个可视区域是window.innerWidth/window.innerHeight的大小
+    - vw：是Viewport's width的简写,1vw等于window.innerWidth的1%
+    - vh：和vw类似，是Viewport's height的简写，1vh等于window.innerHeihgt的1%
+    - vmin：vmin的值是当前vw和vh中较小的值
+    - vmax：vmax的值是当前vw和vh中较大的值
+
+### media 
+    @media (min-width: 750px) {
+        html {
+                font-size: 100px;
+        }
+    }
+
+## 布局
+### 浮动布局
+
+### flex
 1. flex容器:
     * 给div这类块状元素元素设置display:flex
     * 给span这类内联元素设置display:inline-flex
@@ -412,25 +436,6 @@
     
 ### Grid
 
-### em rem vw:
- 1. em:的基准值  16px  默认的字体大小是16px,基准值是相对于父元素来的
-
- 2. rem:的基准值  16px  默认的字体大小是16px
-        r 是root  根元素的意思  html文档的根元素是  html标签
-        基准值是相对于来根元素（html）来的
-
- 3. vw:vw是基于Viewport视窗的长度单位，这里的视窗（Viewport）指的就是浏览器可视化的区域，而这个可视区域是window.innerWidth/window.innerHeight的大小
-    - vw：是Viewport's width的简写,1vw等于window.innerWidth的1%
-    - vh：和vw类似，是Viewport's height的简写，1vh等于window.innerHeihgt的1%
-    - vmin：vmin的值是当前vw和vh中较小的值
-    - vmax：vmax的值是当前vw和vh中较大的值
-
-### media 
-    @media (min-width: 750px) {
-        html {
-                font-size: 100px;
-        }
-    }
 
 ## less/sass
  * [less](css/less/less.md)
@@ -455,12 +460,12 @@
     + string
     + symbol
 
-* 类型检测
+* 类型检测几种方案
     + typeof
         - 对于原始类型来说，除了 null 都可以显示正确的类型
         - 对于对象来说，除了函数都会显示 object，所以说 typeof 并不能准确判断变量到底是什么类型
     + instanceof
-        - 内部机制是通过原型链来判断的
+        - 内部机制是通过原型链中是不是能找到该类型的prototype。
         - 一般来判断对象，不能直接用来判断原始类型
         - ```javascript
             var arr=[];
@@ -468,7 +473,7 @@
             arr instanceof Array // 推荐使用
             ```
     + 可检测任意类型
-        -  ```
+        - ```js
             Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
            ```
 
@@ -511,8 +516,10 @@
 
 ### js精度问题
 1. number.toFixed(参数)  
-    设置保留小数位数 1.528.toFixed(2) =1.53
-2. 浮点型涉及精度问题：推荐都乘100最后除100 用整数运算
+    ```js
+    parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
+    ```
+2. 浮点型涉及精度问题：推荐都乘10最后除10 用整数运算（整数不存在精度问题）
 
 ### Math 对象常用几个函数
  * 天花板函数 ceil Math.ceil(1.23)=2 向上返回最小的整数
@@ -618,45 +625,12 @@
         document.getElementById("btn").currentStyle.width 
     ```
 
-### document.createDocumentFragment 
-> 创建一个新的空白的文档片段
-- 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
-
-### 事件冒泡和事件捕获   
-* 事件冒泡：从里向外执行，遇到相同的事件及执行
-* 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
-
-### 事件监听（避免事件被覆盖的方法）
->ie9 以下不支持 false默认冒泡 true 捕获
-```javascript
-    node.addEventListener(enventType,fn，false)
-
-    btn.addEventListener("click",fun)
-    // 移除事件监听(参数必须一致)
-    btn.removeEventListener("click",fun)
-           
-    // ie-6-10(enventType 加on)
-    node.attachEvent(enventType,fn)
-    node.detachEvent(enventType,fn)
-```
-
-### 事件的对象作用：(event.target)记录当前事件触发时的一些信息
- * btn.onclick=function(event){} 
-    - event.target 真正触发事件的元素
-    - event.type="click"
-    - event.clinetX/clinetY 
-    - ie 低版本不兼容 var tar=e.target||e.srcElement
-       
-    + 阻止事件冒泡
-        - e.stopPropagation()
-        - ie中阻止事件传播 cancelBubble=true
-
 ### offset
  * offsetLeft
  * offsetTop 
  * offsetWidth 
  * offsetHeight 
- * offsetParent //获取到当前元素外面的定位父盒子
+ * offsetParent 
 
 ### scroll
  * scrollWidth（内部内容的真实宽度） 
@@ -679,31 +653,119 @@
 ### innerWidth，innerHeight
 - 视口宽度 window.innerWidth 和视口高度 window.innerHeight
 
-        
+  
+### document.createDocumentFragment 
+> 创建一个新的空白的文档片段
+- 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
+
+## 事件
+### 事件冒泡和事件捕获   
+* 事件冒泡：从里向外执行，遇到相同的事件及执行
+* 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
+
+### 事件触发三阶段
+1. window 往事件触发处传播，遇到注册的捕获事件会触发
+2. 传播到事件触发处时触发注册的事件
+3. 从事件触发处往 window 传播，遇到注册的冒泡事件会触发
+
+### 事件注册/监听（避免事件被覆盖）
+>ie9 以下不支持 false默认冒泡 true 捕获
+* addEventListener
+    + 第三个参数可为对象，可为bool,该参数默认值为 false(冒泡) ，useCapture 决定了注册的事件是捕获事件还是冒泡事件
+    + 作为对象：
+        - capture：布尔值，和 useCapture 作用一样
+        - once：布尔值，值为 true 表示该回调只会调用一次，调用后会移除监听
+        - passive：布尔值，表示永远不会调用 preventDefault
+        ```javascript
+            node.addEventListener(enventType,fn，false)
+
+            btn.addEventListener("click",fun)
+            // 移除事件监听(参数必须一致)
+            btn.removeEventListener("click",fun)
+                
+            // ie-6-10(enventType 加on)
+            node.attachEvent(enventType,fn)
+            node.detachEvent(enventType,fn)
+        ```
+    + 阻止事件冒泡:(一般来说，如果我们只希望事件只触发在目标上)
+        - ```js
+            node.addEventListener(
+                'click',
+                e => {
+                    // 阻止事件冒泡,也可以阻止捕获事件
+                    e.stopPropagation() 
+                    // 同样也能实现阻止事件，但是还能阻止该事件目标执行别的注册事件。
+                    e.stopImmediatePropagation()
+                    console.log('冒泡')
+                },
+                false
+            )
+
+            // 点击 node 只会执行上面的函数，该函数不会执行
+            node.addEventListener(
+                'click',
+                event => {
+                    console.log('捕获 ')
+                },
+                true
+            )
+        ```
+
+### 事件的对象(event.target)
+ > 记录当前事件触发时的一些信息
+ * btn.onclick=function(event){} 
+    - event.target 真正触发事件的元素
+    - event.type="click"
+    - event.clinetX/clinetY 
+    - ie 低版本不兼容 var tar = e.target||e.srcElement
+
+### 事件代理/委托
+ > 本质就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
+ * 应用的场景：动态生成的子节点要注册事件，那么子节点需要注册事件的话应该注册在父节点上
+ * 好处：
+    1. 减少了事件的注册，内存开销减少了
+    2. 元素的增减不会影响事件的绑定
+    3. js和DOM节点之间的关联变少了，减少了因循环引用(GC中引用计数法的缺陷)而带来的内存泄漏发生的概率。
+
+ * jq 早期 bind 绑定事件会出现一个问题及新创建的元素没有事件，后来用delegate解决1.7 版本后统一用on
+
+ * 注意：
+    - 不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可用。
+    - 例如mouseover 由于事件对象target 频繁改动会有性能问题
+
+## 浏览器端存储
+* cookie:如果用于保存用户登录态，应该将该值加密
+    - 一般有服务器生成，可以设置过期时间
+    - 容量较小，4kb 左右
+    - 每次请求都会携带在header中
+* localStorage
+    - 一直存在，除非被清理
+    - 容量5m 左右
+    - 不参与服务器通讯
+* sessionStorage
+    - 用法类似localStorage
+    - 页面关闭就清理
+* indexDB
+    - 浏览器端的数据库，不被清理一直存在
+
 ## js面向对象
 ### 对象：
  + 什么是对象？
     - 无序属性的集合，可以看成键值对
  + 如何创建？
     - 字面量或者叫直接量
-     var obj={};
+      var obj={};
     - 构造函数创建对象
-    ```javacript
-      function Student(name, age, sex) {
-          this.name = name
-          this.age = age
-          this.sex = sex
-          this.sayHi = function () {
-              console.log("你好" + this.name)
-          }
-      var s1 = new Student("小明", "12", "男");
-     ```
- + 构造函数的执行过程（如何创建对象的）
-     1. 创建一个空对象obj
-     2. 将上面的创建的空对象obj赋值给this
-     3. 执行代码块（给属性赋值等等）
-     4. 隐式返回 return this
-     5. 在构造函数中 有显示的return 语句，若返回值的类型是基本数据类型，会被忽略，复合数据类型不会    
+        ```javascript
+            function Student(name, age, sex) {
+                this.name = name
+                this.age = age
+                this.sex = sex
+                this.sayHi = function () {
+                    console.log("你好" + this.name)
+                }
+            var s1 = new Student("小明", "12", "男");
+        ```
  + 工厂模式创建对象 就是用一个方法实现对象的实例化
      ```javascript
          function initStu(name, age,sex) {
@@ -723,13 +785,21 @@
 
 ### 函数
  + 创建
-     1. 声明式
-         function fn(){}
-     2. 表达式
-         var fn=function(){}
-     3. 构造函数
-         var fn = new Function([arg1~argN, body]);
-         eg:var f = new Function('n', 'console.log(n);');
+    1. 声明式
+        function fn(){}
+    2. 表达式
+        var fn=function(){}
+    3. 构造函数
+        var fn = new Function([arg1~argN, body]);
+        eg:var f = new Function('n', 'console.log(n);');
+
+        * 构造函数的执行过程（调用new的过程）
+            1. 创建一个空对象obj
+            2. 将上面的创建的空对象obj赋值给this
+            3. 执行代码块（给属性赋值等等）
+            4. 隐式返回 return this
+            5. 在构造函数中 有显示的return 语句，若返回值的类型是基本数据类型，会被忽略，复合数据类型不会    
+
  + 变量作用域
      - 变量的作用域：变量起作用的区域，也就说变量可以被访问到的区域。
      - 种类
@@ -833,93 +903,9 @@
         - 箭头函数其实是没有 this 的
         - 箭头函数中的 this 只取决包裹箭头函数的第一个普通函数的 this
 
-### 一些高级函数
- * Array 的常用函数
-    + forEach
-        ```javascript
-            var arr = [1, 2, 2, 2, 2, 6, 9]
-            var sum = 0
-            arr.forEach(function (value,i,a) {
-                sum += value
-            })
-        ```
-
-    + map
-        ```javascript
-        //类似foreach 有返回值 返回一个新数组
-        arr.map(function (x) {
-            return x + 1
-        })
-        ```
-
-    + filter 过滤器
-        ```javascript
-            //返回指定条件的新数组
-            arr.filter(function (x) {
-                return x < 2
-            })
-        ```
-
-    + some
-        ```javascript
-        //空数组时 some 返回false every 返回true
-        // some 存在一个满足条件就返回true
-        arr.some(function (x) {
-            return x == 2   //true
-        })
-        ```
-
-    + every
-        ```javascript
-            //返回true false 
-        arr.every(function (x) {
-            return x > 10 //false
-        })
-        ```
-
-    + indexOf
-        ```javascript
-
-        ```
-
-    + reduce
-        ```javascript
-            // reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
-
-            // reduce() 可以作为一个高阶函数，用于函数的 compose。
-
-            // 注意: reduce() 对于空数组是不会执行回调函数的。
-            var numbers = [65, 44, 12, 4];
-        
-            function getSum(total, num) {
-                return total + num;
-            }
-            function myFunction(item) {
-                document.getElementById("demo").innerHTML = numbers.reduce(getSum);
-            }
-        ```
-
-    + sort
-        * Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
-        * 默认 按照根据ASCII码进行排序
-        * sort 是一个高阶函数，sort（function(){
-            // 写具体的实现逻辑
-        }）
-        * 升序
-            ```javascript
-            sort(function(a,b){
-                return a-b
-            })
-            ```
-        * 降序
-            ```javascript
-            sort(function(a,b){
-                return b-a
-            })
-            ```
- * String
-
- * Object
+### JSON 转换 
+ * object-->string   JSON.stringify()
+ * string--> object   JSON.parse()
 
 ### 对象类型和原始类型的不同?
  > 原始类型存储的是值，对象类型存储的是地址（指针）,根据该特性，我们以后会遇到一些问题
@@ -1010,46 +996,7 @@
  * 对象的属性搜索原则：
     - 首先找自己，若找到，停止搜索直接使用，否则一层层往原型上找，找到，停止搜索，直接使用，一直到 Object.prototype上 如果找到 就返回该属性的值，如果依然没有找到，就返回undefined。
 
- * 实现继承方式（利用原型实现继承）
-    1. 实例继承原生原型对象
-    ```
-        function Fn() {}
-        Fn.prototype.name = 'qm';
-        var obj = new Fn();
-    ```
-    2.  实例继承自定义的原型对象
-    ```
-        function Fn() {}
-        Fn.prototype={name:'qm'};
-        var obj = new Fn();
-    ```
-    3.  组合式继承(开发中常用的)
-    ```javascript
-        function extend(obj, obj2) {
-            for (var key in obj2) {
-                obj[key] = obj2[key];
-            }
-        }
-        extent({},{name:"qm",age:18})
-    ```
-    4.  es5 提供的Object.create(obj) 的经典继承   
-    ```javascript
-        var obj = Object.create(obj1);
-        // 原理是置换原型
-        var create = function (obj) {
-        if (!Object.create) {
-            Object.create = function (obj) {
-                function F() { }
-                F.prototype = obj
-                return new F()
-            }
-        } else {
-            return Object.create(obj)
-        }
-    }
-    ```
-
-* Object.prototype 上的一些方法
+ * Object.prototype 上的一些方法
     + hasOwnProperty方法
         - 语法：<对象>.hasOwnProperty('propertyName')
         - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
@@ -1082,9 +1029,285 @@
         * eval创建变量的作用域 是由eval执行的作用域决定。 
     - 已不推荐使用。JSON.parse()
 
-### JSON 转换 
- * object-->string   JSON.stringify()
- * string--> object   JSON.parse()
+### 原型继承和Class继承
+* 利用原型实现继承
+    1. 实例继承原生原型对象
+        ```javascript
+            function Fn() {}
+            Fn.prototype.name = 'qm';
+            var obj = new Fn();
+        ```
+    2. 实例继承自定义的原型对象
+        ```javascript
+            function Fn() {}
+            Fn.prototype={name:'qm'};
+            var obj = new Fn();
+        ```
+    3. 组合式继承(开发中常用的)
+        ```javascript
+            function Parent(value) {
+                this.val = value
+            }
+            Parent.prototype.getValue = function() {
+                console.log(this.val)
+            }
+            function Child(value) {
+                Parent.call(this, value)
+            }
+            Child.prototype = new Parent()
+            // Child 默认原型为空对象,constructor指向期构造函数
+            // 置换了原型，就可能会在新的原型上丢失默认的constructor属性,如果想要其有该属性，就只能自己手动添加上。
+            Child.prototype.constructor = Child;
+            const child = new Child(1)
+
+            child.getValue() // 1
+            child instanceof Parent // true
+            // 原理：在子类的构造函数中通过 Parent.call(this) 继承父类的属性，然后改变子类的原型为 new Parent() 来继承父类的函数
+            // 优点: 构造函数可以传参，不会与父类引用属性共享，可以复用父类的函数
+            // 缺点: 就是在继承父类函数的时候调用了父类构造函数，导致子类的原型上多了不需要的父类属性，存在内存上的浪费
+        ```
+    4. es5 提供的Object.create(obj) 的经典继承   
+        ```javascript
+            var obj = Object.create(obj1);
+            // 原理是置换原型
+            var create = function (obj) {
+            if (!Object.create) {
+                Object.create = function (obj) {
+                    function F() { }
+                    F.prototype = obj
+                    return new F()
+                }
+            } else {
+                return Object.create(obj)
+            }
+            }
+        ```
+
+    5. 寄生组合继承
+        > 该继承方式，解决了继承父类函数时调用了构造函数，多了无用的父类属性问题。
+        ```javascript
+            function Parent(value) {
+                this.val = value
+            }
+            Parent.prototype.getValue = function() {
+                console.log(this.val)
+            }
+
+            function Child(value) {
+                Parent.call(this, value)
+            }
+
+            Child.prototype = Object.create(Parent.prototype, {
+                constructor: {
+                    value: Child,
+                    enumerable: false,
+                    writable: true,
+                    configurable: true
+                }
+            })
+
+            const child = new Child(1)
+
+            child.getValue() // 1
+            child instanceof Parent // true
+
+            // 以上继承实现的核心就是将父类的原型赋值给了子类，并且将构造函数设置为子类，这样既解决了无用的父类属性问题，还能正确的找到子类的构造函数。
+
+        ```
+
+* class 继承
+  > JS 中并不存在类，class 只是语法糖，本质还是函数。
+  > 可证明
+    ```js
+        class Person {}
+        Person instanceof Function // true
+
+
+        class Parent {
+            constructor(value) {
+                this.val = value
+            }
+            getValue() {
+                console.log(this.val)
+            }
+        }
+
+        class Child extends Parent {
+            constructor(value) {
+                super(value) //可以看成 Parent.call(this, value)
+            }
+        }
+        let child = new Child(1)
+        child.getValue() // 1
+        child instanceof Parent // true
+    ```
+
+## 模块化
+ > ES6 之前，js没有module，不利于大程序的开发，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。前者用于node，后者用于浏览器。
+ * 为什要模块化(有什么好处)
+    - 解决命名冲突
+    - 提供复用性
+    - 提高代码可维护性
+
+ * 有哪些模块化的方案
+    + 沙箱模式(实质是匿名的立即执行函数)
+        - 在早期，使用立即执行函数实现模块化是常见的手段，通过函数作用域解决了命名冲突、污染全局作用域的问题
+        - 例如jq插件开发
+
+    + AMD 和 CMD
+        - 现在很少看到
+        - 用法如下
+            ```javascript
+                // AMD
+                define(['./a', './b'], function(a, b) {
+                    // 加载模块完毕可以使用
+                    a.do()
+                    b.do()
+                })
+                // CMD
+                define(function(require, exports, module) {
+                    // 加载模块
+                    // 可以把 require 写在函数体的任意地方实现延迟加载
+                    var a = require('./a')
+                    a.doSomething()
+                })
+            ```
+
+    + CommonJS
+        - module.exports/require
+        - 语法如下:
+            ```javascript
+                let { stat, exists, readFile } = require('fs');
+                // 等同于
+                let _fs = require('fs');
+                let stat = _fs.stat;
+                let exists = _fs.exists;
+                let readfile = _fs.readfile;
+            
+            // 上面代码的实质是整体加载fs模块（即加载fs的所有方法），生成一个对象（_fs），然后再从这个对象上面读取 3 个方法。
+            // 这种加载称为“运行时加载”，因为只有运行时才能得到这个对象，导致完全没办法在编译时做“静态优化”。
+            
+            ```
+        - module.exports是全局的对象 可简写成exports，
+        - node 帮我们实现了var exports=module.exports，exports 就是 module.exports 的别名，初始值是空对象
+        
+    + es module
+        - export/import
+        - 语法:
+            ```javascript
+                // ES6 模块不是对象，而是通过export命令显式指定输出的代码，再通过import命令输入。
+                import { stat, exists, readFile } from 'fs';
+
+                // 上面代码的实质是从fs模块加载 3 个方法，其他方法不加载。
+                // 这种加载称为“编译时加载”或者静态加载，效率要比 CommonJS 模块的加载方式高。
+                // 当然，这也导致了没法引用 ES6 模块本身，因为它不是对象。
+            ```
+        - ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";
+
+
+ * ES6 模块与 CommonJS 模块的差异
+    - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
+    - CommonJS 是同步导入，es 是异步的
+
+## 一些函数(es5/es6)
+ * Array 的常用函数
+    + forEach
+        ```javascript
+            var arr = [1, 2, 2, 2, 2, 6, 9]
+            var sum = 0
+            arr.forEach(function (value,i,a) {
+                sum += value
+            })
+        ```
+
+    + map
+        ```javascript
+        // 类似foreach 有返回值 返回一个新数组
+        arr.map(function (x) {
+            return x + 1
+        })
+        ```
+
+    + filter 过滤器
+        ```javascript
+            //返回指定条件的新数组
+            arr.filter(function (x) {
+                return x < 2
+            })
+        ```
+
+    + some
+        ```javascript
+        //空数组时 some 返回false every 返回true
+        // some 存在一个满足条件就返回true
+        arr.some(function (x) {
+            return x == 2   //true
+        })
+        ```
+
+    + every
+        ```javascript
+            //返回true false 
+        arr.every(function (x) {
+            return x > 10 //false
+        })
+        ```
+
+    + indexOf
+        ```javascript
+
+        ```
+
+    + reduce
+        ```javascript
+            // reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
+
+            // reduce() 可以作为一个高阶函数，用于函数的 compose。
+
+            // 注意: reduce() 对于空数组是不会执行回调函数的。
+            var numbers = [65, 44, 12, 4];
+        
+            function getSum(total, num) {
+                return total + num;
+            }
+            function myFunction(item) {
+                document.getElementById("demo").innerHTML = numbers.reduce(getSum);
+            }
+        ```
+
+    + sort
+        * Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
+        * 默认 按照根据ASCII码进行排序
+        * sort 是一个高阶函数，sort（function(){
+            // 写具体的实现逻辑
+        }）
+        * 升序
+            ```javascript
+            sort(function(a,b){
+                return a-b
+            })
+            ```
+        * 降序
+            ```javascript
+            sort(function(a,b){
+                return b-a
+            })
+            ```
+
+ * String
+    + includes startsWith endsWith()
+      ```js
+        let s = 'Hello world!';
+        s.startsWith('Hello') // true
+        s.endsWith('!') // true
+        s.includes('o') // true
+        // 这三个方法都支持第二个参数.表示开始搜索的位置。
+      ```
+
+ * Object
+
+## es6
+- [es6](ECMA/es6.md)
 
 ## js GC:      
  * 引用计数法
@@ -1109,6 +1332,49 @@
     - 后者性能较低，但是不会产生循环引用问题
     - 在当代浏览器配合两种机制，去释放变量的内存空间。
 
+
+## 进程和线程
+ * 进程
+    - 每一个正在运行的应用程序都被称之为进程
+    - 每一个应用程序都至少有一个进程
+    - 进程是用来给应用程序体用一个执行的环境，给应用程序分配资源的一个单位
+
+ * 线程
+    - 用来执行应用程序中的代码
+    - 在一个进程内部，有很多的线程
+
+## js执行机制
+ * JS 执行是单线程的，它是基于事件循环的。
+
+ * js语言为什么设计成单线程的？
+    - 避免多线程操作同一文件（资源）产生冲突。
+    - 提高js性能
+
+ * Event Loop（浏览器）
+    1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+    2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+    3. 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，放入执行栈，开始执行。
+
+    4. 主线程不断重复上面的第三步。
+    主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。
+
+ * 规范中规定 task 分为两大类，
+    +  macro task（宏任务） 
+        - process.nextTick（Node 独有）
+        - promise 
+        - MutationObserver
+        
+    + micro task（微任务）
+        - 并且每个 macro task 结束后，都要清空所有的 micro task。
+        - script 
+        - setTimeout 
+        - setInterval
+        - setImmediate 
+        - I/O 
+        - UI rendering
+
 ## js异常
 >js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
  * EvalError  运行时异常。 eval 函数调用时发生的异常
@@ -1118,32 +1384,11 @@
  * typeError 运行时异常，类型异常
  * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
 
-
-## js执行机制
-* JS 执行是单线程的，它是基于事件循环的。
-
-* js语言为什么设计成单线程的？
-    - 避免多线程操作同一文件（资源）产生冲突。
-    - 提高js性能
-
-* 事件循环
-    1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
-
-    2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
-
-    3. 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
-
-    4. 主线程不断重复上面的第三步。
-    主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。 规范中规定 task 分为两大类，分别是 macro task 和 micro task，并且每个 macro task 结束后，都要清空所有的 micro task。
-
-
-## es6
-- [es6](ECMA/es6.md)
-
 ## js.map 文件是干啥的？
 源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
 
-## 移动端事件
+## 移动端
+### 事件
  * 移动端touch事件
     - 当用户手指放在移动设备在屏幕上滑动会触发的touch事件
     - touchstart——当手指触碰屏幕时候发生。不管当前有多少只手指
@@ -1164,22 +1409,35 @@
     + 事件响应顺序
         - ontouchstart  > ontouchmove  > ontouchend > onclick
 
-## 移动端适配
+### 移动端适配
  * [适配](mobile/适配/readme.md)
 
 ## framework
-> 前端常用的框架
+> 前端常用的框架    
+### angular
+ * [angular1](angular1/angular-base.html)
+ * [angular2](angular2/angular.md)
+
+### vue
+ * [vue](vue/vue.md)
+
+### react
+ * [react](react/readme.md)
+
 ### jquery(传统的dom操作框架)
  * 本质：
     - 源码分析得知是一个伪数组对象，在自然数的索引上存储的是查询到所有DOM元素。$本质是jQuery原型上的init这个工厂构造函数的实例，根据传入的参数不同实现不同的功能。
-  * 特性：
+
+ * 特性：
     - 隐式迭代
     - 链式编程
+
  * jquery 与 dom 对象转化：
     - dom->jquery $() 包裹一个dom对象
     + jquery->dom   
         - var $box=$("#box") 通过索引取出$box[0]
         - $box.get(0)
+
  * 清空元素
     1. html():
         $(“div”).html("");// 使用html方法来清空元素，不推荐使用，会造成内存泄漏,绑定的事件不会被清除。
@@ -1269,18 +1527,15 @@
         })  
     ``` 
 
- * jq事件委托（或者叫事件代理）
-    + 以上bind 绑定事件会出现一个问题及新创建的元素没有事件？
+ * jq事件委托/代理
+    + bind 绑定事件会出现一个问题及新创建的元素没有事件？
     + 如何解决？
-    ```javascript
-        // jq 推出新的事件的添加方式delegate
-        $("#box").delegate("p","click",function(){
-                ...
-        })
-    ```
-    + 这就是事件委托或者叫事件代理
-        - 本质：就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
-
+        ```javascript
+            // jq 推出新的事件的添加方式delegate
+            $("#box").delegate("p","click",function(){
+                    ...
+            })
+        ```
     + 新版本jq 统一使用on(v1.7后)
         - 简单事件添加
         ```javascript
@@ -1305,12 +1560,6 @@
                 .....
             })
         ```
-        - 应用场景：给dom元素循环遍历绑定事件
-            1. 减少了事件的注册，内存开销减少了
-            2. 元素的增减不会影响事件的绑定
-            3. js和DOM节点之间的关联变少了，减少了因循环引用(GC中引用计数法的缺陷)而带来的内存泄漏发生的概率。
-
-        - 注意：不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可用。例如mouseover 由于事件对象target 频繁改动会有性能问题
 
  * 事件流
     + 场景： 
@@ -1351,17 +1600,6 @@
        - e.preventDefault();
     3. return false 
        - 不仅可以阻止默认效果，还能阻止事件冒泡
-
-           
-### angular
- * [angular1](angular1/angular-base.html)
- * [angular2](angular2/angular.md)
-
-### vue
- * [vue](vue/vue.md)
-
-### react
- * [react](react/readme.md)
 
 ## node
  * [node](node/README.md)
@@ -1430,9 +1668,12 @@
    - [详情](https://github.com/tapio/live-server#readme)
 
 ## 前端的工具
-* Fontmin
+* Fontmin/字蛛
 * ImageOptim
-* charles
+* charles/fiddler
+* 文档工具
+    - dash
+    - zeal
 
 ## chrome插件的开发
  * 首先要有一个manifest.json清单文件
@@ -1445,7 +1686,6 @@
 ## 数据图表
 - [echarts](https://echarts.baidu.com/examples/index.html)
 - [highcharts](https://www.highcharts.com.cn/)
-
 
 ## 微信小程序 
 
@@ -1461,9 +1701,11 @@
 
 ## WebAssembly
 
-## [linux](linux/readme.md)
+## linux
+[linux](linux/readme.md)
 
-## [docker](docker/readme.md)
+## docker
+[docker](docker/readme.md)
 
 ## 测试
 
