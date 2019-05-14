@@ -1,5 +1,5 @@
 # 微信开发
-## 1. 小程序
+## 小程序
 1. 屏幕适配（字体，样式，动画）
 
 ### 小程序的限制
@@ -7,7 +7,7 @@
 2. 页面总数不超过5张
 3. 存在编辑器和真机部分api效果不同 （例如：canvasToTempFilePath编辑器不能执行）
 4. 只有添加appid后才能有预览功能 并进行真机调试。但此时所有请求必须为配置好的第三方服务器。
-## 2. 小游戏
+## 小游戏
 ### 前置知识:
 1. js es6 面向对象（class）
 2. canvas 的原生api 游戏引擎
@@ -20,14 +20,14 @@
 
 
 
-### 微信开发的优化手段
+### 小程序优化
 1. setData 更改部分数据（数组，或对象的某项值）
-```javascript
-taskDataList=[]
-const taskItem = 'taskDataList[' + index + '].downTime'
-this.setData({
-    [taskItem]: Date.now()
-    })
-```
+    ```javascript
+        taskDataList=[]
+        const taskItem = 'taskDataList[' + index + '].downTime'
+        this.setData({
+            [taskItem]: Date.now()
+            })
+    ```
 2. canvas合成的图片不清晰css设置canvas样式 object-fit: contain;
 3. 1rpx 无法显示，设置1px

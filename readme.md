@@ -1,6 +1,6 @@
 # 前端技术栈
 > 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点，构建自己的知识网络。
-> 同时我也在不断的思考前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？
+
 ## css
  * css 三大特性：
     + 层叠性
@@ -64,38 +64,6 @@
             - z-index 值越大 当前的元素层级越高
             - 父元素的z-index值越大 当前的元素层级越高  
     
- * html page 渲染过程
-    + 浏览器接收服务器响应结果，如果有压缩则首先进行解压处理，紧接着就是页面解析渲染
-    + 解析渲染该过程主要分为以下步骤：
-      - 解析HTML
-
-      - 构建DOM树
-
-      - DOM树与CSS样式进行附着构造呈现树（渲染树）
-
-      - 布局
-        
-      - 绘制
-
-      - [详细参考](http://www.cnblogs.com/dojo-lzz/p/3983335.html)
-
- * repaint&reflow
-    + reflow(重排):当DOM变化影响了元素的几何属性（宽、高改变等等） 浏览器此时需要重新计算元素几何属性 并且面中其他元素的几何属性可能会受影响 这样渲染树就发生了改变，也就是重新构造RenderTree渲染树 这个过程叫做重排
-
-    + 具体场景：
-        - 页面初始渲染
-        - 添加/删除可见DOM元素
-        - 改变元素位置
-        - 改变元素尺寸（宽、高、内外边距、边框等）
-        - 改变元素内容（文本或图片等）
-        - 改变窗口尺寸
-    + repaint:如果DOM变化仅仅影响的了背景色等等非几何属性 此时就发生了重绘（repaint） 不管页面发生了重绘还是重排，它们都会影响性能（重绘还好一些） 
-
-    + 如何优化?
-        - 分离读写操作（浏览器渲染队列优化）
-        - 样式集中改变
-        - 缓存布局信息
-        - 元素批量修改
 
  * BFC 
     - 概念：（W3C CSS 2.1 规范中的一个概念,它是一个独立容器，决定了元素如何对其内容进行定位,以及与其他元素的关系和相互作用。）
@@ -104,8 +72,7 @@
 
  * css hack   
 
-## html5 
-### 什么是h5?
+## 什么是h5? 
  * 狭义上: 是html4的升级版本，是新一代web应用标准
  * 广义上: H5其实指的是一个泛称，它是由HTML5 + CSS3 + JsApi等技术组合而成的一个应用开发平台。
 
@@ -173,33 +140,6 @@
     ::first-letter 选择首字母
     ::first-line   第一行
     ::selection    选中的区域  只能变color和background-color  
-
-### word-break
-* word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
-  - [word-break 详细](https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break)
-
-* normal
-    使用默认的断行规则。
-* break-all
-    对于non-CJK (CJK 指中文/日文/韩文) 文本，可在任意字符间断行。
-* keep-all
-    CJK 文本不断行。 Non-CJK 文本表现同 normal。
-
-### 私有前缀
-1. webkit chrome  safari 新版opera
-2. moz    firefox
-3. ms     IE
-4. o      老版opeara
-
-### 透明色     
-1. rgba
-2. opacity 能继承 取值0-1
-3. transparent 完全透明
-4. hsla
-    h 色调
-    s 饱和度0-100%
-    l 亮度 0-100%
-    a alpha 透明度
 
 ### shadow
 1. 文字阴影:
@@ -364,7 +304,35 @@
         }
     }
 
-## 布局
+### word-break
+* word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
+  - [word-break 详细](https://developer.mozilla.org/zh-CN/docs/Web/CSS/word-break)
+
+* normal
+    使用默认的断行规则。
+* break-all
+    对于non-CJK (CJK 指中文/日文/韩文) 文本，可在任意字符间断行。
+* keep-all
+    CJK 文本不断行。 Non-CJK 文本表现同 normal。
+
+### 私有前缀
+1. webkit chrome  safari 新版opera
+2. moz    firefox
+3. ms     IE
+4. o      老版opeara
+
+### 透明色     
+1. rgba
+2. opacity 能继承 取值0-1
+3. transparent 完全透明
+4. hsla
+    h 色调
+    s 饱和度0-100%
+    l 亮度 0-100%
+    a alpha 透明度
+
+
+## layout
 ### 浮动布局
 
 ### flex
@@ -658,6 +626,43 @@
 > 创建一个新的空白的文档片段
 - 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
 
+## bom
+### html渲染过程
++ 浏览器接收服务器响应结果，如果有压缩则首先进行解压处理，紧接着就是页面解析渲染
++ 解析渲染该过程主要分为以下步骤：
+    - 解析HTML
+
+    - 构建DOM树
+
+    - DOM树与CSS样式进行附着构造呈现树（渲染树）
+
+    - 布局
+        
+    - 绘制
+
+    - [详细参考](http://www.cnblogs.com/dojo-lzz/p/3983335.html)
+
+### 重绘（Repaint）和回流（Reflow）
++ reflow:
+    - 当DOM变化影响了元素的几何属性（宽、高改变等等） 浏览器此时需要重新计算元素几何属性 
+    - 并且面中其他元素的几何属性可能会受影响 这样渲染树就发生了改变，也就是重新构造RenderTree渲染树
+
++ 具体场景：
+    - 页面初始渲染
+    - 添加/删除可见DOM元素
+    - 改变元素位置
+    - 改变元素尺寸（宽、高、内外边距、边框等）
+    - 改变元素内容（文本或图片等）
+    - 改变窗口尺寸
+
++ repaint:如果DOM变化仅仅影响的了背景色等等非几何属性 此时就发生了重绘（repaint） 不管页面发生了重绘还是重排，它们都会影响性能（重绘还好一些） 
+
++ 如何优化?
+    - 分离读写操作（浏览器渲染队列优化）
+    - 样式集中改变
+    - 缓存布局信息
+    - 元素批量修改
+
 ## 事件
 ### 事件冒泡和事件捕获   
 * 事件冒泡：从里向外执行，遇到相同的事件及执行
@@ -747,6 +752,9 @@
     - 页面关闭就清理
 * indexDB
     - 浏览器端的数据库，不被清理一直存在
+
+## 正则表达式
+ * [正则表达式](note/reg.md)
 
 ## js面向对象
 ### 对象：
@@ -1209,6 +1217,11 @@
     - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
     - CommonJS 是同步导入，es 是异步的
 
+ * (模块)包管理
+    - bower
+    - npm 
+    - yarn
+
 ## 一些函数(es5/es6)
  * Array 的常用函数
     + forEach
@@ -1306,7 +1319,7 @@
 
  * Object
 
-## es6
+## es6对js的扩展
 - [es6](ECMA/es6.md)
 
 ## js GC:      
@@ -1425,216 +1438,49 @@
  * [react](react/readme.md)
 
 ### jquery(传统的dom操作框架)
- * 本质：
-    - 源码分析得知是一个伪数组对象，在自然数的索引上存储的是查询到所有DOM元素。$本质是jQuery原型上的init这个工厂构造函数的实例，根据传入的参数不同实现不同的功能。
+ * [jq](jq/readme.md)
 
- * 特性：
-    - 隐式迭代
-    - 链式编程
-
- * jquery 与 dom 对象转化：
-    - dom->jquery $() 包裹一个dom对象
-    + jquery->dom   
-        - var $box=$("#box") 通过索引取出$box[0]
-        - $box.get(0)
-
- * 清空元素
-    1. html():
-        $(“div”).html("");// 使用html方法来清空元素，不推荐使用，会造成内存泄漏,绑定的事件不会被清除。
-    2.empty():
-        $(“div”).empty(); // 清空div的所有内容（推荐使用，会清除子元素上绑定的内容）
-    3. remove():
-        $(“div”).remove();自身也删除
-
- * attr,prop 区别
-    1. attr("box",值) 设置单个属性
-        attr({})    设置多个属性
-        取表单值属性时会得到undefined
-
-    2. 这里可以使用prop 
-        自定义属性使用attr,自带属性使用prop
-
- * selecor
-
- * dom 操作的方法
-
- * ajax/jsonp
-    ```javascript
-    //  1. ajax :
-    $.ajax({
-        type: "method",
-        url: "url",
-        data: "data",
-        dataType: "dataType",
-        success: function (response) {
-            
-        }
-    });
-
-    $.get("url", data,
-        function (data, textStatus, jqXHR) {
-            
-        },
-        "dataType"
-    );
-
-    $.post("url", data,
-        function (data, textStatus, jqXHR) {
-            
-          },
-          "dataType"
-      );
-
-    // 2. jsonp:
-        //    原理：
-        //        利用了<script src=""></script>标签具有可跨域的特性，
-        //        由服务端返回一个预先定义好的Javascript函数的调用，并且将服务器数据以该函数参数的形式传递过来
-        //        只能以GET方式请求
-    $.ajax({
-        //请求方式必须是get
-        type:'get',
-        //请求地址
-        url:'http://api.map.baidu.com/telematics/v3/weather',
-        //请求数据
-        data:{'name':'test'},
-        //请求方式  如果想要实现jsonp跨域，必须声明是dataType:'jsonp'
-        dataType:'jsonp',
-        //成功时的回调
-        success:function(data){
-
-        }
-    })
-    ```
-
- * cors 
-    - ajax 的jsonp 有个缺陷就是只能发get 请求不能发post,所以可以使用cors.get/post 都支持
-    - 原理：在服务器响应了响应头: Access-Control-Allow-Origin http 协议规定 header("Access-Control-Allow-Origin:*");
-
- * jq事件绑定： 
-    - 绑定多个事件
-    ```javascript
-        $("#box").bind("click mouseenter",function(){
-            ...
-        })
-
-        $("#box").bind({
-            "click":function(){
-                ...
-            },
-            "mouseenter":function(){
-                ...
-            }
-        })  
-    ``` 
-
- * jq事件委托/代理
-    + bind 绑定事件会出现一个问题及新创建的元素没有事件？
-    + 如何解决？
-        ```javascript
-            // jq 推出新的事件的添加方式delegate
-            $("#box").delegate("p","click",function(){
-                    ...
-            })
-        ```
-    + 新版本jq 统一使用on(v1.7后)
-        - 简单事件添加
-        ```javascript
-            $("#box").on("click",function(){
-                ...
-            })
-        ```
-        -  同时添加多个事件
-        ```javascript
-            $("#box").on({
-                "click":function(){
-                    ...
-                },
-                "mouseenter":function(){
-                    ...
-                }
-            })
-        ``` 
-        - 事件委托 一般只添加一次事件委托
-        ```
-            $("#box").on("click","p",function(){
-                .....
-            })
-        ```
-
- * 事件流
-    + 场景： 
-        - 一个标签添加了自身的事件，又添加了委托事件执行顺序？
-        - 委托事件先执行，然后自身事件执行（冒泡）
-    + 执行的流程：
-    ```
-        $("#box").on("p","click",function(){
-            .....
-        })
-        $("p").on("click",function(){
-        ...
-        })
-    ```
-
- * jq事件解绑：
-    + 解绑普通事件
-        - $("#box").off("click")
-    + 解绑多个
-        - $("#box").off("mouseenter click")
-    + 解绑委托事件
-        - $("#box").off("click","**")
-    + $("#box").off() 
-        - 接除box盒子所有的事件
-             
- * jq事件触发:
-    + 简单事件触发：
-        - $(selector).click(); 触发 click事件
-    + trigger方法触发事件
-        - $(selector).trigger(“click”);
-    + triggerHandler触发 事件响应方法，不触发浏览器行为
-        - $(selector).triggerHandler(“focus”);
-
- * jq阻止事件冒泡：
-    1. 阻止事件传播
-       - e.stopPropagation();   
-    2. 阻止事件触发的默认效果
-       - e.preventDefault();
-    3. return false 
-       - 不仅可以阻止默认效果，还能阻止事件冒泡
-
-## node
- * [node](node/README.md)
-
-## Hybrid App
+## 跨平台技术
  * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
+ * [微信小程序](wx/readme.md)
+ * react native
+ * weex/uni-app
+ * flutter
 
-## gulp
+## 前端安全
+
+
+## 前端的工程化
+### 构建与打包工具
  * [gulp](build-tool/gulp/readme.md)
-
-## webpack
  * [webpack](build-tool/webpack/readme.md)
 
-## 正则表达式
- * [正则表达式](note/reg.md)
+### 测试
 
-## git 
- * [git基本使用](git/readme.md)
+### ci/cd
+
+### 监控
+
+## 环境和工具
+### mac 
+ * brew[官网](http://brew.sh/index_zh-cn.html)
  
-## 包管理
-    - bower
-    - npm 
-    - yarn 
-    
-## Emmet
-> 常用
-```
-    - div.className
-    - div#idName
-    - div.className#idName
-    - h1{text}
-    - a[href="#"]
-    - ul>li*3>a[href="#"]
+ * 安装:
+    ``` 
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    ```
 
-```
+ * brew
+    - brew install 软件名  brew uninstall  软件名称
+    - brew list 可以查看所有安装的软件
+    - brew info 软件名
+
+### 开发工具：vscode 
+ * 前端本地服务端调试
+   - npm install -g live-server 
+   - 安装报错就用npm install live-server -gf安装，
+   - [详情](https://github.com/tapio/live-server#readme)
+
  * eslint
     - 是nodejs编写，提供一种代码编写规范。
     - 对代码静态分析，不用执行就可以查找不符合语法规则的代码。
@@ -1648,32 +1494,28 @@
     - [配置](note/eslint.md)
     - [参考](http://eslint.org/)
 
-## mac 
- * brew[官网](http://brew.sh/index_zh-cn.html)
- 
- * 安装:
- ``` 
- ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
+ * Emmet(快捷编写html，vscode 内置了该功能)
+    ```css
+        div.className
+        div#idName
+        div.className#idName
+        h1{text}
+        a[href="#"]
+        ul>li*3>a[href="#"]
+    ```
 
- * brew
-    - brew install 软件名  brew uninstall  软件名称
-    - brew list 可以查看所有安装的软件
-    - brew info 软件名
-
-## 开发工具：vscode 
- * 前端本地服务端调试
-   - npm install -g live-server 
-   - 安装报错就用npm install live-server -gf安装，
-   - [详情](https://github.com/tapio/live-server#readme)
-
-## 前端的工具
+### 前端的工具
 * Fontmin/字蛛
 * ImageOptim
 * charles/fiddler
 * 文档工具
     - dash
     - zeal
+
+### git
+* [git基本使用](git/readme.md)
+
+## spa/mba(单页和多页开发)
 
 ## chrome插件的开发
  * 首先要有一个manifest.json清单文件
@@ -1683,35 +1525,27 @@
     - 首先将所有相关文件都放到一个文件夹中
     - 用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，- 确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
 
+
 ## 数据图表
 - [echarts](https://echarts.baidu.com/examples/index.html)
 - [highcharts](https://www.highcharts.com.cn/)
 
-## 微信小程序 
-
-## 微信小游戏
-- 游戏引擎：cocos2d-x
-
-## pwa/spa/mba
-
-## webGL
+## canvas/webGL
+ * [canvas基本使用](canvas/canvas-base.html)
  * three.js
 
 ## webVR
 
 ## WebAssembly
 
+## node
+ * [node](node/README.md)
+
 ## linux
 [linux](linux/readme.md)
 
 ## docker
-[docker](docker/readme.md)
-
-## 测试
-
-## ci/cd
-
-## 监控
+* [docker](docker/readme.md)
 
 ## 模式
     - 设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
@@ -1726,5 +1560,8 @@
     - tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
     - tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
     - tree > tree.md 将项目结构输出到tree.md这个文件。
+
+## 最后一些思考或者疑问
+> 一个纯前端到底要做的是什么样的工作？难道仅仅停留在ui 层面吗？前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？（这些问题暴露了一些自己和同行的一些忧虑）
 
 
