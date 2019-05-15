@@ -663,6 +663,11 @@
     - 缓存布局信息
     - 元素批量修改
 
+### document onload / window.onload / DOMCententLoaded的区别
+* DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
+* document.onload 是在结构和样式加载完才执行js
+* window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
+
 ## 事件
 ### 事件冒泡和事件捕获   
 * 事件冒泡：从里向外执行，遇到相同的事件及执行
@@ -676,7 +681,7 @@
 ### 事件注册/监听（避免事件被覆盖）
 >ie9 以下不支持 false默认冒泡 true 捕获
 * addEventListener
-    + 第三个参数可为对象，可为bool,该参数默认值为 false(冒泡) ，useCapture 决定了注册的事件是捕获事件还是冒泡事件
+    + 第三个参数为bool,该参数默认值为 false(冒泡) ，useCapture 决定了注册的事件是捕获事件还是冒泡事件
     + 作为对象：
         - capture：布尔值，和 useCapture 作用一样
         - once：布尔值，值为 true 表示该回调只会调用一次，调用后会移除监听
@@ -1426,19 +1431,16 @@
  * [适配](mobile/适配/readme.md)
 
 ## framework
-> 前端常用的框架    
-### angular
+> 前端常用的框架（方式不同，本质都是操作dom）   
+### 数据驱动式
  * [angular1](angular1/angular-base.html)
  * [angular2](angular2/angular.md)
-
-### vue
  * [vue](vue/vue.md)
-
-### react
  * [react](react/readme.md)
 
-### jquery(传统的dom操作框架)
+### 手动式
  * [jq](jq/readme.md)
+ * zepto
 
 ## 跨平台技术
  * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
@@ -1448,6 +1450,61 @@
  * flutter
 
 ## 前端安全
+ * xss
+    - 一般通过一段代码注入到网页中
+    - 场景：在评论中如果前后端不做处理，输入<script>alert('操')</script>
+    + 防御：
+        - 简单的通过转义字符对于引号、尖括号、斜杠进行转义
+        - ```js
+            function escape(str) {
+                str = str.replace(/&/g, '&amp;')
+                str = str.replace(/</g, '&lt;')
+                str = str.replace(/>/g, '&gt;')
+                str = str.replace(/"/g, '&quto;')
+                str = str.replace(/'/g, '&#39;')
+                str = str.replace(/`/g, '&#96;')
+                str = str.replace(/\//g, '&#x2F;')
+            return str
+            }
+            ```
+        - 对于富文本通常用白名单、黑名单方式
+        - ```js
+            const xss = require('xss')
+            let html = xss('<h1 id="title">XSS Demo</h1><script>alert("xss");</script>')
+            // -> <h1>XSS Demo</h1>&lt;script&gt;alert("xss");&lt;/script&gt;
+            console.log(html)
+            // 以上示例使用了 js-xss 来实现，可以看到在输出中保留了 h1 标签且过滤了 script 标签。
+           ```
+        - csp 本质上就是建立白名单，开发者明确告诉浏览器哪些外部资源可以加载和执行
+        - 开启csp:
+            1. 设置 HTTP Header 中的 Content-Security-Policy
+            ```html
+                <!-- 只允许加载本站资源 -->
+                Content-Security-Policy: default-src ‘self’
+                <!-- 只允许加载 HTTPS 协议图片 -->
+                Content-Security-Policy: img-src https://*
+                <!-- 更多规则参考mdn -->
+            ```
+            2. 设置 meta 标签的方式 <meta http-equiv="Content-Security-Policy">
+ * CSRF
+    - 中文名为跨站请求伪造,原理就是攻击者构造出一个后端请求地址，诱导用户点击或者通过某些途径自动发起请求
+    - 场景：假设网站中有一个通过 GET 请求提交用户评论的接口，那么攻击者就可以在钓鱼网站中加入一个图片，图片的地址就是评论接口
+    防御：
+        - Get 请求不对数据进行修改
+        - 不让第三方网站访问到用户 Cookie
+        - 阻止第三方网站请求接口
+        - 请求时附带验证信息，比如验证码或者 Token
+        - 对于需要防范 CSRF 的请求，我们可以通过验证 Referer 来判断该请求是否为第三方网站发起的。
+ * 点击劫持
+    - 攻击者将需要攻击的网站通过 iframe 嵌套的方式嵌入自己的网页中，并将 iframe 设置为透明，在页面中透出一个按钮诱导用户点击。
+    - 防御：X-FRAME-OPTIONS  是一个 HTTP 响应头，在现代浏览器有一个很好的支持。这个 HTTP 响应头 就是为了防御用 iframe 嵌套的点击劫持攻击。
+    - DENY，表示页面不允许通过 iframe 的方式展示
+    - SAMEORIGIN，表示页面可以在相同域名下通过 iframe 的方式展示
+    - ALLOW-FROM，表示页面可以在指定来源的 iframe 中展示
+ * 中间人攻击 
+    - 通常来说不建议使用公共的 Wi-Fi，中间人攻击拦截得到敏感信息
+    - 通常使用https建立安全的通道
+
 
 
 ## 前端的工程化
@@ -1460,6 +1517,22 @@
 ### ci/cd
 
 ### 监控
+
+## 前端优化
+### 测试性能工具Chrome(Audits)
+
+### Wepack构建优化(spa)
+
+### 首屏优化(spa) 
+
+### DNS 预解析
+* DNS 解析也是需要时间的，可以通过预解析的方式来预先获得域名所对应的 IP。
+    ```html
+        <link rel="dns-prefetch" href="//xxx.com">
+    ```
+### 节流
+
+### 防抖
 
 ## 环境和工具
 ### mac 
@@ -1503,6 +1576,19 @@
         a[href="#"]
         ul>li*3>a[href="#"]
     ```
+
+ * 好用的插件
+    - css formatter
+    - file-size
+    - html css support
+    - minapp 
+    - npm intellisense
+    - open in browser
+    - output colorizer
+    - path intellisense
+    - vetur
+    - vscode-icons
+    - vueHelper
 
 ### 前端的工具
 * Fontmin/字蛛
