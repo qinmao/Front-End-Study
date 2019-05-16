@@ -668,6 +668,31 @@
 * document.onload 是在结构和样式加载完才执行js
 * window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
 
+### 路由
+* 哈希模式
+    - 利用了window可以监听hashchange事件，也就是说你的url中的哈希值（#后面的值）如果有变化，前端是可以做到监听并做一些响应（搞点事情）
+    - 前端并没有发起http请求他也能够找到对应页面的代码块进行按需加载。
+        ```js
+            window.addEventListener('hashchange', () => {
+                // ... 具体逻辑
+            })
+        ```
+
+* history模式(H5 新出的api)
+    - pushState与replaceState,作用就是可以将url替换并且不刷新页面
+    - ```js
+        // 新增历史记录
+        history.pushState(stateObject, title, URL)
+        // 替换当前历史记录
+        history.replaceState(stateObject, title, URL)
+
+        // 点击后退按钮时会触发 popState 事件
+        window.addEventListener('popstate', e => {
+            // e.state 就是 pushState(stateObject) 中的 stateObject
+            console.log(e.state)
+        })
+      ```
+
 ## 事件
 ### 事件冒泡和事件捕获   
 * 事件冒泡：从里向外执行，遇到相同的事件及执行
@@ -1521,18 +1546,66 @@
 ## 前端优化
 ### 测试性能工具Chrome(Audits)
 
-### Wepack构建优化(spa)
-
-### 首屏优化(spa) 
-
 ### DNS 预解析
 * DNS 解析也是需要时间的，可以通过预解析的方式来预先获得域名所对应的 IP。
     ```html
         <link rel="dns-prefetch" href="//xxx.com">
     ```
+
+### 预加载
+* 有些资源不需要马上用到，但是希望尽早获取
+* 预加载其实是声明式的 fetch ，强制浏览器请求资源，并且不会阻塞 onload 事件
+ ```html
+    <link rel="preload" href="http://example.com">
+ ```
+ * 预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载
+ * 存在兼容性的问题
+
+### 预渲染
+* 预渲染可以提高页面的加载速度，但是要确保该页面大概率会被用户在之后打开，否则就是白白浪费资源去渲染。
+```html
+    <link rel="prerender" href="http://example.com">
+ ```
+### cdn 
+ * 静态资源cdn
+
 ### 节流
 
 ### 防抖
+
+### Wepack构建优化(spa)
+ * 减少构建时间
+    + 优化Loader
+        > 原因：主要因为 Babel 转换js 会将代码转为字符串生成 AST，然后对 AST 继续进行转变最后再生成新的代码，项目越大，转换代码越多，效率就越低
+        - 优化 Loader 的文件搜索范围,只转化src(自己写的js)
+        - 将 Babel 编译过的文件缓存起来,下次只需要编译更改过的代码文件即可
+
+    + 多线程构建：（HappyPack 工具）Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，使用多线程构建，充分利用系统资源
+
+    + DllPlugin 将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数
+
+    + 代码压缩 Webpack4 将 mode 设置为 production，并行压缩js css html
+
+    + 其他小技巧
+        - resolve.extensions：我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面，没加文件后缀时，默认搜索顺序['.js', '.json']
+        - resolve.alias：可以通过别名的方式来映射一个路径，能让 Webpack 更快找到路径
+        - module.noParse：若确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
+
+ * 减少构建后包的体积
+    - 按需加载
+    - Scope Hoisting:Webpack4 开启 optimization.concatenateModules=true
+    - Tree Shaking:可以实现删除项目中未被引用的代码 Webpack4 生产环境自动开启了
+
+### 首屏优化(spa/vue) 
+ * 懒加载:
+    - 模块的懒加载，结合vue路由库,遇到什么模块,在加载该模块，不需要一次性加载全部模块.
+    - 若首页存在列表，需要加载大量图片，视频，资源懒加载
+
+ * 不需要马上用到，但是希望尽早获取，采用预加载
+
+
+
+
 
 ## 环境和工具
 ### mac 
@@ -1649,5 +1722,6 @@
 
 ## 最后一些思考或者疑问
 > 一个纯前端到底要做的是什么样的工作？难道仅仅停留在ui 层面吗？前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？（这些问题暴露了一些自己和同行的一些忧虑）
+* 参考收集了一些好的网上资料，部分添加了来源，部分存在遗漏。
 
 
