@@ -10,16 +10,16 @@
  * css 优先级 
     - 标签选择器 < 类选择器 <  ID选择器 < 行内样式 <! Important
 
- *  margin
+ * margin
     + 垂直外边距合并（同正取最大值，同负取绝对值最大值，一正一负相加的和）
     + 如何解决垂直外边距塌陷（margin-top  父元素会掉下来）？
         - 给父元素设置边框
         - 给父元素设置overflow：hidden；(注意：会触发父元素的bfc(格式化上下文)
 
- *  Padding
+ * Padding
      + 特殊性： 在块级元素中，如果默认子元素没有设置宽度，给当前子元素设置padding值，不会影响当前子盒子的宽度。（“继承”的盒子padding值不会影响）
 
- *  Float
+ * Float
     + 作用：布局   网页导航   图片文字环绕（文字不会被图片压着）
 
     + 清理浮动：实质是清理浮动造成的影响
@@ -35,7 +35,7 @@
         - 4.display: table;
         - overflow用法：默认值 visible  hidden|scroll|auto (根据内容判断是否添加滚动条)
 
- * position    
+ * position
     + 静态（static）
         - 标准流下的显示方式，
         - 可转换成其他定位方式
@@ -64,13 +64,7 @@
             - z-index 值越大 当前的元素层级越高
             - 父元素的z-index值越大 当前的元素层级越高  
     
-
- * BFC 
-    - 概念：（W3C CSS 2.1 规范中的一个概念,它是一个独立容器，决定了元素如何对其内容进行定位,以及与其他元素的关系和相互作用。）
-		 一个页面是由很多个 Box 组成的,元素的类型和 display 属性,决定了这个 Box 的类型。
-		 不同类型的 Box,会参与不同的 Formatting Context（决定如何渲染文档的容器）,因此Box内的元素会以不同的方式渲染,也就是说BFC内部的元素和外部的元素不会互相影响。
-
- * css hack   
+  
 
 ## 什么是h5? 
  * 狭义上: 是html4的升级版本，是新一代web应用标准
@@ -571,7 +565,11 @@
  
 
 ## dom
-### dom常用的节点类型
+### 什么是DOM，如何访问
+- 文档对象模型 (DOM) 是HTML和XML文档的编程接口，简单来就是用代码来描述html。
+- 通过js 中的document 和 window 元素的api来操作或者获取文档信息
+
+### 常用的节点类型
 * nodeType = 1，元素节点
 * nodeType = 2，属性节点
 * nodeType = 3，文本节点
@@ -579,54 +577,122 @@
 * nodeType = 9，document对象
 * nodeType = 11，documentFragment文档片段
 
-### 基础操作
-* appendChild 
-* removeChild 
-* replaceChild 
-* insertBefore
+### 节点操作
+ * 子节点
+    + childNodes
+        - 用法：元素.childNodes  元素所有的子节点，包含文本和元素节点
+        - 元素.childNodes[0] 第一个节点 包含文本和元素节点
+    + children
+        - 元素节点的集合
+    + 首个子节点
+        - firstChild
+        - firstElementChild
+        - 兼容写法:let nodeFirst=元素.firstChild||元素.firstElementChild
+    + 最后一个子节点
+        - lastChild
+        - lastElementChild
+        - 兼容写法:let nodeLast=元素.lastChild||元素.lastElementChild
+ * 兄弟节点
+    + 上一个
+        - previousSibling
+        - previousElementSibling
+        - 兼容写法:let nodePre=元素.previousSibling||元素.previousElementSibling
+    + 下一个
+        - nextSibling
+        - nextElementSibling
+        - 兼容写法:let nodeNext=元素.nextSibling||元素.nextElementSibling
+ * 父节点
+    - parentNode
+ * 其他
+    - nodeType
+    - nodeValue 一般针对文本节点，元素节点为null
+    - nodeName
+    - attributes 元素属性列表的集合
 
-### 原生js获取样式 
-    ```javascript
-        // ie 不支持
-        getComputedStyle(el,null).width 
-        // ie提供的
-        document.getElementById("btn").currentStyle.width 
-    ```
+### 元素操作
+ * 创建
+    - document.creatElement('li')
+ * 添加
+    - 从前 父级.appendChild('li')
+    - 从后 父级.insertBefore('li')
+ * 删除
+    - 父级.removeChild(要删除的元素)
+ * 替换
+    - 父级.replaceChild(新节点，被替换的节点)
+ * 克隆
+    - 要克隆的元素.cloneNode(false) 只克隆元素本身，不需要元素中的内容
+    - 要克隆的元素.cloneNode(true) 两个都要
 
-### offset
+### createDocumentFragment 
+- DocumentFragments 是DOM节点
+- 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。
+- 使用文档片段document fragments 优化性能
+
+### 元素属性操作
+    - 获取 元素.getAttribute(属性名)
+    - 设置 元素.setAttribute(属性名,属性值)
+    - 移除 元素.removeAttribute(属性名)
+
+### 样式相关
+ * 样式宽高
+    - 元素.style.width 只能取行间样式，含单位
+    - 都能获取：
+        ```javascript
+            getComputedStyle(el,null).width 
+            // ie提供的
+            document.getElementById("btn").currentStyle.width 
+        ```
+    - getBoundingClientRect 返回元素的大小以及相对于浏览器可视窗口的位置
+ * 可视宽高
+    - 元素.clientWidth 不含单位
+    - 可视宽=样式宽+paddinng
+ * 占位宽高
+    - 元素.offsetWidth=可视宽+border
+
+### 定位属性（不考虑低版本ie）
+> 到定位父级的距离，无定位父级，就是到html
  * offsetLeft
  * offsetTop 
- * offsetWidth 
- * offsetHeight 
- * offsetParent 
-
-### scroll
- * scrollWidth（内部内容的真实宽度） 
- * scrollHeight 计算方式相同，
- * scrollTop 被卷曲的内容高度
- * scrollLeft 
-    ```javascript
-        // 获取卷曲的高度
-        Window.onscroll= function(){
-            //短路操作
-            var topVal=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop
-            var leftVal=window.pageYOffset||document.documentElement.scrollLeft||document.body.scrollLeft
-        }
-    ```
-
-### client
- * clientHeight 
- * clientWidth（元素内部的真实宽度）
+ * offsetParent  元素的定位父级节点
 
 ### innerWidth，innerHeight
 - 视口宽度 window.innerWidth 和视口高度 window.innerHeight
 
-  
-### document.createDocumentFragment 
-> 创建一个新的空白的文档片段
-- 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能，兼容性良好
+### scroll
+ * scrollWidth（内部内容的真实宽度） 
+ * scrollHeight 
+ * scrollLeft 
+ * scrollTop 被卷曲的内容高度
+    ```javascript
+        // 获取页面卷曲的高度
+        Window.onscroll= function(){
+            let topVal=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop
+        }
+        // 获取容器内的卷曲的高度
+        node.onscroll= function(e){
+            let topVal=e.target.scrollTop
+        }
+
+    ```
 
 ## bom
+> 浏览器对象模型
+* 系统对话框 window.alert() ,window.prompt() window.confirm()
+* location 
+    - 对象包括当前URL的信息
+    - assign 加载新的文档
+    - reload 重新加载
+    - replace 新文档替换当前文档（无历史记录）
+
+* history 
+    - 属性：length，返回浏览器历史列表中的url 数量
+    - back
+    - forward
+    - go
+    
+* navigator
+    - 通过这个对象可以获得浏览器的浏览器的种类、版本号等属性
+
 ### html渲染过程
 + 浏览器接收服务器响应结果，如果有压缩则首先进行解压处理，紧接着就是页面解析渲染
 + 解析渲染该过程主要分为以下步骤：
@@ -663,7 +729,7 @@
     - 缓存布局信息
     - 元素批量修改
 
-### document onload / window.onload / DOMCententLoaded的区别
+### DOMCententLoaded的区别 / document onload / window.onload 
 * DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
 * document.onload 是在结构和样式加载完才执行js
 * window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
@@ -1574,27 +1640,7 @@
 ### 防抖
 
 ### Wepack构建优化(spa)
- * 减少构建时间
-    + 优化Loader
-        > 原因：主要因为 Babel 转换js 会将代码转为字符串生成 AST，然后对 AST 继续进行转变最后再生成新的代码，项目越大，转换代码越多，效率就越低
-        - 优化 Loader 的文件搜索范围,只转化src(自己写的js)
-        - 将 Babel 编译过的文件缓存起来,下次只需要编译更改过的代码文件即可
-
-    + 多线程构建：（HappyPack 工具）Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，使用多线程构建，充分利用系统资源
-
-    + DllPlugin 将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数
-
-    + 代码压缩 Webpack4 将 mode 设置为 production，并行压缩js css html
-
-    + 其他小技巧
-        - resolve.extensions：我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面，没加文件后缀时，默认搜索顺序['.js', '.json']
-        - resolve.alias：可以通过别名的方式来映射一个路径，能让 Webpack 更快找到路径
-        - module.noParse：若确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
-
- * 减少构建后包的体积
-    - 按需加载
-    - Scope Hoisting:Webpack4 开启 optimization.concatenateModules=true
-    - Tree Shaking:可以实现删除项目中未被引用的代码 Webpack4 生产环境自动开启了
+ * [webpack](build-tool/webpack/readme.md)
 
 ### 首屏优化(spa/vue) 
  * 懒加载:
