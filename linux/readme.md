@@ -15,13 +15,19 @@
     国内 yum 源
     网易（163）yum源是国内最好的yum源之一 ，无论是速度还是软件版本，都非常的不错。
     将yum源设置为163 yum，可以提升软件包安装和更新的速度，同时避免一些常见软件版本无法找到。
-    如何设置：http://www.runoob.com/linux/linux-yum.html
+
+ [如何设置](http://www.runoob.com/linux/linux-yum.html)
+
+## 登录linux 
+ssh 用户名@IP地址 -p 端口号
+
 ## 网络
 1. 网卡接口关闭与激活
 ifdown eth0 #关闭网络
 ifup eth0 #启动网络
 2. 网络服务启动与关闭
 service network restart #重启网络服务
+
 ## 文件操作
 
 ls: 列出目录
@@ -44,6 +50,7 @@ mv: 移动文件与目录，或修改文件与目录的名称
 
 scp :命令用于Linux之间复制文件和目录
     -r： 递归复制整个目录。
+
 1) 本地到远程
     scp local_file remote_username@remote_ip:remote_folder 
     或者 
@@ -54,6 +61,7 @@ scp :命令用于Linux之间复制文件和目录
     scp local_file remote_ip:remote_file 
     例子:
         'scp -r dist/* root@39.96.190.20:/data/www/static' 
+        
 2）远程到本地
         scp remote_username@remote_ip:remote_folder  local_file
         scp -r www.runoob.com:/home/root/others/ /home/space/music/
@@ -61,6 +69,7 @@ scp :命令用于Linux之间复制文件和目录
 使用 man [命令] 来查看各个命令的使用文档，如 ：man cp。
 
 cat  由第一行开始显示文件内容
+
 ## vim  编辑器使用
 vim 共分为三种模式，分别是
 命令模式（Command mode）:启动Vim，进入了命令模式，按下i，切换到输入模式。
@@ -78,6 +87,7 @@ vim 共分为三种模式，分别是
 底线命令模式（Last line mode）:
 在输入模式下：wq 保存文件退出程序
 例如:打开host  vim /etc/hosts
+
 ## shell 脚本编程
     像 #!/bin/sh，它同样也可以改为 #!/bin/bash。
     #! 告诉系统其后路径所指定的程序即是解释此脚本文件的 Shell 程序。
