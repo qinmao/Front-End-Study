@@ -1,115 +1,189 @@
- /* 1. 移动端样式重置 移动端样式重置（常用标签）原则：就是reset 只是需要的一些，不是无脑一刀切 参考:张鑫旭css-reset 做了修改 https: //www.zhangxinxu.com/wordpress/2010/04/css-reset%E7%9A%84%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86-%E9%81%BF%E5%85%8D%E6%A0%B7%E5%BC%8F%E9%87%8D%E7%BD%AE/ */
- *, ::before, ::after {
-     /*   容器的大小从边框开始计算 */
+ /* 移动端样式重置（常用标签）原则：就是reset 只是需要的一些，不是无脑一刀切 */
+ *,
+ ::before,
+ ::after {
      box-sizing: border-box;
  }
 
- html, body {
+ html {
+     touch-action: none;
+ }
+
+ html,
+ body {
      color: #000;
      width: 100%;
      height: 100%;
  }
 
-   /* margin padding 重置 */
- body, ul, dl, dd, p, ol, h1, h2, h3, h4, h5, h6, table, header, nav, footer, section, aside {
+ /* margin padding 重置*/
+ body,
+ ul,
+ dl,
+ dd,
+ p,
+ ol,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6,
+ table,
+ header,
+ nav,
+ footer,
+ section,
+ aside {
      margin: 0;
      padding: 0;
  }
 
-  /* body */
  body {
-     -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // 禁止选中文字
+     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+     /* 禁止选中文字*/
      -webkit-user-select: none;
      /* iPhone 和 Android 的浏览器纵向 (Portrate mode) 和橫向 (Landscape mode) 模式皆有自动调整字体大小的功能。控制它的就是 CSS 中的 -webkit-text-size-adjust。关闭字体大小自动调整功能*/
      -webkit-text-size-adjust: 100%;
-     -webkit-overflow-scrolling: touch; // 滚动和回弹的效果
-     // ios 
-     // 默认中文字体是Heiti SC
-     // 默认英文字体是Helvetica
-     // 默认数字字体是HelveticaNeue
-     // android
-     // 默认中文字体是Droidsansfallback
-     // 默认英文和数字字体是Droid Sans
-     // iOS 9+ Safari开始支持 -apple-system 参数， Chrome 使用 BlinkMacSystemFont ，兼容 iOS ／ MacOS
+     -webkit-overflow-scrolling: touch;
+
+     /* iOS 9+ Safari开始支持 -apple-system 参数， Chrome 使用 BlinkMacSystemFont ，兼容 iOS ／ MacOS*/
      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
  }
 
- //  a标签默认的样式
  a {
      text-decoration: none;
-     color: #000
+     color: #000;
  }
 
- //  清除掉按下时会有一个灰色阴影
- a, input, button {
+ a,
+ input,
+ button {
      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
  }
 
- //  清除掉ios自带圆角
- input, button {
-     -webkit-appearance: none; //消除输入框核按钮的默认外观
+ input,
+ button {
+     -webkit-appearance: none;
      border-radius: 0;
+     border: none;
  }
 
  input {
      outline: none;
  }
 
- // 列表标签
- ul, ol {
+ ul,
+ ol {
      list-style: none;
  }
 
- // 图片
+ li {
+     list-style: none;
+ }
+
  img {
      border: 0;
-     vertical-align: middle; // 禁止保存或拷贝图像（IOS）根据需要设置
-     // -webkit-touch-callout: none; 
+     vertical-align: middle;
+     /*禁止保存或拷贝图像（IOS）根据需要设置*/
+     /*-webkit-touch-callout: none;*/
  }
 
- //  表格
- table {
-     border-collapse: collapse;
-     border-spacing: 0
+ img[src=""],
+ img:not([src]) {
+     opacity: 0;
  }
 
- //  段落
  p {
      word-wrap: break-word
  }
 
- // 2. common 样式
- .clearfix::before, .clearfix::after {
-     content: " ";
-     height: 0;
-     line-height: 0;
-     clear: both;
-     display: block;
-     visibility: hidden;
+ div::-webkit-scrollbar {
+     width: 0;
+     display: none;
  }
 
- .clearfix {
-     zoom: 1;
- }
+ /* 开发整体风格一致的App 特定义全局的css变量 */
 
- /*省略号*/
+ /* 颜色变量 */
 
- .ellipsis {
-     overflow: hidden;
-     text-overflow: ellipsis;
-     white-space: nowrap;
- }
+ /* 行为相关颜色 */
+ $uni-color-primary: #1F6BDD;
+ $uni-color-success: #4cd964;
+ $uni-color-warning: #f0ad4e;
+ $uni-color-error: #dd524d;
 
- /*多行省略号  */
+ /* 文字基本颜色 */
+ $uni-text-color:#333; //基本色
+ $uni-text-color-inverse:#fff; //反色
+ $uni-text-color-grey:#999; //辅助灰色，如加载更多的提示信息
+ $uni-text-color-placeholder: #808080;
+ $uni-text-color-disable:#c0c0c0;
 
+ /* 背景颜色 */
+ $uni-bg-color:#F1F1F3; // 背景色
+ $uni-bg-color-hover:#f1f1f1; // 点击状态颜色
+ $uni-bg-color-mask:rgba(0, 0, 0, 0.5); //遮罩颜色
+
+ /* 常用的类  */
+ /* 多行省略号  */
  .mul-ellipsis {
+     display: -webkit-box;
      overflow: hidden;
      text-overflow: ellipsis;
-     display: -webkit-box;
      -webkit-box-orient: vertical;
      /* -webkit-line-clamp: 2; */
      /*-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 
     display: -webkit-box; 将对象作为弹性伸缩盒子模型显示 。
     -webkit-box-orient 设置或检索伸缩盒对象的子元素的排列方式 。*/
  }
-//  vue 项目中在app.vue 中引入使用 @import './assets/styles/index.scss';不要使用@import url('..')，不然无法编译
+
+ /*单行省略号*/
+ .ellipsis {
+     overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
+ }
+
+ /* 遮罩 */
+ .mask {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     z-index: 99;
+     overflow: hidden;
+     background-color: $uni-bg-color-mask;
+ }
+
+ /* 公用页面的wrap */
+ .page-wrap {
+     background-color: $uni-bg-color;
+ }
+
+ /* 定位上下左右居中 */
+
+ .center {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+ }
+
+ /* 定位上下居中 */
+
+ .c-tb {
+     position: absolute;
+     top: 50%;
+     transform: translateY(-50%);
+ }
+
+ /* 定位左右居中 */
+
+ .c-lr {
+     position: absolute;
+     left: 50%;
+     transform: translateX(-50%);
+ }

@@ -63,8 +63,31 @@
             - z-index 值相同 元素后来居上
             - z-index 值越大 当前的元素层级越高
             - 父元素的z-index值越大 当前的元素层级越高  
-    
-  
+
+ * display:
+    + block
+        - block元素会独占一行，默认情况下，block元素宽度自动填满其父元素宽度
+        - 可设置width height
+        - 可以设置margin和padding属性
+    + inline
+        - 不会独占一行，多个相邻的行内元素会排列在同一行里
+        - inline元素设置width,height属性无效
+        - inline元素的margin和padding属性 水平有效，垂直方向没效
+    + inline-block
+        - 有宽高
+        - 呈现inline 的效果
+
+    - 块级：div、p、ul、ol、body、from...
+    - 行内： title  lable  span a
+    - 行内块：img  input  td
+
+ * 标准盒模型
+    - 标准盒子模型：宽度=内容的宽度（content）+ border + padding + margin
+    - 低版本IE盒子模型：宽度=内容宽度（content+border+padding）+ margin
+
+    + box-sizing 用来控制元素的盒子模型的解析模式，默认为content-box
+        - content-box 盒子的尺寸=CSS中的尺寸+padding+border
+        - border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸
 
 ## h5
  * 狭义上: 是html4的升级版本，是新一代web应用标准
@@ -87,6 +110,7 @@
     7. [video (api 使用)](html/html5/media)
 
     8. [mobile](mobile/h5-mobile)
+
         
 
 ## css3
@@ -152,10 +176,6 @@
     扩展半径  可以为负值，值越大，扩展半径越大
     颜色 
     内阴影  inset(可选)
-
-### box-sizing
- * content-box 盒子的尺寸=CSS中的尺寸+padding+border
- * border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸
     
 ### border
  * border-radius
@@ -476,12 +496,24 @@
         ```
        - ===: 类型和值都相等
 
-### js精度问题
-1. number.toFixed(参数)  
+### 数字问题
+* js 精度问题
+    1. number.toFixed(参数)  
+        ```js
+            parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
+        ```
+    2. 浮点型涉及精度问题：推荐都乘10最后除10 用整数运算（整数不存在精度问题）
+
+* 千分位（正则）
     ```js
-    parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
+        export const commafy = (num) => {
+            return num && num
+                .toString()
+                .replace(/(?=(?!(\b))(\d{3})+$)/g, ',');
+        }
     ```
-2. 浮点型涉及精度问题：推荐都乘10最后除10 用整数运算（整数不存在精度问题）
+
+
 
 ### Math 对象常用几个函数
  * 天花板函数 ceil Math.ceil(1.23)=2 向上返回最小的整数
@@ -1635,9 +1667,18 @@
 ### cdn 
  * 静态资源cdn
 
-### 节流
+### 节流/防抖
+* 防抖( 延时执行)
+    - 指触发事件后在规定时间内回调函数只能执行一次，如果在规定时间内又触发了该事件，则会重新开始算规定时间。
+    - 应用场景:一般出现在用户连续操作导致的频繁的事件回调，例如搜索输入值，按钮点击收藏，点赞等
+    - 原理:通过定时器将回调函数进行延时.如果在规定时间内继续回调,发现存在之前的定时器,则将该定时器清除,并重新设置定时器
+    
+* 节流
 
-### 防抖
+* 区别
+    - 相同:在不影响客户体验的前提下,将频繁的回调函数,进行次数缩减.避免大量计算导致的页面卡顿.
+    - 不同:防抖是将多次执行变为最后一次执行，节流是将多次执行变为在规定时间内只执行一次
+
 
 ### Wepack构建优化(spa)
  * [webpack](build-tool/webpack/readme.md)

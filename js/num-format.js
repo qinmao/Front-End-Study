@@ -2,7 +2,7 @@
  * 用js实现千位分隔符
  * @param {*} num  eg：如12000000.11转化为『12,000,000.11』
  */
-function commafy(num) {
+export const commafy = (num) => {
     return num && num
         .toString()
         .replace(/(?=(?!(\b))(\d{3})+$)/g, ',');
