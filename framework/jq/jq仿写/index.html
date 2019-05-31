@@ -9,19 +9,20 @@
 </head>
 
 <body>
-    
-    <a href="">aaa</a>
+    <input type="text" name="test1">
+    <input type="number" name="test2">
+    <!-- <a href="">aaa</a>
     <div>
         div
         <a href="">0000</a>
         <p>123</p>
         <p>456</p>
         <p>789</p>
-    </div>
-    <a href="">9999</a>
-    <!--<script src="jquery-3.1.0.js"></script>-->
+    </div> -->
+    <!-- <a href="">9999</a> -->
+    <script src="jquery-3.1.0.js"></script>
     <!--<script src="test.js"></script>-->
-    <script src="min-jq4.0.0.js"></script>
+    <!-- <script src="min-jq4.0.0.js"></script> -->
     <script>
         // var ret = $("<p>123</p>").appendTo($(".target"));
         // var ret = $("<p>123</p>").prependTo($(".target"));
@@ -30,9 +31,14 @@
         // console.log($("#li").nextAll())
         // var jq = $('a').nextAll();
         // $("div").before("<p>ppp</p>")
-        $("div").before("ppp")
+        // $("div").before("ppp")
         // $("div").before("#p")
         // console.log(jq);
+        $('input').each(function(){
+            console.log($(this).prop('name'))
+        })
+        
+       
     </script>
 </body>
 

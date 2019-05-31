@@ -111,8 +111,6 @@
 
     8. [mobile](mobile/h5-mobile)
 
-        
-
 ## css3
 ### selector
 1. 属性选择器：
@@ -418,6 +416,16 @@
     
 ### Grid
 
+### 常见布局
+* 移动端基本布局-首尾固定中间自适应
+    1. sticky ios 可用 安卓有兼容性
+    2. flex
+        - 父容器 flex-direction: column;height:100%;
+        - 子容器(自适应):overflow: auto;
+            -webkit-overflow-scrolling: touch;
+    3. padding-top(把头部腾出位置)
+
+* pc 端常见布局
 
 ## less/sass
  * [less](css/less/less.md)
@@ -467,7 +475,7 @@
        - 转字符串：对象转字符串 x.toString()
        - 转数字型：parseInt parseFloat
        - 转布尔型：
-       - 几种转换为false undefined NaN Null 0 -0 false "",其余全为true
+       - 几种转换为false: undefined NaN Null 0 -0 false "",其余全为true
 
     > tip:使用parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不简单的转换,简单的类型转换Number(08)=8 会比parseInt 快
 
@@ -547,7 +555,7 @@
 
 ### 函数变量提升
 >先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
-```javascript
+ * ```javascript
     'use strict';
     function foo() {
         var x = 'Hello, ' + y;
@@ -575,13 +583,40 @@
     fun()
     console.log(num) //10
 
-```
+    ```
 
-### Var Let Const区别 
- - var 在浏览器预解析时存在变量提升，未声明可以使用
- - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
- - const声明一个只读的常量。一旦声明常量的值就不能改变。
+ * Var Let Const区别 
+   - var 在浏览器预解析时存在变量提升，未声明可以使用
+   - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
+   - const声明一个只读的常量。一旦声明常量的值就不能改变。
 
+ * 综合考察
+    ``` js
+    for (var index = 0; index < 10; index++) {
+            setTimeout(() => {
+                console.log(index)
+            },0 ); 
+    }
+    // 涉及到js 执行机制 执行栈同步执行完，把异步队列拿到栈执行10 次 
+    // 输出10 次10 
+
+    for (let index = 0; index < 10; index++) {
+        setTimeout(fucntion(){
+            console.log(index)
+        },0 );
+        
+    }
+    // 块级作用域
+    // 输出的结果 0一直到9，也可以用闭包来实现
+    for (var index = 0; index < 10; index++) {
+           (function(index){
+            setTimeout(fucntion(){
+                console.log(index)
+            },0 );
+           })(index);
+    }
+
+    ```
 
 ### date-format
  * 日期格式化成指定格式
@@ -594,7 +629,6 @@
     (new Date()).getTime();
 
  * [封装常用时间处理](js/date-format.js)
- 
 
 ## dom
 ### 什么是DOM，如何访问
@@ -710,6 +744,7 @@
 ## bom
 > 浏览器对象模型
 * 系统对话框 window.alert() ,window.prompt() window.confirm()
+
 * location 
     - 对象包括当前URL的信息
     - assign 加载新的文档
@@ -725,7 +760,30 @@
 * navigator
     - 通过这个对象可以获得浏览器的浏览器的种类、版本号等属性
 
-### html渲染过程
+* postMessage
+  > 解决跨域和跨页面通信的问题
+  + web开发的时候遇到的消息传递的问题
+    - 多窗口之间消息传递(newWin = window.open(..));
+    - 页面与嵌套的iframe消息传递
+  + 用法
+    - postMessage(data,origin)
+    - data:要传递的数据（JSON.stringify()方法对对象参数序列化 处理兼容性问题）
+    - origin：字符串参数，指明目标窗口的源，协议+主机+端口号[+URL]，URL会被忽略，所以可以不写，这个参数是为了安全考虑，someWindow.postMessage()方法只会在someWindow所在的源(url的protocol, host, port)和指定源一致时才会成功触发message event，也可以将参数设置为"*"，someWindow可以在任意源，指定和当前窗口同源的话设置为"/"
+
+  + MessageEvent的属性
+    - data：顾名思义，是传递来的message
+    - source：发送消息的窗口对象
+    - origin：发送消息窗口的源（协议+主机+端口号）
+
+  + 监听消息
+    ```js
+    window.addEventListener('message', function(messageEvent) {
+        var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
+        console.info('message from child:', data);
+    }, false);
+    ```
+
+## html渲染过程
 + 浏览器接收服务器响应结果，如果有压缩则首先进行解压处理，紧接着就是页面解析渲染
 + 解析渲染该过程主要分为以下步骤：
     - 解析HTML
@@ -740,7 +798,12 @@
 
     - [详细参考](http://www.cnblogs.com/dojo-lzz/p/3983335.html)
 
-### 重绘（Repaint）和回流（Reflow）
+## 页面事件的加载顺序
+* DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
+* document.onload 是在结构和样式加载完才执行js
+* window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
+
+## 重绘（Repaint）和回流（Reflow）
 + reflow:
     - 当DOM变化影响了元素的几何属性（宽、高改变等等） 浏览器此时需要重新计算元素几何属性 
     - 并且面中其他元素的几何属性可能会受影响 这样渲染树就发生了改变，也就是重新构造RenderTree渲染树
@@ -761,12 +824,7 @@
     - 缓存布局信息
     - 元素批量修改
 
-### DOMCententLoaded的区别 / document onload / window.onload 
-* DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
-* document.onload 是在结构和样式加载完才执行js
-* window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
-
-### 路由
+## 路由
 * 哈希模式
     - 利用了window可以监听hashchange事件，也就是说你的url中的哈希值（#后面的值）如果有变化，前端是可以做到监听并做一些响应（搞点事情）
     - 前端并没有发起http请求他也能够找到对应页面的代码块进行按需加载。
@@ -946,14 +1004,32 @@
      - 变量的搜索原则：类似下面的属性搜索原则，先在当前作用域，找不到然后上一层，最后到全局作用域。找不到抛异常。
              
  + 函数属性
-     - arguments 
+    - arguments 
          * 伪数组对象
          * 以数组形式，存储实参
          * callee 返回正在被执行函数; 匿名函数的递归调用
          * length 实参个数
-     - caller: 返回调用函数的 函数
-     - length: 定义形参的个数
-     - name: 存储函数的名字
+    - caller: 返回调用函数的 函数
+    - length: 定义形参的个数
+    - name: 存储函数的名字
+
+    ```js
+    // 1.
+    function b(x,y,z){
+        arguments[2]=10
+        alert(z)
+    }
+    b(1,2,3) 
+
+    // 2. 
+     function b(x,y,z){
+         z=10
+         alert(arguments[2])
+    }
+    b(1,2,3)
+
+    // 结果都为10
+    ```
          
  + 闭包：　
      - 实质：就是能够读取其他函数内部变量的函数。
@@ -1345,12 +1421,7 @@
     - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
     - CommonJS 是同步导入，es 是异步的
 
- * (模块)包管理
-    - bower
-    - npm 
-    - yarn
-
-## 一些函数(es5/es6)
+## 数组遍历（迭代）
  * Array 的常用函数
     + forEach
         ```javascript
@@ -1435,17 +1506,17 @@
             })
             ```
 
- * String
-    + includes startsWith endsWith()
-      ```js
-        let s = 'Hello world!';
-        s.startsWith('Hello') // true
-        s.endsWith('!') // true
-        s.includes('o') // true
-        // 这三个方法都支持第二个参数.表示开始搜索的位置。
-      ```
-
- * Object
+* for in for of 的区别
+    - for in更适合遍历对象 遍历数组是不是数组内部的顺序，遍历所有可枚举的属性，遍历的是数组的索引
+    - for of 适合数组字符串/map/set等拥有迭代器对象的集合 遍历的是数组的元素的值,不能遍历对象
+    - 与 forEach()不同的是，它可以正确响应break、continue和return语句
+    - ```js
+        var myArray=[1,2,4,5,6,7]
+        myArray.name="数组";
+        for (var value of myArray) {
+        console.log(value);
+        }
+     ```
 
 ## es6对js的扩展
 - [es6](ECMA/es6.md)
@@ -1652,10 +1723,10 @@
 
 ### 预加载
 * 有些资源不需要马上用到，但是希望尽早获取
-* 预加载其实是声明式的 fetch ，强制浏览器请求资源，并且不会阻塞 onload 事件
- ```html
-    <link rel="preload" href="http://example.com">
- ```
+* 预加载其实是声明式的 fetch ，强制浏览器请求资源，并且不会阻塞 
+    ```html
+        <link rel="preload" href="http://example.com">
+    ```
  * 预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载
  * 存在兼容性的问题
 
@@ -1664,6 +1735,7 @@
 ```html
     <link rel="prerender" href="http://example.com">
  ```
+
 ### cdn 
  * 静态资源cdn
 
@@ -1672,7 +1744,7 @@
     - 指触发事件后在规定时间内回调函数只能执行一次，如果在规定时间内又触发了该事件，则会重新开始算规定时间。
     - 应用场景:一般出现在用户连续操作导致的频繁的事件回调，例如搜索输入值，按钮点击收藏，点赞等
     - 原理:通过定时器将回调函数进行延时.如果在规定时间内继续回调,发现存在之前的定时器,则将该定时器清除,并重新设置定时器
-    
+
 * 节流
 
 * 区别
