@@ -491,32 +491,8 @@
     11. Object.getOwnPropertyDescriptors()
     12. Null 传导运算符
 
-## Promise
-  1. what?
-    - Promise 是异步编程的一种解决方案
-    - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
 
-  2. 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
-    ```js
-        var promise = new Promise(function(resolve, reject) {
-        // ... some code
 
-        if (/* 异步操作成功 */){
-            resolve(value);
-        } else {
-            reject(error);
-        }
-        });
-    ```
-
-## async await函数
- * async
-    - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
-
- * await 
-    - 表示在这里等待promise返回结果了，再继续执行。
-    - await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
-    - await 命令就是内部then命令的语法糖。
 
 ## Symbol
     ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值

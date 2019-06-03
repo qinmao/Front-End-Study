@@ -445,8 +445,22 @@
             var a=123;
             var b="abc";
             console.log(typeof(a-b)) // NaN  number
+            
             ```
-        - infinity 是number 类型 表示无穷大 除数为0可得
+        - infinity(-infinity)表示无穷大 除数为0可得infinity,-0 得到-infinity
+        - 非整数的number 类型无法用== ===比较
+        ```js
+            console.log( 0.1 + 0.2 == 0.3); false
+            // 检查等式左右两边差的绝对值是否小于最小精度，才是正确的比较
+            console.log( Math.abs(0.1 + 0.2 - 0.3) <= Number.EPSILON);true
+
+        ```
+        - 以上的问题，得出解决方案
+            1. number.toFixed(参数)  
+                ```js
+                    parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
+                ```
+            2. 浮点型涉及精度问题：推荐都乘10最后除10 用整数运算（整数不存在精度问题）
     + string
     + symbol
 
@@ -479,7 +493,7 @@
 
     > tip:使用parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不简单的转换,简单的类型转换Number(08)=8 会比parseInt 快
 
-   + == vs === 
+   + == vs ===（推荐使用）
        - == 如果对比双方的类型不一样的话，就会进行类型转换(判断流程如下)
         1. 首先会判断两者类型是否相同。相同的话就是比大小了
         2. 类型不相同的话，那么就会进行类型转换
@@ -503,25 +517,6 @@
             4)0==0 true
         ```
        - ===: 类型和值都相等
-
-### 数字问题
-* js 精度问题
-    1. number.toFixed(参数)  
-        ```js
-            parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
-        ```
-    2. 浮点型涉及精度问题：推荐都乘10最后除10 用整数运算（整数不存在精度问题）
-
-* 千分位（正则）
-    ```js
-        export const commafy = (num) => {
-            return num && num
-                .toString()
-                .replace(/(?=(?!(\b))(\d{3})+$)/g, ',');
-        }
-    ```
-
-
 
 ### Math 对象常用几个函数
  * 天花板函数 ceil Math.ceil(1.23)=2 向上返回最小的整数
@@ -548,75 +543,6 @@
     - 只要有一个true，就返回 该 值true的子表达式的值
     - 短路或：可以方便给变量赋初值
 
-### 预解析（浏览器）
-1. 语法分析：保证js代码符合语法规则，能被正确的执行。
-2. 变量名以及函数名提升
-3. 确定变量的作用域。
-
-### 函数变量提升
->先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
- * ```javascript
-    'use strict';
-    function foo() {
-        var x = 'Hello, ' + y;
-        alert(x);
-        var y = 'Bob';
-    }
-    foo();
-
-    // 虽然是strict模式，但语句var x = 'Hello, ' + y;并不报错，原因是变量y在稍后申明了。
-    // 但是alert显示Hello, undefined，说明变量y的值为undefined。
-    // 这正是因为JavaScript引擎自动提升了变量y的声明，但不会提升变量y的赋值。
-
-    // 变量提升后代码：
-    function foo() {
-        var y; // 提升变量y的申明
-        var x = 'Hello, ' + y;
-        alert(x);
-        y = 'Bob';
-    }     
-    // 函数内变量的怪异声明模式:
-    function fun(){
-        num=10   //没写var 就相当于全局变量
-    }
-
-    fun()
-    console.log(num) //10
-
-    ```
-
- * Var Let Const区别 
-   - var 在浏览器预解析时存在变量提升，未声明可以使用
-   - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
-   - const声明一个只读的常量。一旦声明常量的值就不能改变。
-
- * 综合考察
-    ``` js
-    for (var index = 0; index < 10; index++) {
-            setTimeout(() => {
-                console.log(index)
-            },0 ); 
-    }
-    // 涉及到js 执行机制 执行栈同步执行完，把异步队列拿到栈执行10 次 
-    // 输出10 次10 
-
-    for (let index = 0; index < 10; index++) {
-        setTimeout(fucntion(){
-            console.log(index)
-        },0 );
-        
-    }
-    // 块级作用域
-    // 输出的结果 0一直到9，也可以用闭包来实现
-    for (var index = 0; index < 10; index++) {
-           (function(index){
-            setTimeout(fucntion(){
-                console.log(index)
-            },0 );
-           })(index);
-    }
-
-    ```
 
 ### date-format
  * 日期格式化成指定格式
@@ -751,12 +677,41 @@
     - reload 重新加载
     - replace 新文档替换当前文档（无历史记录）
 
+    + decodeURI decodeURIComponent
+
+    + encodeURI encodeURIComponent
+
+
+
 * history 
     - 属性：length，返回浏览器历史列表中的url 数量
     - back
     - forward
     - go
-    
+
+    + 哈希模式
+        - 利用了window可以监听hashchange事件，也就是说你的url中的哈希值（#后面的值）如果有变化，前端是可以做到监听并做一些响应
+        - 前端并没有发起http请求他也能够找到对应页面的代码块进行按需加载。
+            ```js
+                window.addEventListener('hashchange', () => {
+                    // ... 具体逻辑
+                })
+            ```
+    + history模式
+        - pushState与replaceState,作用就是可以将url替换并且不刷新页面
+        - ```js
+            // 新增历史记录
+            history.pushState(stateObject, title, URL)
+            // 替换当前历史记录
+            history.replaceState(stateObject, title, URL)
+
+            // 点击后退按钮时会触发 popState 事件
+            window.addEventListener('popstate', e => {
+                // e.state 就是 pushState(stateObject) 中的 stateObject
+                console.log(e.state)
+            })
+        ```
+
 * navigator
     - 通过这个对象可以获得浏览器的浏览器的种类、版本号等属性
 
@@ -783,7 +738,80 @@
     }, false);
     ```
 
-## html渲染过程
+
+## 浏览器
+
+### 预解析
+1. 语法分析：保证js代码符合语法规则，能被正确的执行。
+2. 变量名以及函数名提升
+3. 确定变量的作用域。
+
+### 函数变量提升
+>先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
+ * ```javascript
+    'use strict';
+    function foo() {
+        var x = 'Hello, ' + y;
+        alert(x);
+        var y = 'Bob';
+    }
+    foo();
+
+    // 虽然是strict模式，但语句var x = 'Hello, ' + y;并不报错，原因是变量y在稍后申明了。
+    // 但是alert显示Hello, undefined，说明变量y的值为undefined。
+    // 这正是因为JavaScript引擎自动提升了变量y的声明，但不会提升变量y的赋值。
+
+    // 变量提升后代码：
+    function foo() {
+        var y; // 提升变量y的申明
+        var x = 'Hello, ' + y;
+        alert(x);
+        y = 'Bob';
+    }     
+    // 函数内变量的怪异声明模式:
+    function fun(){
+        num=10   //没写var 就相当于全局变量
+    }
+
+    fun()
+    console.log(num) //10
+
+    ```
+
+ * Var Let Const区别 
+   - var 在浏览器预解析时存在变量提升，未声明可以使用
+   - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
+   - const声明一个只读的常量。一旦声明常量的值就不能改变。
+
+ * 综合考察
+    ``` js
+    for (var index = 0; index < 10; index++) {
+            setTimeout(() => {
+                console.log(index)
+            },0 ); 
+    }
+    // 涉及到js 执行机制 执行栈同步执行完，把异步队列拿到栈执行10 次 
+    // 输出10 次10 
+
+    for (let index = 0; index < 10; index++) {
+        setTimeout(fucntion(){
+            console.log(index)
+        },0 );
+        
+    }
+    // 块级作用域
+    // 输出的结果 0一直到9，也可以用闭包来实现
+    for (var index = 0; index < 10; index++) {
+           (function(index){
+            setTimeout(fucntion(){
+                console.log(index)
+            },0 );
+           })(index);
+    }
+
+    ```
+
+### html渲染过程
 + 浏览器接收服务器响应结果，如果有压缩则首先进行解压处理，紧接着就是页面解析渲染
 + 解析渲染该过程主要分为以下步骤：
     - 解析HTML
@@ -798,12 +826,13 @@
 
     - [详细参考](http://www.cnblogs.com/dojo-lzz/p/3983335.html)
 
-## 页面事件的加载顺序
+
+### 页面事件的加载顺序
 * DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
 * document.onload 是在结构和样式加载完才执行js
 * window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
 
-## 重绘（Repaint）和回流（Reflow）
+### 重绘（Repaint）和回流（Reflow）
 + reflow:
     - 当DOM变化影响了元素的几何属性（宽、高改变等等） 浏览器此时需要重新计算元素几何属性 
     - 并且面中其他元素的几何属性可能会受影响 这样渲染树就发生了改变，也就是重新构造RenderTree渲染树
@@ -816,7 +845,8 @@
     - 改变元素内容（文本或图片等）
     - 改变窗口尺寸
 
-+ repaint:如果DOM变化仅仅影响的了背景色等等非几何属性 此时就发生了重绘（repaint） 不管页面发生了重绘还是重排，它们都会影响性能（重绘还好一些） 
++ repaint:
+    - DOM变化仅仅影响的了背景色等等非几何属性 此时就发生了重绘（repaint） 不管页面发生了重绘还是重排，它们都会影响性能（重绘还好一些） 
 
 + 如何优化?
     - 分离读写操作（浏览器渲染队列优化）
@@ -824,30 +854,20 @@
     - 缓存布局信息
     - 元素批量修改
 
-## 路由
-* 哈希模式
-    - 利用了window可以监听hashchange事件，也就是说你的url中的哈希值（#后面的值）如果有变化，前端是可以做到监听并做一些响应（搞点事情）
-    - 前端并没有发起http请求他也能够找到对应页面的代码块进行按需加载。
-        ```js
-            window.addEventListener('hashchange', () => {
-                // ... 具体逻辑
-            })
-        ```
-
-* history模式(H5 新出的api)
-    - pushState与replaceState,作用就是可以将url替换并且不刷新页面
-    - ```js
-        // 新增历史记录
-        history.pushState(stateObject, title, URL)
-        // 替换当前历史记录
-        history.replaceState(stateObject, title, URL)
-
-        // 点击后退按钮时会触发 popState 事件
-        window.addEventListener('popstate', e => {
-            // e.state 就是 pushState(stateObject) 中的 stateObject
-            console.log(e.state)
-        })
-      ```
+### 本地存储
+* cookie:如果用于保存用户登录态，应该将该值加密
+    - 一般有服务器生成，可以设置过期时间
+    - 容量较小，4kb 左右
+    - 每次请求都会携带在header中
+* localStorage
+    - 一直存在，除非被清理
+    - 容量5m 左右
+    - 不参与服务器通讯
+* sessionStorage
+    - 用法类似localStorage
+    - 页面关闭就清理
+* indexDB
+    - 浏览器端的数据库，不被清理一直存在
 
 ## 事件
 ### 事件冒泡和事件捕获   
@@ -924,25 +944,9 @@
     - 不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可用。
     - 例如mouseover 由于事件对象target 频繁改动会有性能问题
 
-## 浏览器端存储
-* cookie:如果用于保存用户登录态，应该将该值加密
-    - 一般有服务器生成，可以设置过期时间
-    - 容量较小，4kb 左右
-    - 每次请求都会携带在header中
-* localStorage
-    - 一直存在，除非被清理
-    - 容量5m 左右
-    - 不参与服务器通讯
-* sessionStorage
-    - 用法类似localStorage
-    - 页面关闭就清理
-* indexDB
-    - 浏览器端的数据库，不被清理一直存在
 
-## 正则表达式
- * [正则表达式](note/reg.md)
 
-## js面向对象
+## 对象与函数
 ### 对象：
  + 什么是对象？
     - 无序属性的集合，可以看成键值对
@@ -1241,7 +1245,7 @@
         * eval创建变量的作用域 是由eval执行的作用域决定。 
     - 已不推荐使用。JSON.parse()
 
-### 原型继承和Class继承
+### 继承
 * 利用原型实现继承
     1. 实例继承原生原型对象
         ```javascript
@@ -1294,7 +1298,6 @@
             }
             }
         ```
-
     5. 寄生组合继承
         > 该继承方式，解决了继承父类函数时调用了构造函数，多了无用的父类属性问题。
         ```javascript
@@ -1521,6 +1524,9 @@
 ## es6对js的扩展
 - [es6](ECMA/es6.md)
 
+## 正则表达式
+ * [正则表达式](note/reg.md)
+
 ## js GC:      
  * 引用计数法
     - 当定义一个变量 （此时引用计数为0）并且 赋值为指定的数据时，该变量的引用计数 + 1；
@@ -1586,6 +1592,32 @@
         - setImmediate 
         - I/O 
         - UI rendering
+
+ * promise 
+   1. what?
+    - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
+    - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
+
+   2. 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
+    ```js
+        var promise = new Promise(function(resolve, reject) {
+        // ... some code
+
+        if (/* 异步操作成功 */){
+            resolve(value);
+        } else {
+            reject(error);
+        }
+        });
+    ```
+ * async
+    - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
+
+ * await 
+    - 表示在这里等待promise返回结果了，再继续执行。
+    - await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
+    - await 命令就是内部then命令的语法糖。
+
 
 ## js异常
 >js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
@@ -1762,9 +1794,7 @@
 
  * 不需要马上用到，但是希望尽早获取，采用预加载
 
-
-
-
+### 如何使页面秒开
 
 ## 环境和工具
 ### mac 
