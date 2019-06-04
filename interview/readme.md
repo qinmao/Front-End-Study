@@ -58,18 +58,6 @@
 ### Var Let Const区别 
 
 ## vue
-### Vue生命周期过程（如何描述）
-
-### Vue在created 与mouted 在mouted中获取数据的好处
-
-### Vue中的插槽
-
-### Vue 计算属性和 watch 在什么场景下使用
-
-### Vue 组件中 data 为什么是个函数
-
-### Vue 的 nexttick 实现的原理
-
 ### Object.defineProperty() 和 proxy 的区别
 1. Proxy可以直接监听对象而非属性
 2. Proxy可以直接监听数组的变化
@@ -79,7 +67,6 @@
 * 性能好
     - vdom 技术的使用
     - vue 依赖追踪，diff算法最小化的改变dom
-
 
 ## 通讯
 ### get/post

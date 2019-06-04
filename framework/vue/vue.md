@@ -175,6 +175,18 @@
     - 手动返回，弹窗拦截
     - 正常业务成功返回，不拦截
 
+### Vue生命周期过程（如何描述）
+
+### Vue在created 与mouted 在mouted中获取数据的好处
+
+### Vue中的插槽
+
+### Vue 计算属性和 watch 在什么场景下使用
+
+### Vue 组件中 data 为什么是个函数
+
+### Vue 的 nexttick 实现的原理
+
 ## 新增的特性
 * 一个对象的所有属性都作为 prop 传入,使用不带参数的 v-bind (取代 v-bind:prop-name)
   ```javascript
