@@ -119,11 +119,7 @@
       这个回调将在 `vm.a` 改变后调用
     })
 
-## 一些疑问、和解答:
- * 为什么组件中data是函数？
-  每个组件的实例却引用了同一个 data，通过为每个组件返回全新的 data 对象来解决这个问题
-  都有它自己内部的状态了
-
+## 一些业务场景和解决方案
  * 异步文件上传
     - axios multipart 添加之后选择多图
     ```html
@@ -174,18 +170,6 @@
     > 思路：设置是否允许字段记录在当前路由的元信息上
     - 手动返回，弹窗拦截
     - 正常业务成功返回，不拦截
-
-### Vue生命周期过程（如何描述）
-
-### Vue在created 与mouted 在mouted中获取数据的好处
-
-### Vue中的插槽
-
-### Vue 计算属性和 watch 在什么场景下使用
-
-### Vue 组件中 data 为什么是个函数
-
-### Vue 的 nexttick 实现的原理
 
 ## 新增的特性
 * 一个对象的所有属性都作为 prop 传入,使用不带参数的 v-bind (取代 v-bind:prop-name)
@@ -246,6 +230,104 @@
     <!-- v-slot 只能添加在一个 <template> 上 -->
   ```
 
-## 服务器端渲染(SSR)优点
- * 更好的 SEO，由于搜索引擎爬虫抓取工具可以直接查看完全渲染的页面。
- * 更快的内容到达时间(time-to-content)，特别是对于缓慢的网络情况或运行缓慢的设备
+## 为什么组件中data是函数
+
+## Vue在created 与mouted 在mouted中获取数据的好处
+
+## Vue中的插槽
+
+## Vue 计算属性和 watch 在什么场景下使用
+
+## Vue 中的常用api
+* extend
+  - 基础 Vue 构造器，创建一个“子类”。参数是一个包含组件选项的对象
+  ```js
+    // 创建构造器
+    const Profile = Vue.extend({
+      template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+      data: function () {
+        return {
+          firstName: 'Walter',
+          lastName: 'White',
+          alias: 'Heisenberg'
+        }
+      }
+    })
+    // 创建 Profile 实例，并挂载到一个元素上。
+    new Profile().$mount('#app')
+
+  ```
+* nextTick
+  + 使用场景:
+    - 由于vue 是异步队列更新修改dom,所以当数据修改完之后，发现dom 还没生成，这时候想获取数据更新后的dom。
+    - 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM 
+  ```js
+    // 修改数据
+    vm.msg = 'Hello'
+    // DOM 还没有更新
+    Vue.nextTick(function () {
+      // DOM 更新了
+    })
+
+    // 作为一个 Promise 使用 (2.1.0 起新增，详见接下来的提示)
+    Vue.nextTick()
+      .then(function () {
+        // DOM 更新了
+      })
+  ```
+* set
+  + 使用场景: 由于vue 不能检测对象和数据属性的删除和添加，所以直接修改属性导致数据不是响应式的
+   - 对象的修改
+      ```js 
+       // 修改单个属性
+       Vue.set(vm.someObject, 'b', 2)
+       // 修改多个属性
+       this.someObject = Object.assign({}, this.someObject, { a: 1, b: 2 })
+      ```
+   - 数组的修改
+      vue 提供了数组的变异的方法 push() pop() shift() unshift() splice() sort() reverse()
+       ```js 
+       // 当你利用索引直接设置一个数组项时
+        Vue.set(vm.items, indexOfItem, newValue)
+        // Array.prototype.splice
+        vm.items.splice(indexOfItem, 1, newValue)
+      
+      ```
+* component
+  ```js
+    // 注册组件，传入一个扩展过的构造器
+    Vue.component('my-component', Vue.extend({ /* ... */ }))
+
+    // 注册组件，传入一个选项对象 (自动调用 Vue.extend)
+    Vue.component('my-component', { /* ... */ })
+
+    // 获取注册的组件 (始终返回构造器)
+    var MyComponent = Vue.component('my-component')
+  ```
+* use
+  - 参数 {Object | Function} 
+  - 安装 Vue.js 插件。如果插件是一个对象，必须提供 install 方法。如果插件是一个函数，它会被作为 install 方法。install 方法调用时，会将 Vue 作为参数传入
+* mixin 分发 Vue 组件中的可复用功能
+  - 相同的选项会合并，数据对象有冲突时以组件优先
+  - 值为对象的选项，例如 methods、components 和 directives，以组件优先
+  - 同名钩子函数将合并为一个数组，钩子函数有冲突先执行混入，后执行组件
+* version
+  - 通过版本号兼容插件
+  ```js
+    var version = Number(Vue.version.split('.')[0])
+    if (version === 2) {
+      // Vue v2.x.x
+    } else if (version === 1) {
+      // Vue v1.x.x
+    } 
+  ```
+* watch
+
+* render
+
+* on/emit
+
+
+
+
+

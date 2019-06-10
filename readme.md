@@ -94,9 +94,27 @@
  * 广义上: H5其实指的是一个泛称，它是由HTML5 + CSS3 + JsApi等技术组合而成的一个应用开发平台。
 
  * html5技术:       
-    1. 常用新增的语义标签    
-        - header nav main aside section (独立的区块) article footer
-        
+    1. 标签
+        + 常用新增的语义 （业务标签）   
+            - header nav main aside section (独立的区块) article footer
+        + 元信息标签:是指描述自身的信息,通常不会显示，多数情况下是给浏览器、搜索引擎等机器阅读的
+          ```html
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <!-- 默认使用最新浏览器 -->
+            <meta http-equiv="Cache-Control" content="no-siteapp">
+            <!-- 不被网页(加速)转码 -->
+            <meta name="robots" content="index,follow">
+            <!-- 搜索引擎抓取 -->
+            <meta name="renderer" content="webkit">
+            <meta name="viewport"
+                content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <!-- 删除苹果默认的工具栏和菜单栏 -->
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+            <!-- 设置苹果工具栏颜色 -->
+            <title>dom</title>
+          ```
     2. [新增dom API](html/html5/dom.html)
          
     3. [定位](html/html5/geolocation.html)
@@ -569,13 +587,20 @@
 * nodeType = 9，document对象
 * nodeType = 11，documentFragment文档片段
 
-### 节点操作
+### 如何选择节点
+ * 选择
+    - document.querySelector() css 选择器 返回匹配的第一项
+    - document.querySelectorAll() 返回一个匹配的伪数组
+    - getElementById
+    - getElementsByName 
+    - getElementsByTagName
+    - getElementsByClassName
  * 子节点
-    + childNodes
+    + childNodes（ie只获取元素节点）
         - 用法：元素.childNodes  元素所有的子节点，包含文本和元素节点
         - 元素.childNodes[0] 第一个节点 包含文本和元素节点
     + children
-        - 元素节点的集合
+        - 元素节点的集合(推荐使用)
     + 首个子节点
         - firstChild
         - firstElementChild
@@ -602,11 +627,15 @@
     - attributes 元素属性列表的集合
 
 ### 元素操作
- * 创建
-    - document.creatElement('li')
+ * 创建节点
+    - document.createElement('li') 创建一个元素节点
+    - document.createTextNode(text) 创建一个文本节点
+    - document.crateComment(comment) 创建一个注释节点
+    + document.crateDocumemntFragment() 创建一个文档碎片节点
+        - 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算),起到优化性能的效果
  * 添加
-    - 从前 父级.appendChild('li')
-    - 从后 父级.insertBefore('li')
+    - 父级.appendChild('li') 在父级的末尾加
+    - 父级.insertBefore(newchild,rechild) 在已有的字节点前中插入一个新的子节点
  * 删除
     - 父级.removeChild(要删除的元素)
  * 替换
@@ -615,43 +644,36 @@
     - 要克隆的元素.cloneNode(false) 只克隆元素本身，不需要元素中的内容
     - 要克隆的元素.cloneNode(true) 两个都要
 
-### createDocumentFragment 
-- DocumentFragments 是DOM节点
-- 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。
-- 使用文档片段document fragments 优化性能
 
 ### 元素属性操作
-    - 获取 元素.getAttribute(属性名)
-    - 设置 元素.setAttribute(属性名,属性值)
-    - 移除 元素.removeAttribute(属性名)
+  - 获取 元素.getAttribute(属性名)
+  - 设置 元素.setAttribute(属性名,属性值)
+  - 移除 元素.removeAttribute(属性名)
 
-### 样式相关
- * 样式宽高
-    - 元素.style.width 只能取行间样式，含单位
-    - 都能获取：
-        ```javascript
-            getComputedStyle(el,null).width 
-            // ie提供的
-            document.getElementById("btn").currentStyle.width 
-        ```
-    - getBoundingClientRect 返回元素的大小以及相对于浏览器可视窗口的位置
- * 可视宽高
-    - 元素.clientWidth 不含单位
-    - 可视宽=样式宽+paddinng
- * 占位宽高
-    - 元素.offsetWidth=可视宽+border
+### 获取样式
+  - 元素.style.width 只能取行间样式，含单位
+  - 都能获取不带单位
+    ```javascript
+          getComputedStyle(el,null).width 
+          // ie提供的
+          document.getElementById("btn").currentStyle.width 
+    ```
+  - getBoundingClientRect 返回元素的大小以及相对于浏览器可视窗口的位置
 
-### 定位属性（不考虑低版本ie）
-> 到定位父级的距离，无定位父级，就是到html
- * offsetLeft
- * offsetTop 
- * offsetParent  元素的定位父级节点
+### 几种位置和高度的区别
+* height
+ - offsetHeight：表示可视区域的高度，包含了border和滚动条
+ - scrollHeight：表示了所有区域的高度，包含了因为滚动被隐藏的部分。
+ - window.innerHeight  表示的是可视区域的高度
+ - document.documentElement.clientHeight ie表示的是可视区域的高度，不包含border和滚动条
 
-### innerWidth，innerHeight
-- 视口宽度 window.innerWidth 和视口高度 window.innerHeight
+* top
+ - clientTop：表示边框border的厚度，在未指定的情况下一般为0
+ - scrollTop：滚动后被隐藏的高度(卷曲的高度)
+ - offsetTop
 
 ### scroll
- * scrollWidth（内部内容的真实宽度） 
+ * scrollWidth
  * scrollHeight 
  * scrollLeft 
  * scrollTop 被卷曲的内容高度
@@ -664,23 +686,34 @@
         node.onscroll= function(e){
             let topVal=e.target.scrollTop
         }
-
     ```
 
 ## bom
 > 浏览器对象模型
 * 系统对话框 window.alert() ,window.prompt() window.confirm()
 
-* location 
-    - 对象包括当前URL的信息
-    - assign 加载新的文档
-    - reload 重新加载
-    - replace 新文档替换当前文档（无历史记录）
+* location 对象包括当前URL的信息
+    + 属性
+        - hash 返回URL#后面的内容，如果没有#，返回空
+        - host 返回URL中的域名部分
+        - hostname URL中的主域名部分
+        - href 返回或设置当前文档的URL 
+        - origin
+        - pathname 返回URL的域名后的部分
+        - port
+        - protocol 返回URL中的协议部分
+        - search 返回URL中的查询字符串部分。例如 http://www.dreamdu.com/dreamdu.php?id=5&name=dreamdu 返回包括(?)后面的内容?id=5&name=dreamdu
+
+    + 方法:
+        - assign 加载新的文档
+        - reload 重新加载
+        - replace 新文档替换当前文档（无历史记录）
 
     + decodeURI decodeURIComponent
-
-    + encodeURI encodeURIComponent
-
+        - decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码。
+    + encodeURI encodeURIComponent 
+        - 把字符串作为 URI 进行编码。
+        - 如果 URI 组件中含有分隔符，比如 ? 和 #，则应当使用 encodeURIComponent() 方法分别对各组件进行编码
 
 
 * history 
@@ -714,6 +747,7 @@
 
 * navigator
     - 通过这个对象可以获得浏览器的浏览器的种类、版本号等属性
+    - userAgent 获取浏览器类型
 
 * postMessage
   > 解决跨域和跨页面通信的问题
@@ -732,14 +766,78 @@
 
   + 监听消息
     ```js
-    window.addEventListener('message', function(messageEvent) {
-        var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
-        console.info('message from child:', data);
-    }, false);
+        window.addEventListener('message', function(messageEvent) {
+            var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
+            console.info('message from child:', data);
+        }, false);
     ```
 
+## 网络协议
+### http和https
+* http基本概念
+    - http:超文本传输协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少
+
+* http method
+    - get 
+    - post
+    - head  则是跟 GET 类似，只返回请求头，多数由JavaScript 发起
+    - put delete 分别表示添加资源和删除资源，但是实际上这只是语义上的一种约定
+    - connect  现在多用于 HTTPS 和 WebSocket
+    - options trace 一般用于调试
+
+* http request boday
+    - application/json
+    - application/x-www-form-urlencoded 原始表单提交
+    - multipart/form-data 文件上传
+    - text/xml
+
+* http status（常用的）
+    + 1xx: 临时回应，表示客户端请继续
+    + 2xx 请求成功
+        - 200 请求成功
+    + 3xx 表示请求的目标有变化，请客户端进一步处理
+        - 301&302：永久性与临时性跳转。
+        - 304:客户端缓存没更新（重要）
+    + 4xx 客户端请求错误
+        - 403: 无权限
+        - 404: 请求的页面不存在
+    + 5xx 服务端请求错误
+        - 500 服务端错误
+        - 503 服务端暂时错误，稍后再试
+
+* https:
+    - 是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
+    + 2个作用:
+        - 确定请求服务端的身份
+        - 保证传输的数据不会被窃听和篡改
+
+* 区别:
+  - http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议，更安全
+  - https 协议需要ca证书
+  - 端口也不同，一般而言，http协议的端口为80，https的端口为443
+
+* https协议的工作原理
+  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
+  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
+  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
+  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
+  - web服务器通过自己的私钥解密出会话密钥。
+  - web服务器通过会话密钥加密与客户端之间的通信。
+
+* http2.0 改进最大的两点
+    - 支持服务端推送
+    - 支持tcp的连接复用
+ 
+### WebSocket
+- WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
 
 ## 浏览器
+### 浏览器是如何工作的(如何渲染页面的)？
+1. 浏览器使用http或者HTTPS 协议，向服务端请求页面
+2. 把请求回来的 HTML 代码经过解析，构建成 DOM 树 解析css,创建的是 CSSOM 树 （CSSOM 的解析过程与 DOM 的解析过程是并行的）
+3. Dom 树结合CSSOM 树生成渲染树
+4. 布局渲染树
+5. 绘制渲染树
 
 ### 预解析
 1. 语法分析：保证js代码符合语法规则，能被正确的执行。
@@ -811,20 +909,7 @@
 
     ```
 
-### html渲染过程
-+ 浏览器接收服务器响应结果，如果有压缩则首先进行解压处理，紧接着就是页面解析渲染
-+ 解析渲染该过程主要分为以下步骤：
-    - 解析HTML
 
-    - 构建DOM树
-
-    - DOM树与CSS样式进行附着构造呈现树（渲染树）
-
-    - 布局
-        
-    - 绘制
-
-    - [详细参考](http://www.cnblogs.com/dojo-lzz/p/3983335.html)
 
 
 ### 页面事件的加载顺序
@@ -832,29 +917,21 @@
 * document.onload 是在结构和样式加载完才执行js
 * window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
 
-### 重绘（Repaint）和回流（Reflow）
-+ reflow:
-    - 当DOM变化影响了元素的几何属性（宽、高改变等等） 浏览器此时需要重新计算元素几何属性 
-    - 并且面中其他元素的几何属性可能会受影响 这样渲染树就发生了改变，也就是重新构造RenderTree渲染树
+### js 的三种加载方式
+* 正常:JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情。
+    ```js
+        <script src="index.js"></script>
+    ```
+* async:JS 不会阻塞浏览器,它的加载是异步的，当它加载结束，JS 脚本会立即执行。
+    ```js
+        <script async src="index.js"></script>
+    ```
+* defer:JS 的加载是异步的，执行是被推迟的。等整个文档解析完成、DOMContentLoaded 事件即将被触发时，被标记了 defer 的 JS 文件才会开始依次执行
+    ```js
+        <script defer src="index.js"></script>
+    ```
 
-+ 具体场景：
-    - 页面初始渲染
-    - 添加/删除可见DOM元素
-    - 改变元素位置
-    - 改变元素尺寸（宽、高、内外边距、边框等）
-    - 改变元素内容（文本或图片等）
-    - 改变窗口尺寸
-
-+ repaint:
-    - DOM变化仅仅影响的了背景色等等非几何属性 此时就发生了重绘（repaint） 不管页面发生了重绘还是重排，它们都会影响性能（重绘还好一些） 
-
-+ 如何优化?
-    - 分离读写操作（浏览器渲染队列优化）
-    - 样式集中改变
-    - 缓存布局信息
-    - 元素批量修改
-
-### 本地存储
+### 浏览器本地存储
 * cookie:如果用于保存用户登录态，应该将该值加密
     - 一般有服务器生成，可以设置过期时间
     - 容量较小，4kb 左右
@@ -1561,7 +1638,7 @@
     - 用来执行应用程序中的代码
     - 在一个进程内部，有很多的线程
 
-## js执行机制
+## js执行机制（Event Loop）
  * JS 执行是单线程的，它是基于事件循环的。
 
  * js语言为什么设计成单线程的？
@@ -1578,14 +1655,8 @@
     4. 主线程不断重复上面的第三步。
     主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。
 
- * 规范中规定 task 分为两大类，
-    +  macro task（宏任务） 
-        - process.nextTick（Node 独有）
-        - promise 
-        - MutationObserver
-        
-    + micro task（微任务）
-        - 并且每个 macro task 结束后，都要清空所有的 micro task。
+ * 规范中规定 task 分为两大类:我们把宿主发起的任务称为宏观任务，把js引擎发起的任务称为微观任务
+    + macro task（宏任务）
         - script 
         - setTimeout 
         - setInterval
@@ -1593,31 +1664,46 @@
         - I/O 
         - UI rendering
 
+    + micro task（微任务）
+        - process.nextTick（Node 独有）
+        - promise 
+        - MutationObserver
+
  * promise 
    1. what?
-    - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
-    - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
+        - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
+        - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
 
    2. 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
-    ```js
-        var promise = new Promise(function(resolve, reject) {
-        // ... some code
+        ```js
+            var promise = new Promise(function(resolve, reject) {
+            // ... some code
 
-        if (/* 异步操作成功 */){
-            resolve(value);
-        } else {
-            reject(error);
-        }
-        });
-    ```
+            if (/* 异步操作成功 */){
+                resolve(value);
+            } else {
+                reject(error);
+            }
+            });
+        ```
  * async
     - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
-
  * await 
     - 表示在这里等待promise返回结果了，再继续执行。
     - await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
     - await 命令就是内部then命令的语法糖。
 
+ * 问题
+    - Promise里的代码为什么比setTimeout先执行？
+    - vue 异步更新是包装成macro task还是micro task？
+
+ * 事件循环每一次循环都是一个这样的过程
+    <image src='framework/vue/vue2.x/images/event-loop-queue.png'>
+
+  + 根据上图的执行过程，分析如下
+    1. setTimeout 是一个宏任务，所以推入了宏任务队列
+    2. 由于script 也是一个宏任务，也会被放入队列，由于该队列是一个一个执行的，所以本次循环，setTimeout 中不会被渲染，下次循环执行
+    3. 如果异步更新包装在micro task 中，队列中先执行script ，微任务是一对对执行的，所以Promise在本次循环被执行了，也就是渲染了
 
 ## js异常
 >js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
@@ -1628,8 +1714,6 @@
  * typeError 运行时异常，类型异常
  * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
 
-## js.map 文件是干啥的？
-源代码xx.js文件经过uglify压缩之后变为xx.min.js；同时会生成一个文件叫做xx.js.map，这个map文件描述了代码压缩前后的映射关系，在线上代码出了bug之后，用于查找问题是很有用的。因为压缩代码经过了一些列处理几乎是看不懂的。
 
 ## 移动端
 ### 事件
@@ -1657,7 +1741,8 @@
  * [适配](mobile/适配/readme.md)
 
 ## framework
-> 前端常用的框架（方式不同，本质都是操作dom）   
+> 前端常用的框架（方式不同，本质都是操作dom）
+
 ### 数据驱动式
  * [angular1](angular1/angular-base.html)
  * [angular2](angular2/angular.md)
@@ -1674,6 +1759,11 @@
  * react native
  * weex/uni-app
  * flutter
+
+## spa/mba/ssr(单页和多页开发)
+* spa
+* mba
+* ssr
 
 ## 前端安全
  * xss
@@ -1745,56 +1835,231 @@
 ### 监控
 
 ## 前端优化
-### 测试性能工具Chrome(Audits)
+### 从输入 URL 到页面加载完成，发生了什么？(从以下5个方面考虑优化)
+1. DNS 解析
+2. TCP 连接
+3. HTTP 请求抛出
+4. 服务端处理请求，HTTP 响应返回
+5. 浏览器拿到响应数据，解析响应内容，把解析的结果展示给用户
 
-### DNS 预解析
-* DNS 解析也是需要时间的，可以通过预解析的方式来预先获得域名所对应的 IP。
+### 网络层
+#### 预解析、预加载、预渲染
+* dns-prefetch
+    - DNS 解析也是需要时间的，可以通过预解析的方式来预先获得域名所对应的 IP。
     ```html
         <link rel="dns-prefetch" href="//xxx.com">
     ```
-
-### 预加载
-* 有些资源不需要马上用到，但是希望尽早获取
-* 预加载其实是声明式的 fetch ，强制浏览器请求资源，并且不会阻塞 
+* 预加载 preload
+    - 有些资源不需要马上用到，但是希望尽早获取
+    - 预加载其实是声明式的 fetch ，强制浏览器请求资源，并且不会阻塞 
     ```html
         <link rel="preload" href="http://example.com">
     ```
- * 预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载
- * 存在兼容性的问题
-
-### 预渲染
-* 预渲染可以提高页面的加载速度，但是要确保该页面大概率会被用户在之后打开，否则就是白白浪费资源去渲染。
-```html
+    - 预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载
+* 预渲染 prerender
+    - 可以提高页面的加载速度，但是要确保该页面大概率会被用户在之后打开，否则就是白白浪费资源去渲染。
+    ```html
     <link rel="prerender" href="http://example.com">
- ```
+    ```
 
-### cdn 
- * 静态资源cdn
+#### Wepack构建优化(帮助我们处理部分静态资源的压缩与合并)
+ * 减少构建时间
+    + 优化Loader
+        > 原因：主要因为 Babel 转换js 会将代码转为字符串生成 AST，然后对 AST 继续进行转变最后再生成新的代码，项目越大，转换代码越多，效率就越低
+        - 优化 Loader 的文件搜索范围,只转化src(自己写的js)
+        - 将 Babel 编译过的文件缓存起来,下次只需要编译更改过的代码文件即可
 
-### 节流/防抖
-* 防抖( 延时执行)
-    - 指触发事件后在规定时间内回调函数只能执行一次，如果在规定时间内又触发了该事件，则会重新开始算规定时间。
-    - 应用场景:一般出现在用户连续操作导致的频繁的事件回调，例如搜索输入值，按钮点击收藏，点赞等
-    - 原理:通过定时器将回调函数进行延时.如果在规定时间内继续回调,发现存在之前的定时器,则将该定时器清除,并重新设置定时器
+    + 多线程构建:（HappyPack 工具）Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，使用多线程构建，充分利用系统资源
 
-* 节流
+    + DllPlugin 将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数
 
-* 区别
-    - 相同:在不影响客户体验的前提下,将频繁的回调函数,进行次数缩减.避免大量计算导致的页面卡顿.
-    - 不同:防抖是将多次执行变为最后一次执行，节流是将多次执行变为在规定时间内只执行一次
+    + 代码压缩 Webpack4 将 mode 设置为 production，并行压缩js css html
+
+    + 其他小技巧
+        - resolve.extensions：我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面，没加文件后缀时，默认搜索顺序['.js', '.json']
+        - resolve.alias：可以通过别名的方式来映射一个路径，能让 Webpack 更快找到路径
+        - module.noParse：若确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
+
+ * 减少构建后包的体积
+    - 按需加载 require.ensure 和 es6 import
+    - Scope Hoisting:Webpack4 开启 optimization.concatenateModules=true
+    - Tree Shaking:可以实现删除项目中未被引用的代码 Webpack4 生产环境自动开启了
+    - externals 配置来提取常用库,不打包进项目
+ 
+ * 其他静态资源优化
+  - image 优化 雪碧图 svg
+  - font 按需引入字体
+  - gzip 压缩原理:
+  - cdn 全栈静态资源的缓存
+
+#### 减少网络请求（浏览器缓存、离线存储）
+
+### 渲染层
+* 服务端渲染(seo)
+
+* dom 优化
+    + DOM 为什么这么慢
+        - 浏览器分为JS引擎和渲染引擎（浏览器内核）,操作dom 涉及两种引擎的通讯，通讯的开销是比较大的
+        - dom 更改了样式，会导致渲染树的变化，导致重绘与回流
+
+    + 回流（也叫重排）：几何属性的修改，导致重新计算绘制出来的过程
+
+    + 重绘：非几何属性的修改
+
+    + 如何处理回流重绘
+        - 批量修改样式（用class去合并更改样式，不要一条一条去修改）
+        - 缓存获取的属性和dom节点
+        - 频繁的操作 DOM 离线化（先display:none 然后修改，修改完display:block）
+        > 现代浏览器还是比较聪明的，如谷歌它有Flush 队列，它会用队列去批量处理，其他浏览器就不一定了，所以还是自己比较靠谱
+
+    + 优化：
+        - 减少dom操作
+        - 使用DOM Fragment
+        - 放在微任务中异步更新dom(在微任务队列中，批量的执行完了，最后只渲染一次)
+    
+
+* Lazy-Load
+  - 实现方式
+  - ```js
+        // 获取所有的图片标签
+            const imgs = document.getElementsByTagName('img')
+            // 获取可视区域的高度
+            const viewHeight = window.innerHeight || document.documentElement.clientHeight
+            // num用于统计当前显示到了哪一张图片，避免每次都从第一张图片开始检查是否露出
+            let num = 0
+            function lazyload(){
+                for(let i=num; i<imgs.length; i++) {
+                    // 用可视区域高度减去元素顶部距离可视区域顶部的高度
+                    let distance = viewHeight - imgs[i].getBoundingClientRect().top
+                    // 如果可视区域高度大于等于元素顶部距离可视区域顶部的高度，说明元素露出
+                    if(distance >= 0 ){
+                        // 给元素写入真实的src，展示图片
+                        imgs[i].src = imgs[i].getAttribute('data-src')
+                        // 前i张图片已经加载完毕，下次从第i+1张开始检查是否露出
+                        num = i + 1
+                    }
+                }
+            }
+            // 监听Scroll事件
+            window.addEventListener('scroll', lazyload, false);
+    ```
+
+* 节流(throttle)/防抖(debounce)
+    + 出现的背景
+        - scroll 事件，resize 事件、鼠标事件（比如 mousemove、mouseover 等）、键盘事件（keyup、keydown 等）都存在被频繁触发的风险，频繁触发回调导致的大量计算会引发页面的抖动甚至卡顿
+
+    + throttle
+        - 在指定的时间内，不管事件触发多少次，回调函数只执行第一次的触发
+        - ```js
+            // fn是我们需要包装的事件回调, interval是时间间隔的阈值
+            function throttle(fn, interval) {
+            // last为上一次触发回调的时间
+            let last = 0
+            
+            // 将throttle处理结果当作函数返回
+            return function () {
+                // 保留调用时的this上下文
+                let context = this
+                // 保留调用时传入的参数
+                let args = arguments
+                // 记录本次触发回调的时间(new Date()返回的是date类型，+new Date()返回的是时间戳)
+                let now = +new Date()
+                
+                // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+                if (now - last >= interval) {
+                // 如果时间间隔大于我们设定的时间间隔阈值，则执行回调
+                    last = now;
+                    fn.apply(context, args);
+                }
+                }
+            }
+
+            // 用throttle来包装scroll的回调
+            const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+
+            document.addEventListener('scroll', better_scroll)
+          ```
+    + debounce
+        - 在指定的时间内，不管事件触发多少次，回调函数只执行最后一次的触发
+        - ```js
+            // fn是我们需要包装的事件回调, delay是时间间隔的阈值
+            function throttle(fn, delay) {
+            // last为上一次触发回调的时间, timer是定时器
+            let last = 0, timer = null
+            // 将throttle处理结果当作函数返回
+            
+            return function () { 
+                // 保留调用时的this上下文
+                let context = this
+                // 保留调用时传入的参数
+                let args = arguments
+                // 记录本次触发回调的时间
+                let now = +new Date()
+                
+                // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+                if (now - last < delay) {
+                // 如果时间间隔小于我们设定的时间间隔阈值，则为本次触发操作设立一个新的定时器
+                clearTimeout(timer)
+                timer = setTimeout(function () {
+                    last = now
+                    fn.apply(context, args)
+                    }, delay)
+                } else {
+                    // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应
+                    last = now
+                    fn.apply(context, args)
+                }
+            }
+            }
+
+            // 用新的throttle包装scroll的回调
+            const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+
+            document.addEventListener('scroll', better_scroll)
+          ```
 
 
-### Wepack构建优化(spa)
- * [webpack](build-tool/webpack/readme.md)
+* 首屏渲染提速(秒开的问题)（移动端）
 
-### 首屏优化(spa/vue) 
- * 懒加载:
-    - 模块的懒加载，结合vue路由库,遇到什么模块,在加载该模块，不需要一次性加载全部模块.
-    - 若首页存在列表，需要加载大量图片，视频，资源懒加载
+### 测试性能工具（具体问题具体分析）
+* 如何检测性能，看哪些指标？
+    + 工具: Chrome(Audits,Performance,LightHouse)
 
- * 不需要马上用到，但是希望尽早获取，采用预加载
+        - Audit 工具获得网站的多个指标的性能报告,性能、最佳实践、seo、然后会给一些评分，最后它会给你一些优化的建议，针对这些点去优化
 
-### 如何使页面秒开
+        + Performance 工具了解网站的性能瓶颈
+            - 概述面板:FPS(动画相关) CPU NET
+                
+            - 详情面板：主要看main栏目下的火焰图和summary 的饼状图：loading、scripting、rendering 、painting并和cpu结合具体分析
+
+    + 代码检测：W3C Performance api
+        ```js
+        const timing = window.performance.timing
+        // DNS查询耗时
+        timing.domainLookupEnd - timing.domainLookupStart
+        
+        // TCP连接耗时
+        timing.connectEnd - timing.connectStart
+        
+        // 内容加载耗时
+        timing.responseEnd - timing.requestStart
+
+        // firstbyte：首包时间	
+        timing.responseStart – timing.domainLookupStart	
+
+        // fpt：First Paint Time, 首次渲染时间 / 白屏时间
+        timing.responseEnd – timing.fetchStart
+
+        // tti：Time to Interact，首次可交互时间	
+        timing.domInteractive – timing.fetchStart
+
+        // ready：HTML 加载完成时间，即 DOM 就位的时间
+        timing.domContentLoaded – timing.fetchStart
+
+        // load：页面完全加载时间
+        timing.loadEventStart – timing.fetchStart
+
+        ```
 
 ## 环境和工具
 ### mac 
@@ -1863,7 +2128,6 @@
 ### git
 * [git基本使用](git/readme.md)
 
-## spa/mba(单页和多页开发)
 
 ## chrome插件的开发
  * 首先要有一个manifest.json清单文件
@@ -1890,16 +2154,16 @@
  * [node](node/README.md)
 
 ## linux
-[linux](linux/readme.md)
+* [linux](linux/readme.md)
 
 ## docker
 * [docker](docker/readme.md)
 
 ## 模式
-    - 设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
-    - 编码模式:js 特有的模式
-    - 反模式:常见的，引发问题比解决问题更多的一种方法
-    - [js中的设计模式](desin/-patterns/)
+ - 设计模式:相对于强类型语言研究的，没必要强制的用在js中，js中可能有更好更简单的方法。
+ - 编码模式:js 特有的模式
+ - 反模式:常见的，引发问题比解决问题更多的一种方法
+ - [js中的设计模式](desin-patterns/)
 
 ## tree 目录生成命令
  1. 安装 :brew install tree  ||  apt-get install tree

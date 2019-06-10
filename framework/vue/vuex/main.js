@@ -57,8 +57,7 @@ let store = new Vuex.Store({ //全局仓库中 有state.name state.age
 new Vue({
     el: '#app',
     // * 4: 将该对象加入到vue示例的参数中
-    // router:router,
-    // store:store,
+    // router,
     store, //传递进去以后，各个子组件就可以使用this.$store
-    render: c => c(App)
+    render: h => h(App)
 });

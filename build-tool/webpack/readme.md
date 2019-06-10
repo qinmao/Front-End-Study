@@ -44,7 +44,7 @@
  3. webpack.prod.config.js   
 
 ## 能够明白的问题
-## webpack 和其他自动化构建工具（gulp、grunt、rollup）有哪些区别？
+### webpack 和其他自动化构建工具（gulp、grunt、rollup）有哪些区别？
 1. webpack 是 module bundle
 2. gulp 是 task runner
 3. Rollup 是在 Webpack 流行后出现的替代品。Rollup 在用于打包 JavaScript 库时比 Webpack 更加有优势，因为其打包出来的代码更小更快。
@@ -77,32 +77,4 @@
 * 而第 10 步是决定 HMR 成功与否的关键步骤，在该步骤中，HotModulePlugin 将会对新旧模块进行对比，决定是否更新模块，在决定更新模块后，检查模块之间的依赖关系，更新模块的同时更新模块间的依赖引用。
 
 * 最后一步，当 HMR 失败后，回退到 live reload 操作，也就是进行浏览器刷新来获取最新打包代码。
-
-
-## webpack 构建优化？
- * [官方提高构建性能的最佳实践](https://webpack.docschina.org/guides/build-performance/)
-
- * 减少构建时间
-    + 优化Loader
-        > 原因：主要因为 Babel 转换js 会将代码转为字符串生成 AST，然后对 AST 继续进行转变最后再生成新的代码，项目越大，转换代码越多，效率就越低
-        - 优化 Loader 的文件搜索范围,只转化src(自己写的js)
-        - 将 Babel 编译过的文件缓存起来,下次只需要编译更改过的代码文件即可
-
-    + 多线程构建：（HappyPack 工具）Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，使用多线程构建，充分利用系统资源
-
-    + DllPlugin 将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数
-
-    + 代码压缩 Webpack4 将 mode 设置为 production，并行压缩js css html
-
-    + 其他小技巧
-        - resolve.extensions：我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面，没加文件后缀时，默认搜索顺序['.js', '.json']
-        - resolve.alias：可以通过别名的方式来映射一个路径，能让 Webpack 更快找到路径
-        - module.noParse：若确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
-
- * 减少构建后包的体积
-    - 按需加载
-    - Scope Hoisting:Webpack4 开启 optimization.concatenateModules=true
-    - Tree Shaking:可以实现删除项目中未被引用的代码 Webpack4 生产环境自动开启了
-    - externals 配置来提取常用库,不打包进项目
-
 
