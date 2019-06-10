@@ -119,9 +119,9 @@
       这个回调将在 `vm.a` 改变后调用
     })
 
-## 一些业务场景和解决方案
- * 异步文件上传
-    - axios multipart 添加之后选择多图
+## 项目中遇到的问题及解决方案
+ * 异步文件上传(axios)
+    -  multipart 添加之后选择多图
     ```html
       <input type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
     ```
@@ -170,6 +170,12 @@
     > 思路：设置是否允许字段记录在当前路由的元信息上
     - 手动返回，弹窗拦截
     - 正常业务成功返回，不拦截
+    
+ * 新增data 中对象属性，和修改数组下标 响应式问题
+
+ * 获取异步dom 更新问题（nextTick）
+
+ * 性能优化
 
 ## 新增的特性
 * 一个对象的所有属性都作为 prop 传入,使用不带参数的 v-bind (取代 v-bind:prop-name)
