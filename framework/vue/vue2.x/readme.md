@@ -481,39 +481,19 @@ function generate (rootAst) {
 
 ## 异步更新dom及nextTick
 1. 简单的异步更新例子
-2. 前置知识：js 运行机制
-JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：
-
-（1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
-
-（2）主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
-
-（3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
-
-（4）主线程不断重复上面的第三步。
-
-主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。 规范中规定 task 分为两大类，分别是 macro task 和 micro task，并且每个 macro task 结束后，都要清空所有的 micro task。
-
-在浏览器环境中
-
-常见的 macro task:
-    setTimeout、MessageChannel、postMessage、setImmediate；
-
-常见的 micro task:
-      MutationObsever 和 Promise.then
-
-通过一段代码演示他们的执行顺序：
-```javascript
-    for (macroTask of macroTaskQueue) {
-        // 1. Handle current MACRO-TASK
-        handleMacroTask();
-        
-        // 2. Handle all MICRO-TASK
-        for (microTask of microTaskQueue) {
-            handleMicroTask(microTask);
+2. 前置知识：js 运行机制（事件循环）
+> 通过一段代码演示他们的执行顺序：
+    ```javascript
+        for (macroTask of macroTaskQueue) {
+            // 1. Handle current MACRO-TASK
+            handleMacroTask();
+            
+            // 2. Handle all MICRO-TASK
+            for (microTask of microTaskQueue) {
+                handleMicroTask(microTask);
+            }
         }
-    }
-```
+    ```
 3. Watch 队列。
 当某个响应式数据发生变化的时候，它的setter函数会通知闭包中的Dep，Dep则会调用它管理的所有Watch对象。触发Watch对象的update实现。我们来看一下update的实现。
 ```javascript
@@ -572,6 +552,9 @@ timerFunc会检测当前环境而不同实现，其实就是按照Promise，Muta
 5. 异步更新的原因:
  每次++时，都会根据响应式触发setter->Dep->Watcher->update->patch。 如果这时候没有异步更新视图，那么每次++都会直接操作DOM更新视图，这是非常消耗性能的。 所以Vue.js实现了一个queue队列，在下一个tick的时候会统一执行queue中Watcher的run。同时，拥有相同id的Watcher不会被重复加入到该queue中去，所以不会执行1000次Watcher的run。最终更新视图只会直接将test对应的DOM的0变成1000。 保证更新视图操作DOM的动作是在当前栈执行完以后下一个tick的时候调用，大大优化了性能。
  
+
+
+
 
 
 
