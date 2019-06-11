@@ -1469,6 +1469,7 @@
  * ES6 模块与 CommonJS 模块的差异
     - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
     - CommonJS 是同步导入，es 是异步的
+    
 
 ## 数组遍历（迭代）
  * Array 的常用函数
@@ -1611,7 +1612,7 @@
     - options trace 一般用于调试
 
 * http request header(常用)
-    - Cache-Control与Expires之强制缓存
+    - Cache-Control与Expires之强制缓存的值为“public, max-age=xxx”表示在xxx秒内再次访问该资源，均使用本地的缓存，不再向服务器发起请求
     - cookie
     - Accept-Encoding 告诉服务端可接受的数据格式
     - referer 表示请求文件的网址，请求时会携带(设置防盗链)
@@ -1706,16 +1707,15 @@
         - promise 
         - MutationObserver
 
- * promise 
-   1. what?
+## promise 
+   * what?
         - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
         - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
-
-   2. 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
+        - Promise 新建后就会立即执行
+   * 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
       ```js
+            // 基本用法
             var promise = new Promise(function(resolve, reject) {
-            // ... some code
-
             if (/* 异步操作成功 */){
                 resolve(value);
             } else {
@@ -1723,36 +1723,47 @@
             }
             });
             //  用promise 封装一个ajax
-            function fetch(method, url, data){
-                return new Promise((resolve, reject) => {
-                    let xhr = new XMLHttpRequest();
-                    let method = method || "GET";
-                    let data = data || null;
-                    xhr.open(method, url, true);
-                    xhr.onreadystatechange = function() {
-                        if(xhr.status === 200 && xhr.readyState === 4){
-                            resolve(xhr.responseText);
-                        } else {
-                            reject(xhr.responseText);
-                        }
-                    }
-                    xhr.send(data);
-                })
-            }
+           const getJSON = function(url) {
+            const promise = new Promise(function(resolve, reject){
+                const handler = function() {
+                if (this.readyState !== 4) {
+                    return;
+                }
+                if (this.status === 200) {
+                    resolve(this.response);
+                } else {
+                    reject(new Error(this.statusText));
+                }
+                };
+                const client = new XMLHttpRequest();
+                client.open("GET", url);
+                client.onreadystatechange = handler;
+                client.responseType = "json";
+                client.setRequestHeader("Accept", "application/json");
+                client.send();
 
-            // 使用
-            fetch("GET", "/some/url.json", null)
-            .then(res => {
-                console.log(res);
+            });
+
+            return promise;
+            };
+
+            getJSON("/posts.json")
+            .then(function(json) {
+                console.log('Contents: ' + json);
             })
-            .catch(res=>{
-                console.log(res);
+            .catch(error=>{
+                console.error('出错了', error);
             })
 
         ```
-        
-   3. promise.all 和 promise.race 的区别
+   * Promise.prototype.then() Promise.prototype.catch() Promise.prototype.finally()
+    - then resolve 的回调 
+    - catch reject的回调 
+    - finally Promise 对象最后状态如何，都会执行的操作
 
+   * promise.all 和 promise.race 的区别
+    - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
+    
  * async
     - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
  * await 
@@ -1960,6 +1971,26 @@
   - cdn 全栈静态资源的缓存
 
 #### 减少网络请求（浏览器缓存、离线存储）
+* 缓存：强缓存和协商缓存两种
+    - 区别：使用本地缓存时，是否需要向服务器验证本地缓存是否依旧有效，协商缓存，就是需要和服务器进行协商，最终确定是否使用本地缓存
+    + 使用缓存注意更新的问题：webpack 提供了hash
+        - hash 构建生成的文件hash值都是一样的，只要项目里有文件更改，整个项目构建的hash值都会更改。
+        - chunkhash 不同的入口文件(Entry)进行依赖文件解析、构建对应的chunk，生成对应的hash值。
+        - contenthash 由文件内容产生的hash值，内容不同产生的contenthash值也不一样
+
+    + chunkhash和contenthash的主要应用场景?
+        - 在实际在项目中，我们一般会把项目中的css都抽离出对应的css文件来加以引用。如果我们使用chunkhash，当我们改了css代码之后，会发现css文件hash值改变的同时，js文件的hash值也会改变。这时候，contenthash就派上用场了
+
+    - nodejs 浏览器的缓存方案有服务端返回的响应头决定
+        ```js
+        // 返回一个强缓存
+        res.setHeader('Cache-Control', 'public, max-age=xxx');
+        //返回一个协商缓存
+        res.setHeader('Cache-Control', 'public, max-age=0');
+        res.setHeader('Last-Modified', xxx);
+        res.setHeader('ETag', xxx);
+        ```
+    > 前端缓存时，我们尽可能设置长时间的强缓存，通过文件名加hash的方式来做版本更新。在代码分包的时候，应该将一些不常变的公共库独立打包出来，使其能够更持久的缓存
 
 ### 渲染层
 * 服务端渲染(seo)

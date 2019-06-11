@@ -208,7 +208,7 @@
 
 ## 为什么组件中data是函数
 
-## v-for key值的作用
+## v-for key值的作用（key要唯一标识的值来处理）
 使用 v-for更新已渲染的元素列表时,默认用就地复用策略。列表数据修改的时候,他会根据key值去判断某个值是否修改：如果修改,则重新渲染这一项;否则复用之前的dom，仅修改value值。
 
 ## Vue在created 与mouted 在mouted中获取数据的好处
@@ -312,30 +312,23 @@
     function Person() {
         this.task = {}; //保存所有的事件及回调
     }
+
     Person.prototype.on = function(event, callback) {
-        //保存起来
         this.task[event] = callback;
-        /*
-            function(num) {
-                alert('ak47射出了',num,'发子弹！砰砰砰');
-            }
-        */
     }
     Person.prototype.emit = function(event, data) {
-        this.task[event](data); //调用之前传递的函数
-        // this.task[event] = null;//once发射以后。给null
-        /*
-            function(num) {
-                alert('ak47射出了',num,'发子弹！砰砰砰');
-            }
-        */
+        this.task[event](data); 
+        //调用之前传递的函数
+        // this.task[event] = null;
+        // once发射以后。给null
     }
     var p1 = new Person();
+
     p1.on('ak47', function(num) {
         alert('ak47射出了' + num + '发子弹！砰砰砰');
     });
     p1.emit('ak47', 1223);
-    
+
   ```
 
 

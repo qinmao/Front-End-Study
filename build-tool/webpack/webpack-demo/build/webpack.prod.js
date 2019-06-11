@@ -21,16 +21,14 @@ module.exports = merge(common, {
         new Webpack.HashedModuleIdsPlugin({
             hashDigest: 'hex'
         }),
-        new Webpack.DefinePlugin(
-            {
-                'process.env': {
-                    NODE_ENV: '"production"',
-                    VUE_APP_BASE_URL: '/api',
-                    VUE_APP_VERSION: '1.0.0',
-                    BASE_URL: '/'
-                }
+        new Webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"',
+                VUE_APP_BASE_URL: '/api',
+                VUE_APP_VERSION: '1.0.0',
+                BASE_URL: '/'
             }
-        ),
+        }),
     ],
     optimization: {
         minimizer: [{

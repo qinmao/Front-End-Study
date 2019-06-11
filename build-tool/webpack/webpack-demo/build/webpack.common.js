@@ -34,63 +34,63 @@ module.exports = {
         //  noParse配置项可以让Webpack忽略对部分没采用模块化的文件的递归解析和处理，提高构建性能
         noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
         rules: [{
-            test: /\.css$/,
-            use: [
-                'style-loader',
-                'css-loader'
-            ]
-        },
-        /* config.module.rule('images') */
-        {
-            test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
-            use: [
-                /* config.module.rule('images').use('url-loader') */
-                {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 4096,
-                        fallback: {
-                            loader: 'file-loader',
-                            options: {
-                                name: 'img/[name].[hash:8].[ext]'
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
+            /* config.module.rule('images') */
+            {
+                test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
+                use: [
+                    /* config.module.rule('images').use('url-loader') */
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 4096,
+                            fallback: {
+                                loader: 'file-loader',
+                                options: {
+                                    name: 'img/[name].[hash:8].[ext]'
+                                }
                             }
                         }
                     }
-                }
-            ]
-        },
-        /* config.module.rule('svg') */
-        {
-            test: /\.(svg)(\?.*)?$/,
-            use: [
-                /* config.module.rule('svg').use('file-loader') */
-                {
-                    loader: 'file-loader',
-                    options: {
-                        name: 'img/[name].[hash:8].[ext]'
+                ]
+            },
+            /* config.module.rule('svg') */
+            {
+                test: /\.(svg)(\?.*)?$/,
+                use: [
+                    /* config.module.rule('svg').use('file-loader') */
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'img/[name].[hash:8].[ext]'
+                        }
                     }
-                }
-            ]
-        },
-        /* config.module.rule('fonts') */
-        {
-            test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
-            use: [
-                /* config.module.rule('fonts').use('url-loader') */
-                {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 4096,
-                        fallback: {
-                            loader: 'file-loader',
-                            options: {
-                                name: 'fonts/[name].[hash:8].[ext]'
+                ]
+            },
+            /* config.module.rule('fonts') */
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
+                use: [
+                    /* config.module.rule('fonts').use('url-loader') */
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 4096,
+                            fallback: {
+                                loader: 'file-loader',
+                                options: {
+                                    name: 'fonts/[name].[hash:8].[ext]'
+                                }
                             }
                         }
                     }
-                }
-            ]
-        },
+                ]
+            },
         ]
     },
     plugins: [
