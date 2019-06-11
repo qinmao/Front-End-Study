@@ -17,37 +17,7 @@
  * 父子组件通信
     - 父向子组件：prop
     - 子向父组件:触发父层定义的事件 $on / $emit
-    - $on $emit 实现原理
-        ```js
-              //同一个对象的on对应emit
-             function Person() {
-                 this.task = {}; //保存所有的事件及回调
-             }
-             Person.prototype.on = function(event, callback) {
-                 //保存起来
-                 this.task[event] = callback;
-                 /*
-                     function(num) {
-                         alert('ak47射出了',num,'发子弹！砰砰砰');
-                     }
-                 */
-             }
-             Person.prototype.emit = function(event, data) {
-                 this.task[event](data); //调用之前传递的函数
-                 // this.task[event] = null;//once发射以后。给null
-                 /*
-                     function(num) {
-                         alert('ak47射出了',num,'发子弹！砰砰砰');
-                     }
-                 */
-             }
-             var p1 = new Person();
-             p1.on('ak47', function(num) {
-                 alert('ak47射出了' + num + '发子弹！砰砰砰');
-             });
-             p1.emit('ak47', 1223);
-        ```
-
+    - $on $emit
  * 非父子组件通讯
     - 使用空的 Vue 实例作为中央事件总线
     - vuex
@@ -335,6 +305,38 @@
 * render
 
 * on/emit
+
+  ```js
+    // 实现原理
+    //同一个对象的on对应emit
+    function Person() {
+        this.task = {}; //保存所有的事件及回调
+    }
+    Person.prototype.on = function(event, callback) {
+        //保存起来
+        this.task[event] = callback;
+        /*
+            function(num) {
+                alert('ak47射出了',num,'发子弹！砰砰砰');
+            }
+        */
+    }
+    Person.prototype.emit = function(event, data) {
+        this.task[event](data); //调用之前传递的函数
+        // this.task[event] = null;//once发射以后。给null
+        /*
+            function(num) {
+                alert('ak47射出了',num,'发子弹！砰砰砰');
+            }
+        */
+    }
+    var p1 = new Person();
+    p1.on('ak47', function(num) {
+        alert('ak47射出了' + num + '发子弹！砰砰砰');
+    });
+    p1.emit('ak47', 1223);
+    
+  ```
 
 
 

@@ -55,7 +55,7 @@
         - 实现模式转换的效果
     + 粘性 sticky（兼容性问题）
         - 可以被认为是相对定位和固定定位的混合。元素在跨越特定阈值前为相对定位，之后为固定定位
-        
+
     + z-index
         - 定位的元素有层级关系
         - 只有给定位的元素才能设z-index
@@ -365,6 +365,23 @@
 
 ## layout
 ### 浮动布局
+ - float:left;
+ - float:right;
+ - 清理浮动
+    ```css
+        .clearfix:after {
+            content: " ";
+            height: 0;
+            line-height: 0;
+            clear: both;
+            display: block;
+            visibility: hidden;
+        }
+
+        .clearfix {
+            zoom: 1; 
+        }
+    ```
 
 ### flex
 1. flex容器:
@@ -445,6 +462,10 @@
     3. padding-top(把头部腾出位置)
 
 * pc 端常见布局
+ + 高度已知，三栏布局，左右宽度300，中间自适应？
+    - left 向左浮动， right 向右浮动
+    - 绝对定位
+    - flex 中间flex:1
 
 ## less/sass
  * [less](css/less/less.md)
@@ -773,64 +794,7 @@
         }, false);
     ```
 
-## 网络协议
-### http和https
-* http基本概念
-    - http:超文本传输协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少
 
-* http method
-    - get 
-    - post
-    - head  则是跟 GET 类似，只返回请求头，多数由JavaScript 发起
-    - put delete 分别表示添加资源和删除资源，但是实际上这只是语义上的一种约定
-    - connect  现在多用于 HTTPS 和 WebSocket
-    - options trace 一般用于调试
-
-* http request boday
-    - application/json
-    - application/x-www-form-urlencoded 原始表单提交
-    - multipart/form-data 文件上传
-    - text/xml
-
-* http status（常用的）
-    + 1xx: 临时回应，表示客户端请继续
-    + 2xx 请求成功
-        - 200 请求成功
-    + 3xx 表示请求的目标有变化，请客户端进一步处理
-        - 301&302：永久性与临时性跳转。
-        - 304:客户端缓存没更新（重要）
-    + 4xx 客户端请求错误
-        - 403: 无权限
-        - 404: 请求的页面不存在
-    + 5xx 服务端请求错误
-        - 500 服务端错误
-        - 503 服务端暂时错误，稍后再试
-
-* https:
-    - 是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
-    + 2个作用:
-        - 确定请求服务端的身份
-        - 保证传输的数据不会被窃听和篡改
-
-* 区别:
-  - http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议，更安全
-  - https 协议需要ca证书
-  - 端口也不同，一般而言，http协议的端口为80，https的端口为443
-
-* https协议的工作原理
-  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
-  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
-  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
-  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
-  - web服务器通过自己的私钥解密出会话密钥。
-  - web服务器通过会话密钥加密与客户端之间的通信。
-
-* http2.0 改进最大的两点
-    - 支持服务端推送
-    - 支持tcp的连接复用
- 
-### WebSocket
-- WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
 
 ## 浏览器
 ### 浏览器是如何工作的(如何渲染页面的)？
@@ -937,6 +901,10 @@
     - 一般有服务器生成，可以设置过期时间
     - 容量较小，4kb 左右
     - 每次请求都会携带在header中
+    + document.cookie的属性
+        - expires 设置过期时间,被max-age属性所取代，max-age用秒来设置cookie的生存期
+        - path cookie关联在一起的网页
+        - domain 多个web服务器共享cookie
 * localStorage
     - 一直存在，除非被清理
     - 容量5m 左右
@@ -1629,6 +1597,74 @@
     - 在当代浏览器配合两种机制，去释放变量的内存空间。
 
 
+## 网络协议
+### http和https
+* http基本概念
+    - http:超文本传输协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少
+
+* http method
+    - get 
+    - post
+    - head  则是跟 GET 类似，只返回请求头，多数由JavaScript 发起
+    - put delete 分别表示添加资源和删除资源，但是实际上这只是语义上的一种约定
+    - connect  现在多用于 HTTPS 和 WebSocket
+    - options trace 一般用于调试
+
+* http request header(常用)
+    - Cache-Control与Expires之强制缓存
+    - cookie
+    - Accept-Encoding 告诉服务端可接受的数据格式
+    - referer 表示请求文件的网址，请求时会携带(设置防盗链)
+    - Accept-Language
+
+* http response header(常用)
+     + Content-Type 表示请求头或响应头的内容类型
+        - application/json
+        - application/x-www-form-urlencoded 原始表单提交
+        - multipart/form-data 文件上传
+        - text/xml
+  
+
+* http status（常用的）
+    + 1xx: 临时回应，表示客户端请继续
+    + 2xx 请求成功
+        - 200 请求成功
+    + 3xx 表示请求的目标有变化，请客户端进一步处理
+        - 301&302：永久性与临时性跳转。（重要）
+        - 304:客户端缓存没更新（重要）
+    + 4xx 客户端请求错误
+        - 403: 无权限
+        - 404: 请求的页面不存在
+    + 5xx 服务端请求错误
+        - 500 服务端错误
+        - 503 服务端暂时错误，稍后再试
+
+* https:
+    - 是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
+    + 2个作用:
+        - 确定请求服务端的身份
+        - 保证传输的数据不会被窃听和篡改
+
+* 区别:
+  - http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议，更安全
+  - https 协议需要ca证书
+  - 端口也不同，一般而言，http协议的端口为80，https的端口为443
+
+* https协议的工作原理
+  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
+  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
+  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
+  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
+  - web服务器通过自己的私钥解密出会话密钥。
+  - web服务器通过会话密钥加密与客户端之间的通信。
+
+* http2.0 改进最大的两点
+    - 支持服务端推送
+    - 支持tcp的连接复用
+ 
+### WebSocket
+- WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
+
 ## 进程和线程
  * 进程
     - 每一个正在运行的应用程序都被称之为进程
@@ -1676,7 +1712,7 @@
         - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
 
    2. 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
-        ```js
+      ```js
             var promise = new Promise(function(resolve, reject) {
             // ... some code
 
@@ -1686,7 +1722,37 @@
                 reject(error);
             }
             });
+            //  用promise 封装一个ajax
+            function fetch(method, url, data){
+                return new Promise((resolve, reject) => {
+                    let xhr = new XMLHttpRequest();
+                    let method = method || "GET";
+                    let data = data || null;
+                    xhr.open(method, url, true);
+                    xhr.onreadystatechange = function() {
+                        if(xhr.status === 200 && xhr.readyState === 4){
+                            resolve(xhr.responseText);
+                        } else {
+                            reject(xhr.responseText);
+                        }
+                    }
+                    xhr.send(data);
+                })
+            }
+
+            // 使用
+            fetch("GET", "/some/url.json", null)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(res=>{
+                console.log(res);
+            })
+
         ```
+        
+   3. promise.all 和 promise.race 的区别
+
  * async
     - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
  * await 
@@ -1694,17 +1760,17 @@
     - await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
     - await 命令就是内部then命令的语法糖。
 
- * 问题
+ * 问题?
     - Promise里的代码为什么比setTimeout先执行？
     - vue 异步更新是包装成macro task还是micro task？
 
  * 事件循环每一次循环都是一个这样的过程
     <image src='framework/vue/vue2.x/images/event-loop-queue.png'>
 
-  + 根据上图的执行过程，分析如下
-    1. setTimeout 是一个宏任务，所以推入了宏任务队列
-    2. 由于script 也是一个宏任务，也会被放入队列，由于该队列是一个一个执行的，所以本次循环，setTimeout 中不会被渲染，下次循环执行
-    3. 如果异步更新包装在micro task 中，队列中先执行script ，微任务是一对对执行的，所以Promise在本次循环被执行了，也就是渲染了
+    + 根据上图的执行过程，分析如下
+        1. setTimeout 是一个宏任务，所以推入了宏任务队列
+        2. 由于script 也是一个宏任务，也会被放入队列，由于该队列是一个一个执行的，所以本次循环，setTimeout 中不会被渲染，下次循环执行
+        3. 如果异步更新包装在micro task 中，队列中先执行script ，微任务是一对对执行的，所以Promise在本次循环被执行了，也就是渲染了
 
 ## js异常
 >js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
