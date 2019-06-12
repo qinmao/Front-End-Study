@@ -9,7 +9,6 @@
         - data、 
         - computed、
         - watch 等。
-
  > 其中最重要的是通过 Object.defineProperty 设置 setter 与 getter 函数，用来实现「响应式」以及「依赖收集」
 
 2. 编译

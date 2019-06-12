@@ -1013,7 +1013,7 @@
  + 工厂模式创建对象 就是用一个方法实现对象的实例化
      ```javascript
          function initStu(name, age,sex) {
-             return new Student(name, age,sex);
+                return new Student(name, age,sex);
              }
          var obj=initStu();
          // 这种方式创建对象避免new的操作    
@@ -1082,18 +1082,18 @@
     ```
          
  + 闭包：　
-     - 实质：就是能够读取其他函数内部变量的函数。
-     - 写法：
-     ```javascript
-         function foo() {
-             var obj = {};                            
-             return function() {
-                 return obj;
-             }  
-         }
-     ```           
-     - 应用：
-         1. 缓存：
+    - 实质：就是能够读取其他函数内部变量的函数。
+    - 写法：
+        ```javascript
+            function foo() {
+                var obj = {};                            
+                return function() {
+                    return obj;
+                }  
+            }
+        ```           
+    - 应用：
+        1. 缓存：
              ```javascript
                  function outer() {
                          var cache;
@@ -1105,23 +1105,45 @@
                      }
                  var fn = outer();
              ```
-         2. 私有变量：
-             - 在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
-                ```javascript
-                    function person(name) {
-                        return {
-                            getName: function() {
-                                return name;
-                            },
-                            setName: function(val) {
-                                name= val;
-                            }
-                        };
-                    }
-                ```
-            + 闭包使用中的问题：
-                - 本质上就是让数据常驻内存。如此，使用闭包就增大内存开销，使用不当就会造成内存泄漏。
-                - 如何解决：使用完闭包后，及时清除。（将闭包变量 赋值为 null） 
+        2. 私有变量：在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
+            ```javascript
+                function person(name) {
+                    return {
+                        getName: function() {
+                            return name;
+                        },
+                        setName: function(val) {
+                            name= val;
+                        }
+                    };
+                }
+            ```
+    - 闭包使用中的问题：
+        - 本质上就是让数据常驻内存。如此，使用闭包就增大内存开销，使用不当就会造成内存泄漏。
+        - 如何解决：使用完闭包后，及时清除。（将闭包变量 赋值为 null） 
+    - 闭包为什么会造成内存泄漏？（GC）
+
+ * GC
+    + 引用计数法
+        - 当定义一个变量 （此时引用计数为0）并且 赋值为指定的数据时，该变量的引用计数 + 1；
+        - 如果该数据，有其他对象或函数使用，引用计数 + 1；
+        - 如果使用该数据的对象或函数，被GC回收掉，那么引用计数 - 1；
+        - 如果该变量手动赋值为null，此时引用计数 - 1；
+        - 当GC对象寻访到该变量时，如果计数为0，GC对象就直接回收该变量所占用的内存。
+        - 如果函数正在执行或还没有执行完毕，内部定义的数据都是不可回收的，不论引用计数是否为0。
+        - 引用计数的缺陷：容易产生循环引用，导致变量无法被GC回收。
+
+    + 标记清除法
+        - 从文档的根节点（window对象）出发，找到至少一条路径可以到达该变量，那么该变量被标记为 “不可回收”；否则，该变量标记为 “可回收”。
+        - 当GC对象寻访到该变量，如果被标记为 “可回收”，那么，就会立即回收掉其所占用的内存。
+        - 标记清除法的缺陷：性能比较低。
+
+    + 当代浏览器，同时使用两种机制。优先使用引用计数法，在相隔一定周期后使用标记清除法来释放变量的内存空间。
+
+    + 区别与联系
+        - 前者性能较高，但是有循环引用的缺陷
+        - 后者性能较低，但是不会产生循环引用问题
+        - 在当代浏览器配合两种机制，去释放变量的内存空间。
 
  + 沙箱模式：
      - 防止全局变量和全局对象的污染，引出沙箱模式,实质就是匿名的自执行函数
@@ -1231,8 +1253,7 @@
 ### prototype
  * 什么是原型？
     - 函数对象的prototype属性所引用的对象。
-
- * 原型的本质：就是对象。一般函数都有prototype属性，也就是说函数都有原型。
+    - 原型的本质就是对象
     - 声明一个函数时，原型就随之而产生。此时默认原型 是一个空对象。但是具有一个默认的属性constructor，该属性指向其构造函数
 
  * 原型的特性：
@@ -1248,87 +1269,100 @@
     4. 所有的实例 只能共享一个原型。
 
  * 获取原型的方式：
-    - 通过函数：<fnName>.prototype
-    - 通过对象：<object>.__proto__ ，__proto__  是浏览器中的，是一个非标准属性；
+    - 通过函数：
+        ```
+        <fnName>.prototype
+        ```
+    - 通过对象：
+        ```
+        <object>.__proto__ ，__proto__  是浏览器中的，是一个非标准属性；
+        ```
 
  * 原型链：
     - 原型的本质是对象，那么就具有__proto__的属性，所以原型对象也有原型。通过这个属性一层层找下去，就是当前对象的原型链。
     - 原型链的尽头 Object.prototype 所以js实现继承就靠原型链
 
+ * 构造函数,原型和实例的关系:
+    - 构造函数(constructor)都有一个原型对象(prototype),
+    - 原型对象都包含一个指向构造函数的指针,
+    - 而实例(instance)都包含一个指向原型对象的内部指针.
+
  * 对象的属性搜索原则：
     - 首先找自己，若找到，停止搜索直接使用，否则一层层往原型上找，找到，停止搜索，直接使用，一直到 Object.prototype上 如果找到 就返回该属性的值，如果依然没有找到，就返回undefined。
 
- * Object.prototype 上的一些方法
-    + hasOwnProperty方法
-        - 语法：<对象>.hasOwnProperty('propertyName')
-        - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
+ * 原型的对象指向一个实例，原型链的过程?
+    ```js
+    constructor1.prototype = instance2
+    // 试图引用constructor1构造的实例instance1的某个属性p1
+    ```
+    1. 首先会在instance1内部属性中找一遍;
+    2. 接着会在instance1.__proto__(constructor1.prototype)中找一遍,而constructor1.prototype 实际上是instance2, 也就是说在instance2中寻找该属性p1;
+    3. 如果instance2中还是没有,此时程序不会灰心,它会继续在instance2.__proto__(constructor2.prototype)中寻找...直至Object的原型对象
 
-    + propertyIsEnumerable
-        - 语法：<对象>.propertyIsEnumerable("propName")
-        - 功能：可枚举 指定的属性是对象本身的。
+    > 搜索轨迹: instance1--> instance2 --> constructor2.prototype…-->Object.prototype
+
+ * 如何判断原型和实例的关系？
+    + instanceof 
+        - 语法：<对象> instanceof 函数
+        - 功能：判断对象 是否为 指定函数的实例
+        - 运算规则:若函数的原型，出现在该对象的原型链上 表达式返回true 否则false 
 
     + isPrototypeOf
         - 语法：<对象a>.isPrototypeOf(对象b)
         - 功能：判断对象a是不是对象b的原型
 
-    + valueOf
-        - 语法: <对象>.valueOf()
-        - 功能：将指定对象类型的数据 转换成 基本数据类型
-        + 规则：
-            - 如果该对象是 基本数据的包装类型 会转换成 其对应的基本数据类型
-            - 否则为其他对象类型，就直接返回该对象。
+ * 原型链存在的问题？
+    - 问题一: 当原型链中包含引用类型值的原型时,该引用类型值会被所有实例共享;
+    - 问题二: 在创建子类型时,不能向超类型的构造函数中传递参数.
 
- * instanceof 
-    - 语法：<对象> instanceof 函数
-    - 功能：判断对象 是否为 指定函数的实例
-    - 运算规则:若函数的原型，出现在该对象的原型链上 表达式返回true 否则false 
-
- * eval方法
-    - 可以使用eval来将json字符串 转换成 js对象。
-    - 在没有严格模式，eval可以随意指定一段字符串来当做js代码来执行。
-        * 脚本注入
-        * 全局变量以及全局对象污染
-        * eval创建变量的作用域 是由eval执行的作用域决定。 
-    - 已不推荐使用。JSON.parse()
-
-### 继承
-* 利用原型实现继承
-    1. 实例继承原生原型对象
-        ```javascript
-            function Fn() {}
-            Fn.prototype.name = 'qm';
-            var obj = new Fn();
-        ```
-    2. 实例继承自定义的原型对象
-        ```javascript
-            function Fn() {}
-            Fn.prototype={name:'qm'};
-            var obj = new Fn();
-        ```
-    3. 组合式继承(开发中常用的)
+ * 如何解决原型链继承存在的问题
+    - 借用构造函数:(即在子类型构造函数的内部调用超类型构造函数.)
         ```javascript
             function Parent(value) {
                 this.val = value
+                this.colors = ["red","blue","green"]
             }
+            function Child(value) {
+                Parent.call(this, value)  //继承了Parent,且向父类型传递参数
+            }
+
+            var instance1 = new Child();
+            instance1.colors.push("black");
+            console.log(instance1.colors); //"red,blue,green,black"
+
+            var instance2 = new Child();
+            console.log(instance2.colors);//"red,blue,green" 可见引用类型值是独立的
+
+            // 以上两个问题解决了，但是方法都在构造函数中定义, 因此函数复用也就不可用了.而且超类型(如Parent)中定义的方法,对子类型而言也是不可见的. 考虑此,借用构造函数的技术也很少单独使用.
+        ```
+    - 组合式继承
+        ```js
+            function Parent(value) {
+                this.val = value
+            }
+
+            function Child(value) {
+                Parent.call(this, value) 
+            }
+
             Parent.prototype.getValue = function() {
                 console.log(this.val)
             }
-            function Child(value) {
-                Parent.call(this, value)
-            }
+
             Child.prototype = new Parent()
-            // Child 默认原型为空对象,constructor指向期构造函数
+            // Child 默认原型为空对象,constructor指向其构造函数
             // 置换了原型，就可能会在新的原型上丢失默认的constructor属性,如果想要其有该属性，就只能自己手动添加上。
             Child.prototype.constructor = Child;
             const child = new Child(1)
 
             child.getValue() // 1
             child instanceof Parent // true
+            
             // 原理：在子类的构造函数中通过 Parent.call(this) 继承父类的属性，然后改变子类的原型为 new Parent() 来继承父类的函数
             // 优点: 构造函数可以传参，不会与父类引用属性共享，可以复用父类的函数
             // 缺点: 就是在继承父类函数的时候调用了父类构造函数，导致子类的原型上多了不需要的父类属性，存在内存上的浪费
         ```
-    4. es5 提供的Object.create(obj) 的经典继承   
+    -  es5 提供的Object.create(obj) 的经典继承   
         ```javascript
             var obj = Object.create(obj1);
             // 原理是置换原型
@@ -1344,7 +1378,7 @@
             }
             }
         ```
-    5. 寄生组合继承
+    - 寄生组合继承
         > 该继承方式，解决了继承父类函数时调用了构造函数，多了无用的父类属性问题。
         ```javascript
             function Parent(value) {
@@ -1376,9 +1410,9 @@
 
         ```
 
-* class 继承
-  > JS 中并不存在类，class 只是语法糖，本质还是函数。
-  > 可证明
+ * class 继承
+    > JS 中并不存在类，class 只是语法糖，本质还是函数。
+    > 可证明
     ```js
         class Person {}
         Person instanceof Function // true
@@ -1402,6 +1436,32 @@
         child.getValue() // 1
         child instanceof Parent // true
     ```
+
+
+ * Object.prototype 上的一些方法
+    + hasOwnProperty方法
+        - 语法：<对象>.hasOwnProperty('propertyName')
+        - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
+
+    + propertyIsEnumerable
+        - 语法：<对象>.propertyIsEnumerable("propName")
+        - 功能：可枚举 指定的属性是对象本身的。
+    + valueOf
+        - 语法: <对象>.valueOf()
+        - 功能：将指定对象类型的数据 转换成 基本数据类型
+        + 规则：
+            - 如果该对象是 基本数据的包装类型 会转换成 其对应的基本数据类型
+            - 否则为其他对象类型，就直接返回该对象。
+
+ 
+
+ * eval方法
+    - 可以使用eval来将json字符串 转换成 js对象。
+    - 在没有严格模式，eval可以随意指定一段字符串来当做js代码来执行。
+        * 脚本注入
+        * 全局变量以及全局对象污染
+        * eval创建变量的作用域 是由eval执行的作用域决定。 
+    - 已不推荐使用。JSON.parse()
 
 ## 模块化
  > ES6 之前，js没有module，不利于大程序的开发，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。前者用于node，后者用于浏览器。
@@ -1574,30 +1634,6 @@
 ## 正则表达式
  * [正则表达式](note/reg.md)
 
-## js GC:      
- * 引用计数法
-    - 当定义一个变量 （此时引用计数为0）并且 赋值为指定的数据时，该变量的引用计数 + 1；
-    - 如果该数据，有其他对象或函数使用，引用计数 + 1；
-    - 如果使用该数据的对象或函数，被GC回收掉，那么引用计数 - 1；
-    - 如果该变量手动赋值为null，此时引用计数 - 1；
-    - 当GC对象寻访到该变量时，如果计数为0，GC对象就直接回收该变量所占用的内存。
-    - 如果函数正在执行或还没有执行完毕，内部定义的数据都是不可回收的，不论引用计数是否为0。
-    - 引用计数的缺陷：容易产生循环引用，导致变量无法被GC回收。
-
- * 标记清除法
-    - 从文档的根节点（window对象）出发，找到至少一条路径可以到达该变量，那么该变量被标记为 “不可回收”；否则，该变量标记为 “可回收”。
-    - 当GC对象寻访到该变量，如果被标记为 “可回收”，那么，就会立即回收掉其所占用的内存。
-
-    - 标记清除法的缺陷：性能比较低。
-
- * 当代浏览器，同时使用两种机制。优先使用引用计数法，在相隔一定周期后使用标记清除法来释放变量的内存空间。
-
- * 区别与联系
-    - 前者性能较高，但是有循环引用的缺陷
-    - 后者性能较低，但是不会产生循环引用问题
-    - 在当代浏览器配合两种机制，去释放变量的内存空间。
-
-
 ## 网络协议
 ### http和https
 * http基本概念
@@ -1763,7 +1799,7 @@
 
    * promise.all 和 promise.race 的区别
     - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
-    
+
  * async
     - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
  * await 
