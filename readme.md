@@ -1858,14 +1858,14 @@
 > 前端常用的框架（方式不同，本质都是操作dom）
 
 ### 数据驱动式
- * [angular1](angular1/angular-base.html)
- * [angular2](angular2/angular.md)
- * [vue](vue/vue.md)
- * [react](react/readme.md)
+ * [angular1](framework/angular1/angular-base.html)
+ * [angular2](framework/angular2/angular.md)
+ * [vue](framework/vue/vue.md)
+ * [react](framework/react/readme.md)
 
 ### 手动式
- * [jq](jq/readme.md)
- * zepto
+ * [jq](framework/jq/readme.md)
+ * zepto(framework/zepto/readme.md)
 
 ## 跨平台技术
  * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
