@@ -9,8 +9,20 @@ module.exports = {
         // 配置项通过别名来将原导入路径映射成一个新的导入路径
         alias: {
             '@': path.resolve(__dirname, 'src'),
-            // 运行时版本，没有编译器文件更小
+            // 运行时版本，没有编译器文件更小
             vue$: 'vue/dist/vue.runtime.esm.js'
+
+            // 需要编译器的版本（Runtime + Compiler）
+            // new Vue({
+            //     template: '<div>{{ hi }}</div>'
+            // })
+
+            // // 这种情况不需要（Runtime Only）
+            // new Vue({
+            //     render (h) {
+            //      return h('div', this.hi)
+            //     }
+            // })
         },
         extensions: [
             //  在导入语句没带文件后缀时，Webpack 会在自动带上后缀后去尝试询问文件是否存在。

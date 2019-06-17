@@ -135,7 +135,8 @@
             return this;
         },
         nextAll: function () {
-            var arr = [], node;
+            var arr = [],
+                node;
             this.each(function (i, el) {
                 node = el.nextSibling
                 while (node) {
@@ -186,8 +187,8 @@
                 });
             });
         },
-        parent: function () { },
-        parents: function () { },
+        parent: function () {},
+        parents: function () {},
 
     })
     //属性操作模块
@@ -299,11 +300,11 @@
     })
     jq.each(('click dblclick keydown keypress mouseover mouseout mouseenter mouseleave mousemove' +
         ' mousedown mouseup keyup focus blur load').split(' '), function (i, type) {
-            //  this->数组元素
-            jq.fn[type] = function (callback) {
-                return this.on(type, callback);
-            }
-        })
+        //  this->数组元素
+        jq.fn[type] = function (callback) {
+            return this.on(type, callback);
+        }
+    })
 
 
     //样式模块
@@ -361,8 +362,9 @@
         }
 
     })
+
     function sibling(cur, dir) {
-        while ((cur = cur[dir]) && cur.nodeType !== 1) { }
+        while ((cur = cur[dir]) && cur.nodeType !== 1) {}
         return cur;
     }
     //ajax模块
@@ -370,6 +372,7 @@
         return window.XMLHttpRequest ? new window.XMLHttpRequest() :
             new window.ActiveXObeject("XMLHTTP");
     }
+
     function formatData(data) {
         let k, ret = [];
         for (k in data) {
@@ -389,7 +392,7 @@
             async: true,
             contentType: 'application/x-www-form-urlencoded',
             jsonp: 'callback', // 指定参数名字 param=value
-            jsonpCallback: '',  // 指定全局回调函数名字
+            jsonpCallback: '', // 指定全局回调函数名字
             timeout: 0
         },
         ajax: function (config) {
@@ -425,7 +428,9 @@
                         //失败
                         headElem.removeChild(scriptElem);
                         delete global[callbackName];
-                        context.fail && context.fail({ message: "请求超时" })
+                        context.fail && context.fail({
+                            message: "请求超时"
+                        })
                     }, context.timeout)
                 }
                 // 5：发送请求
@@ -471,7 +476,7 @@
                 div,
                 node;
             div = doc.createElement('div')
-            div.innerHTML = obj;//把html 字符串转化成dom 元素
+            div.innerHTML = obj; //把html 字符串转化成dom 元素
 
             for (node = div.firstChild; node; node = node.nextSibling) {
                 if (node.nodeType == 1) {
@@ -481,7 +486,8 @@
             return arr;
         },
         each: function (obj, callBack) {
-            var i = 0, l;
+            var i = 0,
+                l;
             if (jq.isArrayLike(obj)) {
                 l = obj.length
                 for (; i < l; i++) {
@@ -547,8 +553,7 @@
         define(function () {
             return jq
         });
-    }
-    else if (typeof exports !== 'undefined') {
+    } else if (typeof exports !== 'undefined') {
         module.exports = jq
     } else {
         global.$ = jq

@@ -36,49 +36,48 @@
  * ajax/jsonp
     ```javascript
     //  1. ajax :
-    $.ajax({
-        type: "method",
-        url: "url",
-        data: "data",
-        dataType: "dataType",
-        success: function (response) {
-            
-        }
-    });
+        $.ajax({
+            type: "method",
+            url: "url",
+            data: "data",
+            dataType: "dataType",
+            success: function (response) {
+                
+            }
+        });
 
-    $.get("url", data,
-        function (data, textStatus, jqXHR) {
-            
-        },
-        "dataType"
-    );
+        $.get("url", data,
+            function (data, textStatus, jqXHR) {
+                
+            },
+            "dataType"
+        );
 
-    $.post("url", data,
-        function (data, textStatus, jqXHR) {
-            
-          },
-          "dataType"
-      );
+        $.post("url", data,
+            function (data, textStatus, jqXHR) {
+                
+            },
+            "dataType"
+        );
+        // 2. jsonp:
+            //    原理：
+            //        利用了<script src=""></script>标签具有可跨域的特性，
+            //        由服务端返回一个预先定义好的Javascript函数的调用，并且将服务器数据以该函数参数的形式传递过来
+            //        只能以GET方式请求
+        $.ajax({
+            //请求方式必须是get
+            type:'get',
+            //请求地址
+            url:'http://api.map.baidu.com/telematics/v3/weather',
+            //请求数据
+            data:{'name':'test'},
+            //请求方式  如果想要实现jsonp跨域，必须声明是dataType:'jsonp'
+            dataType:'jsonp',
+            //成功时的回调
+            success:function(data){
 
-    // 2. jsonp:
-        //    原理：
-        //        利用了<script src=""></script>标签具有可跨域的特性，
-        //        由服务端返回一个预先定义好的Javascript函数的调用，并且将服务器数据以该函数参数的形式传递过来
-        //        只能以GET方式请求
-    $.ajax({
-        //请求方式必须是get
-        type:'get',
-        //请求地址
-        url:'http://api.map.baidu.com/telematics/v3/weather',
-        //请求数据
-        data:{'name':'test'},
-        //请求方式  如果想要实现jsonp跨域，必须声明是dataType:'jsonp'
-        dataType:'jsonp',
-        //成功时的回调
-        success:function(data){
-
-        }
-    })
+            }
+        })
     ```
 
  * cors 
@@ -87,20 +86,20 @@
 
  * jq事件绑定： 
     - 绑定多个事件
-    ```javascript
-        $("#box").bind("click mouseenter",function(){
-            ...
-        })
+        ```javascript
+            $("#box").bind("click mouseenter",function(){
+                ...
+            })
 
-        $("#box").bind({
-            "click":function(){
-                ...
-            },
-            "mouseenter":function(){
-                ...
-            }
-        })  
-    ``` 
+            $("#box").bind({
+                "click":function(){
+                    ...
+                },
+                "mouseenter":function(){
+                    ...
+                }
+            })  
+        ``` 
 
  * jq事件委托/代理
     + bind 绑定事件会出现一个问题及新创建的元素没有事件？

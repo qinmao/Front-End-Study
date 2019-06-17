@@ -1,4 +1,4 @@
-# 面试（基础为重,每项越往前越重要）
+# 面试（基础为重）
 > 重点要知道如何组织语言去描述
 ## css
 ### 几种盒模型的理解，对比
@@ -6,7 +6,7 @@
 * 弹性盒模型(flex)
 * 怪异盒模型(ie)
 
-### CSS3用过哪些新特性
+### 常用的布局
 
 ### 几种定位详细介绍
 - 5种定位
@@ -50,17 +50,36 @@
     - readonly 后台能接受到值
     - disable 获取不到
 
-## js
-### js 运行机制
+## js（es6）
+### js 事件循环和node 事件循环，及区别
 
-### 事件冒泡与捕获
+### 事件冒泡与捕获，事件委托（代理）
+
+### 闭包、应用、出现的问题及解决
+
+### 原型与原型链，几种继承优缺点（借调、组合式，寄生组合式）
 
 ### Var Let Const区别 
 
+### promise
+
+### class
+
+### 箭头函数 几种this指向问题
+
 ## vue
-### Object.defineProperty() 和 proxy 的区别
+### 如何理解mvvm
+
+### 数据响应式原理，vnode
+> Object.defineProperty() 和 proxy 的区别
 1. Proxy可以直接监听对象而非属性
 2. Proxy可以直接监听数组的变化
+
+### emit/on/off/once (原理)实现一个发布订阅系统
+
+### vuex 结合项目的使用
+
+### 如何抽取组件，封住组件要考虑哪些问题、抽取哪些组件？
 
 ### 使用前端框架（angular/vue/react）带来哪些好处，相对于使用jQuery
 * 数据驱动，避免操作dom
@@ -119,6 +138,7 @@
 
 
 
+
 ## 面试遇见的笔试题
 * jq 获取页面所有的input，并打印name 的值
     ```js
@@ -166,3 +186,57 @@
     }
     // 块级作用域
     ```
+
+## 常见的算法题
+* 快排
+* 去重
+    ```js
+    Array.prototype.unique = function () {
+                var obj = {}
+                var res = []
+                for (let i = 0; i < this.length; i++) {
+                    if (!obj[this[i]]) {
+                        res.push(this[i])
+                        obj[this[i]] = 1
+                    }
+                }
+                return res;
+            }
+    ```
+* 反转
+* 冒泡
+    ```js
+    function sort(arr) {
+        for (let i = 0; i < arr.length - 1; i++) {
+            for (let j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    let temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    flag = false;
+                }
+            }
+        }
+        return arr;
+    }
+    ```
+## 常见手写函数
+* 防抖、节流
+* 图片懒加载
+
+## webpack
+* webpack 与gulp 区别，如何混用？
+* webpack 打包过程
+* webpack 热更新原理
+* 在项目构建中做了哪些优化？
+
+## node 辅助前端可以做哪些工作
+* 本地开发，做web服务，接口代理处理跨域
+* 自动生成组件文件
+* 处理不同项目的接口的中间层
+
+## 项目中的问题及解决
+
+## h5 混合应用在安卓端webview遇到的问题
+
+## 小程序项目中遇到的问题

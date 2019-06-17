@@ -2,9 +2,9 @@
 ## webpack是什么？
  * webpack是一个module bundler(模块打包工具)，其可以兼容多种js书写规范，且可以处理模块间的依赖关系，具有更强大的js模块化的功能。Webpack对它们进行统 一的管理以及打包发布
  * 参考：
-  [官网](https://webpack.docschina.org/ 先过这三个文档文档)
-   [Webpack-handlebook](http://zhaoda.net/webpack-handbook/) 
-   [Gitbook](http://fakefish.github.io/react-webpack-cookbook/index.html)
+   - [官网](https://webpack.docschina.org/ 先过这三个文档文档)
+   - [Webpack-handlebook](http://zhaoda.net/webpack-handbook/) 
+   - [Gitbook](http://fakefish.github.io/react-webpack-cookbook/index.html)
 
 ## 为什么使用 webpack？
  1. 对 CommonJS 、 AMD 、ES6的语法做了兼容
@@ -26,14 +26,14 @@
  * Output
  * Loaders: 
    - 由于webpack只能处理javascript，所以我们需要对一些非js文件处理成webpack能够处理的模块，比如sass文件
-
-* Plugins:
+ * Module 模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。
+ * Plugins:
    - 从打包优化和压缩，一直到重新定义环境中的变量。比如对js文件进行压缩优化的UglifyJsPlugin插件
 
-* Chunk:
+ * Chunk:
    - coding split的产物，我们可以对一些代码打包成一个单独的chunk，比如某些公共模块，去重，更好的利用缓存。或者按需加载某些功能模块，优化加载时间。在webpack3及以前我们都利用CommonsChunkPlugin将一些公共代码分割成一个chunk，实现单独加载。在webpack4 中CommonsChunkPlugin被废弃，使用SplitChunksPlugin
 
-* mode 
+ * mode 
    - 通过选择 development, production 或 none 之中的一个，来设置 mode 参数，你可以启用 webpack 内置在相应环境下的优化。其默认值为 production。
 
 ## 配置文件
@@ -49,7 +49,7 @@
 3. Rollup 是在 Webpack 流行后出现的替代品。Rollup 在用于打包 JavaScript 库时比 Webpack 更加有优势，因为其打包出来的代码更小更快。
 
 ## webpack 打包的过程（构建流程）
-1. 初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
+1. 初始化：启动构建，读取与合并配置参数，实例化 Compiler,加载 Plugin。
 2. 编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
 3. 输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到文件系统。
 

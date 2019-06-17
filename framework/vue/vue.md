@@ -1,17 +1,10 @@
 # vue study
-
-## 生命周期和钩子函数
-* 实例开始初始化，初始化事件，并注册生命周期钩子函数
-* 实例初始化之后执行:beforeCreate
-* 数据观测 (data observer)，属性和方法的运算，watch/event 事件回调
-* 整个实例创建完成之后执行: created
-* 接下来将template 编译成render 渲染函数
-* 组件挂载之前：执行beforeMount
-* 执行 mounted 钩子，并将 VDOM 渲染为真实 DOM 并且渲染数据,挂载到节点上
-* 数据更新时会调用： beforeUpdate 和 updated，分别在数据更新前和更新后会调用。
-* keep-alive 包裹的组件激活时调用：activated， 组件停用时调用：deactivated
-* 销毁实例：之前调用beforeDestroy 销毁后调用：destroyed
-
+## 如何理解MVVM?
+  - mvvm 是mode-view-viewModel 的缩写
+  - mode 代表数据模型，在这里定义数据的修改和操作的业务逻辑
+  - view 代表ui 组件，负责把数据模型转换成ui展示出来
+  - viewModel 监听数据模型的变化，控制ui 显示，起到连接mode view
+  > viewModel 通过双向数据绑定把mode 和view 连接起来，mode view 之间的数据同步是自动的，所有我们不需要操作dom ,只要关注数据的业务逻辑处理
 
 ## 组件通讯
  * 父子组件通信
@@ -27,21 +20,26 @@
      npm install vuex --save
      import Vuex from 'vuex'
      Vue.use(Vuex)
+
  2. what？
     Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
     问题：传参的方法对于多层嵌套的组件将会非常繁琐，并且对于兄弟组件间的状态传递无能为力引出vuex
+
  3. 应用场景：
   - vuex适合更为大型，数据操作频繁，业务复杂的程序
   * vuex是帮助我们把数据保存在全局的内存中，绝对不是数据的序列化、持久化
+
     State 状态(数据)
     Getters (获取)
     Mutations (发生改变，实际数据的操作)
     Actions (行为)
     Modules (模块)
+
  4. vuex优雅的提交改变
-  * mutatiions中如果出现同名的mutation就会后面的覆盖前面的
-  * mutation必须在同步中
+  * mutations中如果出现同名的mutation就会后面的覆盖前面的
+  * mutation必须在同步中，参数是state
   * 我们通过调用$store.commit(mutation的名字);就能触发数据的改变
+
  5. 优雅的获取数据getters
     * 默认我们可以通过this.$store.state.属性名获取数据的，也能修改数据
         - 但是，这样不好，修改数据建议要使用mutations的方式修改
@@ -49,10 +47,11 @@
             + getters其实就相当于computed，内部涉及到的数据，如果没有发生改变
                 * 该函数不会反复触发，而是从缓存中获取原值
                 * getters通常在开发中结合computed使用
+
  6. vuex异步提交变更
-    * 1:声明一个actions中的一个属性 属性名就是action的名称
-    * 2:接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
-    * 3:this.$store.dispatch('action的名称');
+    * 声明一个actions中的一个属性 属性名就是action的名称，参数是context 拥有store 实例的相同的方法和属性
+    * 接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
+    * this.$store.dispatch('action的名称');
 
 ## vue-loader
 - 是一个 webpack 的 loader，通过解析文件，提取每个语言块，如有必要会通过其它 loader 处理，最后将他们组装成一个 CommonJS 模块，module.exports 出一个 Vue.js 组件对象。
@@ -304,17 +303,16 @@
 
 * render
 
-* on/emit
+* on/emit/off/once
 
   ```js
-    // 实现原理
+    // 实现事件的发布订阅系统
     //同一个对象的on对应emit
     function Person() {
-        this.task = {}; //保存所有的事件及回调
+      this.task = {}; //保存所有的事件及回调
     }
-
     Person.prototype.on = function(event, callback) {
-        this.task[event] = callback;
+      this.task[event] = callback;
     }
     Person.prototype.emit = function(event, data) {
         this.task[event](data); 
