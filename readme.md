@@ -1544,10 +1544,10 @@
 
     + map
         ```javascript
-        // 类似foreach 有返回值 返回一个新数组
-        arr.map(function (x) {
-            return x + 1
-        })
+            // 类似foreach 有返回值 返回一个新数组
+            arr.map(function (x) {
+                return x + 1
+            })
         ```
 
     + filter 过滤器
@@ -1779,9 +1779,7 @@
                 client.responseType = "json";
                 client.setRequestHeader("Accept", "application/json");
                 client.send();
-
             });
-
             return promise;
             };
 
@@ -2003,10 +2001,10 @@
     - externals 配置来提取常用库,不打包进项目
  
  * 其他静态资源优化
-  - image 优化 雪碧图 svg
-  - font 按需引入字体
-  - gzip 压缩原理:
-  - cdn 全栈静态资源的缓存
+   - image 优化 雪碧图 svg
+   - font 按需引入字体
+   - gzip 压缩原理:
+   - cdn 全栈静态资源的缓存
 
 #### 减少网络请求（浏览器缓存、离线存储）
 * 缓存：强缓存和协商缓存两种
@@ -2263,7 +2261,6 @@
 
 ### git
 * [git基本使用](git/readme.md)
-
 
 ## chrome插件的开发
  * 首先要有一个manifest.json清单文件
