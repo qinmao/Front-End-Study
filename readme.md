@@ -1865,7 +1865,7 @@
 
 ### 手动式
  * [jq](framework/jq/readme.md)
- * zepto(framework/zepto/readme.md)
+ * [zepto](framework/zepto/readme.md)
 
 ## 跨平台技术
  * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
