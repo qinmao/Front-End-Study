@@ -1856,7 +1856,6 @@
 
 ## framework
 > 前端常用的框架（方式不同，本质都是操作dom）
-
 ### 数据驱动式
  * [angular1](framework/angular1/angular-base.html)
  * [angular2](framework/angular2/angular.md)
@@ -1874,10 +1873,10 @@
  * weex/uni-app
  * flutter
 
-## spa/mba/ssr(单页和多页开发)
-* spa
-* mba
-* ssr
+## 基于vue构建的项目
+ * [spa](framework/vue/vue.md)
+ * [nuxt](framework/nuxt/readme.md)
+ * [electron](framework/electron/readme.md)
 
 ## 前端安全
  * xss

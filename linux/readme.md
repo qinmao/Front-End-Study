@@ -29,7 +29,7 @@ ifup eth0 #启动网络
 service network restart #重启网络服务
 
 ## 文件操作
-
+```
 ls: 列出目录
 
 cd：切换目录
@@ -87,6 +87,25 @@ vim 共分为三种模式，分别是
 底线命令模式（Last line mode）:
 在输入模式下：wq 保存文件退出程序
 例如:打开host  vim /etc/hosts
+```
+
+## SSH
+* SSH keys
+    - SSH key 可以让你在你的电脑和Code服务器之间建立安全的加密连接
+    - cat ~/.ssh/id_rsa.pub 判断是否已经存在本地公钥
+    - ssh-keygen -t rsa  生成公钥和私钥
+    
+1. 本机与服务器做授权,免密登录
+    - cat ~/.ssh/id_rsa.pub 判断是否已经存在本地公钥
+    + ssh-copy-id -i ~/.ssh/id_rsa.pub root@你的IP地址，输入密码后，下次登录就不用输入密码了
+        - 把公钥复制到远程主机上：
+        - 命令也会给远程主机的用户主目录（home）和~/.ssh, 和~/.ssh/authorized_keys设置合适的权限。
+    
+2. 代码远程托管仓库服务器和web服务器要做授权
+   - 复制这个公钥放到你的个人设置中的SSH/My SSH Keys下，请完整拷贝从ssh-开始直到你的用户名和主机名为止的内容。
+
+3. 查看远程主机上已授权的本地机器
+    - 默认是 .ssh/authorized_keys 存放远程免密登录的公钥,主要通过这个文件记录多台机器的公钥
 
 ## shell 脚本编程
     像 #!/bin/sh，它同样也可以改为 #!/bin/bash。
