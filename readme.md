@@ -1872,11 +1872,11 @@
  * react native
  * weex/uni-app
  * flutter
+ * [electron](framework/electron/readme.md)
 
 ## 基于vue构建的项目
  * [spa](framework/vue/vue.md)
  * [nuxt](framework/nuxt/readme.md)
- * [electron](framework/electron/readme.md)
 
 ## 前端安全
  * xss
@@ -1933,8 +1933,6 @@
  * 中间人攻击 
     - 通常来说不建议使用公共的 Wi-Fi，中间人攻击拦截得到敏感信息
     - 通常使用https建立安全的通道
-
-
 
 ## 前端的工程化
 ### 构建与打包工具
