@@ -367,10 +367,11 @@
             // 主进程处理渲染进程广播数据
             ipcMain.on('sendMsg', (event, data)=> {
                 console.log('data\n ', data)
-                console.log('event\n ', event)
+                console.log('event\n ', event) 
+                // 主进程给渲染进程广播数据
+                event.sender.send('sendFeedbackToRender', '来自主进程的反馈')
             })
-            // 主进程给渲染进程广播数据
-            event.sender.send('sendFeedbackToRender', '来自主进程的反馈')
+           
             ```
 
     + 渲染进程-->主进程发送同步消息
@@ -396,6 +397,10 @@
                 event.returnValue ='渲染进程和主进程同步通信 接收同步广播，来自主进程的反馈.';
             })
         ```
+    + sendToHost 
+        - 就像 ipcRenderer.send，不同的是消息会被发送到 host 页面上的 <webview> 元素，而不是主进程。
+    + send(webview) 
+        - 向渲染进程发送消息
 
     + 渲染进程间通讯
      - localstorage
@@ -425,6 +430,25 @@
                 let win = BrowserWindow.fromId(winId);
             ```
 
+## webview
+```html
+<webview src="http://www.google.com/" preload="./test.js" nodeintegration></webview>
+```
++ nodeintegration 
+ - 当有此属性时, webview 中的访客页（guest page）将具有Node集成, 并且可以使用像 require 和 process 这样的node APIs 去访问低层系统资源。 Node 集成在访客页中默认是禁用的。
+
++ preload
+ - 指定一个脚本在访客页中其他脚本执行之前先加载。 该脚本的URL的协议必须是 file: asar:二者之一，因为在访客页中，它是通过“内部”的 require 去加载的
+ - 当访客页没有 node integration ，这个脚本仍然有能力去访问所有的 Node APIs, 但是当这个脚本执行执行完成之后，通过Node 注入的全局对象（global objects）将会被删除。
+
++ 方法
+ ```js
+    const webview = document.querySelector('webview')
+    webview.addEventListener('dom-ready', () => {
+        webview.openDevTools()
+    })
+ ```
+ 
 ## electron-vue
  - 隐藏顶部菜单
     ```js

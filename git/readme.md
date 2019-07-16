@@ -115,7 +115,9 @@
 
         2. git push [remote url] branchName
             如果本地开发工作完成，要将本地仓库的版本提交到远程仓库，实现共享与项目合并。此时，就使用该指令。
-
+            git remote add origin git@github.com:qinmao/test.git
+            git push -u origin master
+            
         3. git fetch [remote url] branchName
             - --all 拉取所有远端的最新代码
 

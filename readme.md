@@ -1190,7 +1190,7 @@
  * object-->string   JSON.stringify()
  * string--> object   JSON.parse()
 
-### 对象类型和原始类型的不同?
+### 对象类型和原始类型的不同（深拷贝、浅拷贝）?
  > 原始类型存储的是值，对象类型存储的是地址（指针）,根据该特性，我们以后会遇到一些问题
  * 函数参数是对象，外部变量的值发生了改变
     - ```javascript
@@ -1216,9 +1216,9 @@
         ```
 
  * 深拷贝、浅拷贝
-    >为了解决外部对象参数的值被修改
+    > 为了解决外部对象参数的值被修改
     + 浅拷贝
-        >所谓的浅拷贝，只是拷贝了基本类型的数据，对于引用的类型数据，复制后也是会发生引用
+        > 所谓的浅拷贝，只是拷贝了基本类型的数据，对于引用的类型数据，复制后也是会发生引用
         1. Object.assign
             - 只会拷贝所有的属性值到新的对象中，如果属性值是对象的话，拷贝的是地址，所以并不是深拷贝。
             -  ```js
@@ -1246,8 +1246,8 @@
             - 会忽略 symbol
             - 不能序列化函数
             - 不能解决循环引用的对象
-        2. 自己手动实现或者用loadash 等一些库
 
+        2. 自己手动实现或者用loadash 等一些库
 
 ### prototype
  * 什么是原型？
@@ -1749,37 +1749,38 @@
         - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
         - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
         - Promise 新建后就会立即执行
+        
    * 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
       ```js
             // 基本用法
             var promise = new Promise(function(resolve, reject) {
-            if (/* 异步操作成功 */){
-                resolve(value);
-            } else {
-                reject(error);
-            }
+                if (/* 异步操作成功 */){
+                    resolve(value);
+                } else {
+                    reject(error);
+                }
             });
             //  用promise 封装一个ajax
            const getJSON = function(url) {
             const promise = new Promise(function(resolve, reject){
                 const handler = function() {
-                if (this.readyState !== 4) {
-                    return;
-                }
-                if (this.status === 200) {
-                    resolve(this.response);
-                } else {
-                    reject(new Error(this.statusText));
-                }
-                };
-                const client = new XMLHttpRequest();
-                client.open("GET", url);
-                client.onreadystatechange = handler;
-                client.responseType = "json";
-                client.setRequestHeader("Accept", "application/json");
-                client.send();
-            });
-            return promise;
+                    if (this.readyState !== 4) {
+                        return;
+                    }
+                    if (this.status === 200) {
+                        resolve(this.response);
+                    } else {
+                        reject(new Error(this.statusText));
+                    }
+                    };
+                    const client = new XMLHttpRequest();
+                    client.open("GET", url);
+                    client.onreadystatechange = handler;
+                    client.responseType = "json";
+                    client.setRequestHeader("Accept", "application/json");
+                    client.send();
+                });
+                return promise;
             };
 
             getJSON("/posts.json")
@@ -1791,24 +1792,31 @@
             })
 
         ```
-   * Promise.prototype.then() Promise.prototype.catch() Promise.prototype.finally()
-    - then resolve 的回调 
-    - catch reject的回调 
-    - finally Promise 对象最后状态如何，都会执行的操作
+   * Promise.prototype.then() 
+   * Promise.prototype.catch()
+   * Promise.prototype.finally()
+     - then resolve 的回调 
+     - catch reject的回调 
+     - finally Promise 对象最后状态如何，都会执行的操作
 
-   * promise.all 和 promise.race 的区别
+   * promise.all 和 promise.race 
     - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
+    - promise.race
+
+   * 使用场景：
+
+   * 区别：
 
  * async
     - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
  * await 
     - 表示在这里等待promise返回结果了，再继续执行。
-    - await 后面跟着的应该是一个promise对象（当然，其他返回值也没关系，只是会立即执行，不过那样就没有意义了..）
+    - await 后面跟着的应该是一个promise对象（其他返回值也没关系，只是会立即执行，不过那样就没有意义）
     - await 命令就是内部then命令的语法糖。
 
  * 问题?
     - Promise里的代码为什么比setTimeout先执行？
-    - vue 异步更新是包装成macro task还是micro task？
+    - vue 异步更新是包装成macro task还是micro task(为什么)？
 
  * 事件循环每一次循环都是一个这样的过程
     <image src='framework/vue/vue2.x/images/event-loop-queue.png'>
@@ -1869,9 +1877,9 @@
  * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
  * [微信小程序](wx/readme.md)
  * react native
- * weex/uni-app
+ * [weex/uni-app](cross-platform/weex)
  * flutter
- * [electron](framework/electron/readme.md)
+ * [electron](cross-platform/electron/readme.md)
 
 ## 基于vue构建的项目
  * [spa](framework/vue/vue.md)
@@ -1932,7 +1940,8 @@
  * 中间人攻击 
     - 通常来说不建议使用公共的 Wi-Fi，中间人攻击拦截得到敏感信息
     - 通常使用https建立安全的通道
-
+ * httpOnly
+ 
 ## 前端的工程化
 ### 构建与打包工具
  * [gulp](build-tool/gulp/readme.md)
@@ -2254,6 +2263,10 @@
 * 文档工具
     - dash
     - zeal
+    
+### windows 连接服务器的工具
+ * fileZillaClint
+ * Xshell
 
 ### git
 * [git基本使用](git/readme.md)
