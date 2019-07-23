@@ -1,4 +1,4 @@
-# 前端技术栈
+# 前端
 > 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点，构建自己的知识网络。
 ## css
  * css 三大特性：
@@ -328,11 +328,13 @@
     - vmax：vmax的值是当前vw和vh中较大的值
 
 ### media 
-    @media (min-width: 750px) {
-        html {
-                font-size: 100px;
+    ```css
+        @media (min-width: 750px) {
+            html {
+                    font-size: 100px;
+            }
         }
-    }
+    ```
 
 ### word-break
 * word-break 指定了怎样在单词内断行。normal | break-all | keep-all | break-word
@@ -356,17 +358,17 @@
 2. opacity 能继承 取值0-1
 3. transparent 完全透明
 4. hsla
-    h 色调
-    s 饱和度0-100%
-    l 亮度 0-100%
-    a alpha 透明度
+    - h 色调
+    - s 饱和度0-100%
+    - l 亮度 0-100%
+    - a alpha 透明度
 
 
-## layout
-### 浮动布局
- - float:left;
- - float:right;
- - 清理浮动
+### layout
+ * 浮动布局
+    - float:left;
+    - float:right;
+    - 清理浮动
     ```css
         .clearfix:after {
             content: " ";
@@ -382,15 +384,15 @@
         }
     ```
 
-### flex
-1. flex容器:
-    * 给div这类块状元素元素设置display:flex
-    * 给span这类内联元素设置display:inline-flex
-    * 这些元素称为flex容器，里面的子元素称为flex子项。
+ * flex
+    1. flex容器:
+        * 给div这类块状元素元素设置display:flex
+        * 给span这类内联元素设置display:inline-flex
+        * 这些元素称为flex容器，里面的子元素称为flex子项。
 
-2. Flex布局相关属性正好分为两拨，一拨作用在flex容器上，一拨作用在flex子项上,无论作用在flex容器上，还是作用在flex子项，都是控制的flex子项的呈现，前者控制的是整体，后者控制个体。
+    2. Flex布局相关属性正好分为两拨，一拨作用在flex容器上，一拨作用在flex子项上,无论作用在flex容器上，还是作用在flex子项，都是控制的flex子项的呈现，前者控制的是整体，后者控制个体。
 
-* 作用在flex容器上:
+ * 作用在flex容器上:
     + flex-direction
         - flex-direction: row(默认) | row-reverse | column | column-reverse;
         - 用来控制子项整体布局方向，是从左往右还是从右往左，是从上往下还是从下往
@@ -418,7 +420,7 @@
         - align-content: stretch | flex-start | flex-end | center | space-between | space-around | space-evenly;
         - 与justify-content相似且对立的属性，align-content则是指明垂直方向每一行flex元素的对齐和分布方式，flex子项只有一行，则align-content属性是没有任何效果
 
-* 作用在flex子项上:
+ * 作用在flex子项上:
     + order
         - order: <integer>; /* 整数值，默认值是 0 */
         - order改变某一个flex子项的排序位置
@@ -444,29 +446,29 @@
         - 指控制单独某一个flex子项的垂直对齐方式
         - 继承自flex容器的align-items属性
 
-* 其他
+ * 其他
     + 在Flex布局中，flex子元素的设置float，clear以及vertical-align属性都是没有用的。
     + Flexbox布局最适合应用程序的组件和小规模布局（一维布局）
     + Grid布局则适用于更大规模的布局（二维布局）
     
-### Grid
+ * Grid
 
-### 常见布局
-* 移动端基本布局-首尾固定中间自适应
-    1. sticky ios 可用 安卓有兼容性
-    2. flex
-        - 父容器 flex-direction: column;height:100%;
-        - 子容器(自适应):overflow: auto;
-            -webkit-overflow-scrolling: touch;
-    3. padding-top(把头部腾出位置)
+ * 常见布局
+    + 移动端基本布局-首尾固定中间自适应
+        1. sticky ios 可用 安卓有兼容性
+        2. flex
+            - 父容器 flex-direction: column;height:100%;
+            - 子容器(自适应):overflow: auto;
+                -webkit-overflow-scrolling: touch;
+        3. padding-top(把头部腾出位置)
 
-* pc 端常见布局
- + 高度已知，三栏布局，左右宽度300，中间自适应？
-    - left 向左浮动， right 向右浮动
-    - 绝对定位
-    - flex 中间flex:1
+    + pc 端常见布局
+        1. 高度已知，三栏布局，左右宽度300，中间自适应？
+            - left 向左浮动， right 向右浮动
+            - 绝对定位
+            - flex 中间flex:1
 
-## less/sass
+## 预编译语言(css)
  * [less](css/less/less.md)
  * [sass](css/sass/readme.md)
 
@@ -795,7 +797,7 @@
 
 
 
-## 浏览器
+## (*)浏览器
 ### 浏览器是如何工作的(如何渲染页面的)？
 1. 浏览器使用http或者HTTPS 协议，向服务端请求页面
 2. 把请求回来的 HTML 代码经过解析，构建成 DOM 树 解析css,创建的是 CSSOM 树 （CSSOM 的解析过程与 DOM 的解析过程是并行的）
@@ -876,10 +878,7 @@
 
 
 
-### 页面事件的加载顺序
-* DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
-* document.onload 是在结构和样式加载完才执行js
-* window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
+
 
 ### js 的三种加载方式
 * 正常:JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情。
@@ -914,19 +913,24 @@
 * indexDB
     - 浏览器端的数据库，不被清理一直存在
 
-## 事件
-### 事件冒泡和事件捕获   
-* 事件冒泡：从里向外执行，遇到相同的事件及执行
-* 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
+### 事件机制
+ * 页面事件的加载顺序
+    - DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
+    - document.onload 是在结构和样式加载完才执行js
+    - window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
 
-### 事件触发三阶段
-1. window 往事件触发处传播，遇到注册的捕获事件会触发
-2. 传播到事件触发处时触发注册的事件
-3. 从事件触发处往 window 传播，遇到注册的冒泡事件会触发
+ * 事件冒泡和事件捕获   
+    - 事件冒泡：从里向外执行，遇到相同的事件及执行
+    - 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
 
-### 事件注册/监听（避免事件被覆盖）
->ie9 以下不支持 false默认冒泡 true 捕获
-* addEventListener
+ * 事件触发三阶段
+    1. window 往事件触发处传播，遇到注册的捕获事件会触发
+    2. 传播到事件触发处时触发注册的事件
+    3. 从事件触发处往 window 传播，遇到注册的冒泡事件会触发
+
+ * 事件注册/监听（避免事件被覆盖）
+    > ie9 以下不支持 false默认冒泡 true 捕获
+    * addEventListener
     + 第三个参数为bool,该参数默认值为 false(冒泡) ，useCapture 决定了注册的事件是捕获事件还是冒泡事件
     + 作为对象：
         - capture：布尔值，和 useCapture 作用一样
@@ -967,27 +971,95 @@
             )
         ```
 
-### 事件的对象(event.target)
- > 记录当前事件触发时的一些信息
- * btn.onclick=function(event){} 
-    - event.target 真正触发事件的元素
-    - event.type="click"
-    - event.clinetX/clinetY 
-    - ie 低版本不兼容 var tar = e.target||e.srcElement
+ * 事件的对象(event.target)
+    > 记录当前事件触发时的一些信息
+   + btn.onclick=function(event){} 
+     - event.target 真正触发事件的元素
+     - event.type="click"
+     - event.clinetX/clinetY 
+     - ie 低版本不兼容 var tar = e.target||e.srcElement
 
-### 事件代理/委托
- > 本质就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
- * 应用的场景：动态生成的子节点要注册事件，那么子节点需要注册事件的话应该注册在父节点上
- * 好处：
+ * 事件代理/委托
+  > 本质就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
+    - 应用的场景：动态生成的子节点要注册事件，那么子节点需要注册事件的话应该注册在父节点上
+  + 好处：
     1. 减少了事件的注册，内存开销减少了
     2. 元素的增减不会影响事件的绑定
     3. js和DOM节点之间的关联变少了，减少了因循环引用(GC中引用计数法的缺陷)而带来的内存泄漏发生的概率。
 
- * jq 早期 bind 绑定事件会出现一个问题及新创建的元素没有事件，后来用delegate解决1.7 版本后统一用on
+  + jq 早期 bind 绑定事件会出现一个问题及新创建的元素没有事件，后来用delegate解决1.7 版本后统一用on
 
- * 注意：
+  + 注意：
     - 不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可用。
     - 例如mouseover 由于事件对象target 频繁改动会有性能问题
+
+## (*)网络协议
+### http和https
+* http基本概念
+    - http:超文本传输协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少
+
+* http method
+    - get 
+    - post
+    - head  则是跟 GET 类似，只返回请求头，多数由JavaScript 发起
+    - put delete 分别表示添加资源和删除资源，但是实际上这只是语义上的一种约定
+    - connect  现在多用于 HTTPS 和 WebSocket
+    - options trace 一般用于调试
+
+* http request header(常用)
+    - Cache-Control与Expires之强制缓存的值为“public, max-age=xxx”表示在xxx秒内再次访问该资源，均使用本地的缓存，不再向服务器发起请求
+    - cookie
+    - Accept-Encoding 告诉服务端可接受的数据格式
+    - referer 表示请求文件的网址，请求时会携带(设置防盗链)
+    - Accept-Language
+
+* http response header(常用)
+     + Content-Type 表示请求头或响应头的内容类型
+        - application/json
+        - application/x-www-form-urlencoded 原始表单提交
+        - multipart/form-data 文件上传
+        - text/xml
+  
+
+* http status（常用的）
+    + 1xx: 临时回应，表示客户端请继续
+    + 2xx 请求成功
+        - 200 请求成功
+    + 3xx 表示请求的目标有变化，请客户端进一步处理
+        - 301&302：永久性与临时性跳转。（重要）
+        - 304:客户端缓存没更新（重要）
+    + 4xx 客户端请求错误
+        - 403: 无权限
+        - 404: 请求的页面不存在
+    + 5xx 服务端请求错误
+        - 500 服务端错误
+        - 503 服务端暂时错误，稍后再试
+
+* https:
+    - 是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
+    + 2个作用:
+        - 确定请求服务端的身份
+        - 保证传输的数据不会被窃听和篡改
+
+* 区别:
+  - http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议，更安全
+  - https 协议需要ca证书
+  - 端口也不同，一般而言，http协议的端口为80，https的端口为443
+
+* https协议的工作原理
+  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
+  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
+  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
+  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
+  - web服务器通过自己的私钥解密出会话密钥。
+  - web服务器通过会话密钥加密与客户端之间的通信。
+
+* http2.0 改进最大的两点
+    - 支持服务端推送
+    - 支持tcp的连接复用
+ 
+### WebSocket
+- WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
 
 
 
@@ -1633,74 +1705,6 @@
 ## 正则表达式
  * [正则表达式](note/reg.md)
 
-## 网络协议
-### http和https
-* http基本概念
-    - http:超文本传输协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少
-
-* http method
-    - get 
-    - post
-    - head  则是跟 GET 类似，只返回请求头，多数由JavaScript 发起
-    - put delete 分别表示添加资源和删除资源，但是实际上这只是语义上的一种约定
-    - connect  现在多用于 HTTPS 和 WebSocket
-    - options trace 一般用于调试
-
-* http request header(常用)
-    - Cache-Control与Expires之强制缓存的值为“public, max-age=xxx”表示在xxx秒内再次访问该资源，均使用本地的缓存，不再向服务器发起请求
-    - cookie
-    - Accept-Encoding 告诉服务端可接受的数据格式
-    - referer 表示请求文件的网址，请求时会携带(设置防盗链)
-    - Accept-Language
-
-* http response header(常用)
-     + Content-Type 表示请求头或响应头的内容类型
-        - application/json
-        - application/x-www-form-urlencoded 原始表单提交
-        - multipart/form-data 文件上传
-        - text/xml
-  
-
-* http status（常用的）
-    + 1xx: 临时回应，表示客户端请继续
-    + 2xx 请求成功
-        - 200 请求成功
-    + 3xx 表示请求的目标有变化，请客户端进一步处理
-        - 301&302：永久性与临时性跳转。（重要）
-        - 304:客户端缓存没更新（重要）
-    + 4xx 客户端请求错误
-        - 403: 无权限
-        - 404: 请求的页面不存在
-    + 5xx 服务端请求错误
-        - 500 服务端错误
-        - 503 服务端暂时错误，稍后再试
-
-* https:
-    - 是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
-    + 2个作用:
-        - 确定请求服务端的身份
-        - 保证传输的数据不会被窃听和篡改
-
-* 区别:
-  - http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议，更安全
-  - https 协议需要ca证书
-  - 端口也不同，一般而言，http协议的端口为80，https的端口为443
-
-* https协议的工作原理
-  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
-  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
-  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
-  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
-  - web服务器通过自己的私钥解密出会话密钥。
-  - web服务器通过会话密钥加密与客户端之间的通信。
-
-* http2.0 改进最大的两点
-    - 支持服务端推送
-    - 支持tcp的连接复用
- 
-### WebSocket
-- WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
-
 ## 进程和线程
  * 进程
     - 每一个正在运行的应用程序都被称之为进程
@@ -1711,14 +1715,14 @@
     - 用来执行应用程序中的代码
     - 在一个进程内部，有很多的线程
 
-## js（Event Loop）
+## Event Loop
  * JS 执行是单线程的，它是基于事件循环的。
 
  * js语言为什么设计成单线程的？
     - 避免多线程操作同一文件（资源）产生冲突。
     - 提高js性能
 
- * Event Loop（浏览器）
+ * brower
     1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
 
     2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
@@ -1742,7 +1746,7 @@
         - promise 
         - MutationObserver
 
-## node（Event Loop）
+ * node
 
 ## promise 
    * what?
@@ -1940,7 +1944,6 @@
  * 中间人攻击 
     - 通常来说不建议使用公共的 Wi-Fi，中间人攻击拦截得到敏感信息
     - 通常使用https建立安全的通道
- * httpOnly
  
 ## 前端的工程化
 ### 构建与打包工具
@@ -2279,7 +2282,6 @@
     - 首先将所有相关文件都放到一个文件夹中
     - 用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，- 确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
 
-
 ## 数据图表
 - [echarts](https://echarts.baidu.com/examples/index.html)
 - [highcharts](https://www.highcharts.com.cn/)
@@ -2316,7 +2318,12 @@
     - tree > tree.md 将项目结构输出到tree.md这个文件。
 
 ## 最后一些思考或者疑问
-> 一个纯前端到底要做的是什么样的工作？难道仅仅停留在ui 层面吗？前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？（这些问题暴露了一些自己和同行的一些忧虑）
-- 参考收集了一些好的网上资料，部分添加了来源，部分存在遗漏。
+ > 一个纯前端到底要做的是什么样的工作？难道仅仅停留在ui 层面吗？前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？（这些问题暴露了一些自己和同行的一些忧虑）
+ - 参考收集了一些好的网上资料，部分添加了来源，部分存在遗漏。
 
-
+## 19 target
+ - 浏览器
+ - http协议
+ - 数据爬虫
+ - webgl/canvas
+ - vue ui框架

@@ -397,14 +397,10 @@
                 event.returnValue ='渲染进程和主进程同步通信 接收同步广播，来自主进程的反馈.';
             })
         ```
-    + sendToHost 
-        - 就像 ipcRenderer.send，不同的是消息会被发送到 host 页面上的 <webview> 元素，而不是主进程。
-    + send(webview) 
-        - 向渲染进程发送消息
 
     + 渲染进程间通讯
-     - localstorage
-     + BrowserWindow和webContents
+      - localstorage
+      + BrowserWindow和webContents
         - webContents 是一个事件发出者.它负责渲染并控制网页，也是 BrowserWindow 对象的属性 
         - 前置知识
             1. 获取当前窗口的 id
@@ -431,9 +427,10 @@
             ```
 
 ## webview
-```html
-<webview src="http://www.google.com/" preload="./test.js" nodeintegration></webview>
-```
+ - 与 iframe 不同, webview 在与应用程序不同的进程中运行
+    ```html
+        <webview src="http://www.google.com/" preload="./test.js" nodeintegration></webview>
+    ```
 + nodeintegration 
  - 当有此属性时, webview 中的访客页（guest page）将具有Node集成, 并且可以使用像 require 和 process 这样的node APIs 去访问低层系统资源。 Node 集成在访客页中默认是禁用的。
 
@@ -448,7 +445,29 @@
         webview.openDevTools()
     })
  ```
- 
++ sendToHost 
+    - 就像 ipcRenderer.send，不同的是消息会被发送到 host 页面上的 <webview> 元素，而不是主进程。
++ send(webview) 
+    - 向渲染进程发送消息
+
++ ipc-message 访客页面向嵌入页面发送异步消息时触发。
+    ```js
+        // In embedder page.
+        const webview = document.querySelector('webview')
+        webview.addEventListener('ipc-message', (event) => {
+        console.log(event.channel)
+        // Prints "pong"
+        })
+        webview.send('ping')
+
+
+        // In guest page.
+        const { ipcRenderer } = require('electron')
+        ipcRenderer.on('ping', () => {
+        ipcRenderer.sendToHost('pong')
+        })
+    ```
+
 ## electron-vue
  - 隐藏顶部菜单
     ```js
@@ -468,3 +487,8 @@
  - [文档](https://simulatedgreg.gitbooks.io/electron-vue/content/cn/)
 
 ## 多平台打包
+
+## electron 客户端爬虫总结
+* ssr 
+
+* spa

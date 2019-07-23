@@ -22,7 +22,25 @@
     2. dom树与css结合生成渲染树
     3. 浏览器会将所有元素渲染到页面中
 
-* iframe有那些缺点？
+* iframe
+ + contentWindow 获取iframe的window对象
+ + contentDocument 获取iframe的document对象
+ + 如何检测iframe 是否加载完成
+    ```js
+        var iframe = document.createElement("iframe");
+        iframe.src = "http://www.planabc.net";
+        if (iframe.attachEvent){    
+            iframe.attachEvent("onload", function(){        
+                alert("Local iframe is now loaded.");    
+            });
+        } else {    
+            iframe.onload = function(){        
+                alert("Local iframe is now loaded.");    
+            };
+        }
+        document.body.appendChild(iframe);
+    ```
+ + 有那些缺点？
   - iframe会阻塞主页面的onload事件；
   - 搜索引擎的检索程序无法解读这种页面，不利于SEO;
   - iframe和主页面共享连接池，而浏览器对相同域(同一域名)的连接有限制，所以会影响页面的并行加载。
