@@ -11,6 +11,7 @@
     - 父向子组件：prop
     - 子向父组件:触发父层定义的事件 $on / $emit
     - $on $emit
+    
  * 非父子组件通讯
     - 使用空的 Vue 实例作为中央事件总线
     - vuex
@@ -130,6 +131,9 @@
         },
     ```
 
+ * 文件下载
+  - @click.native="download"
+  - download --> location.href
  * 路由跳转时，记录跳转前的位置
     > 思路把位置记录在当前路由的元信息上
     - 整个页面的滚动位置
@@ -166,12 +170,12 @@
   ```javascript
     // 在子组件触发父组件的监听的方法
     this.$emit('update:title', newTitle)
+
     // 父组件监听update 方法，$event 就是newTitle传过来的值
     <text-document
       v-bind:title="doc.title"
       v-on:update:title="doc.title = $event"
     ></text-document>
-
     // 该方式写法略繁琐，为了方便起见，vue提供一个缩写，即 .sync 修饰符：免掉 v-on 监听的过程
     <text-document v-bind:title.sync="doc.title"></text-document>
   ```

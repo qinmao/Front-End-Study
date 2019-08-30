@@ -400,7 +400,7 @@
 
     + 渲染进程间通讯
       - localstorage
-      + BrowserWindow和webContents
+      + BrowserWindow 和 webContents
         - webContents 是一个事件发出者.它负责渲染并控制网页，也是 BrowserWindow 对象的属性 
         - 前置知识
             1. 获取当前窗口的 id
@@ -427,7 +427,7 @@
             ```
 
 ## webview
- - 与 iframe 不同, webview 在与应用程序不同的进程中运行
+ + 与 iframe 不同, webview 在与应用程序不同的进程中运行
     ```html
         <webview src="http://www.google.com/" preload="./test.js" nodeintegration></webview>
     ```
@@ -439,23 +439,24 @@
  - 当访客页没有 node integration ，这个脚本仍然有能力去访问所有的 Node APIs, 但是当这个脚本执行执行完成之后，通过Node 注入的全局对象（global objects）将会被删除。
 
 + 方法
- ```js
+  ```js
     const webview = document.querySelector('webview')
     webview.addEventListener('dom-ready', () => {
         webview.openDevTools()
     })
- ```
+  ```
 + sendToHost 
     - 就像 ipcRenderer.send，不同的是消息会被发送到 host 页面上的 <webview> 元素，而不是主进程。
-+ send(webview) 
-    - 向渲染进程发送消息
+
++ send
+    - webview->向渲染进程发送消息
 
 + ipc-message 访客页面向嵌入页面发送异步消息时触发。
     ```js
         // In embedder page.
         const webview = document.querySelector('webview')
         webview.addEventListener('ipc-message', (event) => {
-        console.log(event.channel)
+            console.log(event.channel)
         // Prints "pong"
         })
         webview.send('ping')
@@ -464,7 +465,7 @@
         // In guest page.
         const { ipcRenderer } = require('electron')
         ipcRenderer.on('ping', () => {
-        ipcRenderer.sendToHost('pong')
+            ipcRenderer.sendToHost('pong')
         })
     ```
 
@@ -473,22 +474,79 @@
     ```js
         // src/main/index.js
         mainWindow.setMenu(null)
-    ```
-    ```js
-    // src/main/index.js
+        // src/main/index.js
         mainWindow = new BrowserWindow({
             height: 620,
             useContentSize: true,
             width: 1280,
             frame: false /*去掉顶部导航 去掉关闭按钮 最大化最小化按钮*/
         })
-
     ```
+    
  - [文档](https://simulatedgreg.gitbooks.io/electron-vue/content/cn/)
 
 ## 多平台打包
+ * electron-builder(优点)
+    - electron-builder比electron-packager支持更多的平台，同时也支持自动更新
+    - 由electron-builder打出的包更为轻量
+    - 可以打包出不暴露源码的setup安装程序
 
 ## electron 客户端爬虫总结
-* ssr 
+ * ssr 
+ * spa
 
-* spa
+## 遇到的问题及解决方案
+ * webview下的更新缓存问题
+   1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐
+   ```js
+    // 放在 app.on('ready', () => {}) 之前
+    app.commandLine.appendSwitch("--disable-http-cache")
+
+   ```
+   2. nginx 部署的页面，把htm 的缓存禁用(nginx 的配置文件如下)（spa 关键配置）
+   ```
+   	server {
+        root /home/web_test/dist;
+        location / {
+            index index.html ;
+            try_files $uri $uri/ /index.html;
+        }
+        location ~ .*\.(?:htm|html)$
+        {
+            add_header Cache-Control "private, no-store, no-cache, must-revalidate, proxy-revalidate";
+        }  
+    }
+    
+   ```
+
+ * 客户端自动更新问题
+    - electron-updater
+
+ * 网站自签名证书，如何绕过警告
+  ```js
+    // 移除安全警告信息，由于我们需求的原因，使用了部分非安全的设定，因此需要禁用安全检测
+
+    process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+
+    session.defaultSession.setCertificateVerifyProc((req, cb) => {
+        cb(0)
+    })
+
+  ```
+ * 客户端获取cookie，因为可能存在多个平台的情况，需要根据不同的域名去调用
+    ```js
+        ipcMain.on('get-cookies', (event, opts) => {
+        let _opts = JSON.parse(opts)
+        session.defaultSession.cookies.get(_opts, (err, cookie) => {
+            if (!err && cookie.length) {
+            let cookieStr = ''
+            cookie.forEach(item => {
+                cookieStr += item.name + '=' + item.value + ';'
+            })
+            event.returnValue = cookieStr;
+            } else {
+            event.returnValue = -1;
+            }
+        })
+        })
+    ```

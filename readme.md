@@ -1,5 +1,6 @@
 # 前端
 > 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点，构建自己的知识网络。
+
 ## css
  * css 三大特性：
     + 层叠性
@@ -845,8 +846,9 @@
  * Var Let Const区别 
    - var 在浏览器预解析时存在变量提升，未声明可以使用
    - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
-   - const声明一个只读的常量。一旦声明常量的值就不能改变。
-
+   - const 声明一个只读的常量。一旦声明常量的值就不能改变。
+    (对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指向实际数据的指针，const只能保证这个指针是固定的（即总是指向另一个固定的地址），至于它指向的数据结构是不是可变的，就完全不能控制了)
+    
  * 综合考察
     ``` js
     for (var index = 0; index < 10; index++) {
@@ -994,74 +996,15 @@
     - 例如mouseover 由于事件对象target 频繁改动会有性能问题
 
 ## (*)网络协议
-### http和https
-* http基本概念
-    - http:超文本传输协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少
+ * http
+    - [http](http/readme.md)
 
-* http method
-    - get 
-    - post
-    - head  则是跟 GET 类似，只返回请求头，多数由JavaScript 发起
-    - put delete 分别表示添加资源和删除资源，但是实际上这只是语义上的一种约定
-    - connect  现在多用于 HTTPS 和 WebSocket
-    - options trace 一般用于调试
+ * WebSocket
+    - WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
 
-* http request header(常用)
-    - Cache-Control与Expires之强制缓存的值为“public, max-age=xxx”表示在xxx秒内再次访问该资源，均使用本地的缓存，不再向服务器发起请求
-    - cookie
-    - Accept-Encoding 告诉服务端可接受的数据格式
-    - referer 表示请求文件的网址，请求时会携带(设置防盗链)
-    - Accept-Language
-
-* http response header(常用)
-     + Content-Type 表示请求头或响应头的内容类型
-        - application/json
-        - application/x-www-form-urlencoded 原始表单提交
-        - multipart/form-data 文件上传
-        - text/xml
-  
-
-* http status（常用的）
-    + 1xx: 临时回应，表示客户端请继续
-    + 2xx 请求成功
-        - 200 请求成功
-    + 3xx 表示请求的目标有变化，请客户端进一步处理
-        - 301&302：永久性与临时性跳转。（重要）
-        - 304:客户端缓存没更新（重要）
-    + 4xx 客户端请求错误
-        - 403: 无权限
-        - 404: 请求的页面不存在
-    + 5xx 服务端请求错误
-        - 500 服务端错误
-        - 503 服务端暂时错误，稍后再试
-
-* https:
-    - 是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
-    + 2个作用:
-        - 确定请求服务端的身份
-        - 保证传输的数据不会被窃听和篡改
-
-* 区别:
-  - http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议，更安全
-  - https 协议需要ca证书
-  - 端口也不同，一般而言，http协议的端口为80，https的端口为443
-
-* https协议的工作原理
-  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
-  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
-  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
-  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
-  - web服务器通过自己的私钥解密出会话密钥。
-  - web服务器通过会话密钥加密与客户端之间的通信。
-
-* http2.0 改进最大的两点
-    - 支持服务端推送
-    - 支持tcp的连接复用
- 
-### WebSocket
-- WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
-
-
+ * TCP/IP
+    - tcp:传输控制协议，它位于 IP 协议之上，基于 IP 协议提供可靠的、字节流形式的通信，是 HTTP 协议得以实现的基础。
+    - ip:主要目的是解决寻址和路由问题，以及如何在两点间传送数据包
 
 ## 对象与函数
 ### 对象：
@@ -1602,8 +1545,8 @@
     - CommonJS 是同步导入，es 是异步的
     
 
-## 数组遍历（迭代）
- * Array 的常用函数
+## 数组对象遍历
+ * Array
     + forEach
         ```javascript
             var arr = [1, 2, 2, 2, 2, 6, 9]
@@ -1648,6 +1591,8 @@
 
     + indexOf
         ```javascript
+        let index=arr.indeOf('xxx') 
+        // 存在返回数组索引，不存在返回-1
 
         ```
 
@@ -1671,32 +1616,33 @@
     + sort
         * Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
         * 默认 按照根据ASCII码进行排序
-        * sort 是一个高阶函数，sort（function(){
-            // 写具体的实现逻辑
-        }）
-        * 升序
+        * sort 是一个高阶函数
             ```javascript
+            // 升序
             sort(function(a,b){
                 return a-b
             })
-            ```
-        * 降序
-            ```javascript
+            // 降序
             sort(function(a,b){
                 return b-a
             })
             ```
+            
+ * 对象的遍历
+    - Object.keys(obj).forEach()
+    - for in
 
-* for in for of 的区别
+ * for in for of 的区别
     - for in更适合遍历对象 遍历数组是不是数组内部的顺序，遍历所有可枚举的属性，遍历的是数组的索引
     - for of 适合数组字符串/map/set等拥有迭代器对象的集合 遍历的是数组的元素的值,不能遍历对象
     - 与 forEach()不同的是，它可以正确响应break、continue和return语句
     - ```js
         var myArray=[1,2,4,5,6,7]
         myArray.name="数组";
-        for (var value of myArray) {
-        console.log(value);
+        for (let value of myArray) {
+            console.log(value);
         }
+
      ```
 
 ## es6对js的扩展
@@ -1830,8 +1776,8 @@
         2. 由于script 也是一个宏任务，也会被放入队列，由于该队列是一个一个执行的，所以本次循环，setTimeout 中不会被渲染，下次循环执行
         3. 如果异步更新包装在micro task 中，队列中先执行script ，微任务是一对对执行的，所以Promise在本次循环被执行了，也就是渲染了
 
-## js异常
->js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
+## js异常与错误捕获
+> js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
  * EvalError  运行时异常。 eval 函数调用时发生的异常
  * RangeError 运行时异常 超出数据范围
  * ReferenceError 运行时异常 未定义变量
@@ -2300,6 +2246,9 @@
 ## linux
 * [linux](linux/readme.md)
 
+## nginx
+* [nginx](nginx/readme.md)
+
 ## docker
 * [docker](docker/readme.md)
 
@@ -2321,9 +2270,9 @@
  > 一个纯前端到底要做的是什么样的工作？难道仅仅停留在ui 层面吗？前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？（这些问题暴露了一些自己和同行的一些忧虑）
  - 参考收集了一些好的网上资料，部分添加了来源，部分存在遗漏。
 
-## 19 target
+## 2019 target
  - 浏览器
  - http协议
  - 数据爬虫
- - webgl/canvas
  - vue ui框架
+ - webgl/canvas
