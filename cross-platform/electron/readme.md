@@ -494,10 +494,37 @@
 ## electron 客户端爬虫总结
  * ssr 
  * spa
+ * 网站自签名证书，如何绕过警告
+    ```js
+        // 移除安全警告信息，由于我们需求的原因，使用了部分非安全的设定，因此需要禁用安全检测
+
+        process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+
+        session.defaultSession.setCertificateVerifyProc((req, cb) => {
+            cb(0)
+        })
+    ```
+ * 客户端获取cookie，因为可能存在多个平台的情况，需要根据不同的域名去调用
+    ```js
+        ipcMain.on('get-cookies', (event, opts) => {
+        let _opts = JSON.parse(opts)
+        session.defaultSession.cookies.get(_opts, (err, cookie) => {
+            if (!err && cookie.length) {
+            let cookieStr = ''
+            cookie.forEach(item => {
+                cookieStr += item.name + '=' + item.value + ';'
+            })
+            event.returnValue = cookieStr;
+            } else {
+            event.returnValue = -1;
+            }
+        })
+        })
+    ```
 
 ## 遇到的问题及解决方案
  * webview下的更新缓存问题
-   1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐
+   1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐(特殊的设备：32位系统，第2种方案不行，根据条件选择第一种)
    ```js
     // 放在 app.on('ready', () => {}) 之前
     app.commandLine.appendSwitch("--disable-http-cache")
@@ -522,31 +549,4 @@
  * 客户端自动更新问题
     - electron-updater
 
- * 网站自签名证书，如何绕过警告
-  ```js
-    // 移除安全警告信息，由于我们需求的原因，使用了部分非安全的设定，因此需要禁用安全检测
-
-    process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
-
-    session.defaultSession.setCertificateVerifyProc((req, cb) => {
-        cb(0)
-    })
-
-  ```
- * 客户端获取cookie，因为可能存在多个平台的情况，需要根据不同的域名去调用
-    ```js
-        ipcMain.on('get-cookies', (event, opts) => {
-        let _opts = JSON.parse(opts)
-        session.defaultSession.cookies.get(_opts, (err, cookie) => {
-            if (!err && cookie.length) {
-            let cookieStr = ''
-            cookie.forEach(item => {
-                cookieStr += item.name + '=' + item.value + ';'
-            })
-            event.returnValue = cookieStr;
-            } else {
-            event.returnValue = -1;
-            }
-        })
-        })
-    ```
+ 
