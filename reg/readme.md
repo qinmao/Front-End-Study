@@ -168,9 +168,9 @@
  * match 正则提取
     1. 字符串方法 match
     ```js
-    var str = "aaa123hhh456hhh789aaa";
+    var str = "puuid:'888888' ggggg";
     // 提取出字符串中的数字
-    console.log(str.match(/\d{3}/)); // 提取第一个匹配到的值["123", index: 3, input: "aaa123hhh456hhh789aaa"]
+    console.log(str.match(/\d{3}/g)); // 提取第一个匹配到的值["123", index: 3, input: "aaa123hhh456hhh789aaa"]
     console.log(str.match(/\d{3}/g)); // 提取所有的内容时，不会有index和input属性字 ["123", "456", "789"]
 
     var str = "//小明：谢谢大神，我得邮箱是xiaoming@qq.com,哈哈小红：谢谢大神，我得邮箱是xiaohong@qq.com,哈哈李雷：谢谢大神，我得邮箱是lilei@163.com,哈哈韩梅梅：谢谢大神，我得邮箱是hanmeimei@126.com,哈哈";

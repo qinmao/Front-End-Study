@@ -1,6 +1,6 @@
-## http和https
+## HTTP
  * http 是什么？
-    - 对http的认识，有什么特点，优缺点是什么，是如何工作的？
+   - 对http的认识，有什么特点，优缺点是什么，是如何工作的？
 
  * 基本概念
     - http:超文本传输协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少
@@ -51,7 +51,7 @@
     - http:报文（message）
  
  * 学习分析的工具
-    - Wireshark:网络抓包工具
+    - Wireshark: 网络抓包工具
     - Chrome
     - Telnet：虚拟终端，基于TCP 协议登录远程主机，模拟浏览器的行为，排除浏览器的干扰
     - OpenResty：基于Nginx 的一个强化包，相当于nginx的超集
@@ -75,20 +75,32 @@
     - OPTIONS 列出可对资源实行的方法
     - TRACE 追踪请求-响应的传输路径
 
-* request header(常用)
-    - Cache-Control与Expires之强制缓存的值为public, max-age=xxx”表示在xxx秒内再次访问该资源，均使用本地的缓存，不再向服务器发起请求
-    - cookie
-    - Accept-Encoding 告诉服务端可接受的数据格式
-    - referer 表示请求文件的网址，请求时会携带(设置防盗链)
-    - Accept-Language
+* request header
+   - Accept-Encoding 告诉服务端可接受的数据格式
+   - referer 表示请求文件的网址，请求时会携带(设置防盗链)
+   - Accept: text/html,application/xml,image/webp,image/png
+   - Accept-Encoding: gzip, deflate, br
+   - Accept-Language: zh-CN, zh, en
+   - Accept-Charset: gbk, utf-8
 
-* response header(常用)
-    + Content-Type 表示请求头或响应头的内容类型
-        - application/json
-        - application/x-www-form-urlencoded 原始表单提交
-        - multipart/form-data 文件上传
-        - text/xml
-  
+   - Cache-Control与Expires之强制缓存的值为public, max-age=xxx”表示在xxx秒内再次访问该资源，均使用本地的缓存，不再向服务器发起请求
+   - cookie
+
+* response header
+   + Content-Type 表示请求头或响应头的内容类型（一般post会带上）
+      - application/json
+      - application/x-www-form-urlencoded 原始表单提交
+      - multipart/form-data 文件上传
+      - text/xml
+      - text/html
+      - image/png
+      - Content-Encoding: gzip ，Nginx 的gzip on 指令很智能，只会压缩文本数据，不会压缩图片、音频、视频
+      - Transfer-Encoding: chunked 报文里的 body 部分不是一次性发过来的，而是分成了许多的块（chunk）逐个发送
+      - Content-Length：与Transfer-Encoding: chunked互斥的
+      - Content-Language: zh-CN
+      - text/html; charset=utf-8
+
+
 * http status（常用的）
     + 1xx: 提示信息，表示协议处理的中间状态，需要后续操作
     + 2xx 请求成功，报文收到并被正确处理
@@ -103,24 +115,23 @@
         - 500 服务端错误
         - 503 服务端暂时错误，稍后再试
 
-* https:(相当于“HTTP+SSL/TLS+TCP/IP”，为 HTTP 套了一个安全的外壳)
-    - 是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
-    + 2个作用:
-        - 确定请求服务端的身份
-        - 保证传输的数据不会被窃听和篡改
+* http 有哪些特点？
+   - 灵活可拓展，可以添加任意头
+   - 可靠性强，基于tcp/ip协议
+   - 对比其他协议，通用性强
+   - 无状态
+   - 明文传输
 
-* 两者区别:
-  - http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议，更安全
-  - https 协议需要ca证书
-  - 端口也不同，一般而言，http协议的端口为80，https的端口为443
+* http 连接管理
+   - 短连接：早期(0.9/1.0)每次发送请求前要先建立与服务器的连接，收到响应报文立即关闭连接，整个过程很短暂，不会与服务器保持长时间的连接状态，就称为短连接，
+   缺点：建立连接和关闭连接都是耗时的操作，tcp 建立连接要经历三次握手
 
-* https协议的工作原理
-  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
-  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
-  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
-  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
-  - web服务器通过自己的私钥解密出会话密钥。
-  - web服务器通过会话密钥加密与客户端之间的通信。
+   - 长连接:也叫持久连接，或者连接复用是针对短连接的缺点提出的，由于长连接对性能改善比较明显，http1.1默认采用长连接
+   缺点：因为 TCP 连接长时间不关闭，服务器必须在内存里保存它的状态，这就占用了服务器的资源。如果有大量的空闲长连接只连不发，就会很快耗尽服务器的资源，所以适时关闭
+   
+   - 对头阻塞
+   因为 HTTP 规定报文必须是“一发一收”，这就形成了一个先进先出的“串行”队列。队列里的请求没有轻重缓急的优先级，只有入队的先后顺序，排在最前面的请求被最优先处理。如果队首的请求因为处理的太慢耽误了时间，那么队列里后面的所有请求也不得不跟着一起等待
+   可以使用并发连接和域名分片技术缓解
 
 * http2.0 特点 
     - 二进制协议，不再是纯文本；
@@ -129,5 +140,54 @@
     - 允许服务器主动向客户端推送数据；
     - 增强了安全性，“事实上”要求加密通信
 
+## HTTPS SSL/TLS
+ * https:(相当于“HTTP+SSL/TLS”，为 HTTP 套了一个安全的外壳)
 
- 
+ * ssl/tsl:
+   - ssl 3.0 后叫tsl 目前应用的最广泛的 TLS 是 1.2，
+   - 之前的协议（TLS1.1/1.0、SSLv3/v2）都已经被认为是不安全的,
+   - 2018年 发布1.3
+
+ * ssl/tls 是如何给http 加密的？
+   > 通信安全必须同时具备机密性、完整性、身份认证和不可否认这四个特性
+   + 机密性：
+      - 实现机密的手段是加密,就是把消息用某种方式转换成谁也看不懂的乱码，只有“钥匙”的人才能再转换出原始文本
+      - 钥匙”就叫做“密钥”（key）
+      - 加密前的消息叫“明文”（plain text/clear text）
+      - 加密后的乱码叫“密文”（cipher text）
+      - 使用密钥还原明文的过程叫“解密”（decrypt）加密解密的操作过程就是“加密算法”
+
+      - 对称：加密和解密时使用的密钥都是同一个，是“对称”的，目前常用的只有 AES 和 ChaCha20。
+      - [非对称](./加密/非对称加密原理.png)
+      - 一般应用中通常采用混合加密解决性能问题
+
+   + 完整性
+      - 实现完整性的手段主要是摘要算法（Digest Algorithm），也就是常说的散列函数、哈希函数（Hash Function）。
+      - 目前 TLS 推荐使用的是 SHA-1 的后继者：SHA-2。
+      - HA-2 实际上是一系列摘要算法的统称，总共有 6 种，常用的有 SHA224、SHA256、SHA384，分别能够生成 28 字节、32 字节、48 字节的摘要。
+   + 身份认证
+      - 数字证书和 CA
+      
+   + 不可否认
+
+
+ * OpenSSL
+   > 开源密码学程序库和工具包，几乎支持所有公开的加密算法和协议，已经成为了事实上的标准，许多应用软件都会使用它作为底层库来实现 TLS 功能，包括常用的 Web 服务器 Apache、Nginx 
+
+ * 区别:
+   + 底层传输协议不同：
+    - http 依赖tcp/ip 信息是明文传输，
+    - https 依赖ssl、tls 安全的传输协议
+   + https 协议需要ca证书
+
+   + 默认端口也不同
+      - http协议的端口为80
+      - https的端口为443
+
+* https协议的工作原理
+  - 客户使用https url访问服务器，则要求web 服务器建立ssl链接。
+  - web服务器接收到客户端的请求之后，会将网站的证书（证书中包含了公钥），返回或者说传输给客户端。
+  - 客户端和web服务器端开始协商SSL链接的安全等级，也就是加密等级。
+  - 客户端浏览器通过双方协商一致的安全等级，建立会话密钥，然后通过网站的公钥来加密会话密钥，并传送给网站。
+  - web服务器通过自己的私钥解密出会话密钥。
+  - web服务器通过会话密钥加密与客户端之间的通信。

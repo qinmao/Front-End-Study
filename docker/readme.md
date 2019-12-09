@@ -106,9 +106,7 @@ docker 部署步骤:
 
 以上是手动原始的构建，可以使用docker-compose 这个大杀器来构建
 https://www.cnblogs.com/neptunemoon/p/6512121.html#toc_30
-
 ## jenkins
-
 1）先写简单的node koa的项目并上传到GitHub上备用，拉取最新的jenkins镜像，并启动
     1. docker pull jenkins:latest
 	2. 	sudo docker run -d -u 0 --privileged  --name jenkins_node1 -p 49003:8080 -v /etc/localtime:/etc/localtime -v /root/jenkins_node1:/var/jenkins_home jenkins:latest

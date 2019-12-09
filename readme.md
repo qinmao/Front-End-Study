@@ -155,7 +155,7 @@
      /* 先找父元素 找到所有的p元素  找第一个 */
      p:last-of-type 
      /* 最后一个 */
-     p:nth-of-type（） 
+     p:nth-of-type()
      /* 第几个 */
      p:nth-last-of-type 
      /* 倒数第几个 */
@@ -877,11 +877,6 @@
 
     ```
 
-
-
-
-
-
 ### js 的三种加载方式
 * 正常:JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情。
     ```js
@@ -930,9 +925,8 @@
     2. 传播到事件触发处时触发注册的事件
     3. 从事件触发处往 window 传播，遇到注册的冒泡事件会触发
 
- * 事件注册/监听（避免事件被覆盖）
+ * 事件注册(监听) addEventListener（避免事件被覆盖）
     > ie9 以下不支持 false默认冒泡 true 捕获
-    * addEventListener
     + 第三个参数为bool,该参数默认值为 false(冒泡) ，useCapture 决定了注册的事件是捕获事件还是冒泡事件
     + 作为对象：
         - capture：布尔值，和 useCapture 作用一样
@@ -971,6 +965,53 @@
                 },
                 true
             )
+        ```
+ * 事件触发(标准浏览器)：dispatchEvent
+    + element.dispatchEvent()
+    + 使用该方法：
+        + 创建:  document.createEvent()
+            - 返回新创建的Event对象
+            - 参数：
+            -  HTMLEvents：包括 'abort', 'blur', 'change', 'error', 'focus', 'load', 'reset', 'resize', 'scroll', 'select', 'submit', 'unload'. 事件
+            - UIEvents ：包括 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'keydown', 'keypress', 'keyup'. 间接包含 MouseEvents. 
+            - MouseEvents：包括 'click', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup'. 
+            - MutationEvents:包括 'DOMAttrModified', 'DOMNodeInserted', 'DOMNodeRemoved', 'DOMCharacterDataModified', 'DOMNodeInsertedIntoDocument','DOMNodeRemovedFromDocument', 'DOMSubtreeModified'
+            
+        + 初始化: initEvent(eventName, canBubble, preventDefault)
+            - initEvent() 方法用于初始化通过DocumentEvent接口创建的Event的值。
+            - canBubble 是否可以冒泡
+            - preventDefault 是否阻止事件的默认操作
+
+        + 例子：
+            ```js
+                // 举个例子：
+                var dom = document.querySelector('#id')
+                document.addEventListener('alert', function (event) {
+                    console.log(event)
+                }, false);
+                
+                // 创建
+                var evt = document.createEvent("HTMLEvents");
+                // 初始化
+                evt.initEvent("alert", false, false);
+                // 触发, 即弹出文字
+                dom.dispatchEvent(evt);
+            ```
+    + 自定义事件
+        - 自定义事件的函数有 Event、CustomEvent 和 dispatchEvent
+        - ```js
+            // 向 window派发一个resize内置事件
+            window.dispatchEvent(new Event('resize'))
+            
+            // 直接自定义事件，使用 Event 构造函数：
+            var event = new Event('build');
+            var elem = document.querySelector('#id')
+            // 监听事件
+            elem.addEventListener('build', function (e) { ... }, false);
+            // 触发事件.
+            elem.dispatchEvent(event);
+
+
         ```
 
  * 事件的对象(event.target)
@@ -1699,7 +1740,6 @@
         - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
         - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
         - Promise 新建后就会立即执行
-        
    * 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
       ```js
             // 基本用法
@@ -1748,29 +1788,22 @@
      - then resolve 的回调 
      - catch reject的回调 
      - finally Promise 对象最后状态如何，都会执行的操作
-
    * promise.all 和 promise.race 
     - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
     - promise.race
-
    * 使用场景：
-
    * 区别：
-
  * async
     - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
  * await 
     - 表示在这里等待promise返回结果了，再继续执行。
     - await 后面跟着的应该是一个promise对象（其他返回值也没关系，只是会立即执行，不过那样就没有意义）
     - await 命令就是内部then命令的语法糖。
-
  * 问题?
     - Promise里的代码为什么比setTimeout先执行？
     - vue 异步更新是包装成macro task还是micro task(为什么)？
-
  * 事件循环每一次循环都是一个这样的过程
     <image src='framework/vue/vue2.x/images/event-loop-queue.png'>
-
     + 根据上图的执行过程，分析如下
         1. setTimeout 是一个宏任务，所以推入了宏任务队列
         2. 由于script 也是一个宏任务，也会被放入队列，由于该队列是一个一个执行的，所以本次循环，setTimeout 中不会被渲染，下次循环执行
@@ -2227,6 +2260,7 @@
  * 插件完成后，将其导入到Chrome中
     - 首先将所有相关文件都放到一个文件夹中
     - 用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，- 确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
+ * [文章])(https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html)
 
 ## 数据图表
 - [echarts](https://echarts.baidu.com/examples/index.html)
@@ -2266,13 +2300,19 @@
     - tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
     - tree > tree.md 将项目结构输出到tree.md这个文件。
 
-## 最后一些思考或者疑问
- > 一个纯前端到底要做的是什么样的工作？难道仅仅停留在ui 层面吗？前端开发者的核心价值是什么？或者说自己能够提供的不可替代的价值是什么？（这些问题暴露了一些自己和同行的一些忧虑）
- - 参考收集了一些好的网上资料，部分添加了来源，部分存在遗漏。
+## 爬虫
+ * electron
+ * puppeteer
 
-## 2019 target
- - 浏览器
+## 2019
  - http协议
- - 数据爬虫
+
+ - 浏览器
+
+ - 算法与数据结构
+ 
  - vue ui框架
+ 
+ - typescript
+
  - webgl/canvas

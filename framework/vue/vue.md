@@ -82,73 +82,8 @@
   ```
 
 
-## 暴露的有用的属性
- * vm.$data === data // => true
- * vm.$el === document.getElementById('example') // => true
- * vm.$watch('a', function (newValue, oldValue) {
-      这个回调将在 `vm.a` 改变后调用
-    })
 
-## 项目中遇到的问题及解决方案
- * 异步文件上传(axios)
-    -  multipart 添加之后选择多图
-    ```html
-      <input type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
-    ```
-    ```javascript
-      async upload(e) {
-          let files = e.target.files;
-          if (files[0].size / 1024 / 1024 > 2) {
-          // 大小限制
-          }
-          if (!files.length) return;
-            //  模拟表单提交
-          let formData = new FormData();
-          formData.append("file", files[0]);
-          let config = {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          };
-          let fetch = this.$fecth.create();
-          fetch.interceptors.request.use(config => {
-            return config;
-          });
-          let res = await fetch.post("url", formData, config);
-          res = res.data;
-          if (res.code == 0) {
-            this.loadImage(files[0]);
-          } else {
-          }
-        },
-        // 预览本地上传的图片
-        loadImage(file) {
-          let reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = e => { 
-            // e.target.result 图片的地址
-          };
-        },
-    ```
-
- * 文件下载
-  - @click.native="download"
-  - download --> location.href
- * 路由跳转时，记录跳转前的位置
-    > 思路把位置记录在当前路由的元信息上
-    - 整个页面的滚动位置
-    - 页面局部元素的滚动位置
-
- * 返回确认弹窗
-    > 思路：设置是否允许字段记录在当前路由的元信息上
-    - 手动返回，弹窗拦截
-    - 正常业务成功返回，不拦截
-    
- * 新增data 中对象属性，和修改数组下标 响应式问题
-
- * 获取异步dom 更新问题（nextTick）
-
- * 性能优化
+ 
 
 ## 新增的特性
 * 一个对象的所有属性都作为 prop 传入,使用不带参数的 v-bind (取代 v-bind:prop-name)
@@ -220,7 +155,7 @@
 
 ## Vue 计算属性和 watch 在什么场景下使用
 
-## Vue 中的常用api
+## Vue 中的常用api，有用的属性
 * extend
   - 基础 Vue 构造器，创建一个“子类”。参数是一个包含组件选项的对象
   ```js
@@ -304,11 +239,8 @@
     } 
   ```
 * watch
-
 * render
-
 * on/emit/off/once
-
   ```js
     // 实现事件的发布订阅系统
     //同一个对象的on对应emit
@@ -333,6 +265,87 @@
 
   ```
 
+* 暴露的有用的属性
+  - vm.$data === data // => true
+  - vm.$el === document.getElementById('example') // => true
+  - vm.$watch('a', function (newValue, oldValue) {
+      这个回调将在 `vm.a` 改变后调用
+    })
+
+## 项目中遇到的问题及解决方案
+ * 异步文件上传(axios)
+    -  multipart 添加之后选择多图
+    ```html
+      <input type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
+    ```
+    ```javascript
+      async upload(e) {
+          let files = e.target.files;
+          if (files[0].size / 1024 / 1024 > 2) {
+          // 大小限制
+          }
+          if (!files.length) return;
+            //  模拟表单提交
+          let formData = new FormData();
+          formData.append("file", files[0]);
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          };
+          let fetch = this.$fecth.create();
+          fetch.interceptors.request.use(config => {
+            return config;
+          });
+          let res = await fetch.post("url", formData, config);
+          res = res.data;
+          if (res.code == 0) {
+            this.loadImage(files[0]);
+          } else {
+          }
+        },
+        // 预览本地上传的图片
+        loadImage(file) {
+          let reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = e => { 
+            // e.target.result 图片的地址
+          };
+        },
+    ```
+
+ * 文件下载
+   - @click.native="download"
+   - download --> location.href
+
+ * 路由跳转时，记录跳转前的位置
+    > 思路把位置记录在当前路由的元信息上
+    - 整个页面的滚动位置
+    - 页面局部元素的滚动位置
+
+ * 返回确认弹窗
+    > 思路：设置是否允许字段记录在当前路由的元信息上
+    - 手动返回，弹窗拦截
+    - 正常业务成功返回，不拦截
+    
+ * 新增data 中对象属性，和修改数组下标 响应式问题
+
+ * 获取异步dom 更新问题（nextTick）
+
+ * js操作 dom 修改value，同步更改v-model的值
+  - 
+  ```js
+    el.value(newval)
+
+    el.dispatchEvent(new Event('input'));
+
+    // el为input元素
+    // 如果v-model有lazy修饰符的时候，触发得是change事件
+    // select 触发得是change事件
+    el.dispatchEvent(new Event('change'));
+
+   
+  ```
 
 
 

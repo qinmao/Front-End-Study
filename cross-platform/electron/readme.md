@@ -19,22 +19,7 @@
 
  * 渲染进程
     - 由于 Electron 使用了 Chromium 来展示 web 页面，所以 Chromium 的多进程架构也被使用到。 每个 Electron 中的 web 页面运行在它自己的渲染进程中
-    - lectron 渲染进程中通过 Nodejs 读取本地文件
-
-## 如何开启调试
-```js
-    const { app, BrowserWindow } = require('electron')
-    let mainWindow
-    app.on('ready', () => {
-        mainWindow = new BrowserWindow({
-            width:600
-            height:400
-        })
-        if (process.env.NODE_ENV === "debug") {
-            mainWindow.webContents.openDevTools()  
-        }
-    })
-```
+    - elctron 渲染进程中通过 Nodejs 读取本地文件
 
 ## 常用模块
  * 主进程
@@ -96,8 +81,9 @@
             });
         }
 
-        // 当 Electron 完成初始化并且已经创建了浏览器窗口，则该方法将会被调用。
-        // 有些 API 只能在该事件发生后才能被使用
+        // Electron 会在初始化后并准备
+        // 创建浏览器窗口时，调用这个函数。
+        // 部分 API 在 ready 事件触发后才能使用。
         app.on('ready', createWindow);
 
         // 当所有的窗口被关闭后退出应用 
@@ -469,21 +455,7 @@
         })
     ```
 
-## electron-vue
- - 隐藏顶部菜单
-    ```js
-        // src/main/index.js
-        mainWindow.setMenu(null)
-        // src/main/index.js
-        mainWindow = new BrowserWindow({
-            height: 620,
-            useContentSize: true,
-            width: 1280,
-            frame: false /*去掉顶部导航 去掉关闭按钮 最大化最小化按钮*/
-        })
-    ```
-    
- - [文档](https://simulatedgreg.gitbooks.io/electron-vue/content/cn/)
+
 
 ## 多平台打包
  * electron-builder(优点)
@@ -491,20 +463,32 @@
     - 由electron-builder打出的包更为轻量
     - 可以打包出不暴露源码的setup安装程序
 
-## electron 客户端爬虫总结
- * ssr 
- * spa
- * 网站自签名证书，如何绕过警告
+## electron 客户端爬虫步骤
+* 创建浏览器窗口:
+    - 在主进程main.js中通过Electron中的BrowerWindow 模块创建一个新的浏览器窗口来显示我们的应用界面
+* 
+ 
+
+## 遇到的问题及解决方案
+ * electron 安装不成功问题（卡在install.js）(ver6.x.X)
+    - 打开终端，输入vi ~/.npmrc,在里面添加
+    ```
+        electron_mirror="https://npm.taobao.org/mirrors/electron/"
+
+    ```
+    - npm install --verbose electron
+
+ * 网站自签名证书，chrome浏览器是会进行警告的，必须在警告页确认，如何绕过警告
     ```js
         // 移除安全警告信息，由于我们需求的原因，使用了部分非安全的设定，因此需要禁用安全检测
-
         process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
         session.defaultSession.setCertificateVerifyProc((req, cb) => {
             cb(0)
         })
     ```
- * 客户端获取cookie，因为可能存在多个平台的情况，需要根据不同的域名去调用
+
+ * 多平台客户端获取cookie,需要根据不同的域名去调用
     ```js
         ipcMain.on('get-cookies', (event, opts) => {
         let _opts = JSON.parse(opts)
@@ -522,7 +506,6 @@
         })
     ```
 
-## 遇到的问题及解决方案
  * webview下的更新缓存问题
    1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐(特殊的设备：32位系统，第2种方案不行，根据条件选择第一种)
    ```js
@@ -549,4 +532,17 @@
  * 客户端自动更新问题
     - electron-updater
 
- 
+ * 如何开启调试
+    ```js
+        const { app, BrowserWindow } = require('electron')
+        let mainWindow
+        app.on('ready', () => {
+            mainWindow = new BrowserWindow({
+                width:600
+                height:400
+            })
+            if (process.env.NODE_ENV === "debug") {
+                mainWindow.webContents.openDevTools()  
+            }
+        })
+    ```

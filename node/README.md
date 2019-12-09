@@ -3,7 +3,7 @@
  * node 安装完成后 npm 默认安装，推荐安装nvm 来切换node 版本
 
  * windows 安装node 推荐使用nvm-windows
-    - [详情参考]( https://github.com/coreybutler/nvm-windows) 
+    - [详情参考](https://github.com/coreybutler/nvm-windows) 
 
 ## npm nrm nvm 
  > 由于网络问题导致下载包会出问题，安装nrm来选择资源
