@@ -2196,7 +2196,7 @@
     - brew list 可以查看所有安装的软件
     - brew info 软件名
 
-### 开发工具：vscode 
+### vscode 
  * 前端本地服务端调试
    - npm install -g live-server 
    - 安装报错就用npm install live-server -gf安装，
@@ -2310,7 +2310,7 @@
 
  - 浏览器
 
- - nodejs
+ - nodejs(一套流程)
 
  - 算法与数据结构
  

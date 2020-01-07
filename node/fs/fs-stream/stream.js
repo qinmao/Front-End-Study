@@ -16,27 +16,26 @@
 
 var fs = require("fs");
 // 从流中读取数据
+var data = '';
+// 创建可读流
+var readerStream = fs.createReadStream('input.txt');
 
+// 设置编码为 utf8。
+readerStream.setEncoding('UTF8');
 
-// var data = '';
-// // 创建可读流
-// var readerStream = fs.createReadStream('input.txt');
+// 处理流事件 --> data, end, and error
+readerStream.on('data', function (chunk) {
+    data += chunk;
+});
 
-// // 设置编码为 utf8。
-// readerStream.setEncoding('UTF8');
+readerStream.on('end', function () {
+    console.log(data);
+});
 
-// // 处理流事件 --> data, end, and error
-// readerStream.on('data', function (chunk) {
-//     data += chunk;
-// });
+readerStream.on('error', function (err) {
+    console.log(err.stack);
+});
 
-// readerStream.on('end', function () {
-//     console.log(data);
-// });
-
-// readerStream.on('error', function (err) {
-//     console.log(err.stack);
-// });
 
 //读取文件
 fs.readFile("input.txt","UTF8", function (err, data) {
@@ -45,16 +44,16 @@ fs.readFile("input.txt","UTF8", function (err, data) {
 
 //写入流
 
-// var data="这是写入的流";
-// var writeStream=fs.createWriteStream("input.txt")
-// writeStream.write(data,"utf-8")
-// writeStream.end()
-// writeStream.on("finish",function(){
-//     console.log("写入完成")
-// })
-// writeStream.on("erro",function(err){
-//     console.log(err.stack)
-// })
+var data="这是写入的流";
+var writeStream=fs.createWriteStream("input.txt")
+writeStream.write(data,"utf-8")
+writeStream.end()
+writeStream.on("finish",function(){
+    console.log("写入完成")
+})
+writeStream.on("erro",function(err){
+    console.log(err.stack)
+})
 //同一个文件会覆盖
 
 //管道流
