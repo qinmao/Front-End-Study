@@ -469,7 +469,7 @@
             - 绝对定位
             - flex 中间flex:1
 
-## 预编译语言(css)
+## 预编译语言
  * [less](css/less/less.md)
  * [sass](css/sass/readme.md)
 

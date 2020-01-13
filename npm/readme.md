@@ -18,25 +18,46 @@
         科学上网后或者发布时移掉
         npm config rm registry
         ```
-
-## 包管理
- + install
+ * nvm 版本控制
+ * npm
+    + install
     - npm install  将package.json中的文件依赖的包从网上下载到本地
     - npm shrinkwrap 保证任何机器上安装的都是同样版本的模块（不管嵌套多少层）,存在则优先将- npm-shrinkwrap.json 文件依赖的包进行安装，没有则package.json
     - npm install  包名 -save 将包下载下来并且加载到dependencies中去
     - npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去
     - npm install  包名 -g  全局安装
 
- + update
+    + update
     - npm update -g <package>  跟新全局包
     - npm outdated -g --depth=0 要找出哪些包需要更新
     - npm update -g 更新所有的全局包
     
- + npm docs 包名 查看包的文档
+    + npm docs 包名 查看包的文档
 
- + uninstall
+    + uninstall
     - npm uninstall  <package> 加-D 或-S 移除依赖
     - npm uninstall -g <package>
+
+* npx
+    + npm5.2以上自带
+    + 应用场景
+        - 调用项目内安装的模块
+        ```
+        # 项目的根目录下执行
+        $ node-modules/.bin/mocha --version
+        # npx 更方便
+        npx mocha --version
+        # 就是运行的时候，会到node_modules/.bin路径和环境变量$PATH里面，检查命令是否存在
+
+        ```
+        - 使用不同版本的 node
+        ```
+        # 利用 npx 可以下载模块这个特点，可以指定某个版本的 Node 运行脚本。它的窍门就是使用 npm 的 node 模块。
+        $ npx node@0.12.8 -v
+        v0.12.8
+
+        ```
+
 
 ## package.json
  - npm init  创建package.json文件
