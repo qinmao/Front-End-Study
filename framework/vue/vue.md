@@ -81,10 +81,6 @@
       /* 通过 v-html 创建的 DOM 内容不受作用域内的样式影响，但是你仍然可以通过深度作用选择器来为他们设置样式。 */
   ```
 
-
-
- 
-
 ## 新增的特性
 * 一个对象的所有属性都作为 prop 传入,使用不带参数的 v-bind (取代 v-bind:prop-name)
   ```javascript
@@ -264,7 +260,6 @@
     p1.emit('ak47', 1223);
 
   ```
-
 * 暴露的有用的属性
   - vm.$data === data // => true
   - vm.$el === document.getElementById('example') // => true

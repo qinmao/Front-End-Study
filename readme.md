@@ -94,7 +94,7 @@
  * 狭义上: 是html4的升级版本，是新一代web应用标准
  * 广义上: H5其实指的是一个泛称，它是由HTML5 + CSS3 + JsApi等技术组合而成的一个应用开发平台。
 
- * html5技术:       
+ * html5技术:
     1. 标签
         + 常用新增的语义 （业务标签）   
             - header nav main aside section (独立的区块) article footer
@@ -126,7 +126,7 @@
 
     6. [客户端数据的缓存机制](html/html5/webStorage.html)
 
-    7. [video (api 使用)](html/html5/media)
+    7. [video (api)](html/html5/media)
 
     8. [mobile](mobile/h5-mobile)
 
@@ -140,7 +140,7 @@
     E[attr*m=val]属性值含有val,不管在什么位置
     
 2. 伪类选择器：
-    E：first-child 选中父元素中的第一个E子元素
+    E:first-child 选中父元素中的第一个E子元素
     E:last-child  选中父元素中的最后一个E子元素
     E:nth-child(n)  选中父元素中第n个子元素（元素0开始，n从0开始）n(数字，表达式 -5+n,2n+1,odd,even)
     E:nth-last-child(n)  选中父元素中倒数第n个子元素（元素0开始，n从0开始）
@@ -187,13 +187,13 @@
 2. 盒子阴影:
     box-shadow:水平位移  垂直位移  模糊程度 扩展半径 颜色 内阴影（inset）
 
-    水平位移  
-    垂直位移  
-    模糊程度 
-    扩展半径  可以为负值，值越大，扩展半径越大
-    颜色 
-    内阴影  inset(可选)
-    
+    - 水平位移
+    - 垂直位移
+    - 模糊程度
+    - 扩展半径  可以为负值，值越大，扩展半径越大
+    - 颜色 
+    - 内阴影  inset(可选)
+
 ### border
  * border-radius
     - border-radius:x x x x/y y y y
@@ -211,6 +211,7 @@
     url("images/bg3.png") right bottom,
     url("images/bg4.png") left bottom,
     url("images/bg5.png") center center;
+
  * background-size
     - 数字，百分比，
     - cover 完全覆盖整个元素，不考虑图片内容是否损失
@@ -585,7 +586,6 @@
     - 只要有一个true，就返回 该 值true的子表达式的值
     - 短路或：可以方便给变量赋初值
 
-
 ### date-format
  * 日期格式化成指定格式
     - new Date().format("yyyy-MM-dd hh:mm:ss")
@@ -616,9 +616,10 @@
     - document.querySelector() css 选择器 返回匹配的第一项
     - document.querySelectorAll() 返回一个匹配的伪数组
     - getElementById
-    - getElementsByName 
+    - getElementsByName
     - getElementsByTagName
     - getElementsByClassName
+
  * 子节点
     + childNodes（ie只获取元素节点）
         - 用法：元素.childNodes  元素所有的子节点，包含文本和元素节点
@@ -667,7 +668,6 @@
  * 克隆
     - 要克隆的元素.cloneNode(false) 只克隆元素本身，不需要元素中的内容
     - 要克隆的元素.cloneNode(true) 两个都要
-
 
 ### 元素属性操作
   - 获取 元素.getAttribute(属性名)
@@ -2293,6 +2293,11 @@
  - 反模式:常见的，引发问题比解决问题更多的一种方法
  - [js中的设计模式](desin-patterns/)
 
+
+## 爬虫
+* electron
+* puppeteer
+
 ## tree 目录生成命令
  1. 安装 :brew install tree  ||  apt-get install tree
  2. exmple: tree -L 3 -I "node_modules"
@@ -2300,10 +2305,6 @@
     - tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
     - tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
     - tree > tree.md 将项目结构输出到tree.md这个文件。
-
-## 爬虫
- * electron
- * puppeteer
 
 ## 2019-2020
  - http协议
