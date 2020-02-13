@@ -271,7 +271,7 @@
  * 异步文件上传(axios)
     -  multipart 添加之后选择多图
     ```html
-      <input type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
+      <input ref="referenceUpload" type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
     ```
     ```javascript
       async upload(e) {
@@ -288,10 +288,6 @@
               "Content-Type": "multipart/form-data"
             }
           };
-          let fetch = this.$fecth.create();
-          fetch.interceptors.request.use(config => {
-            return config;
-          });
           let res = await fetch.post("url", formData, config);
           res = res.data;
           if (res.code == 0) {
@@ -307,6 +303,13 @@
             // e.target.result 图片的地址
           };
         },
+        // 该方案存在两个问题
+        // 1. change事件上传一次后失效
+        // 2. 相同文件只能选择一次
+        // 解决如下：
+        //  解决第1个问题 给input file 父元素绑定事件
+        //  解决第2个问题 this.$refs.referenceUpload.value = null; 
+
     ```
 
  * 文件下载

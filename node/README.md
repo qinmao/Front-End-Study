@@ -112,13 +112,20 @@
 ## web framework
 - express
 - [koa](http://www.ruanyifeng.com/blog/2017/08/koa.html)
-- egg
+- [egg](https://eggjs.org/zh-cn/intro/index.html)
 
 ## 脚手架
 - koa-generator 非官方，狼叔开发的
     ```
     npm install koa-generator -g
     koa2 projectName
+    ```
+- egg
+    ```
+    $ mkdir egg-example && cd egg-example
+    $ npm init egg --type=simple
+    $ npm i
+    
     ```
 
 ## web 模板引擎
