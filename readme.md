@@ -2271,10 +2271,6 @@
  * [canvas基本使用](canvas/canvas-base.html)
  * three.js
 
-## webVR
-
-## WebAssembly
-
 ## node
  * [node](node/README.md)
 
@@ -2311,7 +2307,7 @@
 
  - 浏览器
 
- - nodejs(一套流程)
+ - nodejs
 
  - 算法与数据结构
  
@@ -2319,4 +2315,8 @@
  
  - typescript
 
- - webgl/canvas
+ ## 可视化
+    - webgl
+    - canvas
+
+## WebAssembly
