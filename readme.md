@@ -1,14 +1,7 @@
 # 前端
 > 前端的知识网络庞杂，知识点琐碎，记住所有的细节不太可能，所以往往需要做些总结，记录最核心的知识点，构建自己的知识网络。
-
 ## css
- * css 三大特性：
-    + 层叠性
-    + 继承性
-    + 优先级
-            
- * css 优先级 
-    - 标签选择器 < 类选择器 <  ID选择器 < 行内样式 <! Important
+ * 三大特性：层叠性、 继承性、优先级:标签选择器 < 类选择器 <  ID选择器 < 行内样式 <! Important
 
  * margin
     + 垂直外边距合并（同正取最大值，同负取绝对值最大值，一正一负相加的和）
@@ -16,10 +9,10 @@
         - 给父元素设置边框
         - 给父元素设置overflow：hidden；(注意：会触发父元素的bfc(格式化上下文)
 
- * Padding
-     + 特殊性： 在块级元素中，如果默认子元素没有设置宽度，给当前子元素设置padding值，不会影响当前子盒子的宽度。（“继承”的盒子padding值不会影响）
+ * padding
+    - 特殊性：在块级元素中，如果默认子元素没有设置宽度，给当前子元素设置padding值，不会影响当前子盒子的宽度。（“继承”的盒子padding值不会影响）
 
- * Float
+ * float
     + 作用：布局   网页导航   图片文字环绕（文字不会被图片压着）
 
     + 清理浮动：实质是清理浮动造成的影响
@@ -39,14 +32,14 @@
     + 静态（static）
         - 标准流下的显示方式，
         - 可转换成其他定位方式
-    + 绝对 （absolute）
-        - 标准流下的盒子，设置绝对定位以body 为参照
+    + 绝对 （absolute）：
+        * 标准流下的盒子，以body为参照
         - 除了父盒子设置static ，其他定位方式，子盒子以父盒子为参照
         - 绝对定位的元素脱标
         - 实现模式转换的效果
         - 使用场景：1，盒子压盒子 2，绝对定位可以使用 margin padding
     + 相对（relative）：
-        - 相对自己作为参照，
+        * 相对自己作为参照
         - 不会脱标
         - 通常使用 子绝父相
     + 固定（fixed）：
@@ -70,17 +63,17 @@
         - block元素会独占一行，默认情况下，block元素宽度自动填满其父元素宽度
         - 可设置width height
         - 可以设置margin和padding属性
+    + inline-block
+        - 有宽高
+        - 呈现inline 的效果
     + inline
         - 不会独占一行，多个相邻的行内元素会排列在同一行里
         - inline元素设置width,height属性无效
         - inline元素的margin和padding属性 水平有效，垂直方向没效
-    + inline-block
-        - 有宽高
-        - 呈现inline 的效果
 
     - 块级：div、p、ul、ol、body、from...
-    - 行内： title  lable  span a
-    - 行内块：img  input  td
+    - 行内：title、lable 、span、a
+    - 行内块：img 、input 、td
 
  * 标准盒模型
     - 标准盒子模型：宽度=内容的宽度（content）+ border + padding + margin
@@ -89,46 +82,6 @@
     + box-sizing 用来控制元素的盒子模型的解析模式，默认为content-box
         - content-box 盒子的尺寸=CSS中的尺寸+padding+border
         - border-box  盒子的尺寸=CSS中的尺寸=padding+border+可变的内容尺寸
-
-## h5
- * 狭义上: 是html4的升级版本，是新一代web应用标准
- * 广义上: H5其实指的是一个泛称，它是由HTML5 + CSS3 + JsApi等技术组合而成的一个应用开发平台。
-
- * html5技术:
-    1. 标签
-        + 常用新增的语义 （业务标签）   
-            - header nav main aside section (独立的区块) article footer
-        + 元信息标签:是指描述自身的信息,通常不会显示，多数情况下是给浏览器、搜索引擎等机器阅读的
-          ```html
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-            <!-- 默认使用最新浏览器 -->
-            <meta http-equiv="Cache-Control" content="no-siteapp">
-            <!-- 不被网页(加速)转码 -->
-            <meta name="robots" content="index,follow">
-            <!-- 搜索引擎抓取 -->
-            <meta name="renderer" content="webkit">
-            <meta name="viewport"
-                content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-            <meta name="apple-mobile-web-app-capable" content="yes">
-            <!-- 删除苹果默认的工具栏和菜单栏 -->
-            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-            <!-- 设置苹果工具栏颜色 -->
-            <title>dom</title>
-          ```
-    2. [新增dom API](html/html5/dom.html)
-         
-    3. [定位](html/html5/geolocation.html)
-
-    4. [canvas](canvas/canvas-base.html)
-
-    5. [网络检测](html/html5/online.html)
-
-    6. [客户端数据的缓存机制](html/html5/webStorage.html)
-
-    7. [video (api)](html/html5/media)
-
-    8. [mobile](mobile/h5-mobile)
 
 ## css3
 ### selector
@@ -254,7 +207,6 @@
 
 ### transition:
 1. transition:过渡属性     过渡时间        过渡延迟     过渡速度
-
     transition-property ..-duration     ..-delay    transition-timing-function:ease  linear ease-in ease-in-out
     
     transition: all 0.2s
@@ -294,16 +246,16 @@
     * from{},to{} 类似0%-100%
 
 2. 调用动画 
-     * 复合属性:    animation: animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction 和 animation-fill-mode.
+    * 复合属性:    animation: animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction 和 animation-fill-mode.
 
-     * 动画名称     animation-name  自定义的
-     * 动画总时间   animation-duration 时间
-     * 动画延迟     animation-delay    时间
-     * 动画速度     animation-timing-function  ease ease-in  ease-in-out linear steps(n)
-     * 动画次数     animation-iteration-count  数字  infinite(无限循环)
-     * 动画播放状态   animation-play-state    running  paused
-     * 动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的状态 none(default)不改变任何样式 both 动画将会执行 forwards 和 * * backwards 执行的动作
-     * 动画方向        animation-direction    reverse（反方向）
+    * 动画名称     animation-name  自定义的
+    * 动画总时间   animation-duration 时间
+    * 动画延迟     animation-delay    时间
+    * 动画速度     animation-timing-function  ease ease-in  ease-in-out linear steps(n)
+    * 动画次数     animation-iteration-count  数字  infinite(无限循环)
+    * 动画播放状态   animation-play-state    running  paused
+    * 动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的态 none(default)不改变任何样式 both 动画将会执行 forwards 和 * * backwards 执行的动作
+    * 动画方向        animation-direction    reverse（反方向）
 
 3. 事件:animationend
 
@@ -469,6 +421,47 @@
             - left 向左浮动， right 向右浮动
             - 绝对定位
             - flex 中间flex:1
+
+## h5
+ * 狭义上: 是html4的升级版本，是新一代web应用标准
+ * 广义上: H5其实指的是一个泛称，它是由HTML5 + CSS3 + JsApi等技术组合而成的一个应用开发平台。
+
+ * html5技术:
+    1. 标签
+        + 常用新增的语义 （业务标签）   
+            - header nav main aside section (独立的区块) article footer
+        + 元信息标签:是指描述自身的信息,通常不会显示，多数情况下是给浏览器、搜索引擎等机器阅读的
+          ```html
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <!-- 默认使用最新浏览器 -->
+            <meta http-equiv="Cache-Control" content="no-siteapp">
+            <!-- 不被网页(加速)转码 -->
+            <meta name="robots" content="index,follow">
+            <!-- 搜索引擎抓取 -->
+            <meta name="renderer" content="webkit">
+            <meta name="viewport"
+                content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <!-- 删除苹果默认的工具栏和菜单栏 -->
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+            <!-- 设置苹果工具栏颜色 -->
+            <title>dom</title>
+          ```
+    2. [新增dom API](html/html5/dom.html)
+         
+    3. [定位](html/html5/geolocation.html)
+
+    4. [canvas](canvas/canvas-base.html)
+
+    5. [网络检测](html/html5/online.html)
+
+    6. [客户端数据的缓存机制](html/html5/webStorage.html)
+
+    7. [video (api)](html/html5/media)
+
+    8. [mobile](mobile/h5-mobile)
+
 
 ## 预编译语言
  * [less](css/less/less.md)
@@ -2263,14 +2256,6 @@
     
  * [文章])(https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html)
 
-## 数据图表
-- [echarts](https://echarts.baidu.com/examples/index.html)
-- [highcharts](https://www.highcharts.com.cn/)
-
-## canvas/webGL
- * [canvas基本使用](canvas/canvas-base.html)
- * three.js
-
 ## node
  * [node](node/README.md)
 
@@ -2315,8 +2300,12 @@
  
  - typescript
 
- ## 可视化
-    - webgl
-    - canvas
+## 可视化
+ - [canvas基本使用](canvas/canvas-base.html)
+ - webgl
+ - three.js
+ + 数据图表
+    - [echarts](https://echarts.baidu.com/examples/index.html)
+    - [highcharts](https://www.highcharts.com.cn/)
 
 ## WebAssembly
