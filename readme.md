@@ -301,12 +301,6 @@
 * keep-all
     CJK 文本不断行。 Non-CJK 文本表现同 normal。
 
-### 私有前缀
-1. webkit chrome  safari 新版opera
-2. moz    firefox
-3. ms     IE
-4. o      老版opeara
-
 ### 透明色     
 1. rgba
 2. opacity 能继承 取值0-1
@@ -316,7 +310,6 @@
     - s 饱和度0-100%
     - l 亮度 0-100%
     - a alpha 透明度
-
 
 ### layout
  * 浮动布局
@@ -448,6 +441,7 @@
             <!-- 设置苹果工具栏颜色 -->
             <title>dom</title>
           ```
+
     2. [新增dom API](html/html5/dom.html)
          
     3. [定位](html/html5/geolocation.html)
@@ -458,7 +452,7 @@
 
     6. [客户端数据的缓存机制](html/html5/webStorage.html)
 
-    7. [video (api)](html/html5/media)
+    7. [video(api)](html/html5/media)
 
     8. [mobile](mobile/h5-mobile)
 
@@ -590,6 +584,15 @@
     (new Date()).getTime();
 
  * [封装常用时间处理](js/date-format.js)
+
+ ### js异常
+> js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
+ * EvalError  运行时异常。 eval 函数调用时发生的异常
+ * RangeError 运行时异常 超出数据范围
+ * ReferenceError 运行时异常 未定义变量
+ * SyntanxError  预解析,语法错误
+ * typeError 运行时异常，类型异常
+ * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
 
 ## dom
 ### 什么是DOM，如何访问
@@ -791,254 +794,13 @@
 
 
 
+
+
+## (*)http协议
+- [http](http/readme.md)
+
 ## (*)浏览器
-### 浏览器是如何工作的(如何渲染页面的)？
-1. 浏览器使用http或者HTTPS 协议，向服务端请求页面
-2. 把请求回来的 HTML 代码经过解析，构建成 DOM 树 解析css,创建的是 CSSOM 树 （CSSOM 的解析过程与 DOM 的解析过程是并行的）
-3. Dom 树结合CSSOM 树生成渲染树
-4. 布局渲染树
-5. 绘制渲染树
-
-### 预解析
-1. 语法分析：保证js代码符合语法规则，能被正确的执行。
-2. 变量名以及函数名提升
-3. 确定变量的作用域。
-
-### 函数变量提升
->先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
- * ```javascript
-    'use strict';
-    function foo() {
-        var x = 'Hello, ' + y;
-        alert(x);
-        var y = 'Bob';
-    }
-    foo();
-
-    // 虽然是strict模式，但语句var x = 'Hello, ' + y;并不报错，原因是变量y在稍后申明了。
-    // 但是alert显示Hello, undefined，说明变量y的值为undefined。
-    // 这正是因为JavaScript引擎自动提升了变量y的声明，但不会提升变量y的赋值。
-
-    // 变量提升后代码：
-    function foo() {
-        var y; // 提升变量y的申明
-        var x = 'Hello, ' + y;
-        alert(x);
-        y = 'Bob';
-    }     
-    // 函数内变量的怪异声明模式:
-    function fun(){
-        num=10   //没写var 就相当于全局变量
-    }
-
-    fun()
-    console.log(num) //10
-
-    ```
-
- * Var Let Const区别 
-   - var 在浏览器预解析时存在变量提升，未声明可以使用
-   - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
-   - const 声明一个只读的常量。一旦声明常量的值就不能改变。
-    (对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指向实际数据的指针，const只能保证这个指针是固定的（即总是指向另一个固定的地址），至于它指向的数据结构是不是可变的，就完全不能控制了)
-    
- * 综合考察
-    ``` js
-    for (var index = 0; index < 10; index++) {
-            setTimeout(() => {
-                console.log(index)
-            },0 ); 
-    }
-    // 涉及到js 执行机制 执行栈同步执行完，把异步队列拿到栈执行10 次 
-    // 输出10 次10 
-
-    for (let index = 0; index < 10; index++) {
-        setTimeout(fucntion(){
-            console.log(index)
-        },0 );
-        
-    }
-    // 块级作用域
-    // 输出的结果 0一直到9，也可以用闭包来实现
-    for (var index = 0; index < 10; index++) {
-           (function(index){
-            setTimeout(fucntion(){
-                console.log(index)
-            },0 );
-           })(index);
-    }
-
-    ```
-
-### js 的三种加载方式
-* 正常:JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情。
-    ```js
-        <script src="index.js"></script>
-    ```
-* async:JS 不会阻塞浏览器,它的加载是异步的，当它加载结束，JS 脚本会立即执行。
-    ```js
-        <script async src="index.js"></script>
-    ```
-* defer:JS 的加载是异步的，执行是被推迟的。等整个文档解析完成、DOMContentLoaded 事件即将被触发时，被标记了 defer 的 JS 文件才会开始依次执行
-    ```js
-        <script defer src="index.js"></script>
-    ```
-
-### 浏览器本地存储
-* cookie:如果用于保存用户登录态，应该将该值加密
-    - 一般有服务器生成，可以设置过期时间
-    - 容量较小，4kb 左右
-    - 每次请求都会携带在header中
-    + document.cookie的属性
-        - expires 设置过期时间,被max-age属性所取代，max-age用秒来设置cookie的生存期
-        - path cookie关联在一起的网页
-        - domain 多个web服务器共享cookie
-* localStorage
-    - 一直存在，除非被清理
-    - 容量5m 左右
-    - 不参与服务器通讯
-* sessionStorage
-    - 用法类似localStorage
-    - 页面关闭就清理
-* indexDB
-    - 浏览器端的数据库，不被清理一直存在
-
-### 事件机制
- * 页面事件的加载顺序
-    - DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
-    - document.onload 是在结构和样式加载完才执行js
-    - window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
-
- * 事件冒泡和事件捕获   
-    - 事件冒泡：从里向外执行，遇到相同的事件及执行
-    - 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
-
- * 事件触发三阶段
-    1. window 往事件触发处传播，遇到注册的捕获事件会触发
-    2. 传播到事件触发处时触发注册的事件
-    3. 从事件触发处往 window 传播，遇到注册的冒泡事件会触发
-
- * 事件注册(监听) addEventListener（避免事件被覆盖）
-    > ie9 以下不支持 false默认冒泡 true 捕获
-    + 第三个参数为bool,该参数默认值为 false(冒泡) ，useCapture 决定了注册的事件是捕获事件还是冒泡事件
-    + 作为对象：
-        - capture：布尔值，和 useCapture 作用一样
-        - once：布尔值，值为 true 表示该回调只会调用一次，调用后会移除监听
-        - passive：布尔值，表示永远不会调用 preventDefault
-        ```javascript
-            node.addEventListener(enventType,fn，false)
-
-            btn.addEventListener("click",fun)
-            // 移除事件监听(参数必须一致)
-            btn.removeEventListener("click",fun)
-                
-            // ie-6-10(enventType 加on)
-            node.attachEvent(enventType,fn)
-            node.detachEvent(enventType,fn)
-        ```
-    + 阻止事件冒泡:(一般来说，如果我们只希望事件只触发在目标上)
-        - ```js
-            node.addEventListener(
-                'click',
-                e => {
-                    // 阻止事件冒泡,也可以阻止捕获事件
-                    e.stopPropagation() 
-                    // 同样也能实现阻止事件，但是还能阻止该事件目标执行别的注册事件。
-                    e.stopImmediatePropagation()
-                    console.log('冒泡')
-                },
-                false
-            )
-
-            // 点击 node 只会执行上面的函数，该函数不会执行
-            node.addEventListener(
-                'click',
-                event => {
-                    console.log('捕获 ')
-                },
-                true
-            )
-        ```
- * 事件触发(标准浏览器)：dispatchEvent
-    + element.dispatchEvent()
-    + 使用该方法：
-        + 创建:  document.createEvent()
-            - 返回新创建的Event对象
-            - 参数：
-            -  HTMLEvents：包括 'abort', 'blur', 'change', 'error', 'focus', 'load', 'reset', 'resize', 'scroll', 'select', 'submit', 'unload'. 事件
-            - UIEvents ：包括 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'keydown', 'keypress', 'keyup'. 间接包含 MouseEvents. 
-            - MouseEvents：包括 'click', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup'. 
-            - MutationEvents:包括 'DOMAttrModified', 'DOMNodeInserted', 'DOMNodeRemoved', 'DOMCharacterDataModified', 'DOMNodeInsertedIntoDocument','DOMNodeRemovedFromDocument', 'DOMSubtreeModified'
-            
-        + 初始化: initEvent(eventName, canBubble, preventDefault)
-            - initEvent() 方法用于初始化通过DocumentEvent接口创建的Event的值。
-            - canBubble 是否可以冒泡
-            - preventDefault 是否阻止事件的默认操作
-
-        + 例子：
-            ```js
-                // 举个例子：
-                var dom = document.querySelector('#id')
-                document.addEventListener('alert', function (event) {
-                    console.log(event)
-                }, false);
-                
-                // 创建
-                var evt = document.createEvent("HTMLEvents");
-                // 初始化
-                evt.initEvent("alert", false, false);
-                // 触发, 即弹出文字
-                dom.dispatchEvent(evt);
-            ```
-    + 自定义事件
-        - 自定义事件的函数有 Event、CustomEvent 和 dispatchEvent
-        - ```js
-            // 向 window派发一个resize内置事件
-            window.dispatchEvent(new Event('resize'))
-            
-            // 直接自定义事件，使用 Event 构造函数：
-            var event = new Event('build');
-            var elem = document.querySelector('#id')
-            // 监听事件
-            elem.addEventListener('build', function (e) { ... }, false);
-            // 触发事件.
-            elem.dispatchEvent(event);
-
-
-        ```
-
- * 事件的对象(event.target)
-    > 记录当前事件触发时的一些信息
-   + btn.onclick=function(event){} 
-     - event.target 真正触发事件的元素
-     - event.type="click"
-     - event.clinetX/clinetY 
-     - ie 低版本不兼容 var tar = e.target||e.srcElement
-
- * 事件代理/委托
-  > 本质就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
-    - 应用的场景：动态生成的子节点要注册事件，那么子节点需要注册事件的话应该注册在父节点上
-  + 好处：
-    1. 减少了事件的注册，内存开销减少了
-    2. 元素的增减不会影响事件的绑定
-    3. js和DOM节点之间的关联变少了，减少了因循环引用(GC中引用计数法的缺陷)而带来的内存泄漏发生的概率。
-
-  + jq 早期 bind 绑定事件会出现一个问题及新创建的元素没有事件，后来用delegate解决1.7 版本后统一用on
-
-  + 注意：
-    - 不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可用。
-    - 例如mouseover 由于事件对象target 频繁改动会有性能问题
-
-## (*)网络协议
- * http
-    - [http](http/readme.md)
-
- * WebSocket
-    - WebSocket是HTML5中的协议（基于Http协议的），支持持久连续，http协议不支持持久性连接
-
- * TCP/IP
-    - tcp:传输控制协议，它位于 IP 协议之上，基于 IP 协议提供可靠的、字节流形式的通信，是 HTTP 协议得以实现的基础。
-    - ip:主要目的是解决寻址和路由问题，以及如何在两点间传送数据包
+-[浏览器](浏览器/readme.md)
 
 ## 对象与函数
 ### 对象：
@@ -1589,7 +1351,6 @@
                 sum += value
             })
         ```
-
     + map
         ```javascript
             // 类似foreach 有返回值 返回一个新数组
@@ -1683,134 +1444,7 @@
 - [es6](ECMA/es6.md)
 
 ## 正则表达式
- * [正则表达式](note/reg.md)
-
-## 进程和线程
- * 进程
-    - 每一个正在运行的应用程序都被称之为进程
-    - 每一个应用程序都至少有一个进程
-    - 进程是用来给应用程序体用一个执行的环境，给应用程序分配资源的一个单位
-
- * 线程
-    - 用来执行应用程序中的代码
-    - 在一个进程内部，有很多的线程
-
-## Event Loop
- * JS 执行是单线程的，它是基于事件循环的。
-
- * js语言为什么设计成单线程的？
-    - 避免多线程操作同一文件（资源）产生冲突。
-    - 提高js性能
-
- * brower
-    1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
-
-    2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
-
-    3. 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，放入执行栈，开始执行。
-
-    4. 主线程不断重复上面的第三步。
-    主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。
-
- * 规范中规定 task 分为两大类:我们把宿主发起的任务称为宏观任务，把js引擎发起的任务称为微观任务
-    + macro task（宏任务）
-        - script 
-        - setTimeout 
-        - setInterval
-        - setImmediate 
-        - I/O 
-        - UI rendering
-
-    + micro task（微任务）
-        - process.nextTick（Node 独有）
-        - promise 
-        - MutationObserver
-
- * node
-
-## promise 
-   * what?
-        - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
-        - ES6规定，Promise对象是一个构造函数，用来生成Promise实例。
-        - Promise 新建后就会立即执行
-   * 有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）
-      ```js
-            // 基本用法
-            var promise = new Promise(function(resolve, reject) {
-                if (/* 异步操作成功 */){
-                    resolve(value);
-                } else {
-                    reject(error);
-                }
-            });
-            //  用promise 封装一个ajax
-           const getJSON = function(url) {
-            const promise = new Promise(function(resolve, reject){
-                const handler = function() {
-                    if (this.readyState !== 4) {
-                        return;
-                    }
-                    if (this.status === 200) {
-                        resolve(this.response);
-                    } else {
-                        reject(new Error(this.statusText));
-                    }
-                    };
-                    const client = new XMLHttpRequest();
-                    client.open("GET", url);
-                    client.onreadystatechange = handler;
-                    client.responseType = "json";
-                    client.setRequestHeader("Accept", "application/json");
-                    client.send();
-                });
-                return promise;
-            };
-
-            getJSON("/posts.json")
-            .then(function(json) {
-                console.log('Contents: ' + json);
-            })
-            .catch(error=>{
-                console.error('出错了', error);
-            })
-
-        ```
-   * Promise.prototype.then() 
-   * Promise.prototype.catch()
-   * Promise.prototype.finally()
-     - then resolve 的回调 
-     - catch reject的回调 
-     - finally Promise 对象最后状态如何，都会执行的操作
-   * promise.all 和 promise.race 
-    - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
-    - promise.race
-   * 使用场景：
-   * 区别：
- * async
-    - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
- * await 
-    - 表示在这里等待promise返回结果了，再继续执行。
-    - await 后面跟着的应该是一个promise对象（其他返回值也没关系，只是会立即执行，不过那样就没有意义）
-    - await 命令就是内部then命令的语法糖。
- * 问题?
-    - Promise里的代码为什么比setTimeout先执行？
-    - vue 异步更新是包装成macro task还是micro task(为什么)？
- * 事件循环每一次循环都是一个这样的过程
-    <image src='framework/vue/vue2.x/images/event-loop-queue.png'>
-    + 根据上图的执行过程，分析如下
-        1. setTimeout 是一个宏任务，所以推入了宏任务队列
-        2. 由于script 也是一个宏任务，也会被放入队列，由于该队列是一个一个执行的，所以本次循环，setTimeout 中不会被渲染，下次循环执行
-        3. 如果异步更新包装在micro task 中，队列中先执行script ，微任务是一对对执行的，所以Promise在本次循环被执行了，也就是渲染了
-
-## js异常与错误捕获
-> js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
- * EvalError  运行时异常。 eval 函数调用时发生的异常
- * RangeError 运行时异常 超出数据范围
- * ReferenceError 运行时异常 未定义变量
- * SyntanxError  预解析,语法错误
- * typeError 运行时异常，类型异常
- * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
-
+* [正则表达式](note/reg.md)
 
 ## 移动端
 ### 事件
@@ -1859,321 +1493,19 @@
 
 ## 基于vue构建的项目
  * [spa](framework/vue/vue.md)
- * [nuxt](framework/nuxt/readme.md)
+ * [ssr](framework/nuxt/readme.md)
 
-## 前端安全
- * xss
-    - 一般通过一段代码注入到网页中
-    - 场景：在评论中如果前后端不做处理，输入<script>alert('操')</script>
-    + 防御：
-        - 简单的通过转义字符对于引号、尖括号、斜杠进行转义
-        - ```js
-            function escape(str) {
-                str = str.replace(/&/g, '&amp;')
-                str = str.replace(/</g, '&lt;')
-                str = str.replace(/>/g, '&gt;')
-                str = str.replace(/"/g, '&quto;')
-                str = str.replace(/'/g, '&#39;')
-                str = str.replace(/`/g, '&#96;')
-                str = str.replace(/\//g, '&#x2F;')
-            return str
-            }
-            ```
-        - 对于富文本通常用白名单、黑名单方式
-        - ```js
-            const xss = require('xss')
-            let html = xss('<h1 id="title">XSS Demo</h1><script>alert("xss");</script>')
-            // -> <h1>XSS Demo</h1>&lt;script&gt;alert("xss");&lt;/script&gt;
-            console.log(html)
-            // 以上示例使用了 js-xss 来实现，可以看到在输出中保留了 h1 标签且过滤了 script 标签。
-           ```
-        - csp 本质上就是建立白名单，开发者明确告诉浏览器哪些外部资源可以加载和执行
-        - 开启csp:
-            1. 设置 HTTP Header 中的 Content-Security-Policy
-            ```html
-                <!-- 只允许加载本站资源 -->
-                Content-Security-Policy: default-src ‘self’
-                <!-- 只允许加载 HTTPS 协议图片 -->
-                Content-Security-Policy: img-src https://*
-                <!-- 更多规则参考mdn -->
-            ```
-            2. 设置 meta 标签的方式 <meta http-equiv="Content-Security-Policy">
- * CSRF
-    - 中文名为跨站请求伪造,原理就是攻击者构造出一个后端请求地址，诱导用户点击或者通过某些途径自动发起请求
-    - 场景：假设网站中有一个通过 GET 请求提交用户评论的接口，那么攻击者就可以在钓鱼网站中加入一个图片，图片的地址就是评论接口
-    防御：
-        - Get 请求不对数据进行修改
-        - 不让第三方网站访问到用户 Cookie
-        - 阻止第三方网站请求接口
-        - 请求时附带验证信息，比如验证码或者 Token
-        - 对于需要防范 CSRF 的请求，我们可以通过验证 Referer 来判断该请求是否为第三方网站发起的。
- * 点击劫持
-    - 攻击者将需要攻击的网站通过 iframe 嵌套的方式嵌入自己的网页中，并将 iframe 设置为透明，在页面中透出一个按钮诱导用户点击。
-    - 防御：X-FRAME-OPTIONS  是一个 HTTP 响应头，在现代浏览器有一个很好的支持。这个 HTTP 响应头 就是为了防御用 iframe 嵌套的点击劫持攻击。
-    - DENY，表示页面不允许通过 iframe 的方式展示
-    - SAMEORIGIN，表示页面可以在相同域名下通过 iframe 的方式展示
-    - ALLOW-FROM，表示页面可以在指定来源的 iframe 中展示
- * 中间人攻击 
-    - 通常来说不建议使用公共的 Wi-Fi，中间人攻击拦截得到敏感信息
-    - 通常使用https建立安全的通道
- 
-## 前端的工程化
+## 前端优化
+- [优化](前端优化/readme.md)
+
+## 工程化
 ### 构建与打包工具
  * [gulp](build-tool/gulp/readme.md)
  * [webpack](build-tool/webpack/readme.md)
 
 ### 测试
 
-### ci/cd
-
 ### 监控
-
-## 前端优化
-### 从输入 URL 到页面加载完成，发生了什么？(从以下5个方面考虑优化)
-1. DNS 解析
-2. TCP 连接
-3. HTTP 请求抛出
-4. 服务端处理请求，HTTP 响应返回
-5. 浏览器拿到响应数据，解析响应内容，把解析的结果展示给用户
-
-### 网络层
-#### 预解析、预加载、预渲染
-* dns-prefetch
-    - DNS 解析也是需要时间的，可以通过预解析的方式来预先获得域名所对应的 IP。
-    ```html
-        <link rel="dns-prefetch" href="//xxx.com">
-    ```
-* 预加载 preload
-    - 有些资源不需要马上用到，但是希望尽早获取
-    - 预加载其实是声明式的 fetch ，强制浏览器请求资源，并且不会阻塞 
-    ```html
-        <link rel="preload" href="http://example.com">
-    ```
-    - 预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载
-* 预渲染 prerender
-    - 可以提高页面的加载速度，但是要确保该页面大概率会被用户在之后打开，否则就是白白浪费资源去渲染。
-    ```html
-    <link rel="prerender" href="http://example.com">
-    ```
-
-#### Wepack构建优化(帮助我们处理部分静态资源的压缩与合并)
- * 减少构建时间
-    + 优化Loader
-        > 原因：主要因为 Babel 转换js 会将代码转为字符串生成 AST，然后对 AST 继续进行转变最后再生成新的代码，项目越大，转换代码越多，效率就越低
-        - 优化 Loader 的文件搜索范围,只转化src(自己写的js)
-        - 将 Babel 编译过的文件缓存起来,下次只需要编译更改过的代码文件即可
-
-    + 多线程构建:（HappyPack 工具）Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，使用多线程构建，充分利用系统资源
-
-    + DllPlugin 将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数
-
-    + 代码压缩 Webpack4 将 mode 设置为 production，并行压缩js css html
-
-    + 其他小技巧
-        - resolve.extensions：我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面，没加文件后缀时，默认搜索顺序['.js', '.json']
-        - resolve.alias：可以通过别名的方式来映射一个路径，能让 Webpack 更快找到路径
-        - module.noParse：若确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
-
- * 减少构建后包的体积
-    - 按需加载 require.ensure 和 es6 import
-    - Scope Hoisting:Webpack4 开启 optimization.concatenateModules=true
-    - Tree Shaking:可以实现删除项目中未被引用的代码 Webpack4 生产环境自动开启了
-    - externals 配置来提取常用库,不打包进项目
- 
- * 其他静态资源优化
-   - image 优化 雪碧图 svg
-   - font 按需引入字体
-   - gzip 压缩原理:
-   - cdn 全栈静态资源的缓存
-
-#### 减少网络请求（浏览器缓存、离线存储）
-* 缓存：强缓存和协商缓存两种
-    - 区别：使用本地缓存时，是否需要向服务器验证本地缓存是否依旧有效，协商缓存，就是需要和服务器进行协商，最终确定是否使用本地缓存
-    + 使用缓存注意更新的问题：webpack 提供了hash
-        - hash 构建生成的文件hash值都是一样的，只要项目里有文件更改，整个项目构建的hash值都会更改。
-        - chunkhash 不同的入口文件(Entry)进行依赖文件解析、构建对应的chunk，生成对应的hash值。
-        - contenthash 由文件内容产生的hash值，内容不同产生的contenthash值也不一样
-
-    + chunkhash和contenthash的主要应用场景?
-        - 在实际在项目中，我们一般会把项目中的css都抽离出对应的css文件来加以引用。如果我们使用chunkhash，当我们改了css代码之后，会发现css文件hash值改变的同时，js文件的hash值也会改变。这时候，contenthash就派上用场了
-
-    - nodejs 浏览器的缓存方案有服务端返回的响应头决定
-        ```js
-        // 返回一个强缓存
-        res.setHeader('Cache-Control', 'public, max-age=xxx');
-        //返回一个协商缓存
-        res.setHeader('Cache-Control', 'public, max-age=0');
-        res.setHeader('Last-Modified', xxx);
-        res.setHeader('ETag', xxx);
-        ```
-    > 前端缓存时，我们尽可能设置长时间的强缓存，通过文件名加hash的方式来做版本更新。在代码分包的时候，应该将一些不常变的公共库独立打包出来，使其能够更持久的缓存
-
-### 渲染层
-* 服务端渲染(seo)
-
-* dom 优化
-    + DOM 为什么这么慢
-        - 浏览器分为JS引擎和渲染引擎（浏览器内核）,操作dom 涉及两种引擎的通讯，通讯的开销是比较大的
-        - dom 更改了样式，会导致渲染树的变化，导致重绘与回流
-
-    + 回流（也叫重排）：几何属性的修改，导致重新计算绘制出来的过程
-
-    + 重绘：非几何属性的修改
-
-    + 如何处理回流重绘
-        - 批量修改样式（用class去合并更改样式，不要一条一条去修改）
-        - 缓存获取的属性和dom节点
-        - 频繁的操作 DOM 离线化（先display:none 然后修改，修改完display:block）
-        > 现代浏览器还是比较聪明的，如谷歌它有Flush 队列，它会用队列去批量处理，其他浏览器就不一定了，所以还是自己比较靠谱
-
-    + 优化：
-        - 减少dom操作
-        - 使用DOM Fragment
-        - 放在微任务中异步更新dom(在微任务队列中，批量的执行完了，最后只渲染一次)
-    
-
-* Lazy-Load
-  - 实现方式
-  - ```js
-        // 获取所有的图片标签
-            const imgs = document.getElementsByTagName('img')
-            // 获取可视区域的高度
-            const viewHeight = window.innerHeight || document.documentElement.clientHeight
-            // num用于统计当前显示到了哪一张图片，避免每次都从第一张图片开始检查是否露出
-            let num = 0
-            function lazyload(){
-                for(let i=num; i<imgs.length; i++) {
-                    // 用可视区域高度减去元素顶部距离可视区域顶部的高度
-                    let distance = viewHeight - imgs[i].getBoundingClientRect().top
-                    // 如果可视区域高度大于等于元素顶部距离可视区域顶部的高度，说明元素露出
-                    if(distance >= 0 ){
-                        // 给元素写入真实的src，展示图片
-                        imgs[i].src = imgs[i].getAttribute('data-src')
-                        // 前i张图片已经加载完毕，下次从第i+1张开始检查是否露出
-                        num = i + 1
-                    }
-                }
-            }
-            // 监听Scroll事件
-            window.addEventListener('scroll', lazyload, false);
-    ```
-
-* 节流(throttle)/防抖(debounce)
-    + 出现的背景
-        - scroll 事件，resize 事件、鼠标事件（比如 mousemove、mouseover 等）、键盘事件（keyup、keydown 等）都存在被频繁触发的风险，频繁触发回调导致的大量计算会引发页面的抖动甚至卡顿
-
-    + throttle
-        - 在指定的时间内，不管事件触发多少次，回调函数只执行第一次的触发
-        - ```js
-            // fn是我们需要包装的事件回调, interval是时间间隔的阈值
-            function throttle(fn, interval) {
-            // last为上一次触发回调的时间
-            let last = 0
-            
-            // 将throttle处理结果当作函数返回
-            return function () {
-                // 保留调用时的this上下文
-                let context = this
-                // 保留调用时传入的参数
-                let args = arguments
-                // 记录本次触发回调的时间(new Date()返回的是date类型，+new Date()返回的是时间戳)
-                let now = +new Date()
-                
-                // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
-                if (now - last >= interval) {
-                // 如果时间间隔大于我们设定的时间间隔阈值，则执行回调
-                    last = now;
-                    fn.apply(context, args);
-                }
-                }
-            }
-
-            // 用throttle来包装scroll的回调
-            const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
-
-            document.addEventListener('scroll', better_scroll)
-          ```
-    + debounce
-        - 在指定的时间内，不管事件触发多少次，回调函数只执行最后一次的触发
-        - ```js
-            // fn是我们需要包装的事件回调, delay是时间间隔的阈值
-            function throttle(fn, delay) {
-            // last为上一次触发回调的时间, timer是定时器
-            let last = 0, timer = null
-            // 将throttle处理结果当作函数返回
-            
-            return function () { 
-                // 保留调用时的this上下文
-                let context = this
-                // 保留调用时传入的参数
-                let args = arguments
-                // 记录本次触发回调的时间
-                let now = +new Date()
-                
-                // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
-                if (now - last < delay) {
-                // 如果时间间隔小于我们设定的时间间隔阈值，则为本次触发操作设立一个新的定时器
-                clearTimeout(timer)
-                timer = setTimeout(function () {
-                    last = now
-                    fn.apply(context, args)
-                    }, delay)
-                } else {
-                    // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应
-                    last = now
-                    fn.apply(context, args)
-                }
-            }
-            }
-
-            // 用新的throttle包装scroll的回调
-            const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
-
-            document.addEventListener('scroll', better_scroll)
-          ```
-
-
-* 首屏渲染提速(秒开的问题)（移动端）
-
-### 测试性能工具（具体问题具体分析）
-* 如何检测性能，看哪些指标？
-    + 工具: Chrome(Audits,Performance,LightHouse)
-
-        - Audit 工具获得网站的多个指标的性能报告,性能、最佳实践、seo、然后会给一些评分，最后它会给你一些优化的建议，针对这些点去优化
-
-        + Performance 工具了解网站的性能瓶颈
-            - 概述面板:FPS(动画相关) CPU NET
-                
-            - 详情面板：主要看main栏目下的火焰图和summary 的饼状图：loading、scripting、rendering 、painting并和cpu结合具体分析
-
-    + 代码检测：W3C Performance api
-        ```js
-        const timing = window.performance.timing
-        // DNS查询耗时
-        timing.domainLookupEnd - timing.domainLookupStart
-        
-        // TCP连接耗时
-        timing.connectEnd - timing.connectStart
-        
-        // 内容加载耗时
-        timing.responseEnd - timing.requestStart
-
-        // firstbyte：首包时间	
-        timing.responseStart – timing.domainLookupStart	
-
-        // fpt：First Paint Time, 首次渲染时间 / 白屏时间
-        timing.responseEnd – timing.fetchStart
-
-        // tti：Time to Interact，首次可交互时间	
-        timing.domInteractive – timing.fetchStart
-
-        // ready：HTML 加载完成时间，即 DOM 就位的时间
-        timing.domContentLoaded – timing.fetchStart
-
-        // load：页面完全加载时间
-        timing.loadEventStart – timing.fetchStart
-
-        ```
 
 ## 环境和工具
 ### mac 
@@ -2300,7 +1632,7 @@
  
  - typescript
 
-## 可视化
+## 前端图形学（可视化）
  - [canvas基本使用](canvas/canvas-base.html)
  - webgl
  - three.js

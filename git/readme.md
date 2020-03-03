@@ -156,3 +156,5 @@
     - git push origin v3.0 
     - git tag -d v1.1  //删除本地tag
     - git push origin --delete tag V1.1 
+    
+* git remote -v 查看远程仓库
