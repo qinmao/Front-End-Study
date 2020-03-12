@@ -103,7 +103,7 @@
 
     5. 删除分支
         +  本地删除
-            - git branch -d branchName()
+            - git branch -d branchName
         + 删除远程
             - git branch -r -d origin/branch-name
             - git push origin :branch-name
