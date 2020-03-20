@@ -1,0 +1,246 @@
+## 前端优化
+### 从输入 URL 到页面加载完成，发生了什么？(从以下5个方面考虑优化)
+1. DNS 解析
+2. TCP 连接
+3. HTTP 请求抛出
+4. 服务端处理请求，HTTP 响应返回
+5. 浏览器拿到响应数据，解析响应内容，把解析的结果展示给用户
+
+### 网络层
+#### 预解析、预加载、预渲染
+* dns-prefetch
+    - DNS 解析也是需要时间的，可以通过预解析的方式来预先获得域名所对应的 IP。
+    ```html
+        <link rel="dns-prefetch" href="//xxx.com">
+    ```
+* 预加载 preload
+    - 有些资源不需要马上用到，但是希望尽早获取
+    - 预加载其实是声明式的 fetch ，强制浏览器请求资源，并且不会阻塞 
+    ```html
+        <link rel="preload" href="http://example.com">
+    ```
+    - 预加载可以一定程度上降低首屏的加载时间，因为可以将一些不影响首屏但重要的文件延后加载
+* 预渲染 prerender
+    - 可以提高页面的加载速度，但是要确保该页面大概率会被用户在之后打开，否则就是白白浪费资源去渲染。
+    ```html
+    <link rel="prerender" href="http://example.com">
+    ```
+
+#### Wepack构建优化(帮助我们处理部分静态资源的压缩与合并)
+ * 减少构建时间
+    + 优化Loader
+        > 原因：主要因为 Babel 转换js 会将代码转为字符串生成 AST，然后对 AST 继续进行转变最后再生成新的代码，项目越大，转换代码越多，效率就越低
+        - 优化 Loader 的文件搜索范围,只转化src(自己写的js)
+        - 将 Babel 编译过的文件缓存起来,下次只需要编译更改过的代码文件即可
+
+    + 多线程构建:（HappyPack 工具）Node 是单线程运行的，所以 Webpack 在打包的过程中也是单线程的，使用多线程构建，充分利用系统资源
+
+    + DllPlugin 将特定的类库提前打包然后引入。这种方式可以极大的减少打包类库的次数
+
+    + 代码压缩 Webpack4 将 mode 设置为 production，并行压缩js css html
+
+    + 其他小技巧
+        - resolve.extensions：我们应该尽可能减少后缀列表长度，然后将出现频率高的后缀排在前面，没加文件后缀时，默认搜索顺序['.js', '.json']
+        - resolve.alias：可以通过别名的方式来映射一个路径，能让 Webpack 更快找到路径
+        - module.noParse：若确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
+
+ * 减少构建后包的体积
+    - 按需加载 require.ensure 和 es6 import
+    - Scope Hoisting:Webpack4 开启 optimization.concatenateModules=true
+    - Tree Shaking:可以实现删除项目中未被引用的代码 Webpack4 生产环境自动开启了
+    - externals 配置来提取常用库,不打包进项目
+ 
+ * 其他静态资源优化
+   - image 优化 雪碧图 svg
+   - font 按需引入字体
+   - gzip 压缩原理:
+   - cdn 全栈静态资源的缓存
+
+#### 减少网络请求（浏览器缓存、离线存储）
+* 缓存：强缓存和协商缓存两种
+    - 区别：使用本地缓存时，是否需要向服务器验证本地缓存是否依旧有效，协商缓存，就是需要和服务器进行协商，最终确定是否使用本地缓存
+    + 使用缓存注意更新的问题：webpack 提供了hash
+        - hash 构建生成的文件hash值都是一样的，只要项目里有文件更改，整个项目构建的hash值都会更改。
+        - chunkhash 不同的入口文件(Entry)进行依赖文件解析、构建对应的chunk，生成对应的hash值。
+        - contenthash 由文件内容产生的hash值，内容不同产生的contenthash值也不一样
+
+    + chunkhash和contenthash的主要应用场景?
+        - 在实际在项目中，我们一般会把项目中的css都抽离出对应的css文件来加以引用。如果我们使用chunkhash，当我们改了css代码之后，会发现css文件hash值改变的同时，js文件的hash值也会改变。这时候，contenthash就派上用场了
+
+    - nodejs 浏览器的缓存方案有服务端返回的响应头决定
+        ```js
+        // 返回一个强缓存
+        res.setHeader('Cache-Control', 'public, max-age=xxx');
+        //返回一个协商缓存
+        res.setHeader('Cache-Control', 'public, max-age=0');
+        res.setHeader('Last-Modified', xxx);
+        res.setHeader('ETag', xxx);
+        ```
+    > 前端缓存时，我们尽可能设置长时间的强缓存，通过文件名加hash的方式来做版本更新。在代码分包的时候，应该将一些不常变的公共库独立打包出来，使其能够更持久的缓存
+
+### 渲染层
+* 服务端渲染(seo)
+
+* dom 优化
+    + DOM 为什么这么慢
+        - 浏览器分为JS引擎和渲染引擎（浏览器内核）,操作dom 涉及两种引擎的通讯，通讯的开销是比较大的
+        - dom 更改了样式，会导致渲染树的变化，导致重绘与回流
+
+    + 回流（也叫重排）：几何属性的修改，导致重新计算绘制出来的过程
+
+    + 重绘：非几何属性的修改
+
+    + 如何处理回流重绘
+        - 批量修改样式（用class去合并更改样式，不要一条一条去修改）
+        - 缓存获取的属性和dom节点
+        - 频繁的操作 DOM 离线化（先display:none 然后修改，修改完display:block）
+        > 现代浏览器还是比较聪明的，如谷歌它有Flush 队列，它会用队列去批量处理，其他浏览器就不一定了，所以还是自己比较靠谱
+
+    + 优化：
+        - 减少dom操作
+        - 使用DOM Fragment
+        - 放在微任务中异步更新dom(在微任务队列中，批量的执行完了，最后只渲染一次)
+    
+
+* Lazy-Load
+  - 实现方式
+  - ```js
+        // 获取所有的图片标签
+            const imgs = document.getElementsByTagName('img')
+            // 获取可视区域的高度
+            const viewHeight = window.innerHeight || document.documentElement.clientHeight
+            // num用于统计当前显示到了哪一张图片，避免每次都从第一张图片开始检查是否露出
+            let num = 0
+            function lazyload(){
+                for(let i=num; i<imgs.length; i++) {
+                    // 用可视区域高度减去元素顶部距离可视区域顶部的高度
+                    let distance = viewHeight - imgs[i].getBoundingClientRect().top
+                    // 如果可视区域高度大于等于元素顶部距离可视区域顶部的高度，说明元素露出
+                    if(distance >= 0 ){
+                        // 给元素写入真实的src，展示图片
+                        imgs[i].src = imgs[i].getAttribute('data-src')
+                        // 前i张图片已经加载完毕，下次从第i+1张开始检查是否露出
+                        num = i + 1
+                    }
+                }
+            }
+            // 监听Scroll事件
+            window.addEventListener('scroll', lazyload, false);
+    ```
+
+* 节流(throttle)/防抖(debounce)
+    + 出现的背景
+        - scroll 事件，resize 事件、鼠标事件（比如 mousemove、mouseover 等）、键盘事件（keyup、keydown 等）都存在被频繁触发的风险，频繁触发回调导致的大量计算会引发页面的抖动甚至卡顿
+
+    + throttle
+        - 在指定的时间内，不管事件触发多少次，回调函数只执行第一次的触发
+        - ```js
+            // fn是我们需要包装的事件回调, interval是时间间隔的阈值
+            function throttle(fn, interval) {
+            // last为上一次触发回调的时间
+            let last = 0
+            
+            // 将throttle处理结果当作函数返回
+            return function () {
+                // 保留调用时的this上下文
+                let context = this
+                // 保留调用时传入的参数
+                let args = arguments
+                // 记录本次触发回调的时间(new Date()返回的是date类型，+new Date()返回的是时间戳)
+                let now = +new Date()
+                
+                // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+                if (now - last >= interval) {
+                // 如果时间间隔大于我们设定的时间间隔阈值，则执行回调
+                    last = now;
+                    fn.apply(context, args);
+                }
+                }
+            }
+
+            // 用throttle来包装scroll的回调
+            const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+
+            document.addEventListener('scroll', better_scroll)
+          ```
+    + debounce
+        - 在指定的时间内，不管事件触发多少次，回调函数只执行最后一次的触发
+        - ```js
+            // fn是我们需要包装的事件回调, delay是时间间隔的阈值
+            function throttle(fn, delay) {
+            // last为上一次触发回调的时间, timer是定时器
+            let last = 0, timer = null
+            // 将throttle处理结果当作函数返回
+            
+            return function () { 
+                // 保留调用时的this上下文
+                let context = this
+                // 保留调用时传入的参数
+                let args = arguments
+                // 记录本次触发回调的时间
+                let now = +new Date()
+                
+                // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+                if (now - last < delay) {
+                // 如果时间间隔小于我们设定的时间间隔阈值，则为本次触发操作设立一个新的定时器
+                clearTimeout(timer)
+                timer = setTimeout(function () {
+                    last = now
+                    fn.apply(context, args)
+                    }, delay)
+                } else {
+                    // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应
+                    last = now
+                    fn.apply(context, args)
+                }
+            }
+            }
+
+            // 用新的throttle包装scroll的回调
+            const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
+
+            document.addEventListener('scroll', better_scroll)
+          ```
+
+
+* 首屏渲染提速(秒开的问题)（移动端）
+
+### 测试性能工具（具体问题具体分析）
+* 如何检测性能，看哪些指标？
+    + 工具: Chrome(Audits,Performance,LightHouse)
+
+        - Audit 工具获得网站的多个指标的性能报告,性能、最佳实践、seo、然后会给一些评分，最后它会给你一些优化的建议，针对这些点去优化
+
+        + Performance 工具了解网站的性能瓶颈
+            - 概述面板:FPS(动画相关) CPU NET
+                
+            - 详情面板：主要看main栏目下的火焰图和summary 的饼状图：loading、scripting、rendering 、painting并和cpu结合具体分析
+
+    + 代码检测：W3C Performance api
+        ```js
+        const timing = window.performance.timing
+        // DNS查询耗时
+        timing.domainLookupEnd - timing.domainLookupStart
+        
+        // TCP连接耗时
+        timing.connectEnd - timing.connectStart
+        
+        // 内容加载耗时
+        timing.responseEnd - timing.requestStart
+
+        // firstbyte：首包时间	
+        timing.responseStart – timing.domainLookupStart	
+
+        // fpt：First Paint Time, 首次渲染时间 / 白屏时间
+        timing.responseEnd – timing.fetchStart
+
+        // tti：Time to Interact，首次可交互时间	
+        timing.domInteractive – timing.fetchStart
+
+        // ready：HTML 加载完成时间，即 DOM 就位的时间
+        timing.domContentLoaded – timing.fetchStart
+
+        // load：页面完全加载时间
+        timing.loadEventStart – timing.fetchStart
+
+        ```

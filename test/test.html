@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>test</title>
+</head>
+
+<body>
+  <script>
+    let str1 = "3C-A6-16-57-A2-D6";
+    let str2 = "70d923c00bdb";
+    let str3 = "123444";
+    let strArr = ['70D923C00BDB']
+
+    // console.log(str3.toLowerCase())
+    // console.log(str1.match(/[a-f0-9]/gi).join('').toLocaleLowerCase())
+    // console.log(strArr.includes(str2))
+    let temp = []
+    for (let index = 0; index < str2.length; index++) {
+      const item = str2[index];
+      if ((index + 1) % 2 === 0&&index!=str2.length-1) {
+        temp.push(item)
+        temp.push('-')
+      } else {
+        temp.push(item)
+      }
+    }
+
+    console.log(temp.join('').toUpperCase())
+
+  </script>
+</body>
+
+
+</html>
