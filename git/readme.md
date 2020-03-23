@@ -31,13 +31,15 @@
 
     + 删除仓库：rm -rf .git  
 
-    + 查看远程仓库：git remote -v 
+    + 查看本地仓库与远程仓库的关联详情：git remote -v 
     
     + 删除本地仓库：rm -rf .git 
 
-    + 本地仓库的版本提交到远程仓库
+    + 本地关联远程仓库并推送
         - git remote add origin git@github.com:qinmao/test.git
         - git push -u origin master
+
+    + 解除与远程仓库的关联：git remote remove origin
 
  * Git的基本工作流程
     - 使用git init 或者 git clone 初始化 本地仓库；让git管理该目录下所有文件
@@ -87,14 +89,13 @@
         - git branch -r 查看远程分支
         - git branch -a 查看所有分支
 
-    3. 切换分支
-        - git checkout branchName
+    3. 切换分支：git checkout branchName
 
     4. 合并分支：git merge branchName
 
     5. 删除分支
-        - 删除本地：git branch -d branchName
-        - 删除远程：git push origin --delete branch-name
+        - 本地：git branch -d branchName
+        - 远程：git push origin --delete [branchname]
 
     6. Git分支策略
         在实际开发时，虽然Git分支很强大，但是也不能肆意使用。通常按照一定的策略来使用分支，提高开发的效率。
