@@ -134,3 +134,11 @@
     2. npm ERR! you do not have permission to publish "your module name". Are you logged in as the correct user?
         - 提示没有权限，其实就是你的module名在npm上已经被占用啦，
         - 去npm搜索你的模块名称，搜不到，就能用，并且把 package.json里的name修改过来，重新npm publish
+
+## 安装三方包遇到的问题和解决方案
+- 对于一些下载慢或者需要翻墙的包可以先不安装
+- 其他包安装完，可以单独指定淘宝源安装如：node-sass
+ ```
+ npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass
+ 
+ ```
