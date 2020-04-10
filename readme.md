@@ -1551,18 +1551,15 @@
     ```
 
  * 好用的插件
-    - css formatter
     - file-size
     - html css support
     - minapp 
-    - npm intellisense
     - open in browser
-    - output colorizer
-    - path intellisense
     - vetur
     - vscode-icons
     - vueHelper
-
+    - [参考](https://juejin.im/post/5e89fb596fb9a03c75753eb0?utm_source=gold_browser_extension#comment)
+    
 ### 前端的工具
 * Fontmin/字蛛
 * ImageOptim
@@ -1632,13 +1629,13 @@
  
  - typescript
 
-## 前端图形学（可视化）
+## 前端图形学（数据可视化）
  - [canvas基本使用](canvas/canvas-base.html)
  - webgl
  - three.js
  + 数据图表
     - [echarts](https://echarts.baidu.com/examples/index.html)
     - [highcharts](https://www.highcharts.com.cn/)
-
+ + [d3](https://d3js.org/)
 ## WebAssembly
 
