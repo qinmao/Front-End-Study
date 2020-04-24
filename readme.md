@@ -1629,13 +1629,16 @@
  
  - typescript
 
-## 前端图形学（数据可视化）
+## 前端图形学（可视化）
  - [canvas基本使用](canvas/canvas-base.html)
  - webgl
  - three.js
- + 数据图表
+ + [d3](https://d3js.org/)
+ + [antv-g6图可视化引擎](https://g6.antv.vision/zh)
+ + [vis.js](https://github.com/almende/vis)
+ + 成熟的产品
     - [echarts](https://echarts.baidu.com/examples/index.html)
     - [highcharts](https://www.highcharts.com.cn/)
- + [d3](https://d3js.org/)
+ - [技术RoadMap](https://www.yuque.com/antv/g6-blog/pqd6i7#727ad5d2)
 ## WebAssembly
 

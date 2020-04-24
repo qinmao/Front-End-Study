@@ -4,19 +4,6 @@
 
 然后再初始化eslint`eslint --init`
 
-然后我们配置的时候
-第一种初始化方式
-![img](images/eslint-1.png)
-![img](images/eslint-1.png)
-![img](images/eslint-1.png)
-
-![img](images/eslint-4.png)
-
-第二种初始化方式
-![img](images/eslint-5.png)
-
-然后就可以了  重启我们的vscode就可以进行代码风格检查了
-
 - 文档 <[http://eslint.cn/docs/user-guide/configuring](http://eslint.cn/docs/user-guide/configuring)[http://eslint.cn/docs/user-guide/configuring](http://eslint.cn/docs/user-guide/configuring)ESLint的2种配置:**Configuration Comments** - 使用 JavaScript 注释把配置信息直接嵌入到一个文件。**Configuration Files** - 使用 JavaScript、JSON 或者 YAML 文件为整个目录和它的子目录指定配置信息。可以用 .eslintrc.* 文件或者在 package.json 文件里的 eslintConfig 字段这两种方式进行配置，ESLint 会查找和自动读取它们，再者，你可以在命令行指定一个配置文件。
 
 > > 有很多配置信息:

@@ -73,13 +73,29 @@ function AddEvent(tag, eventName, fn) {
 
 /**
  *
- * @param tag
+ * @param curEle
  * @param attr
  * @returns {*}
  */
-function getStyle(tag, attr) {
-    return tag.currentStyle ? tag.currentStyle[attr] : getComputedStyle(tag, null)[attr];
-}
+export const getStyle = (curEle, attr) => {
+    let val, reg
+    // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
+    if (attr === 'scrollTop') {
+      val = curEle.scrollTop
+    } else if (attr === 'opacity') {
+      val = curEle.currentStyle['filter'] // 'alpha(opacity=12,345)'
+      reg = /^alpha\(opacity=(\d+(?:\.\d+)?)\)$/i
+      val = reg.test(val) ? reg.exec(val)[1] / 100 : 1
+    } else if (curEle.currentStyle) {
+      val = curEle.currentStyle[attr]
+    } else {
+      val = document.defaultView.getComputedStyle(curEle, null)[attr]
+    }
+    // reg = /^(-?\d+(\.\d)?)(px|pt|em|rem)?$/i;
+    // return reg.test(val) ? parseFloat(val) : val;
+    return parseFloat(val)
+  }
+  
 
 /**
  * 获取元素的内部文本
