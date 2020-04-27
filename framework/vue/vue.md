@@ -16,10 +16,7 @@
     - vuex
 
 ## vuex
- 1. install&useage
-     npm install vuex --save
-     import Vuex from 'vuex'
-     Vue.use(Vuex)
+ 1. install
 
  2. what？
     Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
@@ -29,11 +26,12 @@
   - vuex适合更为大型，数据操作频繁，业务复杂的程序
   * vuex是帮助我们把数据保存在全局的内存中，绝对不是数据的序列化、持久化
 
-    State 状态(数据)
-    Getters (获取)
-    Mutations (发生改变，实际数据的操作)
-    Actions (行为)
-    Modules (模块)
+  + 核心概念：
+    - State 状态(数据)
+    - Getters (获取)
+    - Mutations (发生改变，实际数据的操作)
+    - Actions (行为)
+    - Modules (模块)
 
  4. vuex优雅的提交改变
   * mutations中如果出现同名的mutation就会后面的覆盖前面的
@@ -75,7 +73,9 @@
       // 编译后结果
       .a[data-v-f3f3eg9] .b { /* ... */ }
 
-      /* SASS 之类的预处理器无法正确解析 >>>。这种情况下你可以使用 /deep/ 操作符取而代之——这是一个 >>> 的别名，同样可以正常工作。 */
+      /* SASS 之类的预处理器无法正确解析 >>>。这种情况下你可以使用 /deep/ 操作符取而代之——这是一个 >>> 的别名，同样可以正常工作。
+      在 dart-sass 处理中 ::v-deep
+       */
 
       /* 通过 v-html 创建的 DOM 内容不受作用域内的样式影响，但是你仍然可以通过深度作用选择器来为他们设置样式。 */
   ```
@@ -330,7 +330,6 @@
  * 获取异步dom 更新问题（nextTick）
 
  * js操作 dom 修改value，同步更改v-model的值
-  - 
   ```js
     el.value(newval)
 
@@ -341,7 +340,6 @@
     // select 触发得是change事件
     el.dispatchEvent(new Event('change'));
 
-   
   ```
 
 

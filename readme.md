@@ -1640,5 +1640,4 @@
     - [echarts](https://echarts.baidu.com/examples/index.html)
     - [highcharts](https://www.highcharts.com.cn/)
  - [技术RoadMap](https://www.yuque.com/antv/g6-blog/pqd6i7#727ad5d2)
-## WebAssembly
 
