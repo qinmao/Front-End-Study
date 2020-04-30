@@ -1563,7 +1563,6 @@
 ### 前端的工具
 * Fontmin/字蛛
 * ImageOptim
-* charles/fiddler
 * 文档工具
     - dash
     - zeal
@@ -1605,6 +1604,11 @@
 
 
 ## 爬虫
+* 抓包工具
+ - charles mac
+ - fiddler windows 侧重http协议
+ - WireShark 所有的通讯协议
+
 * electron
 * puppeteer
 
@@ -1622,6 +1626,8 @@
  - 浏览器
 
  - nodejs
+
+ - mysql
 
  - 算法与数据结构
  

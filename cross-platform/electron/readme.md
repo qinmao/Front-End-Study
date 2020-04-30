@@ -1,9 +1,19 @@
 # electron
-## electron-forge
+## 安装
+ * electron 安装不成功问题（卡在install.js）(ver6.x.X)
+    - 打开终端，输入vi ~/.npmrc,在里面添加
+    ```
+        electron_mirror="https://npm.taobao.org/mirrors/electron/"
+
+        npm install --verbose electron
+    ```
+
+## 脚手架
 > electron-forge 相当于 electron 的一个脚手架，可以让我们更方便的创建、运行、打包 electron 项目
     ```
     npm install -g electron-forge 
     electron-forge init my-app 
+    
     ```
 
 ## 运行流程
@@ -455,30 +465,59 @@
         })
     ```
 
+## 调试
+* 如何开启调试
+    ```js
+        const { app, BrowserWindow } = require('electron')
+        let mainWindow
+        app.on('ready', () => {
+            mainWindow = new BrowserWindow({
+                width:600
+                height:400
+            })
+            if (process.env.NODE_ENV === "debug") {
+                mainWindow.webContents.openDevTools()  
+            }
+        })
+    ```
 
-
-## 多平台打包
+## 打包
  * electron-builder(优点)
     - electron-builder比electron-packager支持更多的平台，同时也支持自动更新
     - 由electron-builder打出的包更为轻量
     - 可以打包出不暴露源码的setup安装程序
 
-## electron 客户端爬虫步骤
-* 创建浏览器窗口:
-    - 在主进程main.js中通过Electron中的BrowerWindow 模块创建一个新的浏览器窗口来显示我们的应用界面
-* 
- 
+## 更新
+* 问题及解决方案：
+ + webview下的更新缓存问题
+   1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐(特殊的设备：32位系统第2种方案不行，根据条件选择第一种)
+   ```js
+    // 放在 app.on('ready', () => {}) 之前
+    app.commandLine.appendSwitch("--disable-http-cache")
 
-## 遇到的问题及解决方案
- * electron 安装不成功问题（卡在install.js）(ver6.x.X)
-    - 打开终端，输入vi ~/.npmrc,在里面添加
-    ```
-        electron_mirror="https://npm.taobao.org/mirrors/electron/"
+   ```
+   2. nginx 部署的页面，把html的缓存禁用(nginx 的配置文件如下)（spa 关键配置）
+   ```
+   	server {
+        root /home/web_test/dist;
+        location / {
+            index index.html ;
+            try_files $uri $uri/ /index.html;
+        }
+        location ~ .*\.(?:htm|html)$
+        {
+            add_header Cache-Control "private, no-store, no-cache, must-revalidate, proxy-revalidate";
+        }  
+    }
+    
+   ```
 
-    ```
-    - npm install --verbose electron
+ + 客户端自动更新问题
+    - electron-updater
 
- * 网站自签名证书，chrome浏览器是会进行警告的，必须在警告页确认，如何绕过警告
+## electron 应用
+* 爬虫
+  + 网站自签名证书，chrome浏览器是会进行警告的，必须在警告页确认，如何绕过警告
     ```js
         // 移除安全警告信息，由于我们需求的原因，使用了部分非安全的设定，因此需要禁用安全检测
         process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
@@ -488,7 +527,7 @@
         })
     ```
 
- * 多平台客户端获取cookie,需要根据不同的域名去调用
+  + 多平台客户端获取cookie,需要根据不同的域名去调用
     ```js
         ipcMain.on('get-cookies', (event, opts) => {
         let _opts = JSON.parse(opts)
@@ -506,43 +545,12 @@
         })
     ```
 
- * webview下的更新缓存问题
-   1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐(特殊的设备：32位系统，第2种方案不行，根据条件选择第一种)
-   ```js
-    // 放在 app.on('ready', () => {}) 之前
-    app.commandLine.appendSwitch("--disable-http-cache")
+* 直播
 
-   ```
-   2. nginx 部署的页面，把htm 的缓存禁用(nginx 的配置文件如下)（spa 关键配置）
-   ```
-   	server {
-        root /home/web_test/dist;
-        location / {
-            index index.html ;
-            try_files $uri $uri/ /index.html;
-        }
-        location ~ .*\.(?:htm|html)$
-        {
-            add_header Cache-Control "private, no-store, no-cache, must-revalidate, proxy-revalidate";
-        }  
-    }
-    
-   ```
 
- * 客户端自动更新问题
-    - electron-updater
 
- * 如何开启调试
-    ```js
-        const { app, BrowserWindow } = require('electron')
-        let mainWindow
-        app.on('ready', () => {
-            mainWindow = new BrowserWindow({
-                width:600
-                height:400
-            })
-            if (process.env.NODE_ENV === "debug") {
-                mainWindow.webContents.openDevTools()  
-            }
-        })
-    ```
+ 
+
+
+
+ 
