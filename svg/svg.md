@@ -42,4 +42,4 @@ SVG Sprite 的基本原理就是运用这些元素，相比较 CSS Sprite，SVG 
 
 结合webpack 的使用
 配置文件中使用了 svg-sprite-loader 和 svgo-loader 对 svg 文件进行处理，svg-sprite-loader 的作用就是将多个 svg 文件合并为一个 <svg> 元素。至于 svgo-loader，作用是将 <svg> 中一些无用的信息过滤去除，精简结构，详细配置可以自行查阅对应的文档说明，可以根据实际需求进行过滤。
-参考 https://fe.ele.me/svg-sprite-jian-jie/
+[参考](https://fe.ele.me/svg-sprite-jian-jie/) 

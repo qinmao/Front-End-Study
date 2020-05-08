@@ -1609,8 +1609,9 @@
  - fiddler windows 侧重http协议
  - WireShark 所有的通讯协议
 
-* electron
-* puppeteer
+* [electron](cross-platform/electron/readme.md)
+
+* [puppeteer](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
 
 ## tree 目录生成命令
  1. 安装 :brew install tree  ||  apt-get install tree
@@ -1619,6 +1620,18 @@
     - tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
     - tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
     - tree > tree.md 将项目结构输出到tree.md这个文件。
+
+## 前端图形学（可视化）
+ - [canvas基本使用](canvas/canvas-base.html)
+ - webgl
+ - three.js
+ + [d3](https://d3js.org/)
+ + [antv-g6图可视化引擎](https://g6.antv.vision/zh)
+ + [vis.js](https://github.com/almende/vis)
+ + 成熟的产品
+    - [echarts](https://echarts.baidu.com/examples/index.html)
+    - [highcharts](https://www.highcharts.com.cn/)
+ - [技术RoadMap](https://www.yuque.com/antv/g6-blog/pqd6i7#727ad5d2)
 
 ## 2019-2020
  - http协议
@@ -1634,16 +1647,3 @@
  - vue/ui框架
  
  - typescript
-
-## 前端图形学（可视化）
- - [canvas基本使用](canvas/canvas-base.html)
- - webgl
- - three.js
- + [d3](https://d3js.org/)
- + [antv-g6图可视化引擎](https://g6.antv.vision/zh)
- + [vis.js](https://github.com/almende/vis)
- + 成熟的产品
-    - [echarts](https://echarts.baidu.com/examples/index.html)
-    - [highcharts](https://www.highcharts.com.cn/)
- - [技术RoadMap](https://www.yuque.com/antv/g6-blog/pqd6i7#727ad5d2)
-
