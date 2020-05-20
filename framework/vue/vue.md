@@ -330,7 +330,7 @@
  * 获取异步dom 更新问题（nextTick）
 
  * js操作 dom 修改value，同步更改v-model的值
-  ```js
+   ```js
     el.value(newval)
 
     el.dispatchEvent(new Event('input'));
@@ -340,7 +340,7 @@
     // select 触发得是change事件
     el.dispatchEvent(new Event('change'));
 
-  ```
+   ```
 
 
 
