@@ -1585,7 +1585,7 @@
  * [文章])(https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html)
 
 ## node
- * [node](node/README.md)
+* [node](node/README.md)
 
 ## linux
 * [linux](linux/readme.md)
@@ -1610,16 +1610,7 @@
  - WireShark 所有的通讯协议
 
 * [electron](cross-platform/electron/readme.md)
-
 * [puppeteer](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
-
-## tree 目录生成命令
- 1. 安装 :brew install tree  ||  apt-get install tree
- 2. exmple: tree -L 3 -I "node_modules"
-    - tree -d 只显示文件夹；
-    - tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
-    - tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
-    - tree > tree.md 将项目结构输出到tree.md这个文件。
 
 ## 前端图形学（可视化）
  - [canvas基本使用](canvas/canvas-base.html)
@@ -1632,6 +1623,17 @@
     - [echarts](https://echarts.baidu.com/examples/index.html)
     - [highcharts](https://www.highcharts.com.cn/)
  - [技术RoadMap](https://www.yuque.com/antv/g6-blog/pqd6i7#727ad5d2)
+
+## 我的开源项目
+- [vue:中后台前端模板]()
+- [vue:移动端前端模板]()
+- [vue:ssr]()
+- [微信小程序:原生开发模板]()
+- [微信小游戏:基于cocos-creator]()
+- [electron:前端爬虫客户端]()
+- [electron:跨平台客户端]()
+- [puppeteer:无头浏览器爬虫]()
+- [node:koa2]()
 
 ## 2019-2020
  - http协议

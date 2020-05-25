@@ -1,5 +1,8 @@
 # git 
+## SSH
  * SSH： 一种加密协议，用于计算机之间的登录
+
+## 对称性/非对称性加密
  * 对称性加密
     - 在加密和解密时，使用同一个秘钥。
 
@@ -8,6 +11,7 @@
     - 如果明文使用了私钥加密，必须使用与其对应的公钥才能解密成功。
     - 如果明文使用了公钥加密，必须使用与其对应的私钥才能解密成功。
 
+## GIT 的基本使用
  * 仓库
     + 初始化本地仓库
         - git init 
@@ -124,43 +128,44 @@
 
         __如果出现冲突必须手动将冲突解决掉，然后在重新提交版本，然后解决冲突后的文件保存成一个版本__
 
-* git release tag
+ * Tag
     - git tag -a v3.0 -m "这是3.0版本"
     - git push origin v3.0 
     - git tag -d v1.1  //删除本地tag
     - git push origin --delete tag V1.1 
 
-## 存在的问题
+## 长期使用存在的问题
 * Git仓库重置与体积优化
 >长时间使用后，Git 仓库会随着提交次数的增加而变得越来越大，对于那些经常需要克隆的仓库来说，就特别影响效率了。
 - 在不删库的情况下重置所有提交记录
 ```
-# 1. 同步本地仓库到最新后创建一个空的临时分支
-git checkout --orphan latest_branch
+    # 1. 同步本地仓库到最新后创建一个空的临时分支
+    git checkout --orphan latest_branch
 
-# 2. 添加当前所有文件临时分支
-git add -A
+    # 2. 添加当前所有文件临时分支
+    git add -A
 
-# 3. 提交
-git commit -am "Initial commit."
+    # 3. 提交
+    git commit -am "Initial commit."
 
-# 4. 删除主分支
-git branch -D master
+    # 4. 删除主分支
+    git branch -D master
 
-# 5. 将临时分支重命名为主分支
-git branch -m master
+    # 5. 将临时分支重命名为主分支
+    git branch -m master
 
-# 6. 强推主分支到远程仓库
-git push -f origin master
+    # 6. 强推主分支到远程仓库
+    git push -f origin master
 
 ```
 - 清理 Git 缓存
+
 ```
-rm -rf .git/refs/original/
-git reflog expire --expire=now --all
-git fsck --full --unreachable
-git repack -A -d
-git gc --aggressive --prune=now
-git push --force origin master
+    rm -rf .git/refs/original/
+    git reflog expire --expire=now --all
+    git fsck --full --unreachable
+    git repack -A -d
+    git gc --aggressive --prune=now
+    git push --force origin master
 
 ```
