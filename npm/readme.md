@@ -49,8 +49,10 @@
         ```
         # 项目的根目录下执行
         $ node-modules/.bin/mocha --version
+
         # npx 更方便
         npx mocha --version
+
         # 就是运行的时候，会到node_modules/.bin路径和环境变量$PATH里面，检查命令是否存在
 
         ```
@@ -61,7 +63,6 @@
         v0.12.8
 
         ```
-
 
 ## package.json
  - npm init  创建package.json文件
@@ -78,7 +79,8 @@
     可以占用npm 中的命令 npm test
     可以自定义 npm run qm 
     ```
- - package.json 所有的字段  [参考](http://www.mujiang.info/translation/npmjs/files/package.json.html)
+ - package.json 所有的字段 
+ - [参考](http://www.mujiang.info/translation/npmjs/files/package.json.html)
 
 ## 语义化版本号
 + 1.2.3

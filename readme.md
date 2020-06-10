@@ -1613,19 +1613,25 @@
 * [puppeteer](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
 
 ## 前端图形学（可视化）
- - [canvas基本使用](canvas/canvas-base.html)
- - webgl
- - three.js
- + [d3](https://d3js.org/)
- + [antv-g6图可视化引擎](https://g6.antv.vision/zh)
- + [vis.js](https://github.com/almende/vis)
+ + 底层技术
+    - [SVG](svg/svg.md) snap.svg、rapheal.js
+    - [Canvas 2D](canvas/canvas-base.html) zrender、g
+    - [WebGL]() three.js、SceneJS、PhiloGL
+
  + 成熟的产品
     - [echarts](https://echarts.baidu.com/examples/index.html)
     - [highcharts](https://www.highcharts.com.cn/)
- - [技术RoadMap](https://www.yuque.com/antv/g6-blog/pqd6i7#727ad5d2)
+    + [d3](https://d3js.org/)
+    + [vis.js](https://github.com/almende/vis)
+
+ + AntV
+    - G2:数据驱动的高交互可视化图形语法 
+    - [G6](AntV/G6.md)
+    - F2:适于对性能、体积、扩展性要求严苛场景下使用的移动端图表库
+
 
 ## 我的开源项目
-- [vue:中后台前端模板]()
+- [vue:中后台前端模板](https://github.com/qinmao/vue-admin-template)
 - [vue:移动端前端模板]()
 - [vue:ssr]()
 - [微信小程序:原生开发模板]()

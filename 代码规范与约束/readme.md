@@ -6,17 +6,12 @@
 ## ESLint
 - .eslintrc.js 本地校验规则
 - .eslintignore 忽略校验的文件
-- vscode 保存自动格式化并eslint 修复(需要安装Vetur,ESLint)
+- vscode 保存自动格式化并eslint修复
 - vscode settings.json 配置
 ```json
-  "vetur.format.defaultFormatterOptions": {
-        "prettier": {
-            "semi": false, // 不使用分号
-            "singleQuote": true // 使用单引号
-        }
-    },
-    // 保存自动格式化，
-    "editor.formatOnSave": true,
+     // 启用eslint 格式化，禁用其他格式化器
+    "eslint.format.enable": true,
+    // 保存自动修复所有，
     "editor.codeActionsOnSave": {
         "source.fixAll": true
     }
