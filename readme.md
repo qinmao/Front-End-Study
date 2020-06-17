@@ -1612,34 +1612,21 @@
 * [electron](cross-platform/electron/readme.md)
 * [puppeteer](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
 
-## 前端图形学（可视化）
- + 底层技术
-    - [SVG](svg/svg.md) snap.svg、rapheal.js
-    - [Canvas 2D](canvas/canvas-base.html) zrender、g
-    - [WebGL]() three.js、SceneJS、PhiloGL
-
- + 成熟的产品
-    - [echarts](https://echarts.baidu.com/examples/index.html)
-    - [highcharts](https://www.highcharts.com.cn/)
-    + [d3](https://d3js.org/)
-    + [vis.js](https://github.com/almende/vis)
-
- + AntV
-    - G2:数据驱动的高交互可视化图形语法 
-    - [G6](AntV/G6.md)
-    - F2:适于对性能、体积、扩展性要求严苛场景下使用的移动端图表库
+## 图与可视化
+ * [图与可视化](图与可视化/readme.md)
 
 
 ## 我的开源项目
 - [vue:中后台前端模板](https://github.com/qinmao/vue-admin-template)
 - [vue:移动端前端模板]()
-- [vue:ssr]()
-- [微信小程序:原生开发模板]()
-- [微信小游戏:基于cocos-creator]()
+- [vue:ssr 开发模板]()
 - [electron:前端爬虫]()
 - [puppeteer:无头浏览器爬虫]()
 - [electron:跨平台客户端]()
-- [node:koa2]()
+- [node:koa2 WebApi Serve]()
+- [微信小程序:原生开发模板]()
+- [微信小游戏:基于cocos-creator]()
+- [G6 可视化流程图]()
 
 ## 2019-2020
  - http协议
