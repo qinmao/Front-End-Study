@@ -517,7 +517,7 @@
     }) // 10
 
     ```
-  - findIndex 与find 类似，返回的是数组成员的索引，没有符合条件的成员，则返回 undefined
+  - findIndex 与find 类似，返回的是数组成员的索引，没有符合条件的成员，返回-1
 
  * includes
     - 表示某个数组是否包含给定的值，与字符串的includes方法类似

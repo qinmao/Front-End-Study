@@ -461,7 +461,7 @@
  * [less](css/less/less.md)
  * [sass](css/sass/readme.md)
 
-## 基本js 
+## 基本js语法
 ### 数据类型
 * 6种原始类型（原始类型存储的都是值，是没有函数可以调用）
     + boolean
@@ -572,20 +572,8 @@
 * 短路或||
     - 只要有一个true，就返回 该 值true的子表达式的值
     - 短路或：可以方便给变量赋初值
-
-### date-format
- * 日期格式化成指定格式
-    - new Date().format("yyyy-MM-dd hh:mm:ss")
-
- * 两日期间隔
-    - d1.dateDiff(d2, 'd')
-
- * 获取当前时间戳
-    (new Date()).getTime();
-
- * [封装常用时间处理](js/date-format.js)
-
- ### js异常
+ 
+### js异常
 > js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
  * EvalError  运行时异常。 eval 函数调用时发生的异常
  * RangeError 运行时异常 超出数据范围
@@ -593,6 +581,11 @@
  * SyntanxError  预解析,语法错误
  * typeError 运行时异常，类型异常
  * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
+
+## 常用封装的函数
+ * [日期格式处理](js/date-format.js)
+
+ * [数字的格式处理](js/num-format.js)
 
 ## dom
 ### 什么是DOM，如何访问
@@ -792,7 +785,30 @@
         }, false);
     ```
 
-
+## 特殊的html 标签
+* iframe
+  + contentWindow 获取iframe的window对象
+  + contentDocument 获取iframe的document对象
+  + 如何检测iframe 是否加载完成
+    ```js
+        var iframe = document.createElement("iframe");
+        iframe.src = "http://www.planabc.net";
+        if (iframe.attachEvent){    
+            iframe.attachEvent("onload", function(){        
+                alert("Local iframe is now loaded.");    
+            });
+        } else {    
+            iframe.onload = function(){        
+                alert("Local iframe is now loaded.");    
+            };
+        }
+        document.body.appendChild(iframe);
+    ```
+  + 有那些缺点？
+    - iframe会阻塞主页面的onload事件；
+    - 搜索引擎的检索程序无法解读这种页面，不利于SEO;
+    - iframe和主页面共享连接池，而浏览器对相同域(同一域名)的连接有限制，所以会影响页面的并行加载。
+    - 如何避免：js动态给iframe添加src属性值，绕开以上两个问题
 
 
 
