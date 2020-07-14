@@ -100,8 +100,8 @@
   3. 确定变量的作用域。
 
 + 变量提升
->先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
- - ```javascript
+  >先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
+   ```javascript
     'use strict';
     function foo() {
         var x = 'Hello, ' + y;
@@ -127,6 +127,7 @@
     fun()
     console.log(num) //10
   ```
+
 ### 方法
  * Var Let Const区别 
    - var 在浏览器预解析时存在变量提升，未声明可以使用
@@ -369,27 +370,27 @@
                 }
             });
             //  用promise 封装一个ajax
-           const getJSON = function(url) {
-            const promise = new Promise(function(resolve, reject){
-                const handler = function() {
-                    if (this.readyState !== 4) {
-                        return;
+                const getJSON = function (url) {
+                    const promise = new Promise(function (resolve, reject) {
+                    const handler = function () {
+                        if (this.readyState !== 4) {
+                        return
+                        }
+                        if (this.status === 200) {
+                        resolve(this.response)
+                        } else {
+                        reject(new Error(this.statusText))
+                        }
                     }
-                    if (this.status === 200) {
-                        resolve(this.response);
-                    } else {
-                        reject(new Error(this.statusText));
-                    }
-                    };
-                    const client = new XMLHttpRequest();
-                    client.open("GET", url);
-                    client.onreadystatechange = handler;
-                    client.responseType = "json";
-                    client.setRequestHeader("Accept", "application/json");
-                    client.send();
-                });
-                return promise;
-            };
+                    const client = new XMLHttpRequest()
+                    client.open('GET', url)
+                    client.onreadystatechange = handler
+                    client.responseType = 'json'
+                    client.setRequestHeader('Accept', 'application/json')
+                    client.send()
+                    })
+                    return promise
+                }
 
             getJSON("/posts.json")
             .then(function(json) {
@@ -409,8 +410,8 @@
    * promise.all 和 promise.race 
     - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
     - promise.race
-   * 使用场景：
-   * 区别：
+   * 使用场景
+   * 区别
  * async
     - 表示这是一个async函数,一个函数如果加上 async ，那么该函数就会返回一个 Promise
  * await 
@@ -427,7 +428,7 @@
         2. 由于script 也是一个宏任务，也会被放入队列，由于该队列是一个一个执行的，所以本次循环，setTimeout 中不会被渲染，下次循环执行
         3. 如果异步更新包装在micro task 中，队列中先执行script ，微任务是一对对执行的，所以Promise在本次循环被执行了，也就是渲染了
 
-## 浏览器安全
+## 安全
  * xss
     - 一般通过一段代码注入到网页中
     - 场景：在评论中如果前后端不做处理，输入<script>alert('操')</script>
