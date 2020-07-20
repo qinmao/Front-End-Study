@@ -10,6 +10,30 @@
 
 <body>
   <script>
+    let str = "、钻井井史是一口井重要的工程原始资料，由钻井队钻井工程师（技术";
+    console.log('str.length', str.length)
+    let arr = []
+    let word = "钻井"
+    let index = str.indexOf(word)
+    while (index !== -1) {
+      arr.push(index)
+      index = str.indexOf(word, index + 1)
+    }
+    console.log('indexArr', arr)
+
+    let result = []
+    arr.forEach(item=>{
+      result.push({
+        begin:item,
+        end:item+word.length
+      })
+    })
+
+    console.log('offset', result)
+   
+
+  </script>
+  <!-- <script>
     let str1 = "3C-A6-16-57-A2-D6";
     let str2 = "70d923c00bdb";
     let str3 = "123444";
@@ -31,7 +55,7 @@
 
     console.log(temp.join('').toUpperCase())
 
-  </script>
+  </script> -->
 </body>
 
 
