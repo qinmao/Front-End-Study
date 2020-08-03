@@ -10,26 +10,26 @@
 
 <body>
   <script>
-    let str = "、钻井井史是一口井重要的工程原始资料，由钻井队钻井工程师（技术";
-    console.log('str.length', str.length)
+    let str = "一、基础数据1.开 始 搬 迁 时 间2003  年6     月22    日9    时0     分2.开 始 安 装 时   间2003  年6     月23    日10   时0     分3.第一次开 钻 时   间2003  年6     月28    日6    时0     分第一次完 钻 时 间2003  年6     月28    日21   时0     分4.第二次开 钻 时   间2003  年6     月30    日13   时0     分第二次完 钻 时 间2003  年10    月28    日2    时0     分5.第三次开 钻 时   间       年      月      日      时      分第三次完 钻 时 间       年      月      日      时      分6.第四次开 钻 时   间       年      月      日      时      分第四次完 钻 时 间       年      月      日      时      分7.第五次开 钻 时   间       年      月      日      时      分8.完  钻   时   间2003    年10   月28    日2    时0    分9.完  井   时   间2003    年11   月2     日3    时0    分10.钻  井      周   期121              天20:00         时11.完  井      周   期126           天21:00         时12.设  计   井   深                      5150                   米13.实   际   井     深                      5150                   米14.设 计  垂 直 井 深                                      米15.实 际 垂 直 井 深                                      米";
     let arr = []
-    let word = "钻井"
+    let word = "开 始 搬 迁 时 间"
     let index = str.indexOf(word)
+    console.log(index)
     while (index !== -1) {
       arr.push(index)
       index = str.indexOf(word, index + 1)
     }
     console.log('indexArr', arr)
 
-    let result = []
-    arr.forEach(item=>{
-      result.push({
-        begin:item,
-        end:item+word.length
-      })
-    })
+    // let result = []
+    // arr.forEach(item=>{
+    //   result.push({
+    //     begin:item,
+    //     end:item+word.length
+    //   })
+    // })
 
-    console.log('offset', result)
+    // console.log('offset', result)
    
 
   </script>

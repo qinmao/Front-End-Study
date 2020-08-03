@@ -285,7 +285,7 @@
     ```css
         @media (min-width: 750px) {
             html {
-                    font-size: 100px;
+                font-size: 100px;
             }
         }
     ```

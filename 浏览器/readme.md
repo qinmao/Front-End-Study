@@ -252,6 +252,7 @@
                 true
             )
         ```
+        
  * 事件触发(标准浏览器)：dispatchEvent
     + element.dispatchEvent()
     + 使用该方法：
