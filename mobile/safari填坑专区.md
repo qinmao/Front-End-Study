@@ -1,6 +1,6 @@
- ## safari 踩过的坑
+ # safari 踩过的坑
  项目中主要针对苹果的设备，踩过的坑，以及采用的解决方案
- ### HTML CSS
+ ## HTML CSS
   1. 基本meta标签
         <!-- 可隐藏地址栏，仅针对IOS的Safari（注：IOS7.0版本以后，safari上已看不到效果） -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -79,7 +79,7 @@
         music.play();
     }, false);
     
-### JS
+## JS
     ```javascript
         /*
         * 1. (判断是不是苹果设备)
