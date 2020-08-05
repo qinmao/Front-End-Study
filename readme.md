@@ -15,7 +15,7 @@
 
 ## dom和bom
 * [dom 基础](html/dom.md)
-* [bom](html/bom.md)
+* [bom 基础](html/bom.md)
 
 ## 常用封装的函数
 * [日期格式处理](js/date-format.js)

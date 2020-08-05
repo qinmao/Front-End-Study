@@ -80,7 +80,6 @@
         // getComputedStyle(el,null).width 
         // ie提供的
         // document.getElementById("btn").currentStyle.width 
-
         export function getStyle(curEle, attr) {
             let val, reg
             // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
@@ -129,6 +128,7 @@
             let topVal=e.target.scrollTop
         }
     ```
+    
 ## iframe
   + contentWindow 获取iframe的window对象
   + contentDocument 获取iframe的document对象
@@ -148,9 +148,9 @@
         document.body.appendChild(iframe);
     ```
   + 有那些缺点？
-    - iframe会阻塞主页面的onload事件；
     - 搜索引擎的检索程序无法解读这种页面，不利于SEO;
-    - iframe和主页面共享连接池，而浏览器对相同域(同一域名)的连接有限制，所以会影响页面的并行加载。
+    - iframe会阻塞主页面的onload事件
+    - iframe和主页面共享连接池，而浏览器对相同域(同一域名)的连接有限制，所以会影响页面的并行加载
     - 如何避免：js动态给iframe添加src属性值，绕开以上两个问题
 
 
