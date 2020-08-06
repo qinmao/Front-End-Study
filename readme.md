@@ -24,10 +24,10 @@
 * [字符串的处理](js/string-util.js)
 
 ## (*)http协议
-- [http](http/readme.md)
+* [http协议](http/readme.md)
 
 ## (*)浏览器
--[浏览器](浏览器/readme.md)
+* [浏览器](浏览器/readme.md)
 
 ## 对象与函数
 ### 对象：
