@@ -108,11 +108,19 @@
  - 只要有一个true，就返回 该 值true的子表达式的值
  - 短路或：可以方便给变量赋初值
  
+
+
+## JSON 转换 
+* object转string  
+  - JSON.stringify()
+* string转object   
+  - JSON.parse()
+  
 ## js异常
 > js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
- * EvalError  运行时异常。 eval 函数调用时发生的异常
- * RangeError 运行时异常 超出数据范围
- * ReferenceError 运行时异常 未定义变量
- * SyntanxError  预解析,语法错误
- * typeError 运行时异常，类型异常
- * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的异常
+* EvalError  运行时异常。 eval 函数调用时发生的异常
+* RangeError 运行时异常 超出数据范围
+* ReferenceError 运行时异常 未定义变量
+* SyntanxError  预解析,语法错误
+* typeError 运行时异常，类型异常
+* URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的常
