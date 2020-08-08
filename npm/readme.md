@@ -28,6 +28,7 @@
     - npm install  包名 -save 将包下载下来并且加载到dependencies中去
     - npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去
     - npm install  包名 -g  全局安装
+    - npm install express@3.21.2 安装指导版本的包
 
     + update
     - npm update -g <package>  跟新全局包

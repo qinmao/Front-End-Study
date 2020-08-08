@@ -42,6 +42,18 @@
     - rm -rf /var/log/httpd/access 删除文件夹
     - mv: 移动文件与目录，或修改文件与目录的名称
 
++ 压缩、解压
+  * zip
+    - zip -r xxx.zip ./*  当前目录下的所有文件和文件夹全部压缩为xxx.zip文件
+    - unzip filename.zip  解压zip文件到当前目录
+    + unzip -o -d /home/sunny myfile.zip 把myfile.zip文件解压到 /home/sunny/
+      - -o:不提示的情况下覆盖文件；
+      - -d:-d /home/sunny 指明将文件解压缩到/home/sunny目录下
+
+    > tip: 有些服务器没有安装zip包执行不了zip命令，但基本上都可以用tar命令的
+  * tar
+  
+
 + 传输文件
     - scp :命令用于Linux之间复制文件和目录，-r：递归复制整个目录。
     
