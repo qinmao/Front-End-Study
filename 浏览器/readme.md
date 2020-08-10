@@ -170,7 +170,7 @@
     ```
 
 * 调用栈：为什么JavaScript代码会出现栈溢出？
-  + 执行上下文： 当一段代码被执行时，JavaScript 引擎先会对其进行编译，并创建执行上下文
+  + 执行上下文： 当一段代码被执行时，js引擎先会对其进行编译，并创建执行上下文
     - 当 JavaScript 执行全局代码的时候，会编译全局代码并创建全局执行上下文，而且在整个页面的生存周期内，全局执行上下文只有一份。
     - 当调用一个函数的时候，函数体内的代码会被编译，并创建函数执行上下文，一般情况下，函数执行结束之后，创建的函数执行上下文会被销毁。
     - 当使用 eval 函数的时候，eval 的代码也会被编译，并创建执行上下文。
@@ -185,6 +185,76 @@
     - 调用栈是有大小的，当入栈的执行上下文超过了，js 引擎就会报栈溢出的错误
     - 使用递归不当会导致该问题，所以要明确终止条件
 
+* 作用域链
+  - 示例引出
+    ```js
+    function bar() {
+        console.log(myName)
+    }
+    function foo() {
+        var myName = "极客邦"
+        bar()
+    }
+    var myName = "极客时间"
+    foo()
+    ```
+  - 作用域链：在调用栈中，在各执行上下文中查找变量的一个链条就是作用域链。作用域链是由词法作用域决定的
+  - 词法作用域：指作用域是由代码中函数声明的位置来决定的，由代码编译阶段就决定好的，和函数是怎么调用的没有关系。
+  - 变量查找的过程：先在当前的执行上下文中查找，没有就去外部引用的执行上下文查找
+
+* 闭包　
+  - 写法示例：
+    ```js
+    function foo() {
+        var myName = "极客时间"
+        let test1 = 1
+        var innerBar = {
+            getName(){
+                console.log(test1)
+                return myName
+            },
+            setName(newName){
+                myName = newName
+            }
+        }
+        return innerBar
+    }
+    var bar = foo()
+    bar.setName("极客邦")
+    bar.getName()
+    console.log(bar.getName())
+    ```  
+   - 实质：在 JavaScript 中，根据词法作用域的规则，内部函数总是可以访问其外部函数中声明的变量，当通过调用一个外部函数返回一个内部函数后，即使该外部函数已经执行结束了，但是内部函数引用外部函数的变量依然保存在内存中，我们就把这些变量的集合称为闭包         
+  - 应用：
+        1. 缓存：
+             ```javascript
+                 function outer() {
+                         var cache;
+                         function inner() {
+                             // 代码块
+                             // 使用cache
+                         }
+                         return inner;
+                     }
+                 var fn = outer();
+             ```
+        2. 私有变量：在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
+            ```javascript
+                function person(name) {
+                    return {
+                        getName: function() {
+                            return name;
+                        },
+                        setName: function(val) {
+                            name= val;
+                        }
+                    };
+                }
+            ```
+    - 闭包使用中的问题：
+        - 本质上就是让数据常驻内存。如此，使用闭包就增大内存开销，使用不当就会造成内存泄漏。
+        - 如何解决：使用完闭包后，及时清除。（将闭包变量 赋值为 null） 
+    - 闭包为什么会造成内存泄漏？（GC）
 
 ### js的三种加载方式
 * 正常:JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情。

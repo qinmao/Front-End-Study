@@ -109,47 +109,7 @@
     // 结果都为10
     ```
          
- + 闭包：　
-    - 实质：就是能够读取其他函数内部变量的函数。
-    - 写法：
-        ```javascript
-            function foo() {
-                var obj = {};                            
-                return function() {
-                    return obj;
-                }  
-            }
-        ```           
-    - 应用：
-        1. 缓存：
-             ```javascript
-                 function outer() {
-                         var cache;
-                         function inner() {
-                             // 代码块
-                             // 使用cache
-                         }
-                         return inner;
-                     }
-                 var fn = outer();
-             ```
-        2. 私有变量：在ES5之前，不能设置对象属性的可读可写性。所以使用闭包来模式私有属性，来指定属性的可读可写
-            ```javascript
-                function person(name) {
-                    return {
-                        getName: function() {
-                            return name;
-                        },
-                        setName: function(val) {
-                            name= val;
-                        }
-                    };
-                }
-            ```
-    - 闭包使用中的问题：
-        - 本质上就是让数据常驻内存。如此，使用闭包就增大内存开销，使用不当就会造成内存泄漏。
-        - 如何解决：使用完闭包后，及时清除。（将闭包变量 赋值为 null） 
-    - 闭包为什么会造成内存泄漏？（GC）
+ 
 
  * GC
     + 引用计数法
