@@ -1,13 +1,13 @@
-# js 基础语法
+# js 基础
 
 ## 数据类型
-* 6种原始类型（原始类型存储的都是值，是没有函数可以调用）
-  + boolean
-  + null
+* 7种原始类型（原始类型存储的都是值，是没有函数可以调用）
+  + Boolean
+  + Null
       - 空指针类型  没有指向任何一个对象 
-  + undefined
+  + Undefined
       - 声明变量后不赋值
-  + number
+  + Number
       - NaN 是 number 型 表示不是一个数字
         ```javascript
           var a=123;
@@ -27,8 +27,9 @@
           parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
           ```
         2. 浮点型涉及精度问题：推荐都乘10最后除10 用整数运算（整数不存在精度问题）
-  + string
-  + symbol
+  + String
+  + Symbol
+  + BigInt(新增的数字类型): 表示用任意精度表示整数
 
 * 类型检测几种方案
    + typeof

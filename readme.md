@@ -10,10 +10,8 @@
 * [h5 基础](html/html5/h5.md)
 * [h5 mobile](mobile/h5-mobile.md)
 
-## js 基础语法
+## js 基础
 * [js 基础语法](ECMA/js基础语法.md)
-
-## dom和bom
 * [dom 基础](html/dom.md)
 * [bom 基础](html/bom.md)
 
@@ -23,17 +21,14 @@
 * [数组的处理](js/array-util.js)
 * [字符串的处理](js/string-util.js)
 
-## (*)浏览器
-* [浏览器](浏览器/readme.md)
+## (*)浏览器工作原理与实践
+* [工作原理与实践](浏览器/readme.md)
 
 ## (*)http协议
 * [http协议](http/readme.md)
 
-## 对象与函数
-### 对象：
- + 什么是对象？
-    - 无序属性的集合，可以看成键值对
- + 如何创建？
+## 对象
+ + 如何创建对象？
     - 字面量或者叫直接量
       var obj={};
     - 构造函数创建对象
@@ -47,7 +42,7 @@
                 }
             var s1 = new Student("小明", "12", "男");
         ```
- + 工厂模式创建对象 就是用一个方法实现对象的实例化
+    - 工厂模式创建对象 就是用一个方法实现对象的实例化
      ```javascript
          function initStu(name, age,sex) {
                 return new Student(name, age,sex);
@@ -56,15 +51,15 @@
          // 这种方式创建对象避免new的操作    
      ```   
  + 对象的属性
-     - 两种访问方式：
-         1. obj.propertyName  
-         2. obj["propertyName"] __遍历属性并赋值时常用到  
-     - 检测:(hasOwnProperty)
-        1. 语法：<对象>.hasOwnProperty('propertyName')
-        2. 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
-        3. eg:obj.hasOwnProperty("name") //true
+    - 两种访问方式：
+        1. obj.propertyName  
+        2. obj["propertyName"] 遍历属性并赋值时常用到  
+    - 检测:(hasOwnProperty)
+        - 语法：<对象>.hasOwnProperty('propertyName')
+        - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
+        - eg:obj.hasOwnProperty("name") //true
 
-### 函数    
+## 函数    
  + 函数属性
     - arguments 
          * 伪数组对象
@@ -107,31 +102,7 @@
      ```
 
 ### 对象类型和原始类型的不同（深拷贝、浅拷贝）?
- > 原始类型存储的是值，对象类型存储的是地址（指针）,根据该特性，我们以后会遇到一些问题
- * 函数参数是对象，外部变量的值发生了改变
-    - ```javascript
-        function test(person) {
-            person.age = 26
-            person = {
-                name: 'yyy',
-                age: 30
-            }
-            return person
-        }
-        const p1 = {
-            name: 'yck',
-            age: 25
-        }
-        const p2 = test(p1)
-        console.log(p1) // -> ?
-        console.log(p2) // -> ?
-        // 解析：
-        // 1. 传入的参数是p1的地址拷贝a1，age 赋值时，p1与a1指向的地址值已经被改了，此时age为26,p1的值为name:yck,age:26
-        // 2. 之后重新把a1的指向地址改成了新的对象地址，并返回所以，p1的值为name:yck,age:26,p2的值为name:yyy,age:30
-
-        ```
-
- * 深拷贝、浅拷贝
+* 深拷贝、浅拷贝
     > 为了解决外部对象参数的值被修改
     + 浅拷贝
         > 所谓的浅拷贝，只是拷贝了基本类型的数据，对于引用的类型数据，复制后也是会发生引用
