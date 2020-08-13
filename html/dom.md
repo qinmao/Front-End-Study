@@ -128,29 +128,143 @@
             let topVal=e.target.scrollTop
         }
     ```
+
+## 本地存储
+* cookie:如果用于保存用户登录态，应该将该值加密
+    - 一般有服务器生成，可以设置过期时间
+    - 容量较小，4kb 左右
+    - 每次请求都会携带在header中
+    + document.cookie的属性
+        - expires 设置过期时间,被max-age属性所取代，max-age用秒来设置cookie的生存期
+        - path cookie关联在一起的网页
+        - domain 多个web服务器共享cookie
+* localStorage
+    - 一直存在，除非被清理
+    - 容量5m 左右
+    - 不参与服务器通讯
+* sessionStorage
+    - 用法类似localStorage
+    - 页面关闭就清理
+* indexDB
+    - 浏览器端的数据库，不被清理一直存在
+
+## 事件机制
+* 页面事件的加载顺序
+   - DOMCententLoaded事件：页面的文档结构（DOM树）加载完之后就会触发
+   - document.onload 是在结构和样式加载完才执行js
+   - window.onload：不仅结构和样式加载完，还要执行完所有的外部样式、图片这些资源文件，全部加载完才会触发
+
+* 事件冒泡和事件捕获   
+   - 事件冒泡：从里向外执行，遇到相同的事件及执行
+   - 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用attachEvent 没有第三个参数）
+
+* 事件触发三阶段
+   1. window 往事件触发处传播，遇到注册的捕获事件会触发
+   2. 传播到事件触发处时触发注册的事件
+   3. 从事件触发处往 window 传播，遇到注册的冒泡事件会触发
+
+* 事件注册(监听) addEventListener（避免事件被覆盖）
+   > ie9 以下不支持 false默认冒泡 true 捕获
+   + 第三个参数为bool,该参数默认值为 false(冒泡) ，useCapture 决定了注册的事件是捕获事件还是冒泡事件
+   + 作为对象：
+       - capture：布尔值，和 useCapture 作用一样
+       - once：布尔值，值为 true 表示该回调只会调用一次，调用后会移除监听
+       - passive：布尔值，表示永远不会调用 preventDefault
+       ```javascript
+           node.addEventListener(enventType,fn，false)
+           btn.addEventListener("click",fun)
+           // 移除事件监听(参数必须一致)
+           btn.removeEventListener("click",fun)
+               
+           // ie-6-10(enventType 加on)
+           node.attachEvent(enventType,fn)
+           node.detachEvent(enventType,fn)
+       ```
+   + 阻止事件冒泡:(一般来说，如果我们只希望事件只触发在目标上)
+       - ```js
+           node.addEventListener(
+               'click',
+               e => {
+                   // 阻止事件冒泡,也可以阻止捕获事件
+                   e.stopPropagation() 
+                   // 同样也能实现阻止事件，但是还能阻止该事件目标执行别的注册事件。
+                   e.stopImmediatePropagation()
+                   console.log('冒泡')
+               },
+               false
+           )
+           // 点击 node 只会执行上面的函数，该函数不会执行
+           node.addEventListener(
+               'click',
+               event => {
+                   console.log('捕获 ')
+               },
+               true
+           )
+       ```
+       
+* 事件触发(标准浏览器)：dispatchEvent
+   + element.dispatchEvent()
+   + 使用该方法：
+       + 创建: document.createEvent()
+           - 返回新创建的Event对象
+           - 参数：
+           -  HTMLEvents：包括 'abort', 'blur', 'change', 'error', 'focus', 'load', 'reset', 'resize', 'scroll', 'select', 'submit', 'unload'. 事件
+           - UIEvents ：包括 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'keydown', 'keypress', 'keyup'. 间接包含 MouseEvents. 
+           - MouseEvents：包括 'click', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup'. 
+           - MutationEvents:包括 'DOMAttrModified', 'DOMNodeInserted', 'DOMNodeRemoved', 'DOMCharacterDataModified', 'DOMNodeInsertedIntoDocument','DOMNodeRemovedFromDocument', 'DOMSubtreeModified'
+            
+        + 初始化: initEvent(eventName, canBubble, preventDefault)
+            - initEvent() 方法用于初始化通过DocumentEvent接口创建的Event的值。
+            - canBubble 是否可以冒泡
+            - preventDefault 是否阻止事件的默认操作
+
+        + 例子：
+            ```js
+                // 举个例子：
+                var dom = document.querySelector('#id')
+                document.addEventListener('alert', function (event) {
+                    console.log(event)
+                }, false);
+                
+                // 创建
+                var evt = document.createEvent("HTMLEvents");
+                // 初始化
+                evt.initEvent("alert", false, false);
+                // 触发, 即弹出文字
+                dom.dispatchEvent(evt);
+            ```
+   + 自定义事件
+        - 自定义事件的函数有 Event、CustomEvent 和 dispatchEvent
+        - ```js
+            // 向 window派发一个resize内置事件
+            window.dispatchEvent(new Event('resize'))
+            
+            // 直接自定义事件，使用 Event 构造函数：
+            var event = new Event('build');
+            var elem = document.querySelector('#id')
+            // 监听事件
+            elem.addEventListener('build', function (e) { ... }, false);
+            // 触发事件.
+            elem.dispatchEvent(event);
+        ```
+
+* 事件的对象(event.target)
+   > 记录当前事件触发时的一些信息
+  + btn.onclick=function(event){} 
+    - event.target 真正触发事件的元素
+    - event.type="click"
+    - event.clinetX/clinetY 
+    - ie 低版本不兼容 var tar = e.target||e.srcElement
     
-## iframe
-  + contentWindow 获取iframe的window对象
-  + contentDocument 获取iframe的document对象
-  + 如何检测iframe 是否加载完成
-    ```js
-        var iframe = document.createElement("iframe");
-        iframe.src = "http://www.planabc.net";
-        if (iframe.attachEvent){    
-            iframe.attachEvent("onload", function(){        
-                alert("Local iframe is now loaded.");    
-            });
-        } else {    
-            iframe.onload = function(){        
-                alert("Local iframe is now loaded.");    
-            };
-        }
-        document.body.appendChild(iframe);
-    ```
-  + 有那些缺点？
-    - 搜索引擎的检索程序无法解读这种页面，不利于SEO;
-    - iframe会阻塞主页面的onload事件
-    - iframe和主页面共享连接池，而浏览器对相同域(同一域名)的连接有限制，所以会影响页面的并行加载
-    - 如何避免：js动态给iframe添加src属性值，绕开以上两个问题
-
-
+* 事件代理/委托
+   > 本质就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
+   - 应用的场景：动态生成的子节点要注册事件，那么子节点需要注册事件的话应该注册在父节点上
+   + 好处：
+      1. 减少了事件的注册，内存开销减少了
+      2. 元素的增减不会影响事件的绑定
+      3. js和DOM节点之间的关联变少了，减少了因循环引用(GC中引用计数法的缺陷)而带来的内存泄漏发生的概率。
+   + jq 早期 bind 绑定事件会出现一个问题及新创建的元素没有事件，后来用delegate解决   1.7 版本后统一用on
+   + 注意：
+      - 不是所有的事件都有冒泡（blur、focus、load和unload），所以事件委托不是所有的事件都可用。
+      - 例如mouseover 由于事件对象target 频繁改动会有性能问题

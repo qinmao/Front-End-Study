@@ -27,80 +27,6 @@
 ## (*)http协议
 * [http协议](http/readme.md)
 
-## 对象
- + 如何创建对象？
-    - 字面量或者叫直接量
-      var obj={};
-    - 构造函数创建对象
-        ```javascript
-            function Student(name, age, sex) {
-                this.name = name
-                this.age = age
-                this.sex = sex
-                this.sayHi = function () {
-                    console.log("你好" + this.name)
-                }
-            var s1 = new Student("小明", "12", "男");
-        ```
-    - 工厂模式创建对象 就是用一个方法实现对象的实例化
-     ```javascript
-         function initStu(name, age,sex) {
-                return new Student(name, age,sex);
-             }
-         var obj=initStu();
-         // 这种方式创建对象避免new的操作    
-     ```   
- + 对象的属性
-    - 两种访问方式：
-        1. obj.propertyName  
-        2. obj["propertyName"] 遍历属性并赋值时常用到  
-    - 检测:(hasOwnProperty)
-        - 语法：<对象>.hasOwnProperty('propertyName')
-        - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
-        - eg:obj.hasOwnProperty("name") //true
-
-## 函数    
- + 函数属性
-    - arguments 
-         * 伪数组对象
-         * 以数组形式，存储实参
-         * callee 返回正在被执行函数; 匿名函数的递归调用
-         * length 实参个数
-    - caller: 返回调用函数的 函数
-    - length: 定义形参的个数
-    - name: 存储函数的名字
-
-    ```js
-    // 1.
-    function b(x,y,z){
-        arguments[2]=10
-        alert(z)
-    }
-    b(1,2,3) 
-
-    // 2. 
-     function b(x,y,z){
-         z=10
-         alert(arguments[2])
-    }
-    b(1,2,3)
-
-    // 结果都为10
-    ```
- + 沙箱模式：
-     - 防止全局变量和全局对象的污染，引出沙箱模式,实质就是匿名的自执行函数
-     ```javascript
-         (function(global){
-             //代码块
-             //自执行
-             //在内部声明的变量与外部隔离
-             //把常用的全局变量，当做实参传入进来
-             //目的：1，减少变量的搜索过程，提高js 性能
-             //     2,利于代码压缩
-         }(window));
-         // 一般开发插件时会用，jq
-     ```
-
 ### prototype
  * 什么是原型？
     - 函数对象的prototype属性所引用的对象。
@@ -315,6 +241,19 @@
     - 已不推荐使用。JSON.parse()
 
 ## 模块化
+* ES6 之前，js的加载
+    ```html
+        <!--
+            1. 正常:JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情。--> 
+        <script src="index.js"></script>
+        <!-- 
+            2. async:JS 不会阻塞浏览器,它的加载是异步的，当它加载结束，JS 脚本会立即执行 -->
+            <script async src="index.js"></script>
+        <!-- 
+            3. defer:JS 的加载是异步的，执行是被推迟的。等整个文档解析完成、DOMContentLoaded 事件即将被触发时，被标记了 defer 的 JS 文件才会开始依次执行-->
+        <script defer src="index.js"></script>
+    ```
+
  > ES6 之前，js没有module，不利于大程序的开发，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。前者用于node，后者用于浏览器。
  * 为什要模块化(有什么好处)
     - 解决命名冲突
@@ -482,7 +421,7 @@
      ```
 
 ## es6对js的扩展
-- [es6](ECMA/es6.md)
+* [es6](ECMA/es6.md)
 
 ## 正则表达式
 * [正则表达式](note/reg.md)
@@ -650,8 +589,7 @@
 * [puppeteer](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
 
 ## 图与可视化
- * [图与可视化](图与可视化/readme.md)
-
+* [图与可视化](图与可视化/readme.md)
 
 ## 我的开源项目
 - [vue:中后台前端模板](https://github.com/qinmao/vue-admin-template)

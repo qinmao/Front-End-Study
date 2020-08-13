@@ -87,3 +87,27 @@
   - data：顾名思义，是传递来的message
   - source：发送消息的窗口对象
   - origin：发送消息窗口的源（协议+主机+端口号）
+
+## iframe
+  + contentWindow 获取iframe的window对象
+  + contentDocument 获取iframe的document对象
+  + 如何检测iframe 是否加载完成
+    ```js
+        var iframe = document.createElement("iframe");
+        iframe.src = "http://www.planabc.net";
+        if (iframe.attachEvent){    
+            iframe.attachEvent("onload", function(){        
+                alert("Local iframe is now loaded.");    
+            });
+        } else {    
+            iframe.onload = function(){        
+                alert("Local iframe is now loaded.");    
+            };
+        }
+        document.body.appendChild(iframe);
+    ```
+  + 有那些缺点？
+    - 搜索引擎的检索程序无法解读这种页面，不利于SEO;
+    - iframe会阻塞主页面的onload事件
+    - iframe和主页面共享连接池，而浏览器对相同域(同一域名)的连接有限制，所以会影响页面的并行加载
+    - 如何避免：js动态给iframe添加src属性值，绕开以上两个问题
