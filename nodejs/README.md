@@ -31,73 +31,69 @@
 
 ## 应用场景
 > NodeJS适合运用在高并发、I/O密集、少量业务逻辑的场景
-- RESTful API
-这是NodeJS最理想的应用场景，可以处理数万条连接，本身没有太多的逻辑，只需要请求API，组织数据进行返回即可。它本质上只是从某个数据库中查找一些值并将它们组成一个响应。由于响应是少量文本，入站请求也是少量的文本，因此流量不高，一台机器甚至也可以处理最繁忙的公司的API需求。
+- RESTful API：这是NodeJS最理想的应用场景，可以处理数万条连接，本身没有太多的逻辑，只需要请求API，组织数据进行返回即可。它本质上只是从某个数据库中查找一些值并将它们组成一个响应。由于响应是少量文本，入站请求也是少量的文本，因此流量不高，一台机器甚至也可以处理最繁忙的公司的API需求。
 
-- 统一Web应用的UI层
-    做前后端的依赖分离。如果所有的关键业务逻辑都封装成REST调用，就意味着在上层只需要考虑如何用这些REST接口构建具体的应用。那些后端程序员们根本不操心具体数据是如何从一个页面传递到另一个页面的，他们也不用管用户数据更新是通过Ajax异步获取的还是通过刷新页面。
+- 统一Web应用的UI层：做前后端的依赖分离。如果所有的关键业务逻辑都封装成REST调用，就意味着在上层只需要考虑如何用这些REST接口构建具体的应用。那些后端程序员们根本不操心具体数据是如何从一个页面传递到另一个页面的，他们也不用管用户数据更新是通过Ajax异步获取的还是通过刷新页面。
 
 - 大量Ajax请求的应用
 
 ## 优缺点
- * 优点:
-    - 高并发
-    - 适合I/O密集型应用
+* 优点:
+  - 高并发
+  - 适合I/O密集型应用
 
- * 缺点:
-    - 不适合CPU 密集型应用，老版本由于JavaScript单线程的原因(新版本支持多线程)，如果有长时间运行的计算（比如大循环），将会导致CPU时间片不能释放，使得后续I/O无法发起；
-    + 解决：分解大型运算任务为多个小任务，使得运算能够适时释放，不阻塞I/O调用的发起；
-        - 开源组件库质量参差不齐，更新快，向下不兼容
-        - 写法上恶心的回调，终极解决方案：Async/Await
-
-
+* 缺点:
+  - 不适合CPU 密集型应用，老版本由于JavaScript单线程的原因(新版本支持多线程)，如果有长时间运行的计算（比如大循环），将会导致CPU时间片不能释放，使得后续I/O无法发起；
+  + 解决：分解大型运算任务为多个小任务，使得运算能够适时释放，不阻塞I/O调用的发起；
+    - 开源组件库质量参差不齐，更新快，向下不兼容
+    - 写法上恶心的回调，终极解决方案：Async/Await
 
 ## 执行node
 * 相对路径
-    - ./当前路径
-    - ../上级目录
+  - ./当前路径
+  - ../上级目录
 
 * node + 文件路径的形式执行
-    + supervisor
-        - 每次修改代码保存后，我们都需要手动重启程序,使用 supervisor 可以解决这个繁琐的问题
-        - npm install -g supervisor
-        - 运行supervisor --harmony index启动程序
-        - supervisor 会监听当前目录下 node 和 js 后缀的文件，当这些文件发生改动时，supervisor 会自动重启程序。
-    + 在package.json中设置scripts
-        ```
-        "scripts": {
-            "start": "node ./bin/www"
-        }
-        ```
+  + supervisor
+    - 每次修改代码保存后，我们都需要手动重启程序,使用 supervisor 可以解决这个繁琐的问题
+    - npm install -g supervisor
+    - 运行supervisor --harmony index启动程序
+    - supervisor 会监听当前目录下 node 和 js 后缀的文件，当这些文件发生改动时，supervisor 会自重启程序。
+  + 在package.json中设置scripts
+    ```
+      "scripts": {
+          "start": "node ./bin/www"
+      }
+    ```
 
 ## 模块
 * 核心模块
-    - http：提供HTTP服务器功能。
-    - url：解析URL。
-    - fs：与文件系统交互。
-    - querystring：解析URL的查询字符串。
-    - child_process：新建子进程。
-    - util：提供一系列实用小工具。
-    - path：处理文件路径。
-    - crypto：提供加密和解密功能，基本上是对OpenSSL的包装。
+  - http：提供HTTP服务器功能。
+  - url：解析URL。
+  - fs：与文件系统交互。
+  - querystring：解析URL的查询字符串。
+  - child_process：新建子进程。
+  - util：提供一系列实用小工具。
+  - path：处理文件路径。
+  - crypto：提供加密和解密功能，基本上是对OpenSSL的包装。
 
 * 特殊的模块
-    - global 有且仅有一个全局对象
-    - process 代表当前的nodejs 进程
-      ```js
-        // process.nextTick()将在下一轮事件循环中调用:
-        process.nextTick(function () {
-            console.log('nextTick callback!');
-        });
-        console.log('nextTick was set!');
-        // nextTick was set!
-        // nextTick callback!
+  - global 有且仅有一个全局对象
+  - process 代表当前的nodejs 进程
+    ```js
+      // process.nextTick()将在下一轮事件循环中调用:
+      process.nextTick(function () {
+          console.log('nextTick callback!');
+      });
+      console.log('nextTick was set!');
+      // nextTick was set!
+      // nextTick callback!
 
-        // 程序即将退出时的回调函数:
-        process.on('exit', function (code) {
-            console.log('about to exit with code: ' + code);
-        });
-      ```
+      // 程序即将退出时的回调函数:
+      process.on('exit', function (code) {
+          console.log('about to exit with code: ' + code);
+      });
+    ```
 
 ## web framework
 * 常用web的框架
