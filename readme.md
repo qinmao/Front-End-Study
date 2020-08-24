@@ -11,9 +11,9 @@
 * [h5 mobile](mobile/h5-mobile.md)
 
 ## js 基础
-* [js 基础语法](ECMA/js基础语法.md)
-* [dom 基础](html/dom.md)
-* [bom 基础](html/bom.md)
+* [js 基础](ECMA/js基础语法.md)
+* [dom 基础](浏览器/dom.md)
+* [bom 基础](浏览器/bom.md)
 
 ## 常用封装的函数
 * [日期格式处理](js/date-format.js)
@@ -21,224 +21,13 @@
 * [数组的处理](js/array-util.js)
 * [字符串的处理](js/string-util.js)
 
-## (*)浏览器工作原理与实践
+## (*)浏览器工作原理与http协议
 * [工作原理与实践](浏览器/readme.md)
-
-## (*)http协议
 * [http协议](http/readme.md)
 
-### prototype
- * 什么是原型？
-    - 函数对象的prototype属性所引用的对象。
-    - 原型的本质就是对象
-    - 声明一个函数时，原型就随之而产生。此时默认原型 是一个空对象。但是具有一个默认的属性constructor，该属性指向其构造函数
-
- * 原型的特性：
-    1. 在原型上的成员(属性和方法),都可以直接被其实例访问，object 是基原型
-
-    2. 实例不可以直接修改原型上的任何成员
-
-    3. 动态性
-        * 如果在原有的原型上扩展成员，会直接反应到 已创建的对象和之后创建的对象上。
-        * 如果替换了原有的原型，新原型的成员 在之前已创建的对象是不能访问到的，而在之后创建的对象是可以访问到的。
-        * 如果置换了原型，就可能会在新的原型上丢失默认的constructor属性,如果想要其有该属性，就只能自己手动添加上。
-
-    4. 所有的实例 只能共享一个原型。
-
- * 获取原型的方式：
-    - 通过函数：
-        ```
-        <fnName>.prototype
-        ```
-    - 通过对象：
-        ```
-        <object>.__proto__ ，__proto__  是浏览器中的，是一个非标准属性；
-        ```
-
- * 原型链：
-    - 原型的本质是对象，那么就具有__proto__的属性，所以原型对象也有原型。通过这个属性一层层找下去，就是当前对象的原型链。
-    - 原型链的尽头 Object.prototype 所以js实现继承就靠原型链
-
- * 构造函数,原型和实例的关系:
-    - 构造函数(constructor)都有一个原型对象(prototype),
-    - 原型对象都包含一个指向构造函数的指针,
-    - 而实例(instance)都包含一个指向原型对象的内部指针.
-
- * 对象的属性搜索原则：
-    - 首先找自己，若找到，停止搜索直接使用，否则一层层往原型上找，找到，停止搜索，直接使用，一直到 Object.prototype上 如果找到 就返回该属性的值，如果依然没有找到，就返回undefined。
-
- * 原型的对象指向一个实例，原型链的过程?
-    ```js
-    constructor1.prototype = instance2
-    // 试图引用constructor1构造的实例instance1的某个属性p1
-    ```
-    1. 首先会在instance1内部属性中找一遍;
-    2. 接着会在instance1.__proto__(constructor1.prototype)中找一遍,而constructor1.prototype 实际上是instance2, 也就是说在instance2中寻找该属性p1;
-    3. 如果instance2中还是没有,此时程序不会灰心,它会继续在instance2.__proto__(constructor2.prototype)中寻找...直至Object的原型对象
-
-    > 搜索轨迹: instance1--> instance2 --> constructor2.prototype…-->Object.prototype
-
- * 如何判断原型和实例的关系？
-    + instanceof 
-        - 语法：<对象> instanceof 函数
-        - 功能：判断对象 是否为 指定函数的实例
-        - 运算规则:若函数的原型，出现在该对象的原型链上 表达式返回true 否则false 
-
-    + isPrototypeOf
-        - 语法：<对象a>.isPrototypeOf(对象b)
-        - 功能：判断对象a是不是对象b的原型
-
- * 原型链存在的问题？
-    - 问题一: 当原型链中包含引用类型值的原型时,该引用类型值会被所有实例共享;
-    - 问题二: 在创建子类型时,不能向超类型的构造函数中传递参数.
-
- * 如何解决原型链继承存在的问题?
-    - 借用构造函数:(即在子类型构造函数的内部调用超类型构造函数.)
-        ```javascript
-            function Parent(value) {
-                this.val = value
-                this.colors = ["red","blue","green"]
-            }
-            function Child(value) {
-                Parent.call(this, value)  //继承了Parent,且向父类型传递参数
-            }
-
-            var instance1 = new Child();
-            instance1.colors.push("black");
-            console.log(instance1.colors); //"red,blue,green,black"
-
-            var instance2 = new Child();
-            console.log(instance2.colors);//"red,blue,green" 可见引用类型值是独立的
-
-            // 以上两个问题解决了，但是方法都在构造函数中定义, 因此函数复用也就不可用了.而且超类型(如Parent)中定义的方法,对子类型而言也是不可见的. 考虑此,借用构造函数的技术也很少单独使用.
-        ```
-    - 组合式继承
-        ```js
-            function Parent(value) {
-                this.val = value
-            }
-
-            function Child(value) {
-                Parent.call(this, value) 
-            }
-
-            Parent.prototype.getValue = function() {
-                console.log(this.val)
-            }
-
-            Child.prototype = new Parent()
-            // Child 默认原型为空对象,constructor指向其构造函数
-            // 置换了原型，就可能会在新的原型上丢失默认的constructor属性,如果想要其有该属性，就只能自己手动添加上。
-            Child.prototype.constructor = Child;
-            const child = new Child(1)
-
-            child.getValue() // 1
-            child instanceof Parent // true
-            
-            // 原理：在子类的构造函数中通过 Parent.call(this) 继承父类的属性，然后改变子类的原型为 new Parent() 来继承父类的函数
-            // 优点: 构造函数可以传参，不会与父类引用属性共享，可以复用父类的函数
-            // 缺点: 就是在继承父类函数的时候调用了父类构造函数，导致子类的原型上多了不需要的父类属性，存在内存上的浪费
-        ```
-    -  es5 提供的Object.create(obj) 的经典继承   
-        ```javascript
-            var obj = Object.create(obj1);
-            // 原理是置换原型
-            var create = function (obj) {
-            if (!Object.create) {
-                Object.create = function (obj) {
-                    function F() { }
-                    F.prototype = obj
-                    return new F()
-                }
-            } else {
-                return Object.create(obj)
-            }
-            }
-        ```
-    - 寄生组合继承
-        > 该继承方式，解决了继承父类函数时调用了构造函数，多了无用的父类属性问题。
-        ```javascript
-            function Parent(value) {
-                this.val = value
-            }
-            Parent.prototype.getValue = function() {
-                console.log(this.val)
-            }
-
-            function Child(value) {
-                Parent.call(this, value)
-            }
-
-            Child.prototype = Object.create(Parent.prototype, {
-                constructor: {
-                    value: Child,
-                    enumerable: false,
-                    writable: true,
-                    configurable: true
-                }
-            })
-
-            const child = new Child(1)
-
-            child.getValue() // 1
-            child instanceof Parent // true
-
-            // 以上继承实现的核心就是将父类的原型赋值给了子类，并且将构造函数设置为子类，这样既解决了无用的父类属性问题，还能正确的找到子类的构造函数。
-
-        ```
-
- * class 继承
-    > JS 中并不存在类，class 只是语法糖，本质还是函数。
-    > 可证明
-    ```js
-        class Person {}
-        Person instanceof Function // true
-
-
-        class Parent {
-            constructor(value) {
-                this.val = value
-            }
-            getValue() {
-                console.log(this.val)
-            }
-        }
-
-        class Child extends Parent {
-            constructor(value) {
-                super(value) //可以看成 Parent.call(this, value)
-            }
-        }
-        let child = new Child(1)
-        child.getValue() // 1
-        child instanceof Parent // true
-    ```
-
-
- * Object.prototype 上的一些方法
-    + hasOwnProperty方法
-        - 语法：<对象>.hasOwnProperty('propertyName')
-        - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
-
-    + propertyIsEnumerable
-        - 语法：<对象>.propertyIsEnumerable("propName")
-        - 功能：可枚举 指定的属性是对象本身的。
-    + valueOf
-        - 语法: <对象>.valueOf()
-        - 功能：将指定对象类型的数据 转换成 基本数据类型
-        + 规则：
-            - 如果该对象是 基本数据的包装类型 会转换成 其对应的基本数据类型
-            - 否则为其他对象类型，就直接返回该对象。
-
- 
-
- * eval方法
-    - 可以使用eval来将json字符串 转换成 js对象。
-    - 在没有严格模式，eval可以随意指定一段字符串来当做js代码来执行。
-        * 脚本注入
-        * 全局变量以及全局对象污染
-        * eval创建变量的作用域 是由eval执行的作用域决定。 
-    - 已不推荐使用。JSON.parse()
+## 面向对象
+- 原型与继承
+- [常用的设计模式](desin-patterns/)
 
 ## 模块化
 * ES6 之前，js的加载
@@ -321,104 +110,6 @@
     - CommonJS 是同步导入，es 是异步的
     
 
-## 数组对象遍历
- * Array
-    + forEach
-        ```javascript
-            var arr = [1, 2, 2, 2, 2, 6, 9]
-            var sum = 0
-            arr.forEach(function (value,i,a) {
-                sum += value
-            })
-        ```
-    + map
-        ```javascript
-            // 类似foreach 有返回值 返回一个新数组
-            arr.map(function (x) {
-                return x + 1
-            })
-        ```
-
-    + filter 过滤器
-        ```javascript
-            //返回指定条件的新数组
-            arr.filter(function (x) {
-                return x < 2
-            })
-        ```
-
-    + some
-        ```javascript
-        //空数组时 some 返回false every 返回true
-        // some 存在一个满足条件就返回true
-        arr.some(function (x) {
-            return x == 2   //true
-        })
-        ```
-
-    + every
-        ```javascript
-            //返回true false 
-        arr.every(function (x) {
-            return x > 10 //false
-        })
-        ```
-
-    + indexOf
-        ```javascript
-        let index=arr.indeOf('xxx') 
-        // 存在返回数组索引，不存在返回-1
-
-        ```
-
-    + reduce
-        ```javascript
-            // reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
-
-            // reduce() 可以作为一个高阶函数，用于函数的 compose。
-
-            // 注意: reduce() 对于空数组是不会执行回调函数的。
-            var numbers = [65, 44, 12, 4];
-        
-            function getSum(total, num) {
-                return total + num;
-            }
-            function myFunction(item) {
-                document.getElementById("demo").innerHTML = numbers.reduce(getSum);
-            }
-        ```
-
-    + sort
-        * Array的sort()方法默认把所有元素先转换为String再排序，如果直接排序数字你就踩坑了
-        * 默认 按照根据ASCII码进行排序
-        * sort 是一个高阶函数
-            ```javascript
-            // 升序
-            sort(function(a,b){
-                return a-b
-            })
-            // 降序
-            sort(function(a,b){
-                return b-a
-            })
-            ```
-            
- * 对象的遍历
-    - Object.keys(obj).forEach()
-    - for in
-
- * for in for of 的区别
-    - for in更适合遍历对象 遍历数组是不是数组内部的顺序，遍历所有可枚举的属性，遍历的是数组的索引
-    - for of 适合数组字符串/map/set等拥有迭代器对象的集合 遍历的是数组的元素的值,不能遍历对象
-    - 与 forEach()不同的是，它可以正确响应break、continue和return语句
-    - ```js
-        var myArray=[1,2,4,5,6,7]
-        myArray.name="数组";
-        for (let value of myArray) {
-            console.log(value);
-        }
-
-     ```
 
 ## es6对js的扩展
 * [es6](ECMA/es6.md)
@@ -564,29 +255,19 @@
     
  * [文章])(https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html)
 
-## node
+## 服务端
 * [node](node/README.md)
-
-## linux
 * [linux](linux/readme.md)
-
-## nginx
 * [nginx](nginx/readme.md)
-
-## docker
 * [docker](docker/readme.md)
 
-## js中的设计模式
-* [js中的设计模式](desin-patterns/)
-
-## 爬虫
-* 抓包工具
- - charles mac
- - fiddler windows 侧重http协议
- - WireShark 所有的通讯协议
-
+* 数据爬虫
 * [electron](cross-platform/electron/readme.md)
 * [puppeteer](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
+* 抓包工具
+   - charles mac
+   - fiddler windows 侧重http协议
+   - WireShark 所有的通讯协议
 
 ## 图与可视化
 * [图与可视化](图与可视化/readme.md)
@@ -618,3 +299,11 @@
  - vue/ui框架
  
  - typescript
+
+## tree 目录生成命令
+ 1. 安装 :brew install tree  ||  apt-get install tree
+ 2. exmple: tree -L 3 -I "node_modules"
+    - tree -d 只显示文件夹；
+    - tree -L n 显示项目的层级。n表示层级数。比如想要显示项目三层结构，可以用tree -l 3；
+    - tree -I pattern 用于过滤不想要显示的文件或者文件夹。比如你想要过滤项目中的node_modules文件夹，可以使用tree -I "node_modules"；
+    - tree > tree.md 将项目结构输出到tree.md这个文件。
