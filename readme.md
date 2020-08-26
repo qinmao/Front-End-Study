@@ -26,8 +26,8 @@
 * [http协议](http/readme.md)
 
 ## 面向对象
-- 原型与继承
-- [常用的设计模式](desin-patterns/)
+* 原型与继承
+* [常用的设计模式](desin-patterns/)
 
 ## 模块化
 * ES6 之前，js的加载
