@@ -603,7 +603,7 @@
     Symbol 值通过Symbol函数生成
     Symbol函数可以接受一个字符串作为参数，表示对 Symbol 实例的描述
     Symbol函数的参数只是表示对当前 Symbol 值的描述，因此相同参数的Symbol函数的返回值是不相等的。
-    ```javascript
+    ```js
         // 没有参数的情况
         let s1 = Symbol();
         let s2 = Symbol();
@@ -636,7 +636,7 @@
     ```
 
 ## class
-    ```javascript
+    ```js
         //1. 定义类
         class Point {
             constructor(x, y) {
@@ -727,11 +727,74 @@
     ```
 
 ## module 模块
+ > ES6 之前，js没有module，不利于大程序的开发，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。前者用于node，后者用于浏览器。
+* 为什么要模块化(有什么好处)？
+  - 解决命名冲突
+  - 提供复用性
+  - 提高代码可维护性
+
+* 有哪些模块化的方案
+  + 沙箱模式(实质是匿名的立即执行函数)
+    - 在早期，使用立即执行函数实现模块化是常见的手段，通过函数作用域解决了命名冲突、污染全局作用域的问题
+    - 例如jq插件开发
+
+  + AMD 和 CMD
+    - 现在很少看到
+    - 用法如下
+        ```js
+            // AMD
+            define(['./a', './b'], function(a, b) {
+                // 加载模块完毕可以使用
+                a.do()
+                b.do()
+            })
+            // CMD
+            define(function(require, exports, module) {
+                // 加载模块
+                // 可以把 require 写在函数体的任意地方实现延迟加载
+                var a = require('./a')
+                a.doSomething()
+            })
+        ```
+
+  + CommonJS
+    - module.exports/require
+    - 语法如下:
+        ```js
+            const { stat, exists, readFile } = require('fs');
+            // 等同于
+            const _fs = require('fs');
+            const stat = _fs.stat;
+            const exists = _fs.exists;
+            const readfile = _fs.readfile;
+            // 上面代码的实质是整体加载fs模块（即加载fs的所有方法），生成一个对象（_fs），然后再从这个对象上面读取 3 个方法。
+            // 这种加载称为“运行时加载”，因为只有运行时才能得到这个对象，导致完全没办法在编译时做“静态优化”。
+        ```
+    - module.exports是全局的对象 可简写成exports，
+    - nodejs 帮我们实现了var exports=module.exports，exports 就是 module.exports 的别名，初始值是空对象
+        
+  + es module
+    - export/import
+    - 语法:
+        ```js
+            import { stat, exists, readFile } from 'fs';
+            // ES6 模块不是对象，而是通过export命令显式指定输出的代码，再通过import命令输入。
+            // 上面代码的实质是从fs模块加载 3 个方法，其他方法不加载。
+            // 这种加载称为“编译时加载”或者静态加载，效率要比 CommonJS 模块的加载方式高。
+            // 当然，这也导致了没法引用 ES6 模块本身，因为它不是对象。
+        ```
+    - ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";
+
+
+* ES6 模块与 CommonJS 模块的差异
+  - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
+  - CommonJS 是同步导入，es 是异步的
+
 * es6 模块的语法:
     ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";
     模块功能主要由两个命令构成：export 和 import。export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。
     es6 模块写法:
-    ```javascript
+    ```js
         // 1. profile.js
         var firstName = 'Michael';
         var lastName = 'Jackson';
@@ -757,13 +820,13 @@
     * import 注意事项
     - 1. 需要特别注意的是，export命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系。
     - 2. import命令具有提升效果，会提升到整个模块的头部，首先执行。
-    ```javascript
+    ```js
         foo();
         import { foo } from 'my_module';
         // 上面的代码不会报错，因为import的执行早于foo的调用。这种行为的本质是，import命令是编译阶段执行的，在代码运行之前
     ```
     - 3. 错误的写法
-    ```javascript
+    ```js
         // 报错
         export 1;
         // 报错
@@ -783,12 +846,12 @@
         同样的，function和class的输出，也必须遵守这样的写法。
     ```
     - 4. import 语句会执行所加载的模块
-    ```javascript
+    ```js
     import 'lodash';
     // 代码仅仅执行lodash模块，但是不输入任何值。
     ```
     - 5. Singleton 模式
-    ```javascript
+    ```js
         import { foo } from 'my_module';
         import { bar } from 'my_module';
         // 等同于
@@ -799,7 +862,7 @@
     - export命令可以出现在模块的任何位置，只要处于模块顶层就可以。如果处于块级作用域内，就会报错，
     - import命令也是如此。
     * 模块的整体加载  
-    ```javascript
+    ```js
         // circle.js
         export function area(radius) {
             return Math.PI * radius * radius;
@@ -821,7 +884,7 @@
     * import()函数 
     * 目的：为了解决在运行时无法加载模块以下是具体的应用场景
     - 1.按需加载
-    ```javascript
+    ```js
     button.addEventListener('click', event => {
         import('./dialogBox.js')
         .then(dialogBox => {
@@ -834,7 +897,7 @@
         // import()方法放在click事件的监听函数之中，只有用户点击了按钮，才会加载这个模块。
     ```
     - 2.条件加载
-    ```javascript
+    ```js
         if (condition) {
             import('moduleA').then(...);
             } else {
@@ -842,13 +905,13 @@
         }
     ```
     - 3. 动态的模块路径
-    ```javascript
+    ```js
         import(f())
         .then(...);
         // 根据函数f的返回结果，加载不同的模块。
     ```
     * 注意:import()加载模块成功以后，这个模块会作为一个对象，当作then方法的参数。可以使用对象解构赋值的语法，获取输出接口。
-    ```javascript
+    ```js
         // 1. export1和export2都是 myModule.js的输出接口，可以解构获得
         import('./myModule.js')
             .then(({export1, export2}) => {
@@ -890,27 +953,24 @@
 
 * Module 的加载实现
     - 默认情况下，浏览器是同步加载js脚本,为了解决脚本过大导致卡死的问题，所以脚本引入了异步加载
+     ```html
         <script src="path/to/myModule.js" defer></script>
         <script src="path/to/myModule.js" async></script>
-
-    defer与async的区别是：一句话，defer是“渲染完再执行”，async是“下载完就执行”
-    es6 module 的加载规则：
-    <script type="module" src="./foo.js"></script>
-    浏览器对于带有type="module"的<script>，都是异步加载，等同于defer
+     ```
+    - defer与async的区别是：一句话，defer是“渲染完再执行”，async是“下载完就执行”
+    - es6 module 的加载规则：
+      ```html
+          <script type="module" src="./foo.js"></script>
+           <!--浏览器对于带有type="module"的<script>，都是异步加载，等同于defer-->
+      ```
     - ES6 模块也允许内嵌在网页中，语法行为与加载外部脚本完全一致。
-    <script type="module">
-        import utils from "./utils.js";
-        // other code
-    </script>
-
-    - ES6 模块与 CommonJS 模块的差异
-        - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
-        - CommonJS 是同步导入，es 是异步的
-
-    - node 加载:
-        module.exports是全局的对象 可简写成exports node 帮我们实现了var exports=module.exports
-        exports 就是 module.exports 的别名，初始值是空对象
-
+     ```html
+        <script type="module">
+            import utils from "./utils.js";
+            // other code
+        </script>
+     ```
+     
 ## proxy
  * 概述：
     - 这个词的原意是代理，表示由它来“代理”某些操作，可以译为“代理器”
@@ -921,7 +981,7 @@
     - target 表示所要拦截的目标对象
     - handler 一个对象，用来定制拦截行为。
     - 例子：
-        ```javascript
+        ```js
         // 拦截target的属性的访问请求，访问任何属性都得到35
         var proxy = new Proxy({}, {
             get: function(target, property) {

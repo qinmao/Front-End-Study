@@ -14,108 +14,22 @@
 * [js 基础](ECMA/js基础语法.md)
 * [dom 基础](浏览器/dom.md)
 * [bom 基础](浏览器/bom.md)
+* [正则表达式](note/reg.md)
+
+## (*)浏览器工作原理与http协议
+* [工作原理与实践](浏览器/readme.md)
+* [http协议](http/readme.md)
+
+## js 高级
+* [面向对象](ECMA/面向对象.md)
+* [es6对js的扩展](ECMA/es6.md)
+* [常用的设计模式](desin-patterns/)
 
 ## 常用封装的函数
 * [日期格式处理](js/date-format.js)
 * [数字的格式处理](js/num-format.js)
 * [数组的处理](js/array-util.js)
 * [字符串的处理](js/string-util.js)
-
-## (*)浏览器工作原理与http协议
-* [工作原理与实践](浏览器/readme.md)
-* [http协议](http/readme.md)
-
-## 面向对象
-* 原型与继承
-* [常用的设计模式](desin-patterns/)
-
-## 模块化
-* ES6 之前，js的加载
-    ```html
-        <!--
-            1. 正常:JS 会阻塞浏览器，浏览器必须等待 index.js 加载和执行完毕才能去做其它事情。--> 
-        <script src="index.js"></script>
-        <!-- 
-            2. async:JS 不会阻塞浏览器,它的加载是异步的，当它加载结束，JS 脚本会立即执行 -->
-            <script async src="index.js"></script>
-        <!-- 
-            3. defer:JS 的加载是异步的，执行是被推迟的。等整个文档解析完成、DOMContentLoaded 事件即将被触发时，被标记了 defer 的 JS 文件才会开始依次执行-->
-        <script defer src="index.js"></script>
-    ```
-
- > ES6 之前，js没有module，不利于大程序的开发，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。前者用于node，后者用于浏览器。
- * 为什要模块化(有什么好处)
-    - 解决命名冲突
-    - 提供复用性
-    - 提高代码可维护性
-
- * 有哪些模块化的方案
-    + 沙箱模式(实质是匿名的立即执行函数)
-        - 在早期，使用立即执行函数实现模块化是常见的手段，通过函数作用域解决了命名冲突、污染全局作用域的问题
-        - 例如jq插件开发
-
-    + AMD 和 CMD
-        - 现在很少看到
-        - 用法如下
-            ```javascript
-                // AMD
-                define(['./a', './b'], function(a, b) {
-                    // 加载模块完毕可以使用
-                    a.do()
-                    b.do()
-                })
-                // CMD
-                define(function(require, exports, module) {
-                    // 加载模块
-                    // 可以把 require 写在函数体的任意地方实现延迟加载
-                    var a = require('./a')
-                    a.doSomething()
-                })
-            ```
-
-    + CommonJS
-        - module.exports/require
-        - 语法如下:
-            ```javascript
-                let { stat, exists, readFile } = require('fs');
-                // 等同于
-                let _fs = require('fs');
-                let stat = _fs.stat;
-                let exists = _fs.exists;
-                let readfile = _fs.readfile;
-            
-            // 上面代码的实质是整体加载fs模块（即加载fs的所有方法），生成一个对象（_fs），然后再从这个对象上面读取 3 个方法。
-            // 这种加载称为“运行时加载”，因为只有运行时才能得到这个对象，导致完全没办法在编译时做“静态优化”。
-            
-            ```
-        - module.exports是全局的对象 可简写成exports，
-        - node 帮我们实现了var exports=module.exports，exports 就是 module.exports 的别名，初始值是空对象
-        
-    + es module
-        - export/import
-        - 语法:
-            ```javascript
-                // ES6 模块不是对象，而是通过export命令显式指定输出的代码，再通过import命令输入。
-                import { stat, exists, readFile } from 'fs';
-
-                // 上面代码的实质是从fs模块加载 3 个方法，其他方法不加载。
-                // 这种加载称为“编译时加载”或者静态加载，效率要比 CommonJS 模块的加载方式高。
-                // 当然，这也导致了没法引用 ES6 模块本身，因为它不是对象。
-            ```
-        - ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";
-
-
- * ES6 模块与 CommonJS 模块的差异
-    - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
-    - CommonJS 是同步导入，es 是异步的
-    
-
-
-## es6对js的扩展
-* [es6](ECMA/es6.md)
-
-## 正则表达式
-* [正则表达式](note/reg.md)
 
 ## 移动端
 ### 事件
@@ -140,7 +54,7 @@
         - ontouchstart  > ontouchmove  > ontouchend > onclick
 
 ### 适配
- * [适配](mobile/适配/readme.md)
+* [适配](mobile/适配/readme.md)
 
 ## framework
 > 前端常用的框架（方式不同，本质都是操作dom）
