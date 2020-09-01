@@ -2,7 +2,6 @@
 ## 总体上的感知
 * Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine. 
 * Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
-
 > Node.js (v12以前) 是单线程，它无需进程/线程切换上下文的成本，非常高效，但它在执行具体任务的时候是多线程的。
 
 ## install
@@ -11,31 +10,33 @@
 * [详情参考 nvm-windows](https://github.com/coreybutler/nvm-windows)
 
 ## node结构图
-![node结构图](node结构.jpg)
+![node结构图](./imgs/node结构.jpg)
 
 ## node 事件驱动模型
 * 主线程：
-    1. 执行node的代码，把代码放入队列
-    2. 事件循环程序（主线程）把队列里面的同步代码都先执行了
-    3. 同步代码执行完成，执行异步代码
-    4. 异步代码分2种状况
-        - 异步非io setTimeout() setInterval() 判断是否可执行，如果可以执行就执行，不可以跳过。
-        - 异步io 文件操作会从线程池当中去取一条线程，帮助主线程去执行。
-    5. 主线程会一直轮训，队列中没有代码了，主线程就会退出。
+  1. 执行node的代码，把代码放入队列
+  2. 事件循环程序（主线程）把队列里面的同步代码都先执行了
+  3. 同步代码执行完成，执行异步代码
+  4. 异步代码分2种状况
+    - 异步非io setTimeout() setInterval() 判断是否可执行，如果可以执行就执行，不可以跳过。
+    - 异步io 文件操作会从线程池当中去取一条线程，帮助主线程去执行。
+  5. 主线程会一直轮训，队列中没有代码了，主线程就会退出。
 
 * 子线程：被放在线程池里面的线程，用来执行异步io操作
-    1. 在线程池里休息
-    2. 异步io的操作来了，执行异步io操作。
-    3. 子线程会把异步io操作的callback函数，扔回给队列
-    4. 子线程会回到线程池了去休息。callback，在异步io代码执行完成的时候被扔回主线程。
+  1. 在线程池里休息
+  2. 异步io的操作来了，执行异步io操作。
+  3. 子线程会把异步io操作的callback函数，扔回给队列
+  4. 子线程会回到线程池了去休息。callback，在异步io代码执行完成的时候被扔回主线程。
 
 ## 应用场景
 > NodeJS适合运用在高并发、I/O密集、少量业务逻辑的场景
-- RESTful API：这是NodeJS最理想的应用场景，可以处理数万条连接，本身没有太多的逻辑，只需要请求API，组织数据进行返回即可。它本质上只是从某个数据库中查找一些值并将它们组成一个响应。由于响应是少量文本，入站请求也是少量的文本，因此流量不高，一台机器甚至也可以处理最繁忙的公司的API需求。
+* RESTful API：
+  - 这是NodeJS最理想的应用场景，可以处理数万条连接，本身没有太多的逻辑，只需要请求API，组织数据进行返回即可。它本质上只是从某个数据库中查找一些值并将它们组成一个响应。由于响应是少量文本，入站请求也是少量的文本，因此流量不高，一台机器甚至也可以处理最繁忙的公司的API需求。
 
-- 统一Web应用的UI层：做前后端的依赖分离。如果所有的关键业务逻辑都封装成REST调用，就意味着在上层只需要考虑如何用这些REST接口构建具体的应用。那些后端程序员们根本不操心具体数据是如何从一个页面传递到另一个页面的，他们也不用管用户数据更新是通过Ajax异步获取的还是通过刷新页面。
+* 统一Web应用的UI层：
+  - 做前后端的依赖分离。如果所有的关键业务逻辑都封装成REST调用，就意味着在上层只需要考虑如何用这些REST接口构建具体的应用。那些后端程序员们根本不操心具体数据是如何从一个页面传递到另一个页面的，他们也不用管用户数据更新是通过Ajax异步获取的还是通过刷新页面。
 
-- 大量Ajax请求的应用
+* 大量Ajax请求的应用
 
 ## 优缺点
 * 优点:
@@ -70,11 +71,11 @@
 * 核心模块
   - http：提供HTTP服务器功能。
   - url：解析URL。
-  - fs：与文件系统交互。
   - querystring：解析URL的查询字符串。
+  - path：处理文件路径。
+  - fs：与文件系统交互。
   - child_process：新建子进程。
   - util：提供一系列实用小工具。
-  - path：处理文件路径。
   - crypto：提供加密和解密功能，基本上是对OpenSSL的包装。
 
 * 特殊的模块
@@ -104,17 +105,15 @@
 * web 框架脚手架
   - koa-generator 非官方，狼叔开发的
     ```
-    npm install koa-generator -g
-    koa2 projectName
+     npm install koa-generator -g
+     koa2 projectName
     ```
   - egg
     ```
     $ mkdir egg-example && cd egg-example
     $ npm init egg --type=simple
     $ npm i
-    
     ```
-
 ## web 模板引擎
 + Nunjucks 是Mozilla开发的一个纯JavaScript编写的模板引擎，既可以用在Node环境下（主要），又可以运行在浏览器端（有更好的mvvm框架）
 
@@ -130,7 +129,7 @@
 ## 缓存
 * redis
 
-## 调用接口风格
+## 接口风格
 - RESTful
 - RPC
 
@@ -141,7 +140,7 @@
 ## api接口文档
 
 ## 部署
-- [pm2](pm2/readme.md)
+* [pm2](pm2/readme.md)
 
 ## 学习的计划
 - 整体上了解 nodejs
