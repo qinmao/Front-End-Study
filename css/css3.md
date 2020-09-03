@@ -187,14 +187,16 @@
 * em:的基准值  16px  默认的字体大小是16px,基准值是相对于父元素来的
 
 * rem:的基准值  16px  默认的字体大小是16px
- - r 是root  根元素的意思  html文档的根元素是  html标签
- - 基准值是相对于来根元素（html）来的
+  - r 是root  根元素的意思  html文档的根元素是  html标签
+  - 基准值是相对于来根元素（html）来的
 
 * vw:是基于Viewport视窗的长度单位，这里的视窗（Viewport）指的就是浏览器可视化的区域，而这个可视区域是window.innerWidth/window.innerHeight的大小
- - vw：是Viewport's width的简写,1vw等于window.innerWidth的1%
- - vh：和vw类似，是Viewport's height的简写，1vh等于window.innerHeihgt的1%
- - vmin：vmin的值是当前vw和vh中较小的值
- - vmax：vmax的值是当前vw和vh中较大的值
+  - vw：是Viewport's width的简写,1vw等于window.innerWidth的1%
+  - vh：和vw类似，是Viewport's height的简写，1vh等于window.innerHeihgt的1%
+  - vmin：vmin的值是当前vw和vh中较小的值
+  - vmax：vmax的值是当前vw和vh中较大的值
+* 自动计算高度时，与百分比的差异： height: calc(100vh - 176px);vh 会显示计算后的实际的占位效果
+
 
 ## media 
  ```css
