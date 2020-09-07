@@ -58,116 +58,89 @@
 
 ## framework
 > 前端常用的框架（方式不同，本质都是操作dom）
-### 数据驱动式
- * [angular1](framework/angular1/angular-base.html)
- * [angular2](framework/angular2/angular.md)
- * [vue](framework/vue/vue.md)
- * [react](framework/react/readme.md)
+* 数据驱动式
+  - [angular1](framework/angular1/angular-base.html)
+  - [angular2](framework/angular2/angular.md)
+  - [vue](framework/vue/vue.md)
+  - [react](framework/react/readme.md)
 
-### 手动式
- * [jq](framework/jq/readme.md)
- * [zepto](framework/zepto/readme.md)
+* 手动式
+  - [jq](framework/jq/readme.md)
+  - [zepto](framework/zepto/readme.md)
 
 ## 跨平台技术
- * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
- * [微信小程序](wx/readme.md)
- * react native
- * [weex/uni-app](cross-platform/weex)
- * flutter
- * [electron](cross-platform/electron/readme.md)
+* [Hybrid-App](/Hybrid-App/cordova.build.app.md)
+* [微信小程序](wx/readme.md)
+* react native
+* [weex/uni-app](cross-platform/weex)
+* flutter
+* [electron](cross-platform/electron/readme.md)
 
 ## 基于vue构建的项目
- * [spa](framework/vue/vue.md)
- * [ssr](framework/nuxt/readme.md)
+* [spa](framework/vue/vue.md)
+* [ssr](framework/nuxt/readme.md)
 
 ## 前端优化
-- [优化](前端优化/readme.md)
+* [优化](前端优化/readme.md)
 
 ## 工程化
-### 构建与打包工具
- * [gulp](build-tool/gulp/readme.md)
- * [webpack](build-tool/webpack/readme.md)
+* 构建与打包工具
+  - [gulp](build-tool/gulp/readme.md)
+  - [webpack](build-tool/webpack/readme.md)
 
-### 测试
+* 测试
 
-### 监控
+* 监控
 
 ## 环境和工具
-### mac 
- * brew[官网](http://brew.sh/index_zh-cn.html)
- 
- * 安装:
+* mac 
+  - 包管理 brew[官网](http://brew.sh/index_zh-cn.html)
+  - 安装:
     ``` 
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    ```
+  + brew 用法
+     - brew install 软件名  
+     - brew uninstall  软件名称
+     - brew list 可以查看所有安装的软件
+     - brew info 软件名
+
+* vscode 
+   - file-size
+   - html css support
+   - minapp 
+   - vetur
+   - vscode-icons
+   - vueHelper
+   - [参考](https://juejin.im/post/5e89fb596fb9a03c75753eb0?utm_source=gold_browser_extension#comment)
+
+* eslint
+   - 是nodejs编写，提供一种代码编写规范。
+   - [配置](note/eslint.md)
+   - [参考](http://eslint.org/)
+
+* Emmet(快捷编写html，vscode 内置了该功能)
+   ```css
+      div.className
+      div#idName
+      div.className#idName
+      h1{text}
+      a[href="#"]
+      ul>li*3>a[href="#"]
     ```
 
- * brew
-    - brew install 软件名  brew uninstall  软件名称
-    - brew list 可以查看所有安装的软件
-    - brew info 软件名
-
-### vscode 
- * 前端本地服务端调试
-   - npm install -g live-server 
-   - 安装报错就用npm install live-server -gf安装，
-   - [详情](https://github.com/tapio/live-server#readme)
-
- * eslint
-    - 是nodejs编写，提供一种代码编写规范。
-    - 对代码静态分析，不用执行就可以查找不符合语法规则的代码。
-    - 可以自定义代码编写的规则
-
-    - 先全局或者本地安装
-      npm i -g eslint
-    - vscode 中 安装eslint 插件
-    - terminal 中执行 eslint --init
-    - [vscode use](http://www.cnblogs.com/IPrograming/p/VsCodeESLint.html)
-    - [配置](note/eslint.md)
-    - [参考](http://eslint.org/)
-
- * Emmet(快捷编写html，vscode 内置了该功能)
-    ```css
-        div.className
-        div#idName
-        div.className#idName
-        h1{text}
-        a[href="#"]
-        ul>li*3>a[href="#"]
-    ```
-
- * 好用的插件
-    - file-size
-    - html css support
-    - minapp 
-    - open in browser
-    - vetur
-    - vscode-icons
-    - vueHelper
-    - [参考](https://juejin.im/post/5e89fb596fb9a03c75753eb0?utm_source=gold_browser_extension#comment)
-    
-### 前端的工具
 * Fontmin/字蛛
 * ImageOptim
 * 文档工具
-    - dash
-    - zeal
+   - dash(mac)
+   - zeal(windows)
     
-### windows 连接服务器的工具
- * fileZillaClint
- * Xshell
+* windows 连接服务器的工具
+  - fileZillaClint 可视化ft工具
+  - Xshell
 
-### git
 * [git基本使用](git/readme.md)
-
-## chrome插件的开发
- * 首先要有一个manifest.json清单文件
-    - [参数列表](http://chrome.liuyixi.com/manifest.html)
- * 在清单文件中提供了代码文件
- * 插件完成后，将其导入到Chrome中
-    - 首先将所有相关文件都放到一个文件夹中
-    - 用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，- 确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
-    
- * [文章])(https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html)
 
 ## 服务端
 * [node](node/README.md)
@@ -175,7 +148,7 @@
 * [nginx](nginx/readme.md)
 * [docker](docker/readme.md)
 
-* 数据爬虫
+## 数据爬虫
 * [electron](cross-platform/electron/readme.md)
 * [puppeteer](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
 * 抓包工具
@@ -185,6 +158,16 @@
 
 ## 图与可视化
 * [图与可视化](图与可视化/readme.md)
+
+## chrome插件的开发
+* 首先要有一个manifest.json清单文件
+   - [参数列表](http://chrome.liuyixi.com/manifest.html)
+* 在清单文件中提供了代码文件
+* 插件完成后，将其导入到Chrome中
+   - 首先将所有相关文件都放到一个文件夹中
+   - 用Chrome打开chrome://settings/extensions 这个网址是Chrome的扩展程序管理页面。点击“加载正在开发的扩展程序”，选择刚才创建的文件夹，- 确定，即成功导入。如果导入出错会有提示信息显示，可能是json文件配置有问题等。
+   
+* [文章])(https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html)
 
 ## 我的开源项目
 - [vue:中后台前端模板](https://github.com/qinmao/vue-admin-template)

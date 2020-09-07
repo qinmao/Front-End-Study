@@ -82,9 +82,12 @@
   - global 有且仅有一个全局对象
   - process 代表当前的nodejs 进程
     ```js
-      // process.nextTick()将在下一轮事件循环中调用:
+      process.env.NODE_ENV // 读取环境变量
+      process.argv         // 获取输入的参数
+      process.exit(1)  // 退出node 进程并返回退出码
+      // 将在下一轮事件循环中调用:
       process.nextTick(function () {
-          console.log('nextTick callback!');
+        console.log('nextTick callback!');
       });
       console.log('nextTick was set!');
       // nextTick was set!
@@ -92,17 +95,22 @@
 
       // 程序即将退出时的回调函数:
       process.on('exit', function (code) {
-          console.log('about to exit with code: ' + code);
+        console.log('about to exit with code: ' + code);
       });
     ```
 
+* setImmediate 与 setTimeout(() => {}, 0), process.nextTick()区别？
+  - setImmediate参数传入的任何函数都是在事件循环的下一个迭代中执行的回调
+  - 传给 process.nextTick() 的函数会在事件循环的当前迭代中（当前操作结束之后）被执行。 这意味着它会始终在 setTimeout 和 setImmediate 之前执行
+  - 延迟 0 毫秒的 setTimeout() 回调与 setImmediate() 非常相似。 执行顺序取决于各种因素，但是它们都会在事件循环的下一个迭代中运行
+  
 ## web framework
 * 常用web的框架
   - [express](https://www.expressjs.com.cn/)
   - [koa](http://www.ruanyifeng.com/blog/2017/08/koa.html)
   - [egg](https://eggjs.org/zh-cn/intro/index.html)
 
-* web 框架脚手架
+* web框架脚手架
   - koa-generator 非官方，狼叔开发的
     ```
      npm install koa-generator -g
@@ -114,8 +122,9 @@
     $ npm init egg --type=simple
     $ npm i
     ```
+
 ## web 模板引擎
-+ Nunjucks 是Mozilla开发的一个纯JavaScript编写的模板引擎，既可以用在Node环境下（主要），又可以运行在浏览器端（有更好的mvvm框架）
+* Nunjucks 是Mozilla开发的一个纯JavaScript编写的模板引擎，既可以用在Node环境下（主要），又可以运行在浏览器端（有更好的mvvm框架）
 
 ## 数据库
 * mysql
