@@ -178,10 +178,8 @@
 * Math.round(x) 四舍五入
 
 ## JSON 转换 
-* object转string  
-  - JSON.stringify()
-* string转object   
-  - JSON.parse()
+* object转string:JSON.stringify()
+* string转object:JSON.parse()   
   
 ## js异常
 > js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象

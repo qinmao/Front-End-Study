@@ -65,29 +65,6 @@
 - 通过这个对象可以获得浏览器的浏览器的种类、版本号等属性
 - userAgent 获取浏览器类型
 
-## postMessage
-> 解决跨域和跨页面通信的问题
-+ web开发的时候遇到的消息传递的问题
-  - 多窗口之间消息传递(newWin = window.open(..));
-  - 页面与嵌套的iframe消息传递
-
-+ postMessage(data,origin)
-  - data:要传递的数据（JSON.stringify()方法对对象参数序列化 处理兼容性问题）
-  - origin：字符串参数，指明目标窗口的源，协议+主机+端口号[+URL]，URL会被忽略，所以可以不写，这个参数是为了安全考虑，
-  >someWindow.postMessage()方法只会在someWindow所在的源(url的protocol, host, port)和指定源一致时才会成功触发message event，也可以将参数设置为"##"，someWindow可以在任意源，指定和当前窗口同源的话设置为"/"
-
-+ 监听消息
-  ```js
-      window.addEventListener('message', function(messageEvent) {
-          var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
-          console.info('message from child:', data);
-      }, false);
-  ```
-+ MessageEvent的属性
-  - data：顾名思义，是传递来的message
-  - source：发送消息的窗口对象
-  - origin：发送消息窗口的源（协议+主机+端口号）
-
 ## iframe
   + contentWindow 获取iframe的window对象
   + contentDocument 获取iframe的document对象
@@ -111,3 +88,34 @@
     - iframe会阻塞主页面的onload事件
     - iframe和主页面共享连接池，而浏览器对相同域(同一域名)的连接有限制，所以会影响页面的并行加载
     - 如何避免：js动态给iframe添加src属性值，绕开以上两个问题
+
+## postMessage
+> 解决跨域和跨页面通信的问题
++ web开发的时候遇到的消息传递的问题
+  - 多窗口之间消息传递(newWin = window.open(..));
+  - 页面与嵌套的iframe消息传递
+
++ postMessage(data,origin)
+  - data:要传递的数据（JSON.stringify()方法对对象参数序列化 处理兼容性问题）
+  - origin：字符串参数，指明目标窗口的源，协议+主机+端口号[+URL]，URL会被忽略，所以可以不写，这个参数是为了安全考虑，
+  >someWindow.postMessage()方法只会在someWindow所在的源(url的protocol, host, port)和指定源一致时才会成功触发message event，也可以将参数设置为"##"，someWindow可以在任意源，指定和当前窗口同源的话设置为"/"
+
++ 监听消息
+  ```js
+      window.addEventListener('message', function(messageEvent) {
+          var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
+          console.info('message from child:', data);
+      }, false);
+
+      // 以上监听会导致收到消息后执行多次的问题，用一下的方式可以避免
+
+    window.onmessage=function(messageEvent) {
+        var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
+        console.info('message from child:', data);
+      }
+  ```
++ MessageEvent的属性
+  - data：顾名思义，是传递来的message
+  - source：发送消息的窗口对象
+  - origin：发送消息窗口的源（协议+主机+端口号）
+
