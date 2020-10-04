@@ -509,3 +509,23 @@
         1.减少HTTP请求；
         2.避免文件跨域；
         3.修改及时生效；
+
+ * 移动端touch事件
+    - 当用户手指放在移动设备在屏幕上滑动会触发的touch事件
+    - touchstart——当手指触碰屏幕时候发生。不管当前有多少只手指
+    - touchmove——当手指在屏幕上滑动时连续触发。通常我们再滑屏页面，会调用event的preventDefault()可以阻止默认情况的发生：阻止页面滚动
+    - touchend——当手指离开屏幕时触发
+    - touchcancel——系统停止跟踪触摸时候会触发。例如在触摸过程中突然页面alert()一个提示框，此时会触发该事件，这个事件比较少用
+
+ * TouchEvent说明：
+    + touches：屏幕上所有手指的信息
+        - targetTouches：手指在目标区域的手指信息
+        - changedTouches：最近一次触发该事件的手指信息
+        - touchend时，touches与targetTouches信息会被删除，changedTouches保存的最后一次的信息，最好用于计算手指信息
+
+        + 参数信息(changedTouches[0])
+            - clientX、clientY在显示区的坐标
+            - target：当前元素
+
+    + 事件响应顺序
+        - ontouchstart  > ontouchmove  > ontouchend > onclick
