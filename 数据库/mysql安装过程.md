@@ -77,4 +77,4 @@
     - 重启数据库：systemctl restart mysqld
 
 ## window
-* [window10 安装](http://www.itsoku.com/article/192)
+* [window10 安装](https://zhuanlan.zhihu.com/p/164991093)
