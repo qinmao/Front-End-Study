@@ -79,7 +79,11 @@
  - 块级：div、p、ul、ol、body、from...
  - 行内：title、lable 、span、a
  - 行内块：img 、input 、td
-
+ - 常见的空元素：
+        <br> <hr> <img> <input> <link> <meta>
+        鲜为人知的是：
+        <area> <base> <col> <command> <embed> <keygen> <param> <source> <track> <wbr>
+        
 ## 标准盒模型
  + 标准盒子模型：
    - 宽度=内容的宽度（content）+ border + padding + margin
