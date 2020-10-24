@@ -8,13 +8,12 @@
 
 ## h5
 * [h5基础](html/html5/h5.md)
-* [h5 mobile](mobile/h5-mobile.md)
 
 ## js基础
 * [js基础](ECMA/js基础语法.md)
 * [dom基础](浏览器/dom.md)
 * [bom基础](浏览器/bom.md)
-* [正则表达式](note/reg.md)
+* [正则表达式](reg/reg.md)
 
 ## js高级
 * [面向对象](ECMA/面向对象.md)
@@ -28,7 +27,7 @@
 * [字符串的处理](js/string-util.js)
 
 ## (*)浏览器工作原理与http协议
-* [工作原理与实践](浏览器/readme.md)
+* [工作原理与实践](浏览器/工作原理与实践.md)
 * [http协议](http/readme.md)
 
 ## 数据爬虫
@@ -47,6 +46,7 @@
 
 ## 移动端开发
 * [h5](mobile/h5-mobile.md)
+* [适配](mobile/适配/适配.md)
 
 ## 跨平台技术
 * [Hybrid-App](/Hybrid-App/cordova.build.app.md)
