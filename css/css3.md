@@ -174,14 +174,13 @@
 
 * 事件:animationend
 
-* requestAnimationFrame 请求动画帧
-  - 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。使用一个回调函数作为参数，该回调函数会在浏览器重绘之前调用。
-
+* requestAnimationFrame 请求动画帧(实现高性能动画)
+  - 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。
   - 语法：window.requestAnimationFrame(callback);
-
   - 返回值：一个 long 整数，请求 ID ，是回调列表中唯一的标识。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
  
-  - 优点：运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
+  + 优点：
+    - 运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
 
 ## em rem vw/vh:
 * em:的基准值  16px  默认的字体大小是16px,基准值是相对于父元素来的

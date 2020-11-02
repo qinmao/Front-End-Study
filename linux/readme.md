@@ -77,6 +77,7 @@
     find . -type f -size +1M  -print0 | xargs -0 du -h | sort -nr 
 
     ```
+    
 ## 查看命令使用文档：
     - 使用 man [命令] 来查看各个命令的使用文档，如 ：man cp。
     - cat  由第一行开始显示文件内容

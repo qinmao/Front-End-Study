@@ -636,7 +636,7 @@
     ```
 
 ## class
-    ```js
+```js
         //1. 定义类
         class Point {
             constructor(x, y) {
@@ -724,7 +724,8 @@
         }
         // es5 与es6 继承的区别:
         // ES5 的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面（Parent.apply(this)）。ES6 的继承机制完全不同，实质是先创造父类的实例对象this（所以必须先调用super方法），然后再用子类的构造函数修改this。
-    ```
+```
+
 
 ## module 模块
  > ES6 之前，js没有module，不利于大程序的开发，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。前者用于node，后者用于浏览器。
@@ -972,11 +973,11 @@
      ```
      
 ## proxy
- * 概述：
+* 概述：
     - 这个词的原意是代理，表示由它来“代理”某些操作，可以译为“代理器”
     - 在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写
 
- * 语法：
+* 语法：
     - let p = new Proxy(target, handler);Proxy 构造函数，用来生成 Proxy 实例
     - target 表示所要拦截的目标对象
     - handler 一个对象，用来定制拦截行为。
@@ -1001,7 +1002,7 @@
 
         ```
 
- * Proxy 实例方法
+* Proxy 实例方法
     + get(target, propKey, receiver) 拦截对象属性的读取
         - receiver 可选参数proxy 实例本身 
         - get 拦截
@@ -1070,6 +1071,74 @@
     - setPrototypeOf(target, proto)：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
     - apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作，比如proxy(...args)、proxy.call(object, ...args)、proxy.apply(...)。
     - construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作，比如new proxy(...args)。
+
+## Promise
+* 是什么东西?
+  - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
+  - 简单说就是一个容器，里面保存着某个未来才会结束的事件
+  - ES6规定，Promise对象是一个构造函数，用来生成Promise实例，Promise 新建后就会立即执行，无法取消
+  - 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部
+* 有三种状态：Pending（进行中）、Resolved（已完成）和Rejected（已失败）
+    ```js
+      // 基本用法
+      var promise = new Promise(function(resolve, reject) {
+          if (/* 异步操作成功 */){
+            resolve(value);
+          } else {
+            reject(error);
+          }
+      });
+
+    // Promise实例生成以后，可以用then方法分别指定
+    // resolved状态和rejected状态的回调函数。
+    // 第二个函数是可选的
+    promise.then(function(value) {
+        // success
+    }, function(error) {
+        // failure
+    });
+
+    // 调用resolve或reject并不会终结 Promise 的参数函数的执行
+    new Promise((resolve, reject) => {
+        resolve(1);
+        console.log(2);
+    })
+    .then(r => {
+        console.log(r);
+    });
+    // 2
+    // 1
+
+    ```
+
+* Promise.prototype
+    - .then() resolve 的回调 
+    - .catch() 是.then(null, rejection)或.then(undefined, rejection)的别名，用于指定发生错误时的回调函数，then()方法指定的回调函数，如果运行中抛出错误，也会被catch()方法捕获
+    - .finally() Promise 对象最后状态如何，都会执行的操作，无参数
+
+  + promise.all
+    - Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
+    - const allP = Promise.all([p1, p2, p3]);
+  + promise.race
+    - 将多个 Promise 实例，包装成一个新的 Promise 实例
+    - const raceP = Promise.race([p1, p2, p3]);
+  
+  + all和race区别：
+    - all 只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数
+    - all 只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数
+    - race 只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数
+
+  + Promise.resolve 
+    - 有时需要将现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用
+    - Promise.resolve('foo') 等价于new Promise(resolve => resolve('foo'))
+  + Promise.reject() 与上面功能类似
+
+* async
+  - 一个函数如果加上 async ，那么该函数就会返回一个 Promise
+* await 
+  - 表示在这里等待promise返回结果了，再继续执行。
+  - await 后面跟着的应该是一个promise对象（其他返回值也没关系，只是会立即执行，不过那样就没有意义）
+  - await 命令就是内部then命令的语法糖。
 
 
 ## 详情参考
