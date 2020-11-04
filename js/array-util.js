@@ -18,7 +18,7 @@ export const groupBy = (array, prop) => {
 
 /**
  * 把一个嵌套数组拉平
- * @param {Array} array
+ * @param {Array} array 整数数组
  * @returns {Array}
  */
 export const deepFlatten = (arr) => {

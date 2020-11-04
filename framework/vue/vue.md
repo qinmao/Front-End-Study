@@ -1,59 +1,42 @@
 # vue study
-## 如何理解MVVM?
-  - mvvm 是mode-view-viewModel 的缩写
-  - mode 代表数据模型，在这里定义数据的修改和操作的业务逻辑
-  - view 代表ui 组件，负责把数据模型转换成ui展示出来
-  - viewModel 监听数据模型的变化，控制ui 显示，起到连接mode view
-  > viewModel 通过双向数据绑定把mode 和view 连接起来，mode view 之间的数据同步是自动的，所有我们不需要操作dom ,只要关注数据的业务逻辑处理
 
 ## 组件通讯
- * 父子组件通信
-    - 父向子组件：prop
-    - 子向父组件:触发父层定义的事件 $on / $emit
+* 父子组件通信
+  - 父向子组件：prop
+  - 子向父组件:触发父层定义的事件 $on / $emit
     
- * 非父子组件通讯
-    - 使用空的 Vue 实例作为中央事件总线
-    - vuex
+* 非父子组件通讯
+  - 使用空的 Vue 实例作为中央事件总线
+  - vuex
 
 ## vuex
- 1. install
+* 核心概念：
+  - State 状态(数据)
+  - Getters (获取)
+  - Mutations (发生改变，实际数据的操作)
+  - Actions (行为)
+  - Modules (模块)
 
- 2. what？
-    Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
-    问题：传参的方法对于多层嵌套的组件将会非常繁琐，并且对于兄弟组件间的状态传递无能为力引出vuex
+* vuex优雅的提交改变
+  - mutations中如果出现同名的mutation就会后面的覆盖前面的
+  - mutation必须在同步中，参数是state
+  - 我们通过调用$store.commit(mutation的名字);就能触发数据的改变
 
- 3. 应用场景：
-  - vuex适合更为大型，数据操作频繁，业务复杂的程序
-  * vuex是帮助我们把数据保存在全局的内存中，绝对不是数据的序列化、持久化
+* 优雅的获取数据getters
+  - 默认我们可以通过this.$store.state.属性名获取数据的，也能修改数据
+  - 但是，这样不好，修改数据建议要使用mutations的方式修改
+  - 获取数据建议使用getters.函数名的方式获取
+  + getters其实就相当于computed，内部涉及到的数据，如果没有发生改变
+    - 该函数不会反复触发，而是从缓存中获取原值
+    - getters通常在开发中结合computed使用
 
-  + 核心概念：
-    - State 状态(数据)
-    - Getters (获取)
-    - Mutations (发生改变，实际数据的操作)
-    - Actions (行为)
-    - Modules (模块)
-
- 4. vuex优雅的提交改变
-  * mutations中如果出现同名的mutation就会后面的覆盖前面的
-  * mutation必须在同步中，参数是state
-  * 我们通过调用$store.commit(mutation的名字);就能触发数据的改变
-
- 5. 优雅的获取数据getters
-    * 默认我们可以通过this.$store.state.属性名获取数据的，也能修改数据
-        - 但是，这样不好，修改数据建议要使用mutations的方式修改
-        - 获取数据建议使用getters.函数名的方式获取
-            + getters其实就相当于computed，内部涉及到的数据，如果没有发生改变
-                * 该函数不会反复触发，而是从缓存中获取原值
-                * getters通常在开发中结合computed使用
-
- 6. vuex异步提交变更
-    * 声明一个actions中的一个属性 属性名就是action的名称，参数是context 拥有store 实例的相同的方法和属性
-    * 接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
-    * this.$store.dispatch('action的名称');
+* vuex异步提交变更
+  - 声明一个actions中的一个属性 属性名就是action的名称，参数是context 拥有store 实例的相同的方法和属性
+  - 接受{commit} ，并且调用commit(改变的名称(mutation));触发该Mutation的执行
+  - this.$store.dispatch('action的名称');
 
 ## vue-loader
 - 是一个 webpack 的 loader，通过解析文件，提取每个语言块，如有必要会通过其它 loader 处理，最后将他们组装成一个 CommonJS 模块，module.exports 出一个 Vue.js 组件对象。
-
 * 兼容原生html 的写法
   ```html
     <template src="../html/demo.html">  
@@ -65,39 +48,22 @@
     </style>
   ```
 * 深度作用选择器
->scoped 样式中的一个选择器能够作用得“更深”，例如影响子组件，你可以使用 >>> 操作符：
   ```css
-      <style scoped>
-      .a >>> .b { /* ... */ }
-      </style>
-      // 编译后结果
-      .a[data-v-f3f3eg9] .b { /* ... */ }
-
-      /* SASS 之类的预处理器无法正确解析 >>>。这种情况下你可以使用 /deep/ 操作符取而代之——这是一个 >>> 的别名，同样可以正常工作。
-      在 dart-sass 处理中 ::v-deep
-       */
-
-      /* 通过 v-html 创建的 DOM 内容不受作用域内的样式影响，但是你仍然可以通过深度作用选择器来为他们设置样式。 */
+    <style scoped>
+    .a >>> .b { /* ... */ }
+    </style>
+    /* 编译后结果 */
+    .a[data-v-f3f3eg9] .b { /* ... */ }
+    /* SASS 之类的预处理器无法正确解析 >>>。这种情况下你可以使用 /deep/ 操作符取而代之——这是一个 >>> 的别名，同样可以正常工作。
+    在 dart-sass 处理中 ::v-deep
+    */
+    /* 通过 v-html 创建的 DOM 内容不受作用域内的样式影响，但是你仍然可以通过深度作用选择器来为他们设置样式。 */
   ```
 
 ## 新增的特性
-* 一个对象的所有属性都作为 prop 传入,使用不带参数的 v-bind (取代 v-bind:prop-name)
-  ```javascript
-    post: {
-      id: 1,
-      title: 'My Journey with Vue'
-    }
-    <blog-post v-bind="post"></blog-post>
-    等价于
-    <blog-post
-      v-bind:id="post.id"
-      v-bind:title="post.title"
-    ></blog-post>
-  ```
-
 * .sync 修饰符（2.3.0+）
  >在子组件与父组件通讯时，想在子组件中改变父组件传下的prop的值。
-  ```javascript
+  ```js
     // 在子组件触发父组件的监听的方法
     this.$emit('update:title', newTitle)
 
@@ -138,17 +104,6 @@
     </base-layout>
     <!-- v-slot 只能添加在一个 <template> 上 -->
   ```
-
-## 为什么组件中data是函数
-
-## v-for key值的作用（key要唯一标识的值来处理）
-使用 v-for更新已渲染的元素列表时,默认用就地复用策略。列表数据修改的时候,他会根据key值去判断某个值是否修改：如果修改,则重新渲染这一项;否则复用之前的dom，仅修改value值。
-
-## Vue在created 与mouted 在mouted中获取数据的好处
-
-## Vue中的插槽slot
-
-## Vue 计算属性和 watch 在什么场景下使用
 
 ## Vue 中的常用api，有用的属性
 * extend
@@ -267,7 +222,7 @@
     })
 
 ## 项目中遇到的问题及解决方案
- * 异步文件上传(axios)
+* 异步文件上传(axios)
     -  multipart 添加之后选择多图
     ```html
       <input ref="referenceUpload" type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
@@ -324,10 +279,6 @@
     > 思路：设置是否允许字段记录在当前路由的元信息上
     - 手动返回，弹窗拦截
     - 正常业务成功返回，不拦截
-    
- * 新增data 中对象属性，和修改数组下标 响应式问题
-
- * 获取异步dom 更新问题（nextTick）
 
  * js操作 dom 修改value，同步更改v-model的值
    ```js

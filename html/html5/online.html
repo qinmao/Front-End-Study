@@ -8,13 +8,117 @@
 
 <body>
 	<script>
-		//检测网络
-		window.addEventListener("online",function(){
-			console.log("网络正常")
+		// 题目1
+		async function async1() {
+			console.log('async1 start')
+			await async2(); 
+			console.log('async1 end')
+		}
+		async function async2() {
+			console.log('async2')
+		}
+		console.log('script start')
+		setTimeout(function () {
+			console.log('setTimeout')
+		}, 0)
+		async1()
+		new Promise(function (resolve) {
+			console.log('promise1')
+			resolve()
+		}).then(function () {
+			console.log('promise2')
 		})
-			window.addEventListener("offline",function(){
-			console.log("网络掉线")
-		})
+		console.log('script end')
+
+
+		// script start
+		// async1 start
+		// async2
+		// promise1
+		// script end
+		// async1 end
+		// promise2
+		// setTimeout
+    
+
+
+		// 题目2
+		// 目标 输出结果：后两项题目标错了
+		// const formatData = [{ id: 1, title: "课程 1" },
+		// { id: 4, title: "课程 1-1" },
+		// { id: 5, title: "课程 1-2" },
+		// { id: 6, title: "课程 1-2-1" },
+		// { id: 7, title: "课程 1-2-2" },
+		// { id: 1, title: "课程 2" },
+		// { id: 1, title: "课程 3" },
+		// ];
+
+
+		const data = [
+			{
+				id: 1,
+				title: "课程 1",
+				children: [{ id: 4, title: "课程 1-1" },
+				{
+					id: 5,
+					title: "课程 1-2",
+					children: [{ id: 6, title: "课程 1-2-1" },
+					{ id: 7, title: "课程 1-2-2" },
+					],
+				},
+				],
+			},
+			{ id: 2, title: "课程 2" },
+			{ id: 3, title: "课程 3" },
+		];
+
+		const deepFlatten = (arr) => {
+			let newArr = []
+			let flatten = (arr) => {
+				arr.forEach(item => {
+					if (item.children && Array.isArray(item.children)) {
+						const { id, title } = item
+						newArr.push({ id, title })
+						flatten(item.children)
+					} else {
+						newArr.push(item)
+					}
+				});
+			}
+			flatten(arr)
+			flatten = null
+			return newArr
+		};
+
+		// console.log(deepFlatten(data))
+
+
+		// 题目3 实现函数防抖
+		function debounce(fn, delay) {
+            // last为上一次触发回调的时间, timer是定时器
+            let last = 0, timer = null
+            return function () {
+                // 保留调用时的this上下文
+                let context = this
+                // 保留调用时传入的参数
+                let args = arguments
+                // 记录本次触发回调的时间
+                let now = +new Date()
+
+                // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
+                if (now - last < delay) {
+                    // 如果时间间隔小于我们设定的时间间隔阈值，则为本次触发操作设立一个新的定时器 
+                    clearTimeout(timer)
+                    timer = setTimeout(function () {
+                        last = now
+                        fn.apply(context, args)
+                    }, delay)
+                } else {
+                    // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应 last=now
+                    fn.apply(context, args)
+                }
+            }
+        }
 	</script>
 </body>
 

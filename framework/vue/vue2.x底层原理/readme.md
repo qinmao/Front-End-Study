@@ -49,7 +49,6 @@
 
     - generate：将 AST 转化成 render function 字符串的过程，得到结果是 render 的字符串以及 staticRenderFns 字符串。
 
-
 * 响应式
     - getter 跟 setter 之前介绍过了，在 init 的时候通过 Object.defineProperty 进行了绑定，它使得当被设置的对象被读取的时候会执行 getter 函数，而在当被赋值的时候会执行 setter 函数。
     当 render function 被渲染的时候，因为会读取所需对象的值，所以会触发 getter 函数进行「依赖收集」，「依赖收集」的目的是当你修改值得时候会触发对应的 setter， setter 通知之前「依赖收集」得到的 Dep 中的每一个 Watcher，告诉它们自己的值改变了，需要重新渲染视图。这时候这些 Watcher 就会开始调用 update 来更新视图，当然这中间还有一个 patch 的过程以及使用队列来异步更新的策略，
@@ -87,7 +86,7 @@
 2. 发现和我们平时改变数据的方式不一样，我们改的时候在实例内直接this.xxx='hello',这里就是用了一个代理
 [observer-proxy](vue-function/observer-proxy.js)
 1. 为什么要做依赖收集，看下面两个例子
-    ```javascript
+    ```js
     new Vue({
         template: 
             `<div>
@@ -127,7 +126,7 @@
     // 两个vm实例进行视图的更新，「依赖收集」会让 text1 这个数据知道“哦～有两个地方依赖我的数据，我变化的时候需要通知它们”。
     ```
 2. 订阅者 Dep
-    ```javascript
+    ```js
         // 首先我们来实现一个订阅者 Dep ，它的主要作用是用来存放 Watcher 观察者对象。
         class Dep {
             constructor () {
