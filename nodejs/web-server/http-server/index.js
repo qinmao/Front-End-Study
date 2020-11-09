@@ -23,7 +23,7 @@ const server = http.createServer(function (request, response) {
       // 发送200响应:
       response.writeHead(200);
       // 将文件流导向response:
-      fs.createReadStream(filepath).pipe(response);
+      fs.createReadStream(filepath).pipe(response)
     } else {
       // 出错了或者文件不存在:
       console.log('404 ' + request.url);

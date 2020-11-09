@@ -11,12 +11,12 @@
 * 为什么组件中data是函数
 
 * Vue 父子组件生命周期钩子函数执行顺序
- - 加载渲染：父beforeCreate ->父created->父beforeMount->子beforeCreate ->子created->子beforeMount->子mounted->父mounted
+  - 加载渲染：父beforeCreate ->父created->父beforeMount->子beforeCreate ->子created->子beforeMount->子mounted->父mounted
 
 * Vue 计算属性和 watch 在什么场景下使用
 
 * v-for key值的作用（key要唯一标识的值来处理）
- - 使用 v-for更新已渲染的元素列表时,默认用就地复用策略。列表数据修改的时候,他会根据key值去判断某个值是否修改：如果修改,则重新渲染这一项;否则复用之前的dom，仅修改value值。
+  - 使用 v-for更新已渲染的元素列表时,默认用就地复用策略。列表数据修改的时候,他会根据key值去判断某个值是否修改：如果修改,则重新渲染这一项;否则复用之前的dom，仅修改value值。
 
 * nextTick 原理
 
@@ -33,6 +33,10 @@
 * vuex
 
 * 如何抽取组件，封装组件要考虑哪些问题、抽取哪些组件？
+  - props属性中添加验证规则：
+  - 不要依赖vuex传参
+  - 预留一些slot
+  - 样式值通过变量来设置
 
 * 使用前端框架（angular/vue/react）带来哪些好处，相对于使用jQuery
   - 数据驱动，避免操作dom,操作不当可能导致内存泄漏
