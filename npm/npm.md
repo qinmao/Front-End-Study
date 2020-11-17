@@ -138,7 +138,34 @@
         - 提示没有权限，其实就是你的module名在npm上已经被占用啦，
         - 去npm搜索你的模块名称，搜不到，就能用，并且把 package.json里的name修改过来，重新npm publish
 
-## 安装三方包遇到的问题和解决方案
+## 安装三方包遇到的问题和解决方案(换源处理)
++ 在项目中推荐配置npmrc文件来处理换源
+    - 新建.npmrc文件并添加一下内容 
+    ```
+    registry=http://私有仓库xxx.com
+    disturl=https://npm.taobao.org/dist
+    chromedriver_cdnurl=http://npm.taobao.org/mirrors/chromedriver
+    operadriver_cdnurl=http://npm.taobao.org/mirrors/operadriver
+    phantomjs_cdnurl=http://npm.taobao.org/mirrors/phantomjs
+    fse_binary_host_mirror=https://npm.taobao.org/mirrors/fsevents
+    sass_binary_site=http://npm.taobao.org/mirrors/node-sass
+    electron_mirror=http://npm.taobao.org/mirrors/electron/
+    ```
+   - 新建.yarnrc文件并添加一下内容（二选一）
+    ```
+    registry "http://atour-fe-lib.corp.yaduo.com"
+    chromedriver_cdnurl "http://npm.taobao.org/mirrors/chromedriver"
+    disturl "https://npm.taobao.org/dist"
+    electron_mirror "http://npm.taobao.org/mirrors/electron/"
+    fse_binary_host_mirror "https://npm.taobao.org/mirrors/fsevents"
+    lastUpdateCheck 1589360140304
+    operadriver_cdnurl "http://npm.taobao.org/mirrors/operadriver"
+    phantomjs_cdnurl "http://npm.taobao.org/mirrors/phantomjs"
+    sass_binary_site "http://npm.taobao.org/mirrors/node-sass"
+
+    ```
+
+
 - 对于一些下载慢或者需要翻墙的包可以先不安装
 - 其他包安装完，可以单独指定淘宝源安装如：node-sass
  ```
