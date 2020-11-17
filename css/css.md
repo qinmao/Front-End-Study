@@ -110,3 +110,16 @@
    - normal：使用默认的断行规则。
    - break-all：对于non-CJK (CJK 指中文/日文/韩文) 文本，可在任意字符间断行。
    - keep-all：CJK 文本不断行。 Non-CJK 文本表现同 normal。
+   
+## white-space 如何处理元素内的空白
++ 属性：
+    - normal 默认。空白会被浏览器忽略。
+    - pre 空白会被浏览器保留。其行为方式类似 HTML 中的 <pre> 标签
+    - nowrap 文本会在在同一行上继续，直到遇到 <br> 标签为止
+    - pre-wrap	保留空白符序列，但是正常地进行换行。
+    - pre-line 合并空白符序列，但是保留换行符。
+    - inherit	规定应该从父元素继承 white-space 属性的值。
+
++ 应用场景：
+    - 一段接口返回的动态文本，用\n 来处理换行
+    - 前端p标签展示换行的动态文本，可以设置p标签white-space：pre-line；样式实现换行的需求

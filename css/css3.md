@@ -145,7 +145,7 @@
     * 视角：perspective
     * 3d转换：transform-style:flat 2d平面呈现 perserve-3d 3d空间呈现 
 
-## 动画:
+## 动画
 * 定义动画：
     ```css
     /* 2种方式*/
@@ -269,7 +269,6 @@
     + 在Flex布局中，flex子元素的设置float，clear以及vertical-align属性都是没有用的。
     + Flexbox布局最适合应用程序的组件和小规模布局（一维布局）
     + Grid布局则适用于更大规模的布局（二维布局）
-    
 ## Grid
 
  
