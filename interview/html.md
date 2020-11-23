@@ -8,3 +8,4 @@
     - disable 获取不到
 
 * label 标签的作用
+[label在封装文件上传时的妙用](https://www.cnblogs.com/lynnmn/p/6856808.html)

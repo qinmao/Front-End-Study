@@ -62,8 +62,8 @@
          ```
 
 ## navigator
-- 通过这个对象可以获得浏览器的浏览器的种类、版本号等属性
-- userAgent 获取浏览器类型
+  - 通过这个对象可以获得浏览器的浏览器(webview)的种类、版本号等属性
+  - userAgent 获取浏览器类型
 
 ## iframe
   + contentWindow 获取iframe的window对象

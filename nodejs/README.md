@@ -124,7 +124,9 @@
     ```
 
 ## web 模板引擎
-* Nunjucks 是Mozilla开发的一个纯JavaScript编写的模板引擎，既可以用在Node环境下（主要），又可以运行在浏览器端（有更好的mvvm框架）
+* Nunjucks 
+  - 是Mozilla开发的一个纯JavaScript编写的模板引擎，既可以用在Node环境下（主要），又可以运行在浏览器端（有更好的mvvm框架）
+* [pug](./pug/pug.md)
 
 ## 数据库
 * mysql
@@ -145,8 +147,6 @@
     - 不一定适用dns作为寻址服务
     - 应用层协议一般不使用HTTP
     - 基于TCP 或者UDP 协议
-
-
 
 ## 日志
 
