@@ -164,11 +164,3 @@
     sass_binary_site "http://npm.taobao.org/mirrors/node-sass"
 
     ```
-
-
-- 对于一些下载慢或者需要翻墙的包可以先不安装
-- 其他包安装完，可以单独指定淘宝源安装如：node-sass
- ```
- npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass
- 
- ```
