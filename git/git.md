@@ -31,12 +31,11 @@
         - 查看：git config --get user.name | git config --get user.email
 
     + 删除仓库：rm -rf .git  
-
-    + 查看本地仓库与远程仓库的关联详情：git remote -v 
     
     + 删除本地仓库：rm -rf .git 
 
     + 本地关联远程仓库并推送
+        - 查看本地仓库与远程仓库的关联详情：git remote -v 
         - git remote add origin git@github.com:qinmao/test.git
         - git push -u origin master
 
