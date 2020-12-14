@@ -6,56 +6,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>test</title>
+  <style>
+    #main {
+      display: flex;
+      flex-direction: column;
+      width: 400px;
+      height: 900px;
+      border: 1px;
+    }
+
+    #main div {
+      width: 100%;
+      height: 200px;
+      border:1px solid red
+    }
+
+    .item1 {
+      order: 1;
+
+    }
+
+    .item2 {
+      order: 2;
+
+    }
+
+    .item3 {
+      order: 3;
+
+    }
+  </style>
 </head>
 
 <body>
-  <script>
-    let str = "一、基础数据1.开 始 搬 迁 时 间2003  年6     月22    日9    时0     分2.开 始 安 装 时   间2003  年6     月23    日10   时0     分3.第一次开 钻 时   间2003  年6     月28    日6    时0     分第一次完 钻 时 间2003  年6     月28    日21   时0     分4.第二次开 钻 时   间2003  年6     月30    日13   时0     分第二次完 钻 时 间2003  年10    月28    日2    时0     分5.第三次开 钻 时   间       年      月      日      时      分第三次完 钻 时 间       年      月      日      时      分6.第四次开 钻 时   间       年      月      日      时      分第四次完 钻 时 间       年      月      日      时      分7.第五次开 钻 时   间       年      月      日      时      分8.完  钻   时   间2003    年10   月28    日2    时0    分9.完  井   时   间2003    年11   月2     日3    时0    分10.钻  井      周   期121              天20:00         时11.完  井      周   期126           天21:00         时12.设  计   井   深                      5150                   米13.实   际   井     深                      5150                   米14.设 计  垂 直 井 深                                      米15.实 际 垂 直 井 深                                      米";
-    let arr = []
-    let word = "开 始 搬 迁 时 间"
-    let index = str.indexOf(word)
-    console.log(index)
-    while (index !== -1) {
-      arr.push(index)
-      index = str.indexOf(word, index + 1)
-    }
-    console.log('indexArr', arr)
-
-    // let result = []
-    // arr.forEach(item=>{
-    //   result.push({
-    //     begin:item,
-    //     end:item+word.length
-    //   })
-    // })
-
-    // console.log('offset', result)
-   
-
-  </script>
-  <!-- <script>
-    let str1 = "3C-A6-16-57-A2-D6";
-    let str2 = "70d923c00bdb";
-    let str3 = "123444";
-    let strArr = ['70D923C00BDB']
-
-    // console.log(str3.toLowerCase())
-    // console.log(str1.match(/[a-f0-9]/gi).join('').toLocaleLowerCase())
-    // console.log(strArr.includes(str2))
-    let temp = []
-    for (let index = 0; index < str2.length; index++) {
-      const item = str2[index];
-      if ((index + 1) % 2 === 0&&index!=str2.length-1) {
-        temp.push(item)
-        temp.push('-')
-      } else {
-        temp.push(item)
-      }
-    }
-
-    console.log(temp.join('').toUpperCase())
-
-  </script> -->
+  <div id='main'>
+    <div class="item1">1</div>
+    <div class="item2">2</div>
+    <div class="item3">3</div>
+  </div>
 </body>
 
 

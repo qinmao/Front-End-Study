@@ -124,6 +124,7 @@
     new Profile().$mount('#app')
 
   ```
+
 * nextTick
   + 使用场景:
     - 由于vue 是异步队列更新修改dom,所以当数据修改完之后，发现dom 还没生成，这时候想获取数据更新后的dom。
@@ -142,6 +143,7 @@
         // DOM 更新了
       })
   ```
+
 * set
   + 使用场景: 由于vue 不能检测对象和数据属性的删除和添加，所以直接修改属性导致数据不是响应式的
    - 对象的修改
@@ -160,6 +162,7 @@
         vm.items.splice(indexOfItem, 1, newValue)
       
       ```
+
 * component
   ```js
     // 注册组件，传入一个扩展过的构造器
@@ -171,13 +174,16 @@
     // 获取注册的组件 (始终返回构造器)
     var MyComponent = Vue.component('my-component')
   ```
+
 * use
   - 参数 {Object | Function} 
   - 安装 Vue.js 插件。如果插件是一个对象，必须提供 install 方法。如果插件是一个函数，它会被作为 install 方法。install 方法调用时，会将 Vue 作为参数传入
+
 * mixin 分发 Vue 组件中的可复用功能
   - 相同的选项会合并，数据对象有冲突时以组件优先
   - 值为对象的选项，例如 methods、components 和 directives，以组件优先
   - 同名钩子函数将合并为一个数组，钩子函数有冲突先执行混入，后执行组件
+
 * version
   - 通过版本号兼容插件
   ```js
@@ -188,8 +194,11 @@
       // Vue v1.x.x
     } 
   ```
+
 * watch
+
 * render
+
 * on/emit/off/once
   ```js
     // 实现事件的发布订阅系统
@@ -214,6 +223,7 @@
     p1.emit('ak47', 1223);
 
   ```
+
 * 暴露的有用的属性
   - vm.$data === data // => true
   - vm.$el === document.getElementById('example') // => true
@@ -225,7 +235,7 @@
 * 异步文件上传(axios)
     -  multipart 添加之后选择多图
     ```html
-      <input ref="referenceUpload" type="file" name="file"  @change="upload($event)"   accept="image/png, image/jpeg, image/jpg">
+      <input ref="referenceUpload" type="file" name="file"  @change="upload($event)"  accept="images/*">
     ```
     ```javascript
       async upload(e) {
@@ -265,34 +275,25 @@
         //  解决第2个问题 this.$refs.referenceUpload.value = null; 
 
     ```
-
- * 文件下载
+* 文件下载
    - @click.native="download"
    - download --> location.href
-
- * 路由跳转时，记录跳转前的位置
-    > 思路把位置记录在当前路由的元信息上
-    - 整个页面的滚动位置
-    - 页面局部元素的滚动位置
-
- * 返回确认弹窗
-    > 思路：设置是否允许字段记录在当前路由的元信息上
-    - 手动返回，弹窗拦截
-    - 正常业务成功返回，不拦截
-
- * js操作 dom 修改value，同步更改v-model的值
-   ```js
-    el.value(newval)
-
-    el.dispatchEvent(new Event('input'));
-
-    // el为input元素
-    // 如果v-model有lazy修饰符的时候，触发得是change事件
-    // select 触发得是change事件
-    el.dispatchEvent(new Event('change'));
-
-   ```
-
-
-
-
+* 路由跳转时，记录跳转前的位置
+   > 思路把位置记录在当前路由的元信息上
+   - 整个页面的滚动位置
+   - 页面局部元素的滚动位置
+* 返回确认弹窗
+   > 思路：设置是否允许字段记录在当前路由的元信息上
+   - 手动返回，弹窗拦截
+   - 正常业务成功返回，不拦截
+* js操作 dom 修改value，同步更改v-model的值
+  ```js
+   el.value(newval)
+   el.dispatchEvent(new Event('input'));
+   // el为input元素
+   // 如果v-model有lazy修饰符的时候，触发得是change事件
+   // select 触发得是change事件
+   el.dispatchEvent(new Event('change'));
+  ```
+* 多组价模块根据配置调整展示的位置
+  - 可以使用伸缩容器下的order 属性来处理

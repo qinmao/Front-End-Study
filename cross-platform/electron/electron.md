@@ -1,18 +1,71 @@
-# electron
-## 安装
- * electron 安装不成功问题（卡在install.js）(ver6.x.X)
-    - 打开终端，输入vi ~/.npmrc,在里面添加
+# electron 跨平台桌面开发
+> Electron 是一个使用 JavaScript, HTML 和 CSS 等 Web 技术创建原生程序的框架,帮助我们构建跨平台的桌面应用程序
+
+## 有名的案例：
+![有名的案例](./imgs/case.png)
+
+## 发展历史
+* electron 的由来
+  - 早期想开发一个桌面的GUI软件，希望能在Windows、Linux、和Mac 平台上运行，可选的框架不多，主要有GTK、Qt、wxWidgets。这三个框架都是C/C++ 开发的。受限于语言开发效率的限制，完成快速开发不太现实，对前端同学来说十分不友好
+  - 有这么一句话 "凡是能用javascript实现的注定会被用JavaScript 实现"，所以桌面GUI 也不例外，NW.js(https://nwjs.io)和Electron(https://electronjs.org) 横空出世了
+  + NW.js 和 Electron 如何产生的？
+   - 这两框架和中国人都有极深的渊源。2011年英特尔开源中心的 王文睿 希望用nodejs 操作webkit,创建了node-webkit 这就是 NW.js 的前身，之后有一个 赵成 加入了王文睿的得小组，并对node-webkit 做了大量改进，后来赵走了，去帮助GitHub 把node-webkit 应用到Atom 编辑器上，由于各种因素这次尝试失败了。但是Github 和赵成并没有放弃，开发了一个类似node-webkit 的项目 Atom Shell 这个项目就是Electron 的前身，后来（2015年4月）开源出来起名叫 Electron
+
+  + 两框架的都是基于Chromium 和nodejs 实现的
+    - 前端:可以使用js 、html 、css
+    - 针对前端访问系统API 方面的不足，封装了一些系统api 如系统对话框、系统托盘、系统菜单剪切板
+    - Electron应用基本上是一种Node.js应用,所以需要安装nodejs。
+    - nodejs的程序的起点将是一个 package.json 文件
+
+  + 两种框架的主要差别
+    - Electron 区分主进程和渲染进程，主进程负责创建、管理渲染进程以及控制整个应用的生命周期
+    - 渲染进程负责显示界面及控制用户的交互逻辑
+    - 两者通讯ipcMain 和ipcRenderer 传递消息来实现
+    - NW.js不需要关心这些，它关心的是所有窗口共享一个nodejs 环境带来的问题。
+
+* 当前的版本
+  - electron 版本迭代的速度非常快,截止2020年12月6
+  ![当前最新版本](./imgs/版本说明.png)
+
+* 能力:
+  - 自定义代理
+  - 截获网路请求
+  - 注入脚本到目标网站
+
+## 生态
+* electron-builder 是Electron的构建工具，提供自动下载、自动构建、自动打包、自动升级
+  - electron-builder 比 electron-packager支持更多的平台，同时也支持自动更新
+  - 由electron-builder打出的包更为轻量
+  - 可以打包出不暴露源码的setup安装程序
+  
+* Vue ClI Plugin Electron Builder 和electron-vue 基于它们可以在Electron 应用内使用Vue 及其组件（包括HMR热更新），推荐前者,基于Vue ClI Plugin 更新频繁烦。
+* 不想用框架也可以用 webpack 与传统的web开发技术
+
+
+## 优势
+* 基于web技术开发桌面，web生态繁荣，开发效率高
+* 内置node环境，node 可以方便调用c++ 的拓展
+* 内置Chromium，对浏览器标准支持更好，不用考虑兼容问题，es6 h5 css3 放心使用
+
+## 不足
+* 打包后体积较大，没什么功能的桌面经过electron-builder 压缩打包后，大概有40MB,升级再次下载同样体积的包
+* 跨进程通信必须要了解，开发较复杂
+* 版本更新太快，为跟上chrominum更新节奏，每次chrominum 更新都可能导致electron 出现新的问题。
+* 由于底层基于chrominum，chrominum 内存占用过高
+
+## 使用
+* 安装的问题
+    - electron 安装不成功问题（卡在install.js）
+    - 配置 .npmrc文件
     ```
         electron_mirror="https://npm.taobao.org/mirrors/electron/"
-
-        npm install --verbose electron
     ```
 
-## 脚手架
-> electron-forge 相当于 electron 的一个脚手架，可以让我们更方便的创建、运行、打包 electron 项目
+* 脚手架
+  > electron-forge 相当于 electron 的一个脚手架，可以让我们更方便的创建、运行、打包 electron 项目
     ```
-    npm install -g electron-forge 
-    electron-forge init my-app 
+        npm install -g electron-forge 
+        electron-forge init my-app 
     
     ```
 
@@ -55,12 +108,12 @@
     + ipcRender
 
  * 通用模块
-  + clipboard
-  + crashReporter
-  + nativeImage
-  + screen
-  + shell
-    - 在用户默认浏览器 中打开 URL 以及 Electron DOM webview 标签
+   + clipboard
+   + crashReporter
+   + nativeImage
+   + screen
+   + shell
+     - 在用户默认浏览器 中打开 URL 以及 Electron DOM webview 标签
 
  * 常用模块的使用
     + 在主进程中初始化一个窗口
@@ -466,7 +519,7 @@
     ```
 
 ## 调试
-* 如何开启调试
+* 开发环境调试
     ```js
         const { app, BrowserWindow } = require('electron')
         let mainWindow
@@ -480,13 +533,12 @@
             }
         })
     ```
+* 生产环境调试工具 
+  - Debugtron
 
-## 打包
- * electron-builder(优点)
-    - electron-builder比electron-packager支持更多的平台，同时也支持自动更新
-    - 由electron-builder打出的包更为轻量
-    - 可以打包出不暴露源码的setup安装程序
-
+  
+## 打包发布
+   
 ## 更新
 * 问题及解决方案：
  + webview下的更新缓存问题

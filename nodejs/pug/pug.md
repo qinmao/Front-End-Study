@@ -65,31 +65,31 @@
 
         <!-- 简化后 -->
         <template lang="pug">
-        el-card.aui-card--fill(shadow="never")
-            .mod-sys__dept
-            el-form(:inline="true" :model="dataForm" @keyup.enter.native="getDataList()")
-                el-form-item
-                el-button(type="primary" @click="addOrUpdateHandle()") {{ $t('add') }}
-            el-table(v-loading="dataListLoading" :data="dataList" row-key="id" border style="width: 100%;")
-                el-table-column(prop="name" :label="$t('dept.name')" header-align="center" min-width="150")
-                el-table-column(prop="parentName" :label="$t('dept.parentName')" header-align="center" align="center")
-                el-table-column(prop="sort" :label="$t('dept.sort')" header-align="center" align="center" width="80")
-                el-table-column(:label="$t('handle')" fixed="right" header-align="center" align="center" width="150")
-                template(slot-scope="scope")
-                    el-button(type="text"
-                            size="small"
-                            @click="addOrUpdateHandle(scope.row.id)") {{ $t('update') }}
-                    el-button(type="text"
-                            size="small"
-                            @click="deleteHandle(scope.row.id)") {{ $t('delete') }}
+            el-card.aui-card--fill(shadow="never")
+                .mod-sys__dept
+                el-form(:inline="true" :model="dataForm" @keyup.enter.native="getDataList()")
+                    el-form-item
+                    el-button(type="primary" @click="addOrUpdateHandle()") {{ $t('add') }}
+                el-table(v-loading="dataListLoading" :data="dataList" row-key="id" border style="width: 100%;")
+                    el-table-column(prop="name" :label="$t('dept.name')" header-align="center" min-width="150")
+                    el-table-column(prop="parentName" :label="$t('dept.parentName')" header-align="center" align="center")
+                    el-table-column(prop="sort" :label="$t('dept.sort')" header-align="center" align="center" width="80")
+                    el-table-column(:label="$t('handle')" fixed="right" header-align="center" align="center" width="150")
+                    template(slot-scope="scope")
+                        el-button(type="text"
+                                size="small"
+                                @click="addOrUpdateHandle(scope.row.id)") {{ $t('update') }}
+                        el-button(type="text"
+                                size="small"
+                                @click="deleteHandle(scope.row.id)") {{ $t('delete') }}
         </template>
     ```
 
 * 管道文字（ | ）：向模板添加纯文本
     ```html
         p
-        | 管道符号总是在最开头，
-        | 不算前面的缩进。
+            | 管道符号总是在最开头，
+            | 不算前面的缩进。
 
         <p>管道符号总是在最开头， 不算前面的缩进。
         </p>

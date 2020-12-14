@@ -7,7 +7,7 @@
 const puppeteer = require('puppeteer-core');
 //find_chrome模块来源于GoogleChromeLabs的Carlo,可以查看本机安装Chrome目录
 
-const findChrome = require('./node_modules/carlo/lib/find_chrome');
+const findChrome = require('carlo/lib/find_chrome');
 
 (async () => {
     let findChromePath = await findChrome({});

@@ -1,12 +1,12 @@
 /* 移动端样式重置（常用标签）原则：就是reset 只是需要的一些，不是无脑一刀切 */
-*,
-::before,
-::after {
-  box-sizing: border-box;
-}
-
 html {
   touch-action: none;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
 }
 
 html,
@@ -126,28 +126,6 @@ div::-webkit-scrollbar {
   display: none;
 }
 
-/* 开发整体风格一致的App 特定义全局的css变量 */
-
-/* 颜色变量 */
-
-/* 行为相关颜色 */
-$uni-color-primary: #1f6bdd;
-$uni-color-success: #4cd964;
-$uni-color-warning: #f0ad4e;
-$uni-color-error: #dd524d;
-
-/* 文字基本颜色 */
-$uni-text-color: #333; //基本色
-$uni-text-color-inverse: #fff; //反色
-$uni-text-color-grey: #999; //辅助灰色，如加载更多的提示信息
-$uni-text-color-placeholder: #808080;
-$uni-text-color-disable: #c0c0c0;
-
-/* 背景颜色 */
-$uni-bg-color: #f1f1f3; // 背景色
-$uni-bg-color-hover: #f1f1f1; // 点击状态颜色
-$uni-bg-color-mask: rgba(0, 0, 0, 0.5); //遮罩颜色
-
 /* 常用的类  */
 /* 多行省略号  */
 .mul-ellipsis {
@@ -177,12 +155,7 @@ $uni-bg-color-mask: rgba(0, 0, 0, 0.5); //遮罩颜色
   height: 100%;
   z-index: 99;
   overflow: hidden;
-  background-color: $uni-bg-color-mask;
-}
-
-/* 公用页面的wrap */
-.page-wrap {
-  background-color: $uni-bg-color;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* 定位上下左右居中 */
