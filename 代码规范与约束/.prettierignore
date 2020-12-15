@@ -1,0 +1,9 @@
+**/*.md
+**/*.svg
+**/*.ejs
+**/*.html
+package.json
+build/*.js
+src/assets
+public
+dist

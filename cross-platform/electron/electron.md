@@ -39,8 +39,8 @@
   - 可以打包出不暴露源码的setup安装程序
   
 * Vue ClI Plugin Electron Builder 和electron-vue 基于它们可以在Electron 应用内使用Vue 及其组件（包括HMR热更新），推荐前者,基于Vue ClI Plugin 更新频繁烦。
-* 不想用框架也可以用 webpack 与传统的web开发技术
 
+* 不想用框架也可以用 webpack 与传统的web开发技术
 
 ## 优势
 * 基于web技术开发桌面，web生态繁荣，开发效率高
@@ -60,7 +60,9 @@
     ```
         electron_mirror="https://npm.taobao.org/mirrors/electron/"
     ```
-
+* Electron API 演示工具
+    - Electron API Demos
+    
 * 脚手架
   > electron-forge 相当于 electron 的一个脚手架，可以让我们更方便的创建、运行、打包 electron 项目
     ```
@@ -70,17 +72,17 @@
     ```
 
 ## 运行流程
- * 执行的过程
-    1. 在package.json 中main 定义app入口的文件app.js
-    2. 在主进程中也就是app.js中创建一个渲染进程
+* 执行的过程
+    1. 在package.json 中main 定义app入口的文件main.js
+    2. 在主进程中也就是main.js中创建一个渲染进程
     3. 在渲染进程中布局和画app的界面（index.html）
 
- * 主进程
+* 主进程
     - Electron 运行 package.json 的 main 脚本的进程被称为主进程。 在主进程中运行的脚本通过创建web页面来展示用户界面。
     - 一个 Electron 应用总是有且只有一个主进程。
     - 主进程使用 BrowserWindow 实例创建页面。 每个 BrowserWindow 实例都在自己的渲染进程里运行页面。 当一个 BrowserWindow 实例被销毁后，相应的渲染进程也会被终止。
 
- * 渲染进程
+* 渲染进程
     - 由于 Electron 使用了 Chromium 来展示 web 页面，所以 Chromium 的多进程架构也被使用到。 每个 Electron 中的 web 页面运行在它自己的渲染进程中
     - elctron 渲染进程中通过 Nodejs 读取本地文件
 
@@ -519,6 +521,10 @@
     ```
 
 ## 调试
+* 主进程调试
+
+* 渲染进程调试
+
 * 开发环境调试
     ```js
         const { app, BrowserWindow } = require('electron')
@@ -533,6 +539,7 @@
             }
         })
     ```
+
 * 生产环境调试工具 
   - Debugtron
 
@@ -541,7 +548,7 @@
    
 ## 更新
 * 问题及解决方案：
- + webview下的更新缓存问题
+  + webview下的更新缓存问题
    1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐(特殊的设备：32位系统第2种方案不行，根据条件选择第一种)
    ```js
     // 放在 app.on('ready', () => {}) 之前
@@ -564,7 +571,7 @@
     
    ```
 
- + 客户端自动更新问题
+  + 客户端自动更新问题
     - electron-updater
 
 ## electron 应用
@@ -598,11 +605,3 @@
     ```
 
 * 直播
-
-
-
- 
-
-
-
- 
