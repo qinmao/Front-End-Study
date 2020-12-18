@@ -19,7 +19,7 @@ module.exports = {
   },
 
   // 支持使用第三方插件
-  // plugins: ['react', 'babel'], // eslint-plugin-react eslint-plugin-babel
+  // plugins: ['react', 'babel'],
 
   // 一个配置文件可以被基础配置中的已启用的规则继承
   extends: ['plugin:vue/strongly-recommended', 'eslint:recommended', '@vue/prettier'],

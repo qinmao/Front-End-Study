@@ -60,9 +60,11 @@
     ```
         electron_mirror="https://npm.taobao.org/mirrors/electron/"
     ```
-* Electron API 演示工具
-    - Electron API Demos
-    
+
+* Electron API Demos: Electron API 演示工具
+
+* Electron Fiddle 试验工作，写一段代码运行
+
 * 脚手架
   > electron-forge 相当于 electron 的一个脚手架，可以让我们更方便的创建、运行、打包 electron 项目
     ```
@@ -379,16 +381,17 @@
         ```
 
 ## 进程间的通讯
- * 通讯的工具
+* 通讯的工具
     - ipcMain
     > 当在主进程中使用时，它处理从渲染器进程(网页)发送出来的异步和同步信息,当然也有可能从主进程向渲染进程发送消息。
     - ipcRender
     > 使用它提供的一些方法从渲染进程 (web 页面) 发送同步或异步的消息到主进程。 也可以接收主进程回复的消息
+    - 注意：主进程向渲染进程发消息，如果返回的对象是字符串或者数字 elctron 复制一份返回给渲染进程，渲染进程中持有的远程对象被回收，主进程相应的对象也会被回收
 
- * 具体通讯的方式
+* 具体通讯的方式
     + 渲染进程-->主进程发送异步消息
         - 渲染进程发消息
-            ```js
+         ```js
             // src/render/ipcRender.js
             //渲染进程
             let send = document.querySelector('#send');
@@ -404,7 +407,7 @@
                 console.log('data\n ', data)
             })
 
-            ```
+        ```
             ```html
                 <!--src/index.html-->
                 <button id="send">在 渲染进程中执行主进程里的方法（异步）</button>
@@ -477,6 +480,85 @@
                 let win = BrowserWindow.fromId(winId);
             ```
 
+
+## 调试
+* 主进程调试
+  - 配置文件
+    ```json
+    {
+        "version": "0.2.0",
+        "configurations": [
+        {
+            "name": "Debug Main Process",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "args" : ["."],
+            "outputCapture": "std",
+            "env": {
+            "NODE_ENV": "debug"
+            }
+        }
+        ]
+    }
+    
+    ```
+  - 快捷键：刷新页面（未开起热重载）mac :command+r windows:ctr+r
+  
+* 渲染进程调试
+  - 同浏览器
+  
+* 开发环境调试
+    ```js
+        const { app, BrowserWindow } = require('electron')
+        let mainWindow
+        app.on('ready', () => {
+            mainWindow = new BrowserWindow({
+                width:600
+                height:400
+            })
+            if (process.env.NODE_ENV === "debug") {
+                mainWindow.webContents.openDevTools()  
+            }
+        })
+    ```
+
+* 生产环境调试工具 
+  - Debugtron
+## 引入前端框架
+* Vue cli 搭建Vue-electron 项目
+  ```
+    vue create vue-electron-demo
+    cd vue-electron-demo
+    vue add electron-builder
+  ```
+
+## 界面
+* webContents 是Electron 的核心模块，负责渲染和控制应用内的web界面
+    ```js 
+    // 主进程下 获取激活状态下的窗口的实例
+    const { webContents } =require('electron')
+    let webContent=webContents.getFocuseWebContents()
+
+    // 渲染进程
+    const { remote } = require("electron");
+    // remote.getCurrentWindow()
+    remote.getCurrentWebContents()
+    ```
+* 页面加载事件及触发顺序(关键的几个)
+    - did-start-loding: 页面加载的首个事件，tab 页图标开始旋转
+    - page-title-updated：页面标题更新事件
+    - dom-ready:dom 加载完成 背后是网页的DOMContentLoaded 事件
+    - did-frame-finish-load：框架加载完成，多个iframe 会触发多次
+    - did-stop-loading:所有内容加载完成时触发，浏览器中发生相当tab 页图标停止旋转
+
+* 脚本注入
+    + preload
+    + executeJavaScript
 ## webview
  + 与 iframe 不同, webview 在与应用程序不同的进程中运行
     ```html
@@ -520,32 +602,9 @@
         })
     ```
 
-## 调试
-* 主进程调试
-
-* 渲染进程调试
-
-* 开发环境调试
-    ```js
-        const { app, BrowserWindow } = require('electron')
-        let mainWindow
-        app.on('ready', () => {
-            mainWindow = new BrowserWindow({
-                width:600
-                height:400
-            })
-            if (process.env.NODE_ENV === "debug") {
-                mainWindow.webContents.openDevTools()  
-            }
-        })
-    ```
-
-* 生产环境调试工具 
-  - Debugtron
-
-  
-## 打包发布
-   
+## 硬件
+## 打包构建
+* ![构建](./imgs/构建.png)
 ## 更新
 * 问题及解决方案：
   + webview下的更新缓存问题
@@ -605,3 +664,41 @@
     ```
 
 * 直播
+
+## 安全
+* 开启node 集成时
+  ```js
+    webPreferences: {
+      nodeIntegration: true, 
+    },
+    //  关闭开发运行时 console 打印的警告
+    process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+  ```
+
+* 远程网站当禁用Node.js集成时，你依然可以暴露API给你的站点以使用Node.js的模块功能或特性
+    ```js
+    // 推荐
+    const mainWindow = new BrowserWindow({
+    webPreferences: {
+        preload: path.join(app.getAppPath(), 'preload.js')
+    }
+    })
+
+    mainWindow.loadURL('https://example.com')
+
+    ```
+* 加载远程内容时，开启上下文隔离
+ ```js
+    webPreferences: {
+        nodeIntegration: true
+    }
+ ```
+
+* 定义一个内容安全策略
+```
+// 下面的CSP设置使得Electron只能执行自身站点和来自apis.example.com的脚本。
+// 推荐
+Content-Security-Policy: script-src 'self' https://apis.example.com
+
+```
+

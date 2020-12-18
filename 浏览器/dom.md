@@ -106,7 +106,6 @@
  - offsetHeight：表示可视区域的高度，包含了border和滚动条
  - scrollHeight：表示了所有区域的高度，包含了因为滚动被隐藏的部分。
  - window.innerHeight  表示的是可视区域的高度
- - document.documentElement.clientHeight ie表示的是可视区域的高度，不包含border和滚动条
 
 * top
  - clientTop：表示边框border的厚度，在未指定的情况下一般为0
