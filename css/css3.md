@@ -35,17 +35,17 @@
   - E[attrxxxx]~E   选择当前的元素 然后后面所有的元素    
    
 ## 伪元素：
- *  :before :after 推荐单冒号兼容性好       
+*  :before :after 推荐单冒号兼容性好       
     
- * 出现省略号：
-   - white-space:nowrap;
-   - overflow：hidden;
-   - text-overflow：ellipsis;
+* 出现省略号：
+  - white-space:nowrap;
+  - overflow：hidden;
+  - text-overflow：ellipsis;
 
- *  选中
-    - ::first-letter 选择首字母
-    - ::first-line   第一行
-    - ::selection    选中的区域  只能变color 和 background-color  
+*  选中
+  - ::first-letter 选择首字母
+  - ::first-line   第一行
+  - ::selection    选中的区域  只能变color 和 background-color  
 
 ## 阴影
 * text-shadow(文字阴影): 水平位移  垂直位移  模糊程度 颜色
@@ -83,8 +83,8 @@
  * background-origin 
    - 背景原点(默认是padding-box)
     
- * background-clip 
-   - 背景图片的显示位置
+ * background-clip 背景图片的显示位置
+  - background-clip: border-box|padding-box|content-box;
 
 ## 渐变
  * linear-gradient(线性渐变)([ <angle> | to <side-or-corner> ,]? <color-stop> [, <color-stop>]+ )
@@ -205,7 +205,41 @@
     }
  }
  ```
+## 原生css变量
+* 好处：
+  - 减少样式代码的重复性
+  - 增加样式代码的扩展性
+  - 提高样式代码的灵活性
+  - 增多一种CSS与JS的通讯方式
+  - 不用深层遍历DOM改变某个样式
 
+* 定义：
+  ```css
+  .page-wrap {
+    padding-bottom: 30px;
+    // 活动规则-填充颜色
+    --activityRuleFillColor: #ff6b5a;
+  }
+  .btn {
+    background: var(--activityRuleFillColor); 
+  ```
+  
+* 与js的交互
+  ```js
+
+   // 主题色配置
+    initThemeConfig({
+        baseInfo,
+    }) {
+        const themeConfig = {
+            buttonColour: baseInfo.shareInfoDTO.buttonColour,
+            buttonWordColour: baseInfo.shareInfoDTO.buttonWordColour,
+        };
+        Object.entries(themeConfig).forEach(([key, value]) => {
+            this.$el.style.setProperty(`--${key}`, value);
+        });
+    },
+  ```
 ## flex
 [flex](./flex.md)
 ## Grid

@@ -529,6 +529,7 @@
 
 * 生产环境调试工具 
   - Debugtron
+
 ## 引入前端框架
 * Vue cli 搭建Vue-electron 项目
   ```
@@ -536,6 +537,14 @@
     cd vue-electron-demo
     vue add electron-builder
   ```
+## 窗口
+* BrowserWindow 的属性
+    - x, y, center,movable 当创建多个窗口时，有可能后创建的窗口覆盖前面的窗口，此时应该x,y 调整位置
+    - width,height,minWidth,maxWidth,maxHeight,minHeight,resizeable,minimizabel,maxminizable
+    - frame 设为false，会屏蔽系统的标题栏和边框
+    - webPreferences: nodeIntegration,nodeIntegrationInWorker,nodeIntegrationInSubFrames 控制渲染进程访问Nodejs 的环境
+    - preload,webviewTag,contextIsolation 增加渲染进程的能力
+
 
 ## 界面
 * webContents 是Electron 的核心模块，负责渲染和控制应用内的web界面
@@ -549,6 +558,7 @@
     // remote.getCurrentWindow()
     remote.getCurrentWebContents()
     ```
+
 * 页面加载事件及触发顺序(关键的几个)
     - did-start-loding: 页面加载的首个事件，tab 页图标开始旋转
     - page-title-updated：页面标题更新事件
@@ -559,6 +569,7 @@
 * 脚本注入
     + preload
     + executeJavaScript
+
 ## webview
  + 与 iframe 不同, webview 在与应用程序不同的进程中运行
     ```html
@@ -605,6 +616,7 @@
 ## 硬件
 ## 打包构建
 * ![构建](./imgs/构建.png)
+
 ## 更新
 * 问题及解决方案：
   + webview下的更新缓存问题
