@@ -56,11 +56,6 @@
 
 ## 前端优化
 * [优化](前端优化/readme.md)
-
-## 数据结构与算法
-* c语言基础
-* 数据结构与算法
-
 ## 服务端
 * [node](node/README.md)
 * [linux](linux/readme.md)
@@ -69,12 +64,16 @@
 * [数据库mysql](数据库/mysql.md)
 
 ## 工程化
+* [文档化](文档化/文档)
+* [编码规范与工具](编码规范/编码规范和工具.md)
 * 构建与打包工具
-  - [gulp](build-tool/gulp/readme.md)
-  - [webpack](build-tool/webpack/readme.md)
-  
+  - [webpack](build-tool/webpack.md)
 * 单元测试
-* [运维监控](运维监控/sentry.md)
+* [运维监控:错误|性能](运维监控/sentry.md)
+
+## 数据结构与算法
+* c语言基础
+* 数据结构与算法
 
 ## 环境和工具
 * [环境和工具](环境和工具/readme.md)
@@ -84,7 +83,6 @@
 
 ## 面试
 * [面试题](interview/readme.md)
-
 ## 我的开源项目
 * [vue:pc前端模板](https://github.com/qinmao/vue-admin-template)
 * [vue:移动端前端模板](https://github.com/qinmao/vue-h5-template)

@@ -86,6 +86,14 @@
  * background-clip 背景图片的显示位置
   - background-clip: border-box|padding-box|content-box;
 
+## 图片 
+* 指定元素的内容应该如何去适应指定容器的高度与宽度
+* object-fit: fill|contain|cover|scale-down|none|initial|inherit;
+    - contain 保持原有尺寸比例。内容被缩放。
+    - cover 保持原有尺寸比例。但部分内容可能被剪切。
+    - none 保留原有元素内容的长度和宽度，也就是说内容不会被重置。
+    - scale-down 保持原有尺寸比例。内容的尺寸与 none 或 contain 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些。
+    
 ## 渐变
  * linear-gradient(线性渐变)([ <angle> | to <side-or-corner> ,]? <color-stop> [, <color-stop>]+ )
             where <side-or-corner> = [left | right] || [top | bottom]

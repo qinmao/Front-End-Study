@@ -28,56 +28,86 @@
     - service network restart 重启网络服务
 
 ## 文件操作
-+ 目录
-    - ls: 列出目录
-    - cd：切换目录
-    - pwd：显示目前的目录
+* 文件和文件夹
+    + 查询
+        - ls: 列出当前文件下文件目录
+        - pwd：显示目前的目录
+        - du -h -s 查看文件夹大小
+        - 查看文件夹下的文件大小并排序
+            ```
+                find . -type f -size +1M  -print0 | xargs -0 du -h | sort -nr 
+            ```
+    + 增
+        - mkdir：创建一个新的目录 -p 确保目录名称存在，不存在的就建一个
+        - cp: 复制文件或目录
 
-    - mkdir：创建一个新的目录 -p 确保目录名称存在，不存在的就建一个
-    - rmdir：删除一个空的目录
-    - cp: 复制文件或目录
+    + 删
+        - rmdir：删除一个空的目录
+        - rm: 移除文件或目录
+        - rm -rf /var/log/httpd/access 删除文件夹
 
-+ 文件
-    - rm: 移除文件或目录
-    - rm -rf /var/log/httpd/access 删除文件夹
-    - mv: 移动文件与目录，或修改文件与目录的名称
+    + 应用案例:
+        - 删除项目中未被引用的图片,使用到了一个基于“grep”高级封装过的ack库，要安装
+        - brew install ack 
+            ```
+            for i in `find ./images -name "*.png" -o -name "*.jpg"`; do     
+                file=`basename -s .jpg "$i" | xargs basename -s .png`
+                result=`ack -i "$file"`
+                if [ -z "$result" ]; then 
+                echo `发现废弃文件："$i"`
+                rm "$i"
+                echo "已删除"
+                fi
+            done
 
-+ 压缩、解压
-  * zip
-    - zip -r xxx.zip ./*  当前目录下的所有文件和文件夹全部压缩为xxx.zip文件
-    - unzip filename.zip  解压zip文件到当前目录
-    + unzip -o -d /home/sunny myfile.zip 把myfile.zip文件解压到 /home/sunny/
-      - -o:不提示的情况下覆盖文件；
-      - -d:-d /home/sunny 指明将文件解压缩到/home/sunny目录下
+            for i in `find ./src/assets/img -name "*.png" -o -name "*.jpg"`; do     
+                file=`basename -s .jpg "$i" | xargs basename -s .png`
+                result=`ack -i "$file"`
+                if [ -z "$result" ]; then 
+                echo "$i"
+               
+                fi
+            done
+        ```
+        + 解析：
+            - . 当前目录 -name 指定文件名 -o 表示or 的意思
+            - 为变量file赋值
+            - -z 表示判定后面的文件是否为空
+            - echo "$i" 打印  也可以使用 rm "$i" 删除命令
+            - if fi 搭配 
+            - for in ; do done 的 for循环语句搭配
+    + cd 切换目录
+    + mv: 移动文件与目录，或修改文件与目录的名称
 
-    > tip: 有些服务器没有安装zip包执行不了zip命令，但基本上都可以用tar命令的
-  * tar
-  
+    + 压缩、解压
+        * zip
+            - zip -r xxx.zip ./*  当前目录下的所有文件和文件夹全部压缩为xxx.zip文件
+            - unzip filename.zip  解压zip文件到当前目录
+            + unzip -o -d /home/sunny myfile.zip 把myfile.zip文件解压到 /home/sunny/
+            - -o:不提示的情况下覆盖文件；
+            - -d:-d /home/sunny 指明将文件解压缩到/home/sunny目录下
 
-+ 传输文件
-    - scp :命令用于Linux之间复制文件和目录，-r：递归复制整个目录。
+            > tip: 有些服务器没有安装zip包执行不了zip命令，但基本上都可以用tar命令的
+        * tar
     
-    + 本地到远程
-        - scp local_file remote_username@remote_ip:remote_folder 
-        - 或者 
-        - scp local_file remote_username@remote_ip:remote_file 
-        - 或者 
-        - scp local_file remote_ip:remote_folder 
-        - 或者 
-        - scp local_file remote_ip:remote_file 
+    + 传输文件
+        - scp :命令用于Linux之间复制文件和目录，-r：递归复制整个目录。
+        
+        + 本地到远程
+            - scp local_file remote_username@remote_ip:remote_folder 
+            - 或者 
+            - scp local_file remote_username@remote_ip:remote_file 
+            - 或者 
+            - scp local_file remote_ip:remote_folder 
+            - 或者 
+            - scp local_file remote_ip:remote_file 
 
-        > 例子:'scp -r dist/* root@39.96.190.20:/data/www/static' 
+            > 例子:'scp -r dist/* root@39.96.190.20:/data/www/static' 
 
-    + 远程到本地
-        - scp remote_username@remote_ip:remote_folder  local_file
-        > 例子：scp -r www.runoob.com:/home/root/others/ /home/space/music/
+        + 远程到本地
+            - scp remote_username@remote_ip:remote_folder  local_file
+            > 例子：scp -r www.runoob.com:/home/root/others/ /home/space/music/
 
-+ 查看文件夹下的文件大小并排序
-    ```
-    find . -type f -size +1M  -print0 | xargs -0 du -h | sort -nr 
-
-    ```
-    
 ## 查看命令使用文档：
     - 使用 man [命令] 来查看各个命令的使用文档，如 ：man cp。
     - cat  由第一行开始显示文件内容
