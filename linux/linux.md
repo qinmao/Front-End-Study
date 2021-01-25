@@ -126,7 +126,7 @@
     7. Page Up/Page Down，上/下翻页
     8. Insert，切换光标为输入/替换模式，光标将变成竖线/下划线
     9. ESC，退出输入模式，切换到命令模式,：wq 保存文件退出程序.
->例如:打开host  vim /etc/hosts
+>例如:打开host  sudo vi /etc/hosts
 
 ## SSH
 * 登录linux 
