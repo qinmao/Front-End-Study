@@ -1,14 +1,4 @@
 # vue study
-
-## 组件通讯
-* 父子组件通信
-  - 父向子组件：prop
-  - 子向父组件:触发父层定义的事件 $on / $emit
-    
-* 非父子组件通讯
-  - 使用空的 Vue 实例作为中央事件总线
-  - vuex
-
 ## vuex
 * 核心概念：
   - State 状态(数据)
@@ -231,13 +221,19 @@
       这个回调将在 `vm.a` 改变后调用
     })
 
+* 钩子函数
+```js
+    this.$on('hook:destroyed', () => {
+        console.log('销毁注册的事件')
+    })
+```
 ## 项目中遇到的问题及解决方案
 * 异步文件上传(axios)
     -  multipart 添加之后选择多图
     ```html
       <input ref="referenceUpload" type="file" name="file"  @change="upload($event)"  accept="images/*">
     ```
-    ```javascript
+    ```js
       async upload(e) {
           let files = e.target.files;
           if (files[0].size / 1024 / 1024 > 2) {
@@ -276,8 +272,8 @@
 
     ```
 * 文件下载
-   - @click.native="download"
-   - download --> location.href
+   - location.href
+   - 模拟a标签的流下载
 * 路由跳转时，记录跳转前的位置
    > 思路把位置记录在当前路由的元信息上
    - 整个页面的滚动位置
@@ -288,12 +284,15 @@
    - 正常业务成功返回，不拦截
 * js操作 dom 修改value，同步更改v-model的值
   ```js
+    // 1.原生
    el.value(newval)
    el.dispatchEvent(new Event('input'));
+    // 2. vue 中触发
+   this.$emit('input', '');
    // el为input元素
    // 如果v-model有lazy修饰符的时候，触发得是change事件
    // select 触发得是change事件
    el.dispatchEvent(new Event('change'));
   ```
-* 多组价模块根据配置调整展示的位置
+* 组件的排序
   - 可以使用伸缩容器下的order 属性来处理

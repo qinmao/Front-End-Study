@@ -7,6 +7,11 @@
 </template>
 <script>
 import { mapState,mapGetters,mapMutations  } from 'vuex'
+
+// 在模块内的简便用法
+// import { createNamespacedHelpers } from 'vuex'
+// const { mapState, mapActions } = createNamespacedHelpers('some/nested/module')
+
 export default {
   computed: {
     // 本地的计算属性，混用state
@@ -33,6 +38,21 @@ export default {
       name1: 'name'
     })
 
+
+    // 4. 模块内的用法
+    //  ...mapState('some/nested/module', {
+    //     a: state => state.a,
+    //     b: state => state.b
+    // })
+
+    // 5. 模块内 简便用法
+    // 在 `some/nested/module` 中查找
+    // ...mapState({
+    //   a: state => state.a,
+    //   b: state => state.b
+    // })
+
+
   },
   methods: {
     // 1. 
@@ -43,6 +63,21 @@ export default {
     ...mapMutations({
       add: 'increment' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
     })
+
+
+    // 3. 模块内的用法
+    // ...mapActions('some/nested/module', [
+    //     'foo', // -> this.foo()
+    //     'bar' // -> this.bar()
+    // ])
+
+    // 4. 模块内的简便用法
+    // 在 `some/nested/module` 中查找
+    // ...mapActions([
+    //   'foo',
+    //   'bar'
+    // ])
+
   },
   created() {
     // 1. this.$store.state.age = 80; // 不推荐直接修改

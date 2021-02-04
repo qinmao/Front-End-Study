@@ -234,8 +234,9 @@
   
 * 与js的交互
   ```js
-
-   // 主题色配置
+    // getPropertyValue(): 读取变量
+    this.$el.style.getPropertyValue('--global-color').trim();
+   // 主题设置
     initThemeConfig({
         baseInfo,
     }) {
@@ -247,6 +248,7 @@
             this.$el.style.setProperty(`--${key}`, value);
         });
     },
+    // removeProperty(): 删除变量
   ```
 ## flex
 [flex](./flex.md)
