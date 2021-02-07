@@ -71,4 +71,31 @@ import Clipboard from 'clipboard';
 // 单页应用处理生命周期
 var clipboard = new ClipboardJS('.btn');
 clipboard.destroy();
+// vue 
+this.$on("hook:destroyed", () => {
+    clipboard.destroy();
+});
 ```
+## 特殊场景的需求
+* 多个按钮触发复制同一个文本，触发同样的回调效果
+  ```html
+    <input id="foo" value="https://github.com/zenorocha/clipboard.js.git" />
+    <button class="btn" data-clipboard-target="#foo">按钮1</button>
+    <button class="btn" data-clipboard-target="#foo">按钮2</button>
+    <script>
+        const clipboard = new ClipboardJS(".btn");
+
+        clipboard.on("success", function (e) {
+            console.info("Action:", e.action);
+            console.info("Text:", e.text);
+            console.info("Trigger:", e.trigger);
+
+            e.clearSelection();
+        });
+
+        clipboard.on("error", function (e) {
+            console.error("Action:", e.action);
+            console.error("Trigger:", e.trigger);
+        });
+    </script>
+  ```
