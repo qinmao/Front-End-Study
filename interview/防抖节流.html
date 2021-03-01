@@ -8,7 +8,7 @@
 
 <body>
     <h3>出现的背景</h3>
-    <p>
+    <p style="height: 2000px;">
         scroll 事件，resize 事件、鼠标事件（比如 mousemove、mouseover 等）、键盘事件（keyup、keydown 等）都存在被频繁触发的风险，
         频繁触发回调导致的大量计算会引发页面的抖动甚至卡顿
     </p>
@@ -65,13 +65,14 @@
                         fn.apply(context, args)
                     }, delay)
                 } else {
-                    // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应 last=now
+                    // 如果时间间隔超出了我们设定的时间间隔阈值，那就不等了，无论如何要反馈给用户一次响应 
+                    last=now
                     fn.apply(context, args)
                 }
             }
         }
         // const better_scroll = debounce(() => console.log('触发了滚动事件'),
-        //     1000)
+        //     2000)
         // document.addEventListener('scroll', better_scroll)
     </script>
 </body>

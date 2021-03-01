@@ -5,9 +5,8 @@ import Clipboard from 'clipboard';
 ```
 
 ## 声明式获取
-
 ```html
-<!-- Target -->
+<!-- Target 复制必须是可编辑区域 -->
 <input id="foo" value="https://github.com/zenorocha/clipboard.js.git" />
 
 <!-- Trigger -->
@@ -79,9 +78,14 @@ this.$on("hook:destroyed", () => {
 ## 特殊场景的需求
 * 多个按钮触发复制同一个文本，触发同样的回调效果
   ```html
+    <!-- input display:none; 复制没效果了 -->
     <input id="foo" value="https://github.com/zenorocha/clipboard.js.git" />
+
     <button class="btn" data-clipboard-target="#foo">按钮1</button>
     <button class="btn" data-clipboard-target="#foo">按钮2</button>
+
+    <button class="btn" data-clipboard-text="1111">按钮1</button>
+    <button class="btn" data-clipboard-text="1111">按钮2</button>
     <script>
         const clipboard = new ClipboardJS(".btn");
 

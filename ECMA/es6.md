@@ -297,7 +297,9 @@
     + 应用:
         1. 合并数组
             // ES5
-            [1, 2].concat(more)
+            const more=[122,111,33]
+            const newArr= [1, 2].concat(more)
+
             // ES6
             [1, 2, ...more]
 
