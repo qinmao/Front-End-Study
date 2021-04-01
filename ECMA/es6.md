@@ -1,5 +1,5 @@
 # es6知识点
-## 变量的解构赋值
+## 解构赋值
  * 数组的解构赋值
     ```js
         let [a, b, c] = [1, 2, 3];
@@ -112,31 +112,32 @@
         ```
 
     6. 遍历Map结构
-        任何部署了Iterator接口的对象.都可以用for...of循环遍历。Map结构原生支持Iterator接口配合变量的解构赋值.获取键名和键值就非常方便。
+        - 任何部署了Iterator接口的对象.都可以用for...of循环遍历。Map结构原生支持Iterator接口配合变量的解构赋值.获取键名和键值就非常方便。
+        ```js
+            var map = new Map();
+            map.set('first', 'hello');
+            map.set('second', 'world');
 
-        var map = new Map();
-        map.set('first', 'hello');
-        map.set('second', 'world');
+            for (let [key, value] of map) {
+                console.log(key + " is " + value);
+            }
+            // first is hello
+            // second is world
+            如果只想获取键名.或者只想获取键值.可以写成下面这样。
 
-        for (let [key, value] of map) {
-            console.log(key + " is " + value);
-        }
-        // first is hello
-        // second is world
-        如果只想获取键名.或者只想获取键值.可以写成下面这样。
+            // 获取键名
+            for (let [key] of map) {
+            // ...
+            }
 
-        // 获取键名
-        for (let [key] of map) {
-        // ...
-        }
-
-        // 获取键值
-        for (let [,value] of map) {
-        // ...
-        }
+            // 获取键值
+            for (let [,value] of map) {
+            // ...
+            }
+        ```
 
     7. 输入模块的指定方法
-        const { SourceMapConsumer, SourceNode } = require("source-map");
+       - const { SourceMapConsumer, SourceNode } = require("source-map");
 
 ## 字符串的扩展
 * 新增的方法(实例方法)：

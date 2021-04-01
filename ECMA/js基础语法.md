@@ -1,5 +1,4 @@
 # js 基础
-
 ## 数据类型
 * 7种原始类型（原始类型存储的都是值，是没有函数可以调用）
   + Boolean
@@ -189,3 +188,7 @@
 * SyntanxError  预解析,语法错误
 * typeError 运行时异常，类型异常
 * URIError 运行时异常 在执行encodeURI 和 decodeURI 时抛出的常
+
+## 循环：break/continue
+* break：跳出循环，执行循环之后的代码
+* Continue：中断（循环中）的一个迭代，如果发生指定的条件。然后继续循环中的下一个迭代

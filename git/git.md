@@ -67,8 +67,6 @@
             版本区和暂存区变化，工作区不变
         - git reset -–soft：回退到某个版本，只回退了commit的信息，不会恢复暂存区。
             如果还要提交，直接commit即可
-        - git reset –-hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容。
-
         - git reset --hard head~ 可以回到合并之前的提交
         - git reset --hard '版本id-sha值' 将指定版本内的文件替换掉工作目录内文件，实现版本的回退。--hard 参数表示，同时更改暂存区。
         - git reset [option] HEAD^ 回退到上一个版本 
