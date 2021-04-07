@@ -585,8 +585,8 @@
     
  * ES2017 引入了跟Object.keys配套的Object.values和Object.entries，作为遍历一个对象的补充手段，供for...of循环使用。
     ```js
-        let {keys, values, entries} = Object;
-        let obj = { a: 1, b: 2, c: 3 };
+        const {keys, values, entries} = Object;
+        const obj = { a: 1, b: 2, c: 3 };
 
         for (let key of keys(obj)) {
             console.log(key); // 'a', 'b', 'c'
