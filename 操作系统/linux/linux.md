@@ -46,36 +46,6 @@
         - rm: 移除文件或目录
         - rm -rf /var/log/httpd/access 删除文件夹
 
-    + 应用案例:
-        - 删除项目中未被引用的图片,使用到了一个基于“grep”高级封装过的ack库，要安装
-        - brew install ack 
-            ```
-            for i in `find ./images -name "*.png" -o -name "*.jpg"`; do     
-                file=`basename -s .jpg "$i" | xargs basename -s .png`
-                result=`ack -i "$file"`
-                if [ -z "$result" ]; then 
-                echo `发现废弃文件："$i"`
-                rm "$i"
-                echo "已删除"
-                fi
-            done
-
-            for i in `find ./src/assets/img -name "*.png" -o -name "*.jpg"`; do     
-                file=`basename -s .jpg "$i" | xargs basename -s .png`
-                result=`ack -i "$file"`
-                if [ -z "$result" ]; then 
-                echo "$i"
-               
-                fi
-            done
-        ```
-        + 解析：
-            - . 当前目录 -name 指定文件名 -o 表示or 的意思
-            - 为变量file赋值
-            - -z 表示判定后面的文件是否为空
-            - echo "$i" 打印  也可以使用 rm "$i" 删除命令
-            - if fi 搭配 
-            - for in ; do done 的 for循环语句搭配
     + cd 切换目录
     + mv: 移动文件与目录，或修改文件与目录的名称
 
