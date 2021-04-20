@@ -222,11 +222,11 @@
     })
 
 * 钩子函数
-```js
+  ```js
     this.$on('hook:destroyed', () => {
         console.log('销毁注册的事件')
     })
-```
+  ```
 ## 项目中遇到的问题及解决方案
 * 异步文件上传(axios)
     -  multipart 添加之后选择多图
@@ -287,6 +287,7 @@
     // 1.原生
    el.value(newval)
    el.dispatchEvent(new Event('input'));
+
     // 2. vue 中触发
    this.$emit('input', '');
    // el为input元素
@@ -295,4 +296,4 @@
    el.dispatchEvent(new Event('change'));
   ```
 * 组件的排序
-  - 可以使用伸缩容器下的order 属性来处理
+  - 可以使用伸缩容器下的 order 属性来处理

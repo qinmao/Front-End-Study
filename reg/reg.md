@@ -162,6 +162,18 @@
     function Trim(str) {
         return str.replace(/^\s+|\s+$/g, "");
     }
+    // 替换多个
+    markRedRule(rule){
+        const result = rule.replace(/2份|1张|2张|3张|2小时|1双/g, function(matchStr) {
+            const keyArr = ['2份','1张','2张','3张','2小时','1双']
+            let tokenMap={}
+            keyArr.forEach(key=>{
+                tokenMap[key]=`<span style="color:red;">${key}</span>`
+            })
+            return tokenMap[matchStr];
+        });
+        return result
+    },
 
     ```
 

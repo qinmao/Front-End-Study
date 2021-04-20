@@ -367,8 +367,8 @@ class cat extends Animal {
     db.add(u);
     db.updated(u, 1);
   ```
+  
 ## 模块
-
 ## 命名空间
 
 ## 装饰器

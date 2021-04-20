@@ -179,7 +179,14 @@
 ## JSON 转换 
 * object转string:JSON.stringify()
 * string转object:JSON.parse()   
-  
+## URI编码解码
+* URI 字符串的编码解码
+    - encodeUrI
+    - decodeURI
+
+* URI 组件编码解码
+    - encodeURIComponent
+    - encodeURIComponent
 ## js异常
 > js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
 * EvalError  运行时异常。 eval 函数调用时发生的异常
