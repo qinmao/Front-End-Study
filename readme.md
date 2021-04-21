@@ -12,7 +12,7 @@
 * [js基础](ECMA/js基础语法.md)
 * [dom基础](浏览器/dom.md)
 * [bom基础](浏览器/bom.md)
-* [正则表达式](reg/reg.md)
+* [正则表达式](正则/reg.md)
 * [h5基础](html/html5/h5.md)
 ## js高级
 * [面向对象](ECMA/面向对象.md)
@@ -49,8 +49,6 @@
    - WireShark 所有的通讯协议
 
 ## 跨平台技术
-* [Hybrid-App](/Hybrid-App/cordova.build.app.md)
-* [weex/uni-app](cross-platform/weex)
 * flutter
 * [electron](cross-platform/electron/readme.md)
 
