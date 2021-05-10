@@ -56,6 +56,8 @@
 * box-shadow(盒子阴影):水平位移  垂直位移  模糊程度 扩展半径 颜色 内阴影（inset）
     - 扩展半径  可以为负值，值越大，扩展半径越大
     - 内阴影  inset(可选)
+    - 一般用border 设置线比较粗，用box-shadow 的内阴影设置线比较细如下：
+    - box-shadow: 0px -.5px 0px 0px #F5F4F3 inset;
 
 ## 边框
  * border-radius
