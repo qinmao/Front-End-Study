@@ -1,18 +1,15 @@
-## eslint配置
+## eslint官方文档
+- [官方文档](http://eslint.cn/docs/user-guide/configuring)
+## ESLint的2种配置方式:
+- 使用 JavaScript 注释把配置信息直接嵌入到一个文件。
+- 用 .eslintrc.* 文件或者在 package.json 文件里的 eslintConfig 字段这两种方式进行配置，ESLint 会查找和自动读取它们，再者，你可以在命令行指定一个配置文件。
 
-我们在全局安装`npm install eslint -g`
+## 配置项的说明
+  - **Environments** 指定脚本的运行环境 每种环境都有一组特定的预定义全局变量
+  - **Globals** 脚本在执行期间访问的额外全局变量
+  - **Rules** 启用的规则及各自的错误级别
 
-然后再初始化eslint`eslint --init`
-
-- 文档 <[http://eslint.cn/docs/user-guide/configuring](http://eslint.cn/docs/user-guide/configuring)[http://eslint.cn/docs/user-guide/configuring](http://eslint.cn/docs/user-guide/configuring)ESLint的2种配置:**Configuration Comments** - 使用 JavaScript 注释把配置信息直接嵌入到一个文件。**Configuration Files** - 使用 JavaScript、JSON 或者 YAML 文件为整个目录和它的子目录指定配置信息。可以用 .eslintrc.* 文件或者在 package.json 文件里的 eslintConfig 字段这两种方式进行配置，ESLint 会查找和自动读取它们，再者，你可以在命令行指定一个配置文件。
-
-> > 有很多配置信息:
-> >
-> > - **Environments** -指定脚本的运行环境 每种环境都有一组特定的预定义全局变量
-> > - **Globals** -脚本在执行期间访问的额外全局变量
-> > - **Rules** -启用的规则及各自的错误级别
-
-### Configuring Rules 配置规则
+## Configuring Rules 配置规则
 
 ESLint 附带有大量的规则。你可以使用注释或配置文件修改你项目中要使用哪些规则。改变一个规则设置，你必须设置规则 ID 等于这些值之一：
 
@@ -44,7 +41,7 @@ alert('foo');
 /* eslint-enable */
 ```
 
-### rule解释
+## rule解释
 
 ```javascript
 "no-alert": 0,//禁止使用alert confirm prompt

@@ -79,8 +79,10 @@
 
  * background-size:
    - 数字/百分比，
-   - cover 完全覆盖整个元素，不考虑图片内容是否损失
+   - cover 把背景图片放大到适合元素容器的尺寸，图片比例不变，但是要注意，超出容器的部分可能会裁掉。
    - contain 完全显示图片，不考虑是否覆盖整个元素
+   + 注意：
+        - background-size：100% 100%;---按容器比例撑满，图片变形；
 
  * background-origin 
    - 背景原点(默认是padding-box)

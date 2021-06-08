@@ -1,5 +1,5 @@
-## nginx
-* windows (是非服务的控制台应用程序)
+# nginx
+## windows (是非服务的控制台应用程序)
  - isntall(http://nginx.org/en/download.html)
     ```
     cd c:\
@@ -16,4 +16,6 @@
     nginx -s reopen	re-opening log files
 
     ```
-* linux(centos)
+## linux(centos)
+
+## mac

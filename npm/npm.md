@@ -62,6 +62,10 @@
     + npm <command> -h  quick help on <command>
     + npm docs 包名 查看包的文档
 
+    * npm rebuild 的妙用：
+        - 在内网环境下，无法连接互联网，拷贝到内网的包可能无法运行
+        - 执行 npm rebuild 重新构建包
+
 * package.json
     - npm init  创建package.json文件
     - npm init --yes 获得默认值

@@ -38,7 +38,7 @@
   - 由electron-builder打出的包更为轻量
   - 可以打包出不暴露源码的setup安装程序
   
-* Vue ClI Plugin Electron Builder 和electron-vue 基于它们可以在Electron 应用内使用Vue 及其组件（包括HMR热更新），推荐前者,基于Vue ClI Plugin 更新频繁烦。
+* Vue ClI Plugin Electron Builder 和electron-vue 基于它们可以在Electron 应用内使用Vue 及其组件（包括HMR热更新），推荐前者,基于Vue ClI Plugin 更新频繁。
 
 * 不想用框架也可以用 webpack 与传统的web开发技术
 
@@ -86,7 +86,7 @@
 
 * 渲染进程
     - 由于 Electron 使用了 Chromium 来展示 web 页面，所以 Chromium 的多进程架构也被使用到。 每个 Electron 中的 web 页面运行在它自己的渲染进程中
-    - elctron 渲染进程中通过 Nodejs 读取本地文件
+    - electron 渲染进程中通过 Nodejs 读取本地文件
 
 ## 常用模块
  * 主进程
@@ -117,14 +117,14 @@
    + nativeImage
    + screen
    + shell
-     - 在用户默认浏览器 中打开 URL 以及 Electron DOM webview 标签
+      - 在用户默认浏览器 中打开 URL 以及 Electron DOM webview 标签
 
  * 常用模块的使用
     + 在主进程中初始化一个窗口
         ```js
         // app 控制应用生命周期的模块 
         // BrowserWindow 创建本地浏览器窗口的模块 
-        const {app,BrowserWindow} = require('electron'); 
+        const { app,BrowserWindow } = require('electron'); 
         // 指向窗口对象的一个全局引用，如果没有这个引用，那么当该 javascript 对象被垃圾回收 的
         // 时候该窗口将会自动关闭
         let win;
@@ -382,8 +382,7 @@
 
 ## 进程间的通讯
 * 通讯的工具
-    - ipcMain
-    > 当在主进程中使用时，它处理从渲染器进程(网页)发送出来的异步和同步信息,当然也有可能从主进程向渲染进程发送消息。
+    - ipcMain: 当在主进程中使用时，它处理从渲染器进程(网页)发送出来的异步和同步信息,当然也有可能从主进程向渲染进程发送消息。
     - ipcRender
     > 使用它提供的一些方法从渲染进程 (web 页面) 发送同步或异步的消息到主进程。 也可以接收主进程回复的消息
     - 注意：主进程向渲染进程发消息，如果返回的对象是字符串或者数字 elctron 复制一份返回给渲染进程，渲染进程中持有的远程对象被回收，主进程相应的对象也会被回收
@@ -482,32 +481,33 @@
 
 
 ## 调试
-* 主进程调试
-  - 配置文件
+* 主进程调试配置文件
     ```json
-    {
-        "version": "0.2.0",
-        "configurations": [
         {
-            "name": "Debug Main Process",
-            "type": "node",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-            "windows": {
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-            },
-            "args" : ["."],
-            "outputCapture": "std",
-            "env": {
-            "NODE_ENV": "debug"
-            }
+            "version": "0.2.0",
+            "configurations": [
+                {
+                    "name": "Debug Main Process",
+                    "type": "node",
+                    "request": "launch",
+                    "cwd": "${workspaceFolder}",
+                    "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+                    "windows": {
+                    "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+                    },
+                    "args" : ["."],
+                    "outputCapture": "std",
+                    "env": {
+                    "NODE_ENV": "debug"
+                    }
+                }
+            ]
         }
-        ]
-    }
     
     ```
-  - 快捷键：刷新页面（未开起热重载）mac :command+r windows:ctr+r
+  + 快捷键：刷新页面（未开起热重载）
+    - mac:command+r 
+    - windows:ctr+r
   
 * 渲染进程调试
   - 同浏览器
@@ -576,19 +576,20 @@
         <webview src="http://www.google.com/" preload="./test.js" nodeintegration></webview>
     ```
 + nodeintegration 
- - 当有此属性时, webview 中的访客页（guest page）将具有Node集成, 并且可以使用像 require 和 process 这样的node APIs 去访问低层系统资源。 Node 集成在访客页中默认是禁用的。
+  - 当有此属性时, webview 中的访客页（guest page）将具有Node集成, 并且可以使用像 require 和 process 这样的node APIs 去访问低层系统资源。 Node 集成在访客页中默认是禁用的。
 
 + preload
- - 指定一个脚本在访客页中其他脚本执行之前先加载。 该脚本的URL的协议必须是 file: asar:二者之一，因为在访客页中，它是通过“内部”的 require 去加载的
- - 当访客页没有 node integration ，这个脚本仍然有能力去访问所有的 Node APIs, 但是当这个脚本执行执行完成之后，通过Node 注入的全局对象（global objects）将会被删除。
+  - 指定一个脚本在访客页中其他脚本执行之前先加载。 该脚本的URL的协议必须是 file: asar:二者之一，因为在访客页中，它是通过“内部”的 require 去加载的
+  - 当访客页没有 node integration ，这个脚本仍然有能力去访问所有的 Node APIs, 但是当这个脚本执行执行完成之后，通过Node 注入的全局对象（global objects）将会被删除。
 
-+ 方法
++ addEventListener
   ```js
     const webview = document.querySelector('webview')
     webview.addEventListener('dom-ready', () => {
         webview.openDevTools()
     })
   ```
+
 + sendToHost 
     - 就像 ipcRenderer.send，不同的是消息会被发送到 host 页面上的 <webview> 元素，而不是主进程。
 
@@ -617,34 +618,8 @@
 ## 打包构建
 * ![构建](./imgs/构建.png)
 
-## 更新
-* 问题及解决方案：
-  + webview下的更新缓存问题
-   1. 禁用web本地缓存，这种方案缓存全部禁用，不推荐(特殊的设备：32位系统第2种方案不行，根据条件选择第一种)
-   ```js
-    // 放在 app.on('ready', () => {}) 之前
-    app.commandLine.appendSwitch("--disable-http-cache")
-
-   ```
-   2. nginx 部署的页面，把html的缓存禁用(nginx 的配置文件如下)（spa 关键配置）
-   ```
-   	server {
-        root /home/web_test/dist;
-        location / {
-            index index.html ;
-            try_files $uri $uri/ /index.html;
-        }
-        location ~ .*\.(?:htm|html)$
-        {
-            add_header Cache-Control "private, no-store, no-cache, must-revalidate, proxy-revalidate";
-        }  
-    }
-    
-   ```
-
-  + 客户端自动更新问题
-    - electron-updater
-
+## 自动更新方案：
+* electron-updater
 ## electron 应用
 * 爬虫
   + 网站自签名证书，chrome浏览器是会进行警告的，必须在警告页确认，如何绕过警告
@@ -660,18 +635,18 @@
   + 多平台客户端获取cookie,需要根据不同的域名去调用
     ```js
         ipcMain.on('get-cookies', (event, opts) => {
-        let _opts = JSON.parse(opts)
-        session.defaultSession.cookies.get(_opts, (err, cookie) => {
-            if (!err && cookie.length) {
-            let cookieStr = ''
-            cookie.forEach(item => {
-                cookieStr += item.name + '=' + item.value + ';'
+            let _opts = JSON.parse(opts)
+            session.defaultSession.cookies.get(_opts, (err, cookie) => {
+                if (!err && cookie.length) {
+                let cookieStr = ''
+                cookie.forEach(item => {
+                    cookieStr += item.name + '=' + item.value + ';'
+                })
+                event.returnValue = cookieStr;
+                } else {
+                event.returnValue = -1;
+                }
             })
-            event.returnValue = cookieStr;
-            } else {
-            event.returnValue = -1;
-            }
-        })
         })
     ```
 
@@ -689,28 +664,28 @@
 
 * 远程网站当禁用Node.js集成时，你依然可以暴露API给你的站点以使用Node.js的模块功能或特性
     ```js
-    // 推荐
-    const mainWindow = new BrowserWindow({
-    webPreferences: {
-        preload: path.join(app.getAppPath(), 'preload.js')
-    }
-    })
+        // 推荐
+        const mainWindow = new BrowserWindow({
+        webPreferences: {
+            preload: path.join(app.getAppPath(), 'preload.js')
+        }
+        })
 
-    mainWindow.loadURL('https://example.com')
+        mainWindow.loadURL('https://example.com')
 
     ```
+
 * 加载远程内容时，开启上下文隔离
- ```js
-    webPreferences: {
-        nodeIntegration: true
-    }
- ```
+    ```js
+        webPreferences: {
+            nodeIntegration: true
+        }
+    ```
 
 * 定义一个内容安全策略
-```
-// 下面的CSP设置使得Electron只能执行自身站点和来自apis.example.com的脚本。
-// 推荐
-Content-Security-Policy: script-src 'self' https://apis.example.com
-
-```
+    ```
+        // 下面的CSP设置使得Electron只能执行自身站点和来自apis.example.com的脚本。
+        // 推荐
+        Content-Security-Policy: script-src 'self' https://apis.example.com
+    ```
 
