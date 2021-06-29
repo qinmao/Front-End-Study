@@ -57,6 +57,24 @@
   - document.createComment(comment) 创建一个注释节点
   - document.crateDocumemntFragment() 创建一个文档碎片节点
       > 文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算),起到优化性能的效果
+  * 创建svg 图标的特殊案例
+      ```js
+        createSvgIcon(icon, style = {}) {
+            const svgNS = 'http://www.w3.org/2000/svg'
+            const xlinkNS = 'http://www.w3.org/1999/xlink'
+            const element = document.createElementNS(svgNS, 'svg')
+            element.setAttribute('aria-hidden', true)
+            const useEl = document.createElementNS(svgNS, 'use')
+            useEl.setAttributeNS(xlinkNS, 'href', `#${icon}`)
+            element.appendChild(useEl)
+            element.classList.add('svg-icon')
+            Object.entries(style).forEach(([key, value]) => {
+                element.style[key] = value
+            })
+
+            return element
+        }
+      ```
 * 添加
   - 父级.appendChild('li') 在父级的末尾加
   - 父级.insertBefore(newchild,rechild) 在已有的字节点前中插入一个新的子节点

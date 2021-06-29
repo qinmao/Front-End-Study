@@ -59,6 +59,7 @@ export default {
     // ...mapMutations([
     //   'CHANGE_NAME'
     // ])
+    
     // 2. 事件重命名
     ...mapMutations({
       add: 'increment' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
