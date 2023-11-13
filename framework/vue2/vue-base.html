@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <!-- <div id="app">
+        {{ message }}
+
+    </div>
+    <div id="app-2">
+        <span v-bind:title="message">
+            Hover your mouse over me for a few seconds to see my dynamically bound title!
+        </span>
+    </div>
+    <div id="app-3">
+        <p v-if="seen">Now you see me</p>
+    </div>
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ol>
+    </div>
+    <div id="app-5">
+        <p>{{ message }}</p>
+        <button v-on:click="reverseMessage">Reverse Message</button>
+    </div>
+    <div id="app-6">
+        <p>{{ message }}</p>
+        <input v-model="message">
+    </div>
+    <div id="app-7">
+        <ol>
+            <li-item v-for="item in groceryList" v-bind:todo="item"></li-item>
+        </ol>
+    </div>
+    <div id="example">
+        <p>Original message: "{{ message }}"</p>
+        <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    </div> -->
+
+    <div id="select">
+        <select v-model="selected" id="selectEl">
+            <option disabled value="">请选择</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+
+        <input id="input" @focus="inputFocus" type="text" v-model="test">
+
+
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+
+
+        <div id="wrap">
+            <button id="add" @click="add">add</button>
+            <div class="w-item" v-for="(item,index) in items" :key="index">
+                <input type="text" :id="'target-'+index" placeholder="类型" v-model="item.type">
+                <input type="text" :id="'content-'+index" placeholder="值" v-model="item.content">
+            </div>
+            <br>
+            <span>items:{{items}}</span>
+        </div>
+
+    </div>
+
+    <script>
+        // const app =
+        const arr = [
+            {
+                type: "a",
+                content: 1233
+            },
+            {
+                type: "b",
+                content: 1233
+            },
+            {
+                type: "c",
+                content: 1233
+            },
+            {
+                type: "d",
+                content: 1233
+            },
+        ]
+        new Vue({
+            el: '#select',
+            data: {
+                selected: '',
+                test: '',
+                checkedNames: ["Jack", "John", "Mike"],
+                items: [
+                    {
+                        type: '',
+                        content: ''
+                    },
+                ],
+            },
+            methods: {
+                add() {
+                    this.items.push({
+                        type: '',
+                        content: ''
+                    })
+                },
+                inputFocus(){
+                    console.log('触发了focus')
+                }
+            }
+        })
+        // v-for v-model
+        // const items = document.querySelectorAll('#wrap .w-item')
+       
+        arr.forEach((item, index) => {
+            let id1 = '#target-' + index
+            let id2 = '#content-' + index
+
+            setTimeout(() => {
+                let input1 = document.querySelector(id1)
+                let input2 = document.querySelector(id2)
+
+                input1.value = item.type
+                input1.dispatchEvent(new Event('input'));
+                input2.value = item.content
+                input2.dispatchEvent(new Event('input'));
+            })
+
+            if (index == arr.length - 1) {
+                return
+            } else {
+                document.querySelector("#add").click()
+            }
+        })
+
+        // document.querySelector("#add").click()
+
+        // 下拉框
+        const selectEl = document.querySelector("#selectEl")
+        const ops = document.querySelectorAll("#select option")
+        ops.forEach(item => {
+            if (item.text == 'B') {
+                item.selected = true
+                selectEl.dispatchEvent(new Event('change'));
+            }
+        })
+
+        // input
+        // const inputEl = document.querySelector('#input')
+        // inputEl.focus()
+        // inputEl.dispatchEvent(new Event('input'));
+        // inputEl.value = 'text'
+        // inputEl.dispatchEvent(new Event('input'));
+        // console.log(app.$data.test)
+
+        // focus
+      
+
+        // checkbox
+        const checkboxEls = document.querySelectorAll('input[type="checkbox"]')
+        console.log(checkboxEls)
+        Array.from(checkboxEls).forEach((item, index) => {
+            if (index > 0) {
+                item.checked = false
+                item.dispatchEvent(new Event('change'));
+            }
+        })
+
+
+
+        // var app = new Vue({
+        //     el: '#app',
+        //     data: {
+        //         message: "hello, world"
+        //     }
+        // })
+        // var app2 = new Vue({
+        //     el: '#app-2',
+        //     data: {
+        //         message: 'You loaded this page on ' + new Date()
+        //     }
+        // })
+        // var app3 = new Vue({
+        //     el: '#app-3',
+        //     data: {
+        //         seen: true
+        //     }
+        // })
+        // var app4 = new Vue({
+        //     el: '#app-4',
+        //     data: {
+        //         todos: [
+        //             { text: 'Learn JavaScript' },
+        //             { text: 'Learn Vue' },
+        //             { text: 'Build something awesome' }
+        //         ]
+        //     }
+        // })
+        // var app5 = new Vue({
+        //     el: '#app-5',
+        //     data: {
+        //         message: 'Hello Vue.js!'
+        //     },
+        //     methods: {
+        //         reverseMessage: function () {
+        //             this.message = this.message.split('').reverse().join('')
+        //         }
+        //     }
+        // })
+        // var app6 = new Vue({
+        //     el: '#app-6',
+        //     data: {
+        //         message: 'Hello Vue!'
+        //     }
+        // })
+
+        // Vue.component("li-item", {
+        //     props: ["todo"],
+        //     template: '<li>{{ todo.text }}</li>'
+        // })
+        // var app7 = new  Vue({
+        //     el: "#app-7",            
+        //     data: {
+        //         groceryList: [
+        //             { text: 'Vegetables' },
+        //             { text: 'Cheese' },
+        //             { text: 'Whatever else humans are supposed to eat' }
+        //         ]
+        //     },
+
+        // })
+        // /*计算属性*/
+        // var vm = new Vue({
+        // el: '#example',
+        //     data: {
+        //     message: 'Hello'
+        // },
+        // computed: {
+        //     // a computed getter
+        //     reversedMessage: function () {
+        //         // `this` points to the vm instance
+        //         return this.message.split('').reverse().join('')
+        //     }
+        // }
+        // })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>tree</title>
+    </head>
+
+    <body>
+        <script>
+            // 测试数据
+            const flatArray = [
+                { id: 1, name: "Node 1", sort: 1, parentId: 100 },
+                { id: 2, name: "Node 2", sort: 2, parentId: 1 },
+                { id: 3, name: "Node 3", sort: 3, parentId: 1 },
+                { id: 4, name: "Node 4", sort: 4, parentId: 2 },
+                { id: 5, name: "Node 5", sort: 5, parentId: 2 },
+                { id: 6, name: "Node 6", sort: 6, parentId: 3 },
+                { id: 7, name: "Node 7", sort: 7, parentId: 3 },
+            ];
+
+            /**
+             * 迭代方式
+             * @param arr 普通数据
+             */
+            function convertToHierarchyIteratively(arr) {
+                const result = [];
+                const dict = {};
+
+                for (const item of arr) {
+                    dict[item.id] = { ...item, children: [] };
+                }
+
+                for (const currItem of arr) {
+                    if (dict[currItem.parentId]) {
+                        dict[currItem.parentId].children.push(
+                            dict[currItem.id]
+                        );
+                    } else {
+                        result.push(dict[currItem.id]);
+                    }
+                }
+                return result;
+            }
+
+            // 使用示例
+            const hierarchyData = convertToHierarchyIteratively(flatArray);
+
+            console.log("flatArray", flatArray);
+
+            console.log("hierarchyData", hierarchyData);
+        </script>
+    </body>
+</html>

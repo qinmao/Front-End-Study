@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>test</title>
+        <script>
+            // 题目1
+            // var tt = "aa";
+            // function test() {
+            //     alert(tt);
+            //     var tt = "dd";
+            //     alert(tt);
+            // }
+            // test();
+
+            // 题目2
+            // for (var index = 0; index < 10; index++) {
+            //     setTimeout(() => {
+            //         console.log(index);
+            //     }, 0);
+            // }
+            // for (let index = 0; index < 10; index++) {
+            //     setTimeout(() => {
+            //         console.log(index);
+            //     }, 0);
+            // }
+
+            // for (let index = 0; index < 10; index++) {
+            //     setTimeout(function(){
+            //         console.log(index);
+            //     }, 0);
+            // }
+
+            // for (var index = 0; index < 10; index++) {
+            //     (function(index){
+            //         setTimeout(function(){
+            //             console.log(index)
+            //         },0);
+            //     })(index);
+            // }
+
+            // 题目3
+            async function async1() {
+                console.log("async1 start");
+                await async2();
+                console.log("async1 end");
+            }
+            async function async2() {
+                console.log("async2");
+            }
+            setTimeout(function () {
+                console.log("setTimeout");
+            }, 0);
+            async1();
+            new Promise(function (resolve) {
+                console.log("promise1");
+                resolve();
+            }).then(function () {
+                console.log("promise2");
+            });
+            console.log("script end");
+
+            // 题目4
+            // function test(person) {
+            //     person.age = 26;
+            //     person = {
+            //         name: "yyy",
+            //         age: 30,
+            //     };
+            //     return person;
+            // }
+            // const p1 = {
+            //     name: "yck",
+            //     age: 25,
+            // };
+            // const p2 = test(p1);
+            // console.log(p1);
+            // console.log(p2);
+        </script>
+    </head>
+
+    <body></body>
+</html>
