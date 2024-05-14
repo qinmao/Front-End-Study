@@ -3,9 +3,10 @@
   > 它还提供了一个全局 fetch 方法，该方法提供了一种简单，合理的方式来跨网络异步获取资源。
 
 ## 与 xhr 的区别
-  - Fetch 不会发送跨域 cookie，需要设置 fetch(url, {credentials: 'include'})
+  - Fetch 默认情况下不会发送同源的 Cookie，需要设置 fetch(url, {credentials: 'include'})
   - 服务器返回 400，500 等错误码时并不会 reject，只有网络错误导致请求不能完成时，fetch 才会被 reject。
   - IE 均不支持原生 Fetch
+
 ## 几种使用方式
 ```js
     // 检测请求是否成功

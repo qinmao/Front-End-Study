@@ -100,4 +100,4 @@
         },
     ```
 * chainWebpack
-    - 修改 Vue CLI 内部的 webpack 配置，允许我们更细粒度的控制其内部配置
+  - 修改 Vue CLI 内部的 webpack 配置，允许我们更细粒度的控制其内部配置

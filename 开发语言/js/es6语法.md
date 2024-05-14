@@ -522,40 +522,40 @@
     - 表示某个数组是否包含给定的值，与字符串的includes方法类似
 ## 对象的扩展
 * 属性的简洁表示法
-    ```js
-        var foo = 'bar';
-        var baz = {foo};
-        // 等同于
-        var baz = {foo: foo};
+  ```js
+    var foo = 'bar';
+    var baz = {foo};
+    // 等同于
+    var baz = {foo: foo};
 
-        function f(x, y) {
-            return {x, y};
-        }
-        f(1, 2) // Object {x: 1, y: 2}
+    function f(x, y) {
+        return {x, y};
+    }
+    f(1, 2) // Object {x: 1, y: 2}
 
-        // 方法的简写
-        var o = {
-        method() {
-            return "Hello!";
-          }
-        };
+    // 方法的简写
+    var o = {
+       method() {
+        return "Hello!";
+       }
+    };
 
-        // 等同于
-        var o = {
-        method: function() {
-            return "Hello!";
-         }
-        };
+    // 等同于
+    var o = {
+      method: function() {
+        return "Hello!";
+      }
+    };
 
-        //CommonJS模块输出变量
-        module.exports = { getItem, setItem, clear };
-        // 等同于
-        module.exports = {
-            getItem: getItem,
-            setItem: setItem,
-            clear: clear
-        };
-    ```
+    // CommonJS模块输出变量
+    module.exports = { getItem, setItem, clear };
+    // 等同于
+    module.exports = {
+        getItem: getItem,
+        setItem: setItem,
+        clear: clear
+    };
+  ```
 
 * 属性名表达式
     ```js
@@ -624,10 +624,8 @@
         Object.hasOwn(object3, 'age') // false 
     ```
 ## Symbol
-    ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值
-    Symbol 值通过Symbol函数生成
-    Symbol函数可以接受一个字符串作为参数，表示对 Symbol 实例的描述
-    Symbol函数的参数只是表示对当前 Symbol 值的描述，因此相同参数的Symbol函数的返回值是不相等的。
+  > ES6 引入了一种新的原始数据类型 Symbol，表示独一无二的值,Symbol 值通过 Symbol 函数生成
+* 基本用法
     ```js
         // 没有参数的情况
         let s1 = Symbol();
@@ -649,7 +647,7 @@
 
         // 第二种写法
         let a = {
-        [mySymbol]: 'Hello!'
+            [mySymbol]: 'Hello!'
         };
 
         // 第三种写法
@@ -659,97 +657,175 @@
         // 以上写法都得到同样结果
         a[mySymbol] // "Hello!"
     ```
-## Class
+* 应用场景
+  - class 的私有属性
+## Set
+* ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。
+* 基本用法:
   ```js
-        // 1. 定义类
-        class Point {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-            }
-            toString() {
-                return '(' + this.x + ', ' + this.y + ')';
-            }
+    const s = new Set();
+    [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+    for (let i of s) {
+        console.log(i);
+    }
+    //  2 3 5 4
+    // Set函数可以接受一个数组（或者具有 iterable 接口的其他数据结构）作为参数，用来初始化。
+    const set = new Set([1, 2, 3, 4, 4]);
+    [...set]
+    // [1, 2, 3, 4]
+
+    // 向 Set 加入值的时候，不会发生类型转换 5和"5"是两个不同的值,类似===
+
+  ```
+* Set 实例的属性和方法
+  - set.size 返回Set实例的成员总数。
+  - add()    添加某个值，返回 Set 结构本身。
+  - delete() 删除某个值，返回一个布尔值，表示删除是
+  - has()    返回一个布尔值，表示该值是否为Set的成员
+  - clear()  清除所有成员，没有返回值。
+  + 遍历操作
+    ```js
+       // 由于 Set 结构没有键名，只有键值（或者说键名和键值是同一个值），所以keys方法和values方法的行为完全一致。
+        let set = new Set(['red', 'green', 'blue']);
+
+        for (let item of set.keys()) {
+            console.log(item);
         }
+        // red
+        // green
+        // blue
 
-        // 2. 表达式形式的类
-        const MyClass = class Me {
-            getClassName() {
-                return Me.name; // name 属性总是返回紧跟在class关键字后面的类名。
-            }
-            let inst = new MyClass();
-            inst.getClassName() // Me 
-            Me.name // ReferenceError: Me is not defined
-            // 这个类的名字是MyClass而不是Me，Me只在 Class 的内部代码可用，指代当前类。
-            // 类的内部没用到的话，可以省略Me
-        };
-
-        // 2.1 可以写出立即执行的 Class。
-        let person = new class {
-            constructor(name) {
-                this.name = name;
-            }
-            sayName() {
-                console.log(this.name);
-            }
-        }('张三');
-        person.sayName(); // "张三"
-
-        // 2.2 私有方法、属性
-        const bar = Symbol('bar');
-        const snaf = Symbol('snaf');
-
-        export default class myClass{
-
-            // 公有方法
-            foo(baz) {
-                this[bar](baz);
-            }
-
-            // 私有方法
-            [bar](baz) {
-                return this[snaf] = baz;
-            }
-
-        };
-        // 上面代码中，bar和snaf都是Symbol值，导致第三方无法获取到它们，因此达到了私有方法和私有属性的效果。
-
-        // 2.3 静态方法加static 指向类本身而非实例
-        
-        // 3 继承
-        // 3.1
-        class Point {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-            }
-            toString() {
-                return '(' + this.x + ', ' + this.y + ')';
-            }
-            hello(){
-                console.log('lalala')
-            }
+        for (let item of set.values()) {
+            console.log(item);
         }
-        child.hello() // 打印 lalala
+        // red
+        // green
+        // blue
 
-        // 3.2 super
-        class Point {}
-        class ColorPoint extends Point {}
-        // 由于没有部署任何代码，所以这两个类完全一样，等于复制了一个Point类
-        class ColorPoint extends Point {
-            constructor(x, y, color) {
-                super(x, y); // 调用父类的constructor(x, y)
-                this.color = color;
-            }
-            toString() {
-                return this.color + ' ' + super.toString(); // 调用父类的toString()
-            }
-            // super它在这里表示父类的构造函数，用来新建父类的this对象。
-
-            // 注意：子类必须在constructor方法中调用super方法，否则新建实例时会报错。这是因为子类没有自己的this对象，而是继承父类的this对象，然后对其进行加工。如果不调用super方法，子类就得不到this对象。
+        for (let item of set.entries()) {
+            console.log(item);
         }
-        * es5 与 es6 继承的区别:
-          - es5 的继承，实质是先创造子类的实例对象 this，然后再将父类的方法添加到this上面（Parent.apply(this)）。ES6 的继承机制完全不同，实质是先创造父类的实例对象this（所以必须先调用super方法），然后再用子类的构造函数修改 this。
+        // ["red", "red"]
+        // ["green", "green"]
+        // ["blue", "blue"]
+
+        // 可以用 of 直接遍历
+        for (let x of set) {
+            console.log(x);
+        }
+        set.forEach((value, key) => console.log(key + ' : ' + value))
+        // 数组的 map 和 filter 方法也可以间接用于 Set 了。
+
+    ```
+* 应用场景
+  - 去重
+  ```js
+    // 数组
+    [...new Set(array)]
+    Array.from(new Set(array));
+
+    // 字符串
+    [...new Set('ababbc')].join('')
+  ```
+  - 取交集、并集、差集
+   ```js
+    let a = new Set([1, 2, 3]);
+    let b = new Set([4, 3, 2]);
+
+    // 并集
+    let union = new Set([...a, ...b]);
+    // Set {1, 2, 3, 4}
+
+    // 交集
+    let intersect = new Set([...a].filter(x => b.has(x)));
+    // set {2, 3}
+
+    // （a 相对于 b 的）差集
+    let difference = new Set([...a].filter(x => !b.has(x)));
+    // Set {1}
+   ```
+## Map
+> JavaScript 的对象（Object），本质上是键值对的集合（Hash 结构），但是传统上只能用字符串当作键。这给它的使用带来了很大的限制。ES6 提供了 Map 数据结构。它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键
+* 基本用法
+  ```js
+    const m = new Map();
+    const o = {p: 'Hello World'};
+
+    m.set(o, 'content')
+    m.get(o) // "content"
+
+    m.has(o) // true
+    m.delete(o) // true
+    m.has(o) // false
+
+    //Map 也可以接受一个数组作为参数。该数组的成员是一个个表示键值对的数组。
+    const map = new Map([
+        ['name', '张三'],
+        ['title', 'Author']
+    ]);
+
+    map.size // 2
+    map.has('name') // true
+    map.get('name') // "张三"
+    map.has('title') // true
+    map.get('title') // "Author"
+  ```
+* 实例的属性和方法
+  ```js
+    const map = new Map([
+        ['F', 'no'],
+        ['T',  'yes'],
+    ]);
+
+    for (let key of map.keys()) {
+        console.log(key);
+    }
+    // "F"
+    // "T"
+
+    for (let value of map.values()) {
+        console.log(value);
+    }
+    // "no"
+    // "yes"
+
+    for (let item of map.entries()) {
+        console.log(item[0], item[1]);
+    }
+    // "F" "no"
+    // "T" "yes"
+
+    // 或者
+    for (let [key, value] of map.entries()) {
+        console.log(key, value);
+    }
+    // "F" "no"
+    // "T" "yes"
+
+    // 等同于使用map.entries()
+    for (let [key, value] of map) {
+        console.log(key, value);
+    }
+    // "F" "no"
+    // "T" "yes"
+
+    const map = new Map([
+        [1, 'one'],
+        [2, 'two'],
+        [3, 'three'],
+    ]);
+
+    [...map.keys()]
+    // [1, 2, 3]
+
+    [...map.values()]
+    // ['one', 'two', 'three']
+
+    [...map.entries()]
+    // [[1,'one'], [2, 'two'], [3, 'three']]
+
+    [...map]
+    // [[1,'one'], [2, 'two'], [3, 'three']]
   ```
 ## Module 模块
  > ES6 之前，js 没有 module，不利于大程序的开发，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD 两种。前者用于node，后者用于浏览器。
@@ -809,6 +885,7 @@
             // 当然，这也导致了没法引用 ES6 模块本身，因为它不是对象。
         ```
     - ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";
+
 * ES6 模块与 CommonJS 模块的差异
   - es module 在编译时输出值的引用，CommonJS 在运行时输出一个值的拷贝
   - CommonJS 是同步导入，es 是异步的
@@ -984,164 +1061,84 @@
             // other code
         </script>
      ```
-## Promise
-* 是什么东西?
-  - Promise 是异步编程的一种解决方案,用同步的书写方式开发异步的代码，解决回调地狱的问题
-  - 简单说就是一个容器，里面保存着某个未来才会结束的事件
-  - ES6 规定，Promise 对象是一个构造函数，用来生成 Promise 实例，Promise 新建后就会立即执行，无法取消
-  - 如果不设置回调函数，Promise 内部抛出的错误，不会反应到外部
-* 有三种状态：Pending（进行中）、Resolved（已完成）和 Rejected（已失败）
-    ```js
-      // 基本用法
-      var promise = new Promise(function(resolve, reject) {
-          if (/* 异步操作成功 */){
-            resolve(value);
-          } else {
-            reject(error);
-          }
-      });
+## ArrayBuffer
+> ArrayBuffer对象、TypedArray 视图和 DataView 视图是 JavaScript 操作二进制数据的一个接口
+* 二进制数组由三类对象组成:
+  - ArrayBuffer对象：代表内存之中的一段二进制数据，可以通过“视图”进行操作。“视图”部署了数组接口，这意味着，可以用数组的方法操作内存。
+  - TypedArray视图：共包括 9 种类型的视图，比如 Uint8Array（无符号 8 位整数）数组视图, Int16Array（16 位整数）数组视图, Float32Array（32 位浮点数）数组视图等等。
+  - DataView视图：可以自定义复合格式的视图，比如第一个字节是 Uint8（无符号 8 位整数）、第二、三个字节是 Int16（16 位整数）、第四个字节开始是 Float32（32 位浮点数）等等，此外还可以自定义字节序。
+> 简单说，ArrayBuffer 对象代表原始的二进制数据，TypedArray 视图用来读写简单类型的二进制数据，DataView 视图用来读写复杂类型的二进制数据。
+* ArrayBuffer 基本使用
+  ```js
+    // 生成了一段 32 字节的内存区域，每个字节的值默认都是 0
+    const buf = new ArrayBuffer(32);
+    buffer.byteLength     // 32
 
-    // Promise 实例生成后，可用 then 方法指定 resolved 状态和 rejected 状态的回调函数。
-    // 第二个函数是可选的
-    promise.then(function(value) {
-        // success
-    }, function(error) {
-        // failure
+    // 为了读写这段内容，需要为它指定视图。
+    // DataView视图的创建，需要提供 ArrayBuffer 对象实例作为参数
+
+    const dataView = new DataView(buf);
+    // 以不带符号的 8 位整数格式，从头读取 8 位二进制数据，结果得到 0
+    dataView.getUint8(0) // 0
+
+
+    const typedArray = new Uint8Array([0,1,2]);
+    typedArray.length // 3
+
+    typedArray[0] = 5;
+    typedArray // [5, 1, 2]
+  ```
+* 二进制数组的应用
+  - 网页Canvas元素输出的二进制像素数据，就是 TypedArray 数组。
+  ```js
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const uint8ClampedArray = imageData.data;
+    // 上面代码的uint8ClampedArray虽然是一个 TypedArray 数组，但是它的视图类型是一种针对Canvas元素的专有类型Uint8ClampedArray。这个视图类型的特点，就是专门针对颜色，把每个字节解读为无符号的 8 位整数，即只能取值 0 ～ 255，而且发生运算的时候自动过滤高位溢出。这为图像处理带来了巨大的方便。
+  ```
+  - WebSocket可以通过 ArrayBuffer，发送或接收二进制数据。
+  ```js
+    let socket = new WebSocket('ws://127.0.0.1:8081');
+    socket.binaryType = 'arraybuffer';
+
+    // Wait until socket is open
+    socket.addEventListener('open', function (event) {
+        // Send binary data
+        const typedArray = new Uint8Array(4);
+        socket.send(typedArray.buffer);
     });
 
-    // 调用 resolve 或 reject 并不会终结 Promise 的参数函数的执行
-    new Promise((resolve, reject) => {
-        resolve(1);
-        console.log(2);
+    // Receive binary data
+    socket.addEventListener('message', function (event) {
+        const arrayBuffer = event.data;
+        // ···
+    });
+
+  ```
+  - Fetch API 取回的数据，就是ArrayBuffer对象。
+  ```js
+    fetch(url)
+    .then(function(response){
+        return response.arrayBuffer()
     })
-    .then(r => {
-        console.log(r);
+    .then(function(arrayBuffer){
+        // ...
     });
-    // 2
-    // 1
+  ```
+  - File API
+  ```js
+    const fileInput = document.getElementById('fileInput');
+    
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = function () {
+        const arrayBuffer = reader.result;
+        // ···
+    };
+  ```
 
-    ```
-* Promise.prototype
-    - .then() resolve 的回调 
-    - .catch() 是.then(null, rejection)或.then(undefined, rejection)的别名，用于指定发生错误时的回调函数，then()方法指定的回调函数，如果运行中抛出错误，也会被catch()方法捕获
-    - .finally() Promise 对象最后状态如何，都会执行的操作，无参数
-
-  + promise.all
-    - Promise.all 方法用于将多个 Promise 实例，包装成一个新的 Promise 实例
-    - const allP = Promise.all([p1, p2, p3]);
-  + promise.race
-    - 将多个 Promise 实例，包装成一个新的 Promise 实例
-    - const raceP = Promise.race([p1, p2, p3]);
-  
-  + all 和 race 区别：
-    - all 只要p1、p2、p3之中有一个被 rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数
-    - all 只有p1、p2、p3的状态都变成 fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数
-    - race 只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数
-
-  + Promise.resolve 
-    - 有时需要将现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用
-    - Promise.resolve('foo') 等价于new Promise(resolve => resolve('foo'))
-
-  + Promise.reject() 与上面功能类似
-* async:一个函数如果加上 async ，那么该函数就会返回一个 Promise
-* await 
-  - 表示在这里等待 promise 返回结果了，再继续执行。
-  - await 后面跟着的应该是一个 promise 对象（其他返回值也没关系，只是会立即执行，不过那样就没有意义）
-  - await 命令就是内部 then 命令的语法糖。
-## Proxy
-* 概述：
-    - 这个词的原意是代理，表示由它来“代理”某些操作，可以译为“代理器”
-    - 在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写
-* 语法：
-    - let p = new Proxy(target, handler);Proxy 构造函数，用来生成 Proxy 实例
-    - target 表示所要拦截的目标对象
-    - handler 一个对象，用来定制拦截行为。
-    - 例子：
-      ```js
-        // 拦截target的属性的访问请求，访问任何属性都得到35
-        var proxy = new Proxy({}, {
-            get: function(target, property) {
-                return 35;
-            }
-        });
-        proxy.time // 35
-        proxy.name // 35
-        proxy.title // 35
-
-        // handler 没有设置任何拦截，那就等同于直接通向原对象
-        var target = {};
-        var handler = {};
-        var proxy = new Proxy(target, handler);
-        proxy.a = 'b';
-        target.a // "b"
-
-      ```
-* 实例方法
-    + get(target, propKey, receiver) 拦截对象属性的读取
-        - receiver 可选参数proxy 实例本身 
-        - get 拦截
-            ```js
-                var person = {
-                    name: "张三"
-                };
-
-                var proxy = new Proxy(person, {
-                   get: function(target, property) {
-                       if (property in target) {
-                          return target[property];
-                       } else {
-                        throw new ReferenceError("Property \"" + property + "\" does not exist.");
-                       }
-                    }
-                });
-
-                proxy.name // "张三"
-                proxy.age // 抛出一个错误
-            ```
-    + set(target, propKey, value, receiver) 拦截对象属性的设置
-        - receiver 可选
-        - 数据验证的例子
-            ```js
-                let validator = {
-                set: function(obj, prop, value) {
-                    if (prop === 'age') {
-                        if (!Number.isInteger(value)) {
-                            throw new TypeError('The age is not an integer');
-                        }
-                        if (value > 200) {
-                            throw new RangeError('The age seems invalid');
-                        }
-                    }
-                    // 对于满足条件的 age 属性以及其他属性，直接保存
-                    obj[prop] = value;
-                    }
-                };
-
-                let person = new Proxy({}, validator);
-
-                person.age = 100;
-
-                person.age // 100
-                person.age = 'young' // 报错
-                person.age = 300 // 报错
-            ```
-    + has(target, propKey) 拦截 propKey in proxy 的操作，返回一个布尔值。
-        - has方法不判断一个属性是对象自身的属性，还是继承的属性
-    + deleteProperty(target, propKey)：拦截 delete proxy[propKey]的操作，返回一个布尔值。
-    + ownKeys(target)：拦截
-        - Object.getOwnPropertyNames(proxy)
-        - Object.getOwnPropertySymbols(proxy)
-        - Object.keys(proxy)
-        - for...in循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属性
-    - getOwnPropertyDescriptor(target, propKey)：拦截 Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象
-    + defineProperty(target, propKey, propDesc)：拦截
-        - Object.defineProperty(proxy, propKey, propDesc）、
-        - Object.defineProperties(proxy, propDescs)，返回一个布尔值。
-    - preventExtensions(target)：拦截 Object.preventExtensions(proxy)，返回一个布尔值。
-    - getPrototypeOf(target)：拦截 Object.getPrototypeOf(proxy)，返回一个对象。
-    - isExtensible(target)：拦截 Object.isExtensible(proxy)，返回一个布尔值。
-    - setPrototypeOf(target, proto)：拦截 Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
-    - apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作，比如 proxy(...args)、proxy.call(object, ...args)、proxy.apply(...)。
-    - construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作，比如new proxy(...args)。
 ## 详情参考
 - [详情参考](http://es6.ruanyifeng.com/)

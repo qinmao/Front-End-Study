@@ -1,11 +1,11 @@
 /**
  * 简单的进程守护器
  */
-const cluster = require("cluster");
+const cluster = require("node:cluster");
 
 if (cluster.isMaster) {
-    // console.log(require('os').cpus())
-    for (let i = 0; i < require("os").cpus().length / 2; i++) {
+    const numCPUs = availableParallelism();
+    for (let i = 0; i < numCPUs / 2; i++) {
         createWorker();
     }
 
@@ -34,7 +34,7 @@ if (cluster.isMaster) {
             // 开始心跳
             missed++;
             worker.send("ping#" + worker.process.pid);
-        }, 10*1000);
+        }, 10 * 1000);
 
         worker.on("message", function (msg) {
             // 确认心跳回应。

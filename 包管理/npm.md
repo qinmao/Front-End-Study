@@ -16,65 +16,64 @@
   ```bash
     # 查看配置信息
     npm config list    
-    npm config set registry https://registry.npm.taobao.org
+    npm config set registry https://registry.registry.npmmirror.com
     npm config set registry http://r.cnpmjs.org
     # 科学上网后或者发布时移掉
     npm config rm registry
   ```
-* 项目中配置.npmrc
+* 项目中 .npmrc 配置环境变量
     ```
-    registry=http://私有仓库xxx.com
-    disturl=https://npm.taobao.org/dist
-    chromedriver_cdnurl=http://npm.taobao.org/mirrors/chromedriver
-    operadriver_cdnurl=http://npm.taobao.org/mirrors/operadriver
-    phantomjs_cdnurl=http://npm.taobao.org/mirrors/phantomjs
-    fse_binary_host_mirror=https://npm.taobao.org/mirrors/fsevents
-    sass_binary_site=http://npm.taobao.org/mirrors/node-sass
-    electron_mirror=http://npm.taobao.org/mirrors/electron/
+    registry="https://registry.npmmirror.com"
+    ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+    ELECTRON_BUILDER_BINARIES_MIRROR="https://npmmirror.com/mirrors/electron-builder-binaries/"
+    chromedriver_cdnurl=http://registry.npmmirror.com/mirrors/chromedriver
+    operadriver_cdnurl=http://registry.npmmirror.com/mirrors/operadriver
+    phantomjs_cdnurl=http://registry.npmmirror.com/mirrors/phantomjs
+    fse_binary_host_mirror=https://registry.npmmirror.com/mirrors/fsevents
+    sass_binary_site=http://registry.npmmirror.com/mirrors/node-sass
     
-    // .yarnrc文件并添加一下内容（二选一）
-    registry "http://atour-fe-lib.corp.yaduo.com"
-    chromedriver_cdnurl "http://npm.taobao.org/mirrors/chromedriver"
-    disturl "https://npm.taobao.org/dist"
-    electron_mirror "http://npm.taobao.org/mirrors/electron/"
-    fse_binary_host_mirror "https://npm.taobao.org/mirrors/fsevents"
-    lastUpdateCheck 1589360140304
-    operadriver_cdnurl "http://npm.taobao.org/mirrors/operadriver"
-    phantomjs_cdnurl "http://npm.taobao.org/mirrors/phantomjs"
-    sass_binary_site "http://npm.taobao.org/mirrors/node-sass"
-    ```
+  ```
 ## npm 基础用法
 * install
-    - npm install  将package.json中的文件依赖的包从网上下载到本地
+    - npm install  将 package.json 中的文件依赖的包从网上下载到本地
     - npm install  包名 -save 将包下载下来并且加载到 dependencies中去（npm 5.x开始不需要-save）
-    - npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去
+    - npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去 简写 -D
     - npm install  包名 -g  全局安装
     - npm install express@3.21.2 安装指导版本的包
+  ```bash
+    # 安装 electron 并打印安装日志
+    npm i electron -D --timeing=true --loglevel=verbose
+  ```
+    
+* ci 和 install 的区别
+  > ci 一般用在 CICD pipeline，比 install 更快
+  - 必须有个 package-lock.json
+  - 如果包锁定中的依赖项与 package.json 中的依赖项不匹配，npm ci 将退出并出现错误，而不是更新包锁定。
+  - 一次只能安装整个项目,不能使用此命令添加单个依赖项。
+  - 如果 node _ module 已经存在，那么将在 npm ci 开始安装之前自动删除它。
+  - 它永远不会写入 package.json 或任何包锁: 安装基本上是冻结的
 
-* update
-    - npm update -g <package>  跟新全局包
-    - npm outdated -g --depth=0 要找出哪些全局包需要更新
-    - npm update -g 更新所有的全局包
-
+  - npm ci --omit=dev 忽略安装开发依赖
 * uninstall
     - npm uninstall  <package> 加-D 或-S 移除依赖
     - npm uninstall -g <package>
     + npm <command> -h  quick help on <command>
     + npm docs 包名 查看包的文档
-
-* npm rebuild 的妙用：
-    - 在内网环境下，无法连接互联网，拷贝到内网的包可能无法运行
-    - 执行 npm rebuild 重新构建包
+* npm rebuild 重新构建包：
+    - 如：针对electron环境从新构建包
+    - npm rebuild --runtime=electron --target=1.1.3 --disturl=https://atom.io/download/atom-shell --abi=102
 
 * npm list -g --depth 0  查看安装了哪些全局的包
 
 * npm 常用钩子
   - preinstall 包安装前执行
+  - postinstall 包安装后执行
+
   - postuninstall 包卸载后执行
   - preuninstall 包卸载前执行
+
+  - prestart   npm start 执行前触发
   - poststart  npm start 执行后触发
-  - poststop     
-  - posttest
 ## package.json
 > npm init  创建package.json文件,--yes 获得默认值
 * npm 启动 node 
@@ -124,7 +123,7 @@
   ```
 * 发布和更新
   - tip:发布时切回原始的源（从淘宝等镜像源切回npm）
-  - 注意： npm对包名的限制：不能有大写字母/空格/下滑线!
+  - 注意： npm 对包名的限制：不能有大写字母/空格/下滑线!
   - 你的项目里有部分私密的代码不想发布到npm上？将它写入.gitignore 或.npmignore中，上传就会被忽略了
   - 第一次发布包：在终端输入npm adduser，输入账号。npm adduser成功的时候默认你已经登陆了。
   - 非第一次发布包：在终端输入npm login，然后输入你创建的账号和密码，和邮箱
@@ -152,3 +151,4 @@
 * 如果全局目录还是没找到，那么就从 path 环境变量中查找有没有其他同名的可执行程序。
 ## 搭建私有仓库
 - [参考](https://blog.csdn.net/qq1195566313/article/details/132039589?spm=1001.2014.3001.5501)
+-  verdaccio

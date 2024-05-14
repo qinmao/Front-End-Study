@@ -138,6 +138,21 @@
     - unzip -o -d /home/sunny myfile.zip 把myfile.zip文件解压到 /home/sunny/
     - -o:不提示的情况下覆盖文件；
     - 如果没安装zip、unzip 可用 jar xvf xxx.zip 解压
+## 文件传输
+* scp :命令用于Linux之间复制文件和目录，-r：递归复制整个目录。
+  + 本地到远程
+    - scp local_file remote_username@remote_ip:remote_folder 
+    - 或者 
+    - scp local_file remote_username@remote_ip:remote_file 
+    - 或者 
+    - scp local_file remote_ip:remote_folder 
+    - 或者 
+    - scp local_file remote_ip:remote_file 
+    > 例子:'scp -r dist/* root@39.96.190.20:/data/www/static' 
+
+  + 远程到本地
+    - scp remote_username@remote_ip:remote_folder  local_file
+    > 例子：scp -r www.runoob.com:/home/root/others/ /home/space/music/
 ## vim 编辑器使用
 > vim 共分为4种模式，分别是正常模式、插入模式、命令模式、可视模式,输入vim 进入，输入 :q 退出
 * 命令模式
@@ -231,7 +246,7 @@
       - eno1 板载网卡
       - ens33 PCI-E网卡
       - enp0s3 无法获取物理信息的 PCI-E网卡
-      - CentOs 7 使用了一致性网络设备命名，以上都不匹配则使用eth0 
+      - CentOs 7 使用了一致性网络设备命名，以上都不匹配则使用 eth0 
     + 网络接口命名修改
         - 网卡命名规则受 biosdevname 和 net.ifnames 两个参数影响
         + 编辑 /etc/default/grub 文件,GRUB_CMDLINE_LINUX 属性 默认是 biosdevname=0 net.ifnames=1 网卡名ens33
@@ -284,6 +299,7 @@
   - service network start|stop|restart 管理网络服务
   - systemctl start|stop|restart NetworkManger 管理网络服务
   - systemctl enable|disable NetworkManger  开启或禁用 NetworkManger
+  
 * 常用的网络配置文件
   - ifcfg-eth0
   - /etc/hosts
@@ -329,8 +345,7 @@
 * 进程的控制命令
   + ps 
     > 提供了进程的一次性的查看,它所提供的查看结果并不动态连续的;如果想对进程监控,应该用 top 工具。
-    + 常用命令
-      ```bash
+    ```bash
         # a 显示一个终端的所有进程，除会话引线外；
         # u：显示进程的归属用户及内存的使用情况；
         # x：显示没有控制终端的进程；
@@ -350,7 +365,7 @@
         
         # 关闭进程 -9 表示强制关闭
         kill -9 进程id  
-      ```
+    ```
   + pstree
     > 树状形式查看进程
   + top
@@ -364,7 +379,7 @@
 * 服务管理工具
   > 控制服务启动。停止、开启
   ```bash
-    # 开机自启动
+    # 开机自启动 如防火墙
     systemctl enable firewalld 
     # 关闭开机自启动
     systemctl disable firewalld 
@@ -421,22 +436,7 @@
  ```bash
    ln -s  /usr/local/node-v16.15.1-linux-x64/bin/node /usr/local/bin/node 
    ln -s  /usr/local/node-v16.15.1-linux-x64/bin/npm /usr/local/bin/npm 
-  ```
-## 文件传输
-* scp :命令用于Linux之间复制文件和目录，-r：递归复制整个目录。
-  + 本地到远程
-    - scp local_file remote_username@remote_ip:remote_folder 
-    - 或者 
-    - scp local_file remote_username@remote_ip:remote_file 
-    - 或者 
-    - scp local_file remote_ip:remote_folder 
-    - 或者 
-    - scp local_file remote_ip:remote_file 
-    > 例子:'scp -r dist/* root@39.96.190.20:/data/www/static' 
-
-  + 远程到本地
-    - scp remote_username@remote_ip:remote_folder  local_file
-    > 例子：scp -r www.runoob.com:/home/root/others/ /home/space/music/
+  ``` 
 ## 系统信息
 * 操作系统
   - cat /etc/redhat-release  查看操作系统版本
@@ -468,9 +468,11 @@
   > ntp 联网自动校准时间工具，他会自动帮我们校准
   ```bash
    yum install ntp
-
-   # 手动校准：
    ntpdate -u ntp.aliyun.com
+
+   # 离线直接设置 或者内网自建 ntp 时间服务器
+    date -s "2024-2-6 21:00:00"
+
   ```
 ## 防火墙
 * 分类

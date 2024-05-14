@@ -4,52 +4,6 @@
   - utf8mb4 是真正的utf8 
 * 排序规则 
   - utf8mb4_general_ci
-## MySQL 常见命令
-* MacOS(brew安装)
-```bash
-    # 查看版本
-    mysql -V
-
-    # 服务状态
-    mysql.server status
-
-    # 后台启动服务
-    brew services start mysql
-
-    brew services stop mysql
-
-    # 后台重启服务
-    brew services restart mysql
-    
-    # 前台启动服务（关闭命令窗口停止服务)
-    mysql.server start
-
-    # 停止服务：
-    mysql.server stop
-```
-* centOs(云服务)
- ```bash
-    # 服务启动停止
-    systemctl status mysqld
-    systemctl start mysqld
-    systemctl restart mysqld
-    systemctl stop mysqld
-
-    # 设置开机自启动
-    systemctl enable mysqld
-    systemctl daemon-reload
-
-    # 修改配置 
-     vim /etc/my.cnf
-     # 修改字符集:
-     character-set-server=utf8
-
-     # 设置时区为东八区:
-     default-time_zone = '+8:00'
-
-     # 重启数据库：
-     systemctl restart mysqld
-  ```
 ## 数据库登录与操作
 * 命令行登录
   ```bash
@@ -59,7 +13,7 @@
     mysql -u root -p
   ```
 * 修改登录密码
-```bash
+  ```bash
     # ⽅式1 通过管理员修改密码
         SET PASSWORD FOR '⽤户名'@'主机' = PASSWORD('密码');
 
@@ -79,9 +33,9 @@
     ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'yourpassword';
     flush privileges;
 
-```
+  ```
 * 命令行操作(登录成功后)
- ```bash
+  ```bash
     # 显示所有数据库:
     show databases;
     # 进入指定的库:
@@ -212,7 +166,7 @@
   - IS	NULL、IS NOT NULL 查询空值的语法
 * 案例：
   + 基础查询：
-    - select * from stu t where t.age between 25 and 32;
+    - select * from stu t where t.age between 25 and 32; 等同于
     - select * from stu t where t.age >= 25 and t.age <= 32;
   + in 
     - select * from test6 t where t.age in (10,15,20,30);
@@ -243,23 +197,30 @@
   ```sql
     -- 基本的分组查询
     SELECT user_id,count(*) FROM t_order  GROUP BY user_id
+
     -- 按字段分组，并获取的不同状态的数据
     SELECT deal_dep,count(1) '总任务数',sum( CASE WHEN `status` = 50 THEN 1 ELSE 0 END ) AS '已完成' FROM lz_task GROUP BY deal_dep
+
+    -- 计算百分比
+	SELECT 
+	 COUNT(*) as total,
+	 CONCAT(ROUND((SUM(CASE WHEN status = 20 THEN 1 ELSE 0 END) / COUNT(*) ) * 100, 2),'%') AS '未签收占比'
+	 from lz_task task
 
     -- 按指定日期间隔分组，存在不连续的日期:1. 代码补全、2.创建一个连续日期的临时表
     
     -- 现有的表，各类型数据不全，根据类型字典表关联补全
+    
     SELECT
       name,
       sum(CASE WHEN `status` > 0 THEN 1 ELSE 0 END ) '总任务数',
-      sum( CASE WHEN `status` = 50 THEN 1 ELSE 0 END ) AS '已完成',
-      sum( CASE WHEN `status` < 50 AND `status` > 10 THEN 1 ELSE 0 END ) AS '未完成' 
+      sum( CASE WHEN `status` = 50 THEN 1 ELSE 0 END )  '已完成',
+      sum( CASE WHEN `status` < 50 AND `status` > 10 THEN 1 ELSE 0 END )  '未完成' 
     FROM
       lz_department AS dep
       LEFT JOIN lz_task AS task ON dep.name = task.deal_dep
     GROUP BY
       name
-
   ```
 * where 和 having 的区别:
   - where 对表中的字段进行限定，来筛选结果（在关联查询中先筛选再连接）
@@ -402,7 +363,7 @@
       -- now 和 sysdate:获取当前时间⽇期 2019-09-17 16:13:28
       select now(),sysdate();
 
-      // 2019-09-17
+      -- 2019-09-17
       select DATE(now())  
 
       -- DAYOFWEEK() 今天周几 1 表示周日，2 表示周一，以此类推，直到 7 表示周六。
@@ -450,6 +411,9 @@
 
       -- datediff:获取两个⽇期的时间间隔
       select datediff('2017-11-30','2017-11-29') as col1, datediff('2017-11-29','2017-11-30') as col2; 
+
+     -- TIMESTAMPDIFF：获取两个日期的差值 单位分钟
+      SELECT * FROM lz_yqms_data WHERE TIMESTAMPDIFF(MINUTE, publish_time, CURRENT_TIMESTAMP) <= 30
     ```
 * 聚合函数:多用在分组统计
   - max
@@ -756,13 +720,5 @@
 * 第三范式：在满足第二范式的基础上，数据表中不能存在可以被其他非主键字段派生出来的字段，或者说，不能存在依赖于非主键字段的字段。
 ## ER模型：
 * 理清数据库设计思路
-## MySQL8
-> MySQL 8 中，就有很多新特征。
-* 窗口函数
-  - 窗口函数的作用类似于在查询中对数据进行分组，不同的是，分组操作会把分组的结果聚合成一条记录，而窗口函数是将结果置于每一条数据记录中
-  - 语法：函数 OVER（[PARTITION BY 字段]）或者 函数 OVER 窗口名 … WINDOW 窗口名 AS （[PARTITION BY 字段名]）
-* 公用表表达式
-## 工具的使用（navicat）
-* 建模
-* 备份
-* 监控
+
+

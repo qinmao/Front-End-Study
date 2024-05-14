@@ -78,6 +78,27 @@
             // const p2 = test(p1);
             // console.log(p1);
             // console.log(p2);
+
+            // 定义两个时间戳（假设ts1和ts2为两个时间戳）
+            const ts1 = 1710320065900; // 第一个时间戳
+            const ts2 = 1710320125900; // 第二个时间戳
+
+            // 计算两个时间戳的差值（以毫秒为单位）
+            const timeDiffInMilliseconds = Math.abs(ts2 - ts1);
+            console.log("时间差（毫秒）: ", timeDiffInMilliseconds);
+
+            // 将毫秒转换为秒
+            const timeDiffInSeconds = timeDiffInMilliseconds / 1000;
+            console.log("时间差（秒）: ", timeDiffInSeconds);
+
+            // 将毫秒转换为分钟
+            const timeDiffInMinutes = timeDiffInMilliseconds / (1000 * 60);
+            console.log("时间差（分钟）: ", timeDiffInMinutes);
+
+            // 将毫秒转换为小时
+            const timeDiffInHours = timeDiffInMilliseconds / (1000 * 60 * 60);
+            console.log("时间差（小时）: ", timeDiffInHours);
+
         </script>
     </head>
 

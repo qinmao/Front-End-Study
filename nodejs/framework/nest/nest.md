@@ -6,11 +6,13 @@
 * 统一的异常处理
 * 面向切面编程（AOP）
 * 支持Typescript(引入了很多的高级语法)
+
 ## 安装
   ```bash
   npm i -g @nestjs/cli  # 全局安装 Nest
   nest new project-name  # 生成模版项目
   ```
+
 ## nest-cli 常用命令
  ```bash 
   nest -v 
@@ -37,12 +39,14 @@
   }
 
   ```
+
 ## 核心库
 * @nestjs/cli
 * @nestjs/core 
 * @nestjs/common 
 * rxjs 
 * reflect-metadata
+
 ## 请求过程
 * DTO（数据传输对象）
   - 全称是 data transfer object,他是一个对象，用于封装数据并将其从一个应用发送到另一个应用。DTO 帮助我们定义系统内的接口或者输入输出
@@ -131,7 +135,6 @@
 * 自定义验证装饰器
   ```ts
   import { registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator';
-
   export function IsLongerThan(property: string, validationOptions?: ValidationOptions) {
     return function (object: Object, propertyName: string) {
       registerDecorator({
@@ -151,8 +154,6 @@
     };
   }
   ```
-
-
 * 更新操作面临实体重复属性的问题？
   - 解决的方法
   ```ts
@@ -166,8 +167,8 @@
     // 3. 避免冗余的代码
   }
   ```  
-## nest中的概念
-### providers
+
+## providers
 * providers是什么？
   - Providers 是 Nest 的一个基本概念。许多 Nest 类可能被视为 provider - service, repository, factory, helper 等等。
   - 通过 constructor 注入依赖，来创建各种关系
@@ -217,7 +218,8 @@
     })
   ```
   - [参考](https://xiaoman.blog.csdn.net/article/details/126494064)
-### module
+
+## module
 * 共享模块
   - exports 导出才能在别的模块使用
 * 全局模块
@@ -245,9 +247,10 @@
     }
   } 
   ```
-### middleware
+
+## middleware
 * 依赖注入中间件
-  - 中间件是在路由处理程序 之前 调用的函数
+  - 中间件是在路由处理程序之前调用的函数
   - 中间件函数可以访问请求和响应对象
     ```ts
      // 定义
@@ -292,26 +295,13 @@
     bootstrap();
 
   ```
-### 管道(Pipe)
-* 可以分为 3 类：
-  - parseXxx 把参数转为某种类型；
-  - defaultValue 设置参数默认值；
-  - validation 做参数的验证。
-* 自带9个开箱即用的管道
-  - ValidationPipe
-  - ParseIntPipe
-  - ParseFloatPipe
-  - ParseBoolPipe
-  - ParseArrayPipe
-  - ParseUUIDPipe
-  - ParseEnumPipe
-  - DefaultValuePipe
-  - ParseFilePipe
-### 守卫
+
+## 守卫
 * 内容
   - 使用 @Injectable() 装饰器的类
   - 应该实现 CanActivate 接口。
   - 守卫在每个中间件之后执行，但在任何拦截器或管道之前执行
+  - 使用场景：处理授权问题， 它们根据运行时存在的某些条件（如权限、角色、ACL 等）确定给定请求是否将由路由处理程序
     ```ts
         import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
         import { Observable } from 'rxjs';
@@ -359,7 +349,30 @@
     // controller 中使用
     @SetMetadata('role',['admin'])
   ```
-### 装饰器
+
+## 拦截器
+* 应用场景
+  - 服务响应统一数据格式
+  
+## 管道(Pipe)
+* 可以分为 3 类：
+  - parseXxx 把参数转为某种类型；
+  - defaultValue 设置参数默认值；
+  - validation 做参数的验证。
+* 自带9个开箱即用的管道
+  - ValidationPipe
+  - ParseIntPipe
+  - ParseFloatPipe
+  - ParseBoolPipe
+  - ParseArrayPipe
+  - ParseUUIDPipe
+  - ParseEnumPipe
+  - DefaultValuePipe
+  - ParseFilePipe
+
+## 异常过滤器
+
+## 装饰器
   ```ts
     // 案例1
     import { SetMetadata } from '@nestjs/common';
@@ -384,8 +397,10 @@
       console.log(url)
     }
   ```
+
 ## 请求生命周期
  - 传入请求 -> 中间件(先全局后模块) -> 守卫（先全局次控制器后路由）-> 拦截器（先全局次控制器后路由）-> 管道(先全局次控制器后路由参数) -> 控制器 -> 服务 -> 异常过滤器（路由然后是控制器，然后是全局）-> 服务器响应
+
 ## 定时任务
 * 任务的分类
   - cron job  固定的日期执行一次
@@ -439,6 +454,7 @@
   ```
 * 集群场景下数据重复的问题？
   - TODO
+
 ## 测试
 * package.json
   ```json

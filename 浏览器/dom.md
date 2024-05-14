@@ -2,51 +2,51 @@
 ## 什么是DOM，如何访问
 - 文档对象模型 (DOM) 是HTML和XML文档的编程接口，简单来就是用代码来描述html。
 - 通过js 中的document 和 window 元素的api来操作或者获取文档信息
-## 常用的节点类型
-* nodeType = 1，元素节点
-* nodeType = 2，属性节点
-* nodeType = 3，文本节点
-* nodeType = 8，注释节点
-* nodeType = 9，document对象
-* nodeType = 11，documentFragment文档片段
 ## 选择节点
 * 选择
-    - document.querySelector() css 选择器 返回匹配的第一项
-    - document.querySelectorAll() 返回一个匹配的伪数组
+    - document.querySelector() 参数css选择器， 返回匹配的第一项
+    - document.querySelectorAll() 参数css选择器，返回一个匹配的伪数组
     - getElementById
+
     - getElementsByName
     - getElementsByTagName
     - getElementsByClassName
 * 子节点
+    + children(推荐使用)
+      - 元素节点的集合
     + childNodes（ie只获取元素节点）
         - 用法：元素.childNodes  元素所有的子节点，包含文本和元素节点
         - 元素.childNodes[0] 第一个节点 包含文本和元素节点
-    + children
-        - 元素节点的集合(推荐使用)
     + 首个子节点
         - firstChild
         - firstElementChild
-        - 兼容写法:let nodeFirst=元素.firstChild||元素.firstElementChild
+        - 兼容写法:let nodeFirst=el.firstChild||el.firstElementChild
     + 最后一个子节点
         - lastChild
         - lastElementChild
-        - 兼容写法:let nodeLast=元素.lastChild||元素.lastElementChild
+        - 兼容写法:let nodeLast=el.lastChild||el.lastElementChild
 * 兄弟节点
     + 上一个
         - previousSibling
         - previousElementSibling
-        - 兼容写法:let nodePre=元素.previousSibling||元素.previousElementSibling
+        - 兼容写法:let nodePre=el.previousSibling||el.previousElementSibling
     + 下一个
         - nextSibling
         - nextElementSibling
-        - 兼容写法:let nodeNext=元素.nextSibling||元素.nextElementSibling
+        - 兼容写法:let nodeNext=el.nextSibling||el.nextElementSibling
 * 父节点
     - parentNode
-* 其他
-    - nodeType
-    - nodeValue 一般针对文本节点，元素节点为null
-    - nodeName
-    - attributes 元素属性列表的集合
+* 其他属性
+    + nodeType  节点类型
+      - nodeType = 1，元素节点
+      - nodeType = 2，属性节点
+      - nodeType = 3，文本节点
+      - nodeType = 8，注释节点
+      - nodeType = 9，document对象
+      - nodeType = 11，documentFragment文档片段
+    + nodeValue 一般针对文本节点，元素节点为null
+    + nodeName  元素名 如 DIV、SPAN
+    + attributes 元素属性列表的集合
 ## 节点操作
 * 创建节点
   - document.createElement('li') 创建一个元素节点
@@ -86,65 +86,13 @@
   - 获取 元素.getAttribute(属性名)
   - 设置 元素.setAttribute(属性名,属性值)
   - 移除 元素.removeAttribute(属性名)
-## 获取样式
-  - 元素.style.width 只能取行间样式，含单位
-  - 都能获取不带单位
-    ```js
-        // getComputedStyle(el,null).width 
-        // ie提供的
-        // document.getElementById("btn").currentStyle.width 
-        export function getStyle(curEle, attr) {
-            let val, reg
-            // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
-            if (attr === 'scrollTop') {
-                val = curEle.scrollTop
-            } else if (attr === 'opacity') {
-                val = curEle.currentStyle['filter'] // 'alpha(opacity=12,345)'
-                reg = /^alpha\(opacity=(\d+(?:\.\d+)?)\)$/i
-                val = reg.test(val) ? reg.exec(val)[1] / 100 : 1
-            } else if (curEle.currentStyle) {
-                val = curEle.currentStyle[attr]
-            } else {
-                val = document.defaultView.getComputedStyle(curEle, null)[attr]
-            }
-            // reg = /^(-?\d+(\.\d)?)(px|pt|em|rem)?$/i;
-            // return reg.test(val) ? parseFloat(val) : val;
-            return parseFloat(val)
-        }
-    ```
-  - getBoundingClientRect 返回元素的大小以及相对于浏览器可视窗口的位置
-## 几种位置和高度的区别
-* height
- - offsetHeight：表示可视区域的高度，包含了border和滚动条
- - scrollHeight：表示了所有区域的高度，包含了因为滚动被隐藏的部分。
- - window.innerHeight  表示的是可视区域的高度
-
-* top
- - clientTop：表示边框border的厚度，在未指定的情况下一般为0
- - scrollTop：滚动后被隐藏的高度(卷曲的高度)
- - offsetTop
-## scroll
- * scrollWidth
- * scrollHeight 
- * scrollLeft 
- * scrollTop 被卷曲的内容高度
-    ```javascript
-        // 获取页面卷曲的高度
-        Window.onscroll= function(){
-            let topVal=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop
-        }
-        // 获取容器内的卷曲的高度
-        node.onscroll= function(e){
-            let topVal=e.target.scrollTop
-        }
-    ```
 ## 本地存储
 * cookie:如果用于保存用户登录态，应该将该值加密
     - 一般有服务器生成，可以设置过期时间
     - 容量较小，4kb 左右
     - 每次请求都会携带在header中
     + document.cookie的属性
-        - expires 设置过期时间,被max-age属性所取代，max-age用秒来设置cookie的生存期
+        - expires 设置过期时间,被max-age属性所取代，max-age 用秒来设置cookie的生存期
         - path cookie关联在一起的网页
         - domain 多个web服务器共享cookie
 * localStorage
@@ -152,7 +100,7 @@
     - 容量5m 左右
     - 不参与服务器通讯
 * sessionStorage
-    - 用法类似localStorage
+    - 用法类似 localStorage
     - 页面关闭就清理
 * indexDB
     - 浏览器端的数据库，不被清理一直存在

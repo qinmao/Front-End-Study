@@ -34,14 +34,14 @@
   - E[attrxxxx]+E   选择当前的元素 然后找到相邻的下一个元素
   - E[attrxxxx]~E   选择当前的元素 然后后面所有的元素    
 ## 伪元素：
-*  ::before ::after   
+* ::before ::after   
     
 * 出现省略号：
   - white-space:nowrap;
   - overflow:hidden;
   - text-overflow:ellipsis;
 
-*  选中
+* 选中
   - ::first-letter 选择首字母
   - ::first-line   第一行
   - ::selection    选中的区域  只能变color 和 background-color  
@@ -181,19 +181,17 @@
     - 动画播放状态   animation-play-state    running  paused
     - 动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的态 none(default)不改变任何样式 both 动画将会执行 forwards 和 * * backwards 执行的动作
     -  动画方向    animation-direction    reverse（反方向）
+* css 的动画暂停和播放
+  ```css
+    .contianer{
+      animation:rotate 20s liner infinite paused;
+    }
+    .contianer:hover{
+      animation-play-state:running;
+    }
+  ```
+
 * 事件:animationend
-    ```js
-        // js 播放动画控制
-        playScrollAnimate() {
-            const animateEl = this.$refs['scroll-ani']
-            animateEl.classList.remove('scroll-ani')
-            window.requestAnimationFrame(() => {
-                window.requestAnimationFrame(() => {
-                    animateEl.classList.add('scroll-ani')
-                })
-            })
-        }
-    ```
 * requestAnimationFrame 请求动画帧(实现高性能动画)
   - 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。
   - 语法：window.requestAnimationFrame(callback);
@@ -217,19 +215,8 @@
       })
     },
   ```
-## em rem vw/vh:
-* em:的基准值 16px  默认的字体大小是16px,基准值是相对于父元素来的
-
-* rem:的基准值 16px  默认的字体大小是 16px
-  - r 是 root 根元素的意思  html文档的根元素是  html 标签
-  - 基准值是相对于来根元素（html）来的
-
-* vw:是基于Viewport视窗的长度单位，这里的视窗（Viewport）指的就是浏览器可视化的区域，而这个可视区域是 window.innerWidth / window.innerHeight的大小
-  - vw：是Viewport's width的简写,1vw等于window.innerWidth的1%
-  - vh：和vw类似，是Viewport's height的简写，1vh等于window.innerHeihgt的1%
-  - vmin：vmin的值是当前vw和vh中较小的值
-  - vmax：vmax的值是当前vw和vh中较大的值
-* 自动计算高度时，与百分比的差异： height: calc(100vh - 176px);vh 会显示计算后的实际的占位效果
+## 单位
+ - [前端界面单位及区别](./前端界面单位及区别.md)
 ## media 
  ```css
  @media (min-width: 750px) {
@@ -254,7 +241,6 @@
   .btn {
     background: var(--activityRuleFillColor); 
   ```
-  
 * 与js的交互
   ```js
     // getPropertyValue(): 读取变量

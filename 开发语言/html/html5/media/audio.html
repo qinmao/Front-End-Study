@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>audio-音频可视化</title>
+    </head>
+    <style>
+        body {
+            background-color: black;
+        }
+        canvas {
+            border-bottom: 1px solid lightgray;
+        }
+    </style>
+    <body>
+        <canvas></canvas>
+        <audio src="./mp3/the mass.mp3" controls></audio>
+        <script>
+            const audioEl = document.querySelector("audio");
+            const cvs = document.querySelector("canvas");
+            const ctx = cvs.getContext("2d");
+            let isInt = false;
+            let analyser, dataArray;
+
+            function initCvs() {
+                // * devicePixelRatio;
+                cvs.width = window.innerWidth;
+                cvs.height = window.innerHeight / 2;
+            }
+            initCvs();
+
+            audioEl.onplay = function () {
+                if (isInt) {
+                    return;
+                }
+                // 初始化
+                // 创建音频上下文
+                const audioCtx = new AudioContext();
+                // 创建音频的源节点
+                const source = audioCtx.createMediaElementSource(audioEl);
+
+                // 创建一个分析器节点
+                analyser = audioCtx.createAnalyser();
+                // 分析器的设置：转换的窗口大小 窗口越大分析的结果就越细腻 默认是2048，这个是必须是2的n次幂
+                analyser.fftSize = 512;
+                // 创建一个数组，用来接受分析器节点的分析数据，里面的每一项是一个8位的无符号整数，也就是一个字节
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+                // 把音频源中的数据输出到分析器节点，这个过程叫连接
+                source.connect(analyser);
+                // 把分析器节点连接到输出设备
+                analyser.connect(audioCtx.destination);
+
+                // 分析器节点分析出来的数据画到canvas上
+                // 分析器的作用：就是把自然界的声音由时域图经过 fft 快速傅里叶变换成 频域图
+
+                isInt = true;
+            };
+            // 分析器分析出的波形绘制到canvas上
+            function draw() {
+                requestAnimationFrame(draw);
+                // 清空画布
+                const { width, height } = cvs;
+                ctx.clearRect(0, 0, width, height);
+                if (!isInt) return;
+                // 让分析器分析出的数据到数组中
+                analyser.getByteFrequencyData(dataArray);
+                const len = dataArray.length / 2.5;
+                const barWidth = width / len / 2;
+                ctx.fillStyle = "#78C5F7";
+                // 画出柱状图，柱状图宽度是固定的
+                for (let i = 0; i < len; i++) {
+                    const item = dataArray[i]; // item < 256
+                    const barHeight = (item / 255) * height;
+                    const x1 = i * barWidth + width / 2;
+                    const x2 = width / 2 - (i + 1) * barWidth;
+                    const y = height - barHeight;
+                    // console.log(x1, y, barWidth - 2, barHeight)
+                    // 画右边
+                    ctx.fillRect(x1, y, barWidth - 4, barHeight);
+                    // 画左边
+                    ctx.fillRect(x2, y, barWidth - 4, barHeight);
+                }
+            }
+            draw();
+        </script>
+    </body>
+</html>

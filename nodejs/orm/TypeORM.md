@@ -52,7 +52,7 @@
     await repository.update(1, { firstName: "Rizzrak" })
     // executes UPDATE user SET firstName = Rizzrak WHERE id = 1
 ```
-## 执行原始的sql
+## 执行原生的sql
 * 返回执行结果，无实体转换
   ```ts
     const rawData = await repository.query(`SELECT * FROM USERS`)
@@ -80,7 +80,7 @@
     // 分页查询
     .skip(5)
     .take(10)
-    .getMany()
+    .getManyAndCount()
 
     // insert
     .createQueryBuilder()
@@ -139,6 +139,8 @@
     createQueryBuilder("user")
     .leftJoinAndSelect("photos", "photo", "photo.userId = user.id")
     .getMany()
+    
+    // 未建立关联关系的分页
 
     // 避免服务crash，可设置最大执行时间
     .createQueryBuilder("user")

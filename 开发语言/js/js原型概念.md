@@ -132,33 +132,7 @@
 
        // 以上继承实现的核心就是将父类的原型赋值给了子类，并且将构造函数设置为子类，这样既解决了无用的父类属性问题，还能正确的找到子类的构造函数。
     ``
-## class 继承
-    > JS 中并不存在类，class 只是语法糖，本质还是函数。
-    > 以下可证明
-    ```js
-        class Person {}
-        Person instanceof Function // true
-
-        class Parent {
-            constructor(value) {
-                this.val = value
-            }
-            getValue() {
-                console.log(this.val)
-            }
-        }
-
-        class Child extends Parent {
-            constructor(value) {
-                super(value) // 可以看成 Parent.call(this, value)
-            }
-        }
-        let child = new Child(1)
-        child.getValue() // 1
-        child instanceof Parent // true
-    ```
-
-* Object.prototype 上的一些方法
+## Object.prototype 上的一些方法
   + hasOwnProperty方法
     - 语法：<对象>.hasOwnProperty('propertyName')
     - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。  

@@ -14,11 +14,11 @@
 * BSD 许可证
 ## nginx 的组成
 * nginx 二进制可执行文件
-* nginx.conf 配置nginx 行为
+* nginx.conf 配置 nginx 行为
 * access.log 访问日志 纪录每一条http 请求信息
 * error.log 错误日志 定位问题
-## 编译nginx（linux）
-* 下载nginx
+## 编译 nginx
+* 下载 nginx
 * configure
 * 编译
 * 安装
@@ -36,9 +36,8 @@
   - nginx.conf 配置文件位置：/usr/local/etc/nginx/nginx.conf
   - nginx 安装目录：/usr/local/Cellar/nginx
   - nginx 网站目录：/usr/local/var/www
-
 * linux (需要加 systemctl)
- ```bash
+  ```bash
     # 开机启动
     systemctl enable nginx
     # 启动 
@@ -75,6 +74,7 @@
         - worker_connections 每个进程允许最大并发数
     
     - http：可嵌套多个server，配置代理，缓存，日志定义等绝大多数功能和第三方模块的配置。
+    - include /etc/nginx/conf.d/*.conf; 表示引入 /etc/nginx/conf.d/ 目录下所有以 .conf 结尾的文件作为 Nginx 的配置文件。
     - server:配置虚拟主机的相关参数
     + location：配置请求的路由，以及各种页面的处理情况。
         - = 精确匹配路径，用于不含正则表达式的 uri 前，如果匹配成功，不再进行后续的查找；
@@ -168,28 +168,27 @@
         - 默认值:text/html(默认不压缩js/css)
 
 * 限制流量 set $limit_rate 1k;
-
+## https 
 * https 的配置
-    ```
-        server {
-            listen 443 ssl http2 default_server;   # SSL 访问端口号为 443
-            server_name sherlocked93.club;         # 填写绑定证书的域名
+  ```
+    server {
+        listen 443 ssl http2 default_server;   # SSL 访问端口号为 443
+        server_name sherlocked93.club;         # 填写绑定证书的域名
 
-            ssl_certificate     /etc/nginx/https/1_sherlocked93.club_bundle.crt;   # 证书文件地址
-            ssl_certificate_key /etc/nginx/https/2_sherlocked93.club.key;      # 私钥文件地址
-            ssl_session_timeout 10m;
+        ssl_certificate     /etc/nginx/https/1_sherlocked93.club_bundle.crt;   # 证书文件地址
+        ssl_certificate_key /etc/nginx/https/2_sherlocked93.club.key;          # 私钥文件地址
+        ssl_session_timeout 10m;
 
-            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;      # 请按照以下协议配置
-            ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-            ssl_prefer_server_ciphers on;
-            
-            location / {
-                root         /usr/share/nginx/html;
-                index        index.html index.htm;
-            }
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;      # 请按照以下协议配置
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+        ssl_prefer_server_ciphers on;
+        
+        location / {
+            root         /usr/share/nginx/html;
+            index        index.html index.htm;
         }
-    ```
-
+    }
+  ```
 * HTTP请求转发到 HTTPS
     ```
         server {

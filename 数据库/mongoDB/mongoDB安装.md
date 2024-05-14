@@ -2,7 +2,7 @@
 ## Linux
 
 ## Mac
-```
-brew install mongodb
+```bash
+  
 ```
 ## Windows

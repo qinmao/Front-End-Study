@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>从视频文件提取画面帧</title>
+    </head>
+    <body>
+        <input type="file" />
+        <script>
+            function drawVideo(vdo) {
+                return new Promise((resolve) => {
+                    const cvs = document.createElement("canvas");
+                    const ctx = cvs.getContext("2d");
+                    cvs.width = vdo.videoWidth;
+                    cvs.height = vdo.videoHeight;
+                    ctx.drawImage(vdo, 0, 0, cvs.width, cvs.height);
+                    cvs.toBlob((blob) => {
+                        resolve({
+                            blob,
+                            url: URL.createObjectURL(blob),
+                        });
+                    });
+                    document.body.appendChild(cvs);
+                });
+            }
+
+            function captureFrame(videoFile, time = 0) {
+                return new Promise((resolve) => {
+                    const vdo = document.createElement("video");
+                    vdo.currentTime = time;
+                    vdo.muted = true;
+                    vdo.autoplay = true;
+                    vdo.oncanplay = async () => {
+                        const frame = await drawVideo(vdo);
+                        resolve(frame);
+                    };
+                    vdo.src = URL.createObjectURL(videoFile); // 创建一个本地临时访问路径
+                });
+            }
+            
+            function createPreview(frame) {
+                const img = document.createElement("img");
+                img.src = frame.url;
+                document.body.appendChild(img);
+            }
+
+            const inputFile = document.querySelector("input[type=file]");
+            inputFile.onchange = async (e) => {
+                const file = e.target.files[0];
+                for (let i = 0; i < 10; i++) {
+                    // 一秒一张
+                    const frame = await captureFrame(file, i * 1);
+                    createPreview(frame);
+                }
+            };
+        </script>
+    </body>
+</html>
