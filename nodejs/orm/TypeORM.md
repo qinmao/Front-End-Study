@@ -59,8 +59,42 @@
     // For mysql/mysql2 you should use ? 
     const rawData = await repository.query(`SELECT * FROM USERS where id=?`,[1])
   ```
+## 实体字段设置索引
+```ts
+    import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm';
+    // 为单个字段设置索引
+    @Entity()
+    export class User {
+        @PrimaryGeneratedColumn()
+        id: number;
+
+        @Index()
+        @Column()
+        email: string;
+    }
+
+    // 为多个字段创建复合索引
+    @Entity()
+    @Index('IDX_USER_EMAIL_NAME', ['email', 'name']) 
+    export class User {
+        @PrimaryGeneratedColumn()
+        id: number;
+
+        @Column()
+        email: string;
+
+        @Column()
+        name: string;
+
+    // 其他字段
+    }
+
+
+
+```
 ## 表关系
 > 表之间的关系有三种：一对一、一对多、多对多，在 typeorm中分别用装饰器 OneToOne、OneToMany、ManyToMany
+
 ## QueryBuilder
 * QueryBuilder 是 TypeORM 最强大的特性之一，它允许您使用优雅和方便的语法构建 SQL 查询，执行它们并获得自动转换的实体。
   ```ts
@@ -153,8 +187,11 @@
     .getMany()
 
   ```
+
+
 ## 连接多数据库的问题
 * TODO
+
 ## 如何查看 TypeORM 翻译后的原始SQL语句
 > 有两种方式
 1. 日志：有两种

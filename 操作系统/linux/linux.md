@@ -153,7 +153,7 @@
   + 远程到本地
     - scp remote_username@remote_ip:remote_folder  local_file
     > 例子：scp -r www.runoob.com:/home/root/others/ /home/space/music/
-## vim 编辑器使用
+## vim编辑器使用
 > vim 共分为4种模式，分别是正常模式、插入模式、命令模式、可视模式,输入vim 进入，输入 :q 退出
 * 命令模式
   - :wq 切换到命令模式，保存文件退出程序
@@ -299,7 +299,6 @@
   - service network start|stop|restart 管理网络服务
   - systemctl start|stop|restart NetworkManger 管理网络服务
   - systemctl enable|disable NetworkManger  开启或禁用 NetworkManger
-  
 * 常用的网络配置文件
   - ifcfg-eth0
   - /etc/hosts
@@ -311,6 +310,8 @@
     service network restart
   ```
   + 修改主机名
+    - hostname 查看主机名
+    
     - hostnamectl set-hostname xxx 修改主机名为 xxx
     - 在 /etc/hosts 中 设置127.0.0.1 xxx 防止启动服务过慢
 * 特殊的ip
@@ -329,17 +330,6 @@
 * [yum](../../包管理/yum.md)
 * [dnf](../../包管理/dnf.md)
 * [apt](../../包管理/apt.md)
-* yum 升级内核
-  - uname -r 查看内核版本
-  - yum install kernel-3.10.0 升级内核版本
-  - yum update 升级其他软件包和补丁
-## 源代码编译安装(通用步骤)
-1. wget http://xxx.tar.gz
-2. tar -zxf xxx.tar.gz
-3. cd 解压后的目录下
-4. ./configure --prefix=/usr/local/xxxx  指定安装目录
-5. make -j2   开始编译成可执行程序，j2表示用2个逻辑cpu
-6. make install 安装到指定的 prefix 的目录下
 ## 进程管理
 > 概念：运行中的程序，管理程序开始运行到终止的整个生命周期。
 * 进程的控制命令
@@ -385,7 +375,7 @@
     systemctl disable firewalld 
   ```  
 ## SELinux
-  > 安全控制组件,可能影响性能
+> 安全控制组件,可能影响性能
 * 查看命令
   ```bash
    getenforce
@@ -443,6 +433,9 @@
   - arch                     查看架构
   - uptime 显示系统运行了多少时间、当前登录的用户数，操作系统在过去的1、5、15分钟内的平均负载。
   - users 显示系统当前登录的用户
+  - uname -r 查看内核版本号
+  - yum install kernel-3.10.0 升级内核版本
+  - yum update 升级其他软件包和补丁
 * 磁盘
   - df 查看磁盘的使用情况
   - iostat 查看磁盘速率
@@ -463,6 +456,8 @@
     # 修改时区为东八区
     rm -f /etc/localtime
     sudo ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    # 或者用下面
+    timedatectl set-timezone Asia/Shanghai
    ```
 * 时间校准
   > ntp 联网自动校准时间工具，他会自动帮我们校准
@@ -470,9 +465,11 @@
    yum install ntp
    ntpdate -u ntp.aliyun.com
 
-   # 离线直接设置 或者内网自建 ntp 时间服务器
+   # 离线直接设置或者内网自建 ntp 时间服务器
     date -s "2024-2-6 21:00:00"
 
+    # 推荐使用
+    timedatectl set-time '2024-07-25 15:30:00'
   ```
 ## 防火墙
 * 分类

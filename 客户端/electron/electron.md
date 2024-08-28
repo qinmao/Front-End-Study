@@ -2,6 +2,18 @@
 > Electron 是一个使用 JavaScript, HTML 和 CSS 等 Web 技术创建原生程序的框架,帮助我们构建跨平台的桌面应用程序
 ## 有名的案例：
 ![有名的案例](./imgs/case.png)
+## 支持的平台
+* OS X
+  - 系统仅有64位的二进制文档，支持的最低版本是 OS X 10.8。
+* Windows
+  - 仅支持 Windows 7 及其以后的版本
+  - 对于 Windows 提供 x86 和 amd64 (x64) 版本的二进制文件。需要注意的是ARM 版本的 Windows 目前尚不支持.
+* Linux
+  - 预编译的 ia32(i686) 和 x64(amd64) 版本 Electron 二进制文件都是在
+  Ubuntu 12.04 下编译的
+  - arm 版的二进制文件是在 ARM v7（硬浮点 ABI 与Debian Wheezy 版本的 NEON）下完成的。
+  
+* Electron 将在 Electron23 中开始结束 Windows 7, Windows 8 和 Windows 8.1 的支持。
 ## 发展历史
 * electron 的由来
   - 早期想开发一个桌面的GUI软件，希望能在Windows、Linux、和Mac 平台上运行，可选的框架不多，主要有GTK、Qt、wxWidgets。这三个框架都是C/C++ 开发的。受限于语言开发效率的限制，完成快速开发不太现实，对前端同学来说十分不友好
@@ -230,7 +242,6 @@
   - 当在主进程中使用时，它处理从渲染器进程(网页)发送出来的异步和同步信息,当然也有可能从主进程向渲染进程发送消息。
   ```js
       const { ipcMain }  = require('electron')
-
       // 主进程发消息给渲染进程
       webContents.send('ping', 'whoooooooh!')
 

@@ -14,6 +14,7 @@
                     const ctx = cvs.getContext("2d");
                     cvs.width = vdo.videoWidth;
                     cvs.height = vdo.videoHeight;
+
                     ctx.drawImage(vdo, 0, 0, cvs.width, cvs.height);
                     cvs.toBlob((blob) => {
                         resolve({
@@ -25,10 +26,11 @@
                 });
             }
 
-            function captureFrame(videoFile, time = 0) {
+            // currentTime 播放起始时间
+            function captureFrame(videoFile, currentTime = 0) {
                 return new Promise((resolve) => {
                     const vdo = document.createElement("video");
-                    vdo.currentTime = time;
+                    vdo.currentTime = currentTime;
                     vdo.muted = true;
                     vdo.autoplay = true;
                     vdo.oncanplay = async () => {
@@ -48,8 +50,8 @@
             const inputFile = document.querySelector("input[type=file]");
             inputFile.onchange = async (e) => {
                 const file = e.target.files[0];
+                // 取 10s 的画面
                 for (let i = 0; i < 10; i++) {
-                    // 一秒一张
                     const frame = await captureFrame(file, i * 1);
                     createPreview(frame);
                 }

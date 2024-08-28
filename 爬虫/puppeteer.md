@@ -20,7 +20,8 @@
 ## puppeteer-core 
 * 安装chromium对应版本的驱动：
   ```bash
-    npm install puppeteer-core@chrome-71
+    npm install puppeteer-core@chrome-90
+    yarn add puppeteer-core@chrome-90
   ```
 
 ## 如何创建一个 Browser 实例
@@ -86,13 +87,13 @@
   - 连接前要关闭所有Chrome浏览器
   - 打开远程调试
   ```bash
-    // mac 
+    # mac 
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 
 
-    // linux
+    # linux
     google-chrome --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222
 
-    // windows
+    # windows
     xxx/chrome.exe --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222
   ```
 

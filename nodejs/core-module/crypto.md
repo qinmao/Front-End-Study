@@ -36,6 +36,7 @@
         decrypted += decipher.final('utf8');
         console.log('Decrypted data:', decrypted);
    ```
+
 * 非对称性加密
    - 在加密和解密时，使用不同的秘钥。一般具有一对秘钥 分公钥（可对外公开）和私钥（管理员拥有）；
    - 如果明文使用了私钥加密，必须使用与其对应的公钥才能解密成功。
@@ -66,10 +67,12 @@
     data = Buffer.from("hello world");
     const encrypted = publicEncrypt(publicKey, data);
     console.log("Encrypted data:", encrypted.toString("hex"));
+
     // 私钥解密
     const decrypted = privateDecrypt(privateKey, encrypted);
     console.log("Decrypted data:", decrypted.toString());
   ```
+  
 * 哈希函数
   - 单向不能解密的，具有唯一性
   ```js
@@ -95,6 +98,7 @@
     }
     // AES  是一种常用的对称加密算法，加解密都用同一个密钥。crypto模块提供了AES支持
   ```
+
 ## 生成随机UUID
   ```js
     const { randomUUID } = require("node:crypto");

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Video Frame to Stream</title>
+    </head>
+    <style>
+        #sourceVideo {
+            border: 1px solid red;
+        }
+        #outputVideo {
+            border: 1px solid green;
+        }
+    </style>
+    <body>
+        <video id="sourceVideo" width="640" height="480" controls>
+            <source src="./video/t2.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+
+        <video
+            id="outputVideo"
+            width="640"
+            height="480"
+            autoplay
+            controls
+        ></video>
+
+        <script>
+            const sourceVideo = document.getElementById("sourceVideo");
+            const outputVideo = document.getElementById("outputVideo");
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            // 设置画布尺寸与视频画面一致
+            // canvas.width = sourceVideo.width;
+            // canvas.height = sourceVideo.height;
+            canvas.width = 266;
+            canvas.height = 454;
+
+            // console.log(sourceVideo.videoWidth)
+
+            // 每当源视频播放一帧时，更新画布内容
+            sourceVideo.addEventListener("play", function () {
+                // 捕获画布的内容作为 MediaStream
+                const stream = canvas.captureStream();
+                // 将 MediaStream 设置为目标视频的 srcObject
+                outputVideo.srcObject = stream;
+                // outputVideo.onloadedmetadata = (e) => outputVideo.play();
+                function drawFrame() {
+                    if (sourceVideo.paused || sourceVideo.ended) {
+                        return;
+                    }
+                    ctx.drawImage(
+                        sourceVideo,
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
+                    requestAnimationFrame(drawFrame);
+                }
+                drawFrame();
+            });
+        </script>
+    </body>
+</html>

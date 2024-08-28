@@ -27,10 +27,30 @@
   - 注意: 从 v18 开始，由于 glibc 版本不兼容，Node.js 不再支持 centos 7和其他一些 Linux 发行版。
 * windows 推荐使用[nvm-windows](https://github.com/coreybutler/nvm-windows)
 * 使用 nvm 安装 nodejs 更换版本后，全局模块需要重新安装的问题?
-  - nvm 提供 nvm reinstall-packages 命令
-  - 例子：如你新安装的是 14.17.3 老版本是 14.17.0
-  - 执行 nvm reinstall-packages 14.17.0 就可以把老版本上的全局包重新安装在新版本上了
-## 源码编译
+  ```bash
+    # 安装 nvm（Node 版本管理器）
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+    # 下载并安装 Node.js（可能需要重新启动终端）
+    # 设置代理
+    # 打开nvm目录，找到setting.txt 文件夹打开没有创建
+    # node_mirror: https://npmmirror.com/mirrors/node/
+    # npm_mirror: https://npmmirror.com/mirrors/npm/
+
+    nvm install 20
+
+    # 验证环境中是否存在正确的 Node.js 版本
+    node -v # 应打印 `v20.16.0`
+
+    # 验证环境中是否存在正确的 npm 版本
+    npm -v # 应打印 `10.8.1`
+
+    #  nvm 提供 nvm reinstall-packages 命令
+    # 如你新安装的是 14.17.3 老版本是 14.17.0
+    # 执行 就可以把老版本上的全局包重新安装在新版本上了
+    nvm reinstall-packages 14.17.0 
+  ```
+## 源码编译安装
 1. 安装依赖
   ```bash
    yum install g++ curl libssl-dev apache2-utils git-core build-essential
@@ -79,7 +99,9 @@
 ## 模块
 * 内置全局对象大致能够分为5大类（无需引入）：
   + ① 为模块包装而提供的全局对象： 
-    - exports、require、module、__fileName、__dirname
+    - exports、require、module、
+    - __fileName：当前执行脚本的文件名的路径 如：/path/to/your/current/directory/your_script.js
+    - __dirname：当前执行脚本所在的目录的路径 如：/path/to/your/current/directory
   + ② 内置的 process 对象
   + ③ 控制台Console模块
     - console.table(非常有用)
@@ -133,6 +155,28 @@
   
 ## 进程与线程
 > 利于多核cpu
+* 多线程
+  - 多线程是指在同一进程内，多个线程并发执行。
+  - 每个线程都拥有自己的执行栈和局部变量，但共享进程的全局变量、静态变量等资源。
+  - 多线程适合用于I/O密集型任务，如网络请求、文件操作等，
+* 多进程
+  - 多进程是指在操作系统中同时运行多个进程，每个进程都有自己独立的内存空间，相互之间不受影响。
+  - 多进程适合用于CPU密集型任务，如计算密集型算法、图像处理等，因为多进程可以利用多核CPU并行执行任务，提高整体运算速度。
+* 线程池
+  - 线程池是一种预先创建一定数量的线程并维护这些线程，以便在需要时重复使用它们的技术。
+  - 线程池可以减少线程创建和销毁的开销，提高线程的重复利用率
+* 进程池
+  - 进程池类似于线程池，不同之处在于进程池预先创建一定数量的进程并维护这些进程，以便在需要时重复使用它们。
+  - 进程池可以利用多核CPU并行执行任务，提高整体运算速度。
+* 线程池的优势
+  - 轻量级: 线程比进程更轻量级，创建和销毁线程的开销比创建和销毁进程要小。
+  - 共享内存: 线程共享同一进程的内存空间，可以方便地共享数据。
+  - 低开销: 在切换线程时，线程只需保存和恢复栈和寄存器的状态，开销较低。
+* 进程池的优势
+  - 真正的并行: 进程可以利用多核CPU真正并行执行任务，而线程受到GIL的限制，在多核CPU上无法真正并行执行。
+  - 稳定性: 进程之间相互独立，一个进程崩溃不会影响其他进程，提高了程序的稳定性。
+  - 资源隔离: 每个进程有自己独立的内存空间，可以避免多个线程之间的内存共享问题。
+
 * 熟悉与进程有关的基础命令, 如 top, ps, pstree 等命令.
 * child_process
   - child.kill 与 child.send 的区别. 二者一个是基于信号系统, 一个是基于 IPC.
@@ -144,6 +188,7 @@
   - 消息队列
   - 信号量
 * 守护进程
+
 ## web framework
 * 通用型
   - [express](https://www.expressjs.com.cn/)
@@ -153,9 +198,9 @@
     - nest(基于typescript)
 * koa-generator
   - 非官方，狼叔开发的
-    ```
-     npm install koa-generator -g
-     koa2 projectName
+    ```bash
+      npm install koa-generator -g
+      koa2 projectName
     ```
 ## 数据库
 * mysql
@@ -169,65 +214,16 @@
    - 支持发布订阅
    - 流和管道
 ## 串口技术
-* TODO
-## 调试
+* [串口技术](./串口通信.md)
+
+## 调测
 * [Nodejs调试](./nodejs调试.md)
+
 ## Nodejs c++扩展
 * [Nodejs-c++扩展](./nodejs-c++.md)
+
 ## 安全
 * 限流 
   - 同一个ip在指定的时间内访问的次数
 * Helmet
   - 设置与安全相关的 HTTP 标头
-## 测试
-* http 性能指标
-  - qps（request per second） 每秒服务器能够承载的并发量
-  - transfer rate(吞吐量) 每秒吞吐的数据量大小
-* 性能测试工具
-  - ab
-  ```bash
-    # 安装Apache会自动安装，如果要单独安装ab，可以使用yum安装：
-    yum -y install httpd-tools
-
-    #  基本的参数：-c 200 并发请求个数 -n 1600 执行的请求数量  -t20 测试20s 
-    # -p 包含了需要POST的数据的文件 -T POST数据所使用的Content-type头信息
-    ab -c200 -n1600 -t10 http://127.0.0.1:3000/app/hello
-
-  ```
-   > mac 系统下 请求本地 报 apr_socket_recv: Connection reset by peer (54) 原因是：mac自带的ab限制了并发数导致的。下载最新的 ab
-    ```bash
-      brew install httpd
-      # 最后需要使用新安装的 httpd 下的 ab
-    ```
-  - autocannon 
-  > Node.js 写的压测工具
-  ```bash
-    npm i -g autocannon
-    autocannon -v
-
-    -a, --amount: 总请求数量，默认值为 0（表示持续运行）
-    -b, --body BODY 请求报文体  可以是 JSON 文件、URL 编码的字符串或二进制文件路径。
-    -c, --connections NUM 并发连接的数量，默认100
-    -d, --duration SEC 执行的时间，单位秒
-    -p, --pipelining 管道请求数量，默认值为 1。
-    -m, --method METHOD 请求类型 默认GET
-    -t, --timeout: 单个请求最长超时时间，单位为秒，默认值为 10。
-    -H, --header: 自定义请求头，例如 -H 'Authorization: Bearer xxxx'.
-
-    # 使用示例
-    autocannon -c 10 -d 5 -p 1 http://127.0.0.1:3000
-
-  ```
-* linux 的命令找性能瓶颈
-  - top：cpu、内存
-  - iostat：硬盘
-  - profile 性能分析工具（nodejs自带的）
-  - chrome devtool
-## 分析性能瓶颈的步骤
-1. 命令行运行 node --inspect-brk main.js 出现 Debugger listening on xxx 表示成功
-2. chrome 浏览器 输入 chrome://inspect  找到 target 下的 inspect 点击， 工具栏有 Profile(cpu)、Memory(内存) 
-3. 点击cpu 开始记录 使用 ab 压测cpu
- ```bash
-   ab -c 100 -n 100 -t 10 http://127.0.0.1:3000/app/hello
- ```
-4. 点击 chrome 停止记录按钮, 找到百分比高的函数具体分析:

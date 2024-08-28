@@ -24,27 +24,26 @@
   ```
 ## 手动换源
   ```bash
-    # 步骤一
-    cd "$(brew --repo)" && git remote set-url origin https://mirrors.aliyun.com/homebrew/brew.git
+    # 必备设置 替换 brew.git：
+    # 清华大学的源 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git
+    git -C "$(brew --repo)"  remote set-url origin https://mirrors.ustc.edu.cn/git/homebrew/brew.git
+   # 替换 homebrew-core.git：
+    git -C "$(brew --repo homebrew/core)" remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
 
-    cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core" && git remote set-url origin https://mirrors.aliyun.com/homebrew/homebrew-core.git
+    # 以下按需设置：替换 homebrew-cask.git：
+    git -C "$(brew --repo homebrew/cask)" remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
 
     # 更新一下下载地址
     brew update 
 
     # 来检查一下地址是否更新成功
     brew config 
-
-    # 步骤二
-    echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/bottles' >> ~/.zshrc
-    source ~/.zshrc
+    
   ```
 ## 还原
   ```bash
     # 步骤一
-    cd "$(brew --repo)"
-    git remote set-url origin https://github.com/Homebrew/brew.git
-
+    git -C "$(brew --repo)" remote set-url origin https://github.com/Homebrew/brew.git
     # 步骤二
     brew update
   ```

@@ -20,17 +20,18 @@ const {
 // renameSync('./test','./test-new')
 
 // 读取文件夹下的所有文件，并批量修改文件名
-const testPath = `/Users/qinmao/Desktop/反爬虫20讲`;
+const testPath = `/Users/qinmao/Desktop/攻克视频技术`;
 const paths = readdirSync(testPath);
 // console.log("paths:", paths);
-const splitStr=`[防断更微ccc57585].pdf`
+const extName='pdf'
+const splitStr=`[防断更微coc3678].${extName}`
 for (let index = 0; index < paths.length; index++) {
     const path = paths[index];
     const nameList = path.split(splitStr);
     if (nameList.length > 1) {
         const name = nameList[0];
         const oldfileName = `${testPath}/${name}${splitStr}`;
-        const newFileName = `${testPath}/${name}.pdf`;
+        const newFileName = `${testPath}/${name}.${extName}`;
         rename(oldfileName, newFileName, (err) => {
             if (err) throw err;
             console.log("Rename complete!");

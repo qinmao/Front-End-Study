@@ -36,9 +36,9 @@
 * 交互和非交互解释环境
   ```bash
    # 非交互执行
-   pythin3 hello.py
+   python3 hello.py
    # 交互执行
-   pythin3 -i hello.py
+   python3 -i hello.py
 
   ```
 ## 基础语法
@@ -51,8 +51,8 @@
   - str
   - 转成列表 list(str)
 * 序列类型
-  + list
-    - 创建 [x for x in range(1,10)]
+  + list（数组）
+    - 创建
     + 增加：
       - list.insert(索引，元素)
       - list.append(元素) 在尾部增加元素
@@ -73,6 +73,29 @@
     + 排序
       - list.sort(reverse=True) 列表原地排序
       - sort(list) 排序后返回新的列表
+    ```python
+        arr = [1, 2, 3, 4, 5]
+        # 使用 for 循环遍历数组
+        data=[]
+        for item in arr:
+            data.append({'test':item})
+
+        for item in data:
+            print(item['test'])
+
+        index = 0
+        # 使用 while 循环和索引遍历数组
+        while index < len(arr):
+            print(arr[index])
+            index += 1
+
+        # 使用 enumerate() 函数获取索引和值
+        for index, element in enumerate(arr):
+            print(f"Index {index}: {element}")
+
+        
+
+    ```
   + tuple(元组)
     - 类似list，但创建后不能修改
     - 对比list执行效率更改
@@ -82,9 +105,9 @@
       my_tuple = (1, 2, 3, 4, 5)
 
        # 创建一个空元组
-       empty_tuple = ()
+      empty_tuple = ()
     ```
-  - range
+    - range
 * 映射类型
   - dict
   ```py
@@ -110,20 +133,22 @@
     # 内置函数
     len(字典) 
     key in 字典
+
     pop 移除键，并返回键对应的值
     popitem 移除键，并返回键值对
 
     # 字典默认值 setdefault
     mail_list.setdefault('tom') 重复返回已有的值
     mail_list.setdefault('tom2') 新的key 默认值为null
+
+    del 可以删除键
   ```
 * 集合
-  - Python 中的集合（Set）是一种无序且不重复的数据结构。你可以使用大括号 {} 或者 set() 函数来创建集合
+  - python 中的集合（Set）是一种无序且不重复的数据结构。你可以使用大括号 {} 或者 set() 函数来创建集合
   - 集合可以进行并集、交集、差集等操作，方便进行集合运算
   ```py
     # 创建一个空集合
     my_set = set()
-
     # 创建一个带有初始元素的集合
     my_set = {1, 2, 3, 4, 5}
 
@@ -135,20 +160,115 @@
     - remvoe
     - pop
     - clear
-### 基本的数据结构
-* 栈
-* 堆
-* 队列
-* 树
-* 图
+    - del
+* 其他
+  - 常量 None
+  - 逻辑值 True、false
+  - 空集 "、（）、[]、{}、set() rang(0)
 ### 流程控制
-* 条件语句
-* 循环语句
+* 条件判断
+  ```python
+    if True:
+        print('真')
+    else:
+        print('假')
+    
+    // elif xxx:
+
+    # python 3.10
+   match 类似于 switch case
+   match httpStatus:
+      case 200:
+        print('200')
+      case 404:
+        print('404')
+      case 500:
+        print('500')
+      case _:
+        print('default')
+
+  ```
+* 格式化输出
+  ```python
+   # 1.百分号 %：
+   "%s is %s then %s" %("a","b","c")
+
+    # 2 format 函数
+    “{1} is {2} then {0}”.format("a","b","c")
+    # 推荐 3 f-strings python3.6
+    B="b1",a="1"
+    f"{B}is {a}"
+
+    f"{对象：宽度.精度类型}"
+    f"{num:4f}" # 指定类型后，默认保存小数点后6位
+  ```
 * 文件的输入输出
 * 自定义函数
+  ```python
+    def add(num):
+        return num+1
+    # 只做类型提示，不做类型校验
+    def add1(num:int):
+        return num+1
+    def test(arg1,arg2,arg3):
+        print(arg1,arg2,arg3)
+        
+    test(1,2,4)
+    test(1,arg3=3，arg2=2)
+    test(arg1=1,arg3=3，arg2=2)
+  ```
+* 高阶函数
+  - map
+  - filter
+  - reduce 需要通过fuctools库导入
 * 错误与异常处理
+  - 除了SystemExit 异常外，都会打印栈回溯信息
+  ```py
+    # 基本的异常捕获
+    try:
+        # 可能出现异常的代码
+        1/0
+    except Exception as e:
+        # 捕获指定异常后执行的代码
+        print('发生异常了:',e)
+    else:
+        # try部分的代码没有抛出异常，执行此代码
+    finally:
+        # 无论是否抛出异常，都会执行
+        print('finally 部分执行')
+
+    # 自定义异常捕获
+    class MyException(Exception):
+        print('自定义异常')
+
+    try:
+        raise MyException
+        except Exception as e:
+            # 捕获指定异常后执行的代码
+            print('发生异常了:',e)
+
+  ```
 * 面向对象编程
 * 模块
+  - 自定义模块
+   ```py
+    # mymodule.py
+    def greet(name):
+        print(f"Hello, {name}!")
+    def add(a, b):
+        return a + b
+
+    # index.py
+    from mymodule import greet, add
+    greet("Bob")
+    result = add(2, 4)
+    print("Result:", result)
+
+
+    # 如果是导入：模块名称
+    if __name__=="__main__":
+        fun1()
+   ```
 ### 进阶知识
 * 对象的比较复制
 * 参数的传递
@@ -159,55 +279,12 @@
 * 操作符重载
 * 上下文管理器
 * 并发编程
+  - 多线程
+  - 多进程
 * 全局解释器锁
 * 垃圾回收机制
 * 和c++ 的混合使用
-## 虚拟环境
-* 虚拟环境：
-  - 为了解决程序包版本依赖问题而创建，不同的应用将可以使用不同的虚拟环境
-  - 用于创建和管理虚拟环境的模块称为 venv，通常会安装在你可用的最新版本的 Python
-* 环境创建与激活
-  - python -m venv demo-env 
-  - 在 windows 上激活: demo-env\Scripts\activate
-  - 在 Unix 或 MacOS 上激活: source demo-env/bin/activate
-  - 在 vscode 中  ctrl+shift+p 找到创建环境选项
-* 撤销虚拟环境
-  - 终端输入： deactivate
+  - 使用 pythran 库将Python转换为c++
+
 ## 包管理
-> 使用pip管理包
-```bash
-  # 安装最新的包
-  pip install novas
-  # 安装特定版本的包
-  pip install requests==2.6.0
-
-  # 将软件包升级到最新版本:
-  pip install --upgrade requests
-
-  # 一个或多个要从虚拟环境中删除的包。
-  pip uninstall xx1  xx2
-  
-  # 显示所有在虚拟环境中安装的包
-  pip list 
-
-  # 将产生一个类似的已安装包列表
-  pip freeze 
-  pip freeze > requirements.txt
-
-  # 将 requirements.txt 提交给版本控制并作为应用程序的一部分提供。
-  # 然后用户可以使用 install -r 安装所有必需的包：
-  pip install -r requirements.txt
-```
-* 安装需要编译的包
-  - TODO
-* 发布 Python 模块
-  - TODO
-## 性能检测
-```py
-  from timeit import Timer
-  Timer('t=a; a=b; b=t', 'a=1; b=2').timeit()
-  # 0.57535828626024577
-  Timer('a,b = b,a', 'a=1; b=2').timeit()
-  # 0.54962537085770791
-```
-*  profile 和 pstats 模块提供了用于在较大的代码块中识别时间关键部分的工具。
+* [pip使用](../../包管理/pip.md)

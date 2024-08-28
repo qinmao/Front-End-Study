@@ -20,6 +20,7 @@
  ```bash
   # 判断本地是否已经存在公钥
   cat ~/.ssh/id_rsa.pub
+  
   # 生成公钥和私钥
   ssh-keygen -t rsa  
 

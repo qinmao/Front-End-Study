@@ -222,10 +222,10 @@
 * 参数的传值引用
   - 传入的是这个变量的值的拷贝，而不是变量本身
 * 函数指针
-  - 函数本身就是一段内存里面的代码，C 语言允许通过指针获取函数
+  - 函数本身就是一段内存里面的代码，C语言允许通过指针获取函数
   ```c
     void print(int a) {
-        printf("%d\n", a);
+      printf("%d\n", a);
     }
     void (*print_ptr)(int) = &print;
   ```
@@ -380,7 +380,20 @@
 ## 字符串和字符串函数
 * 字符串使用的几种方式
   ```c
+    char str[] = "Hello, world!";
+    const char* s = "Hello, world!"; 
+  ```
+* putchar|puts|fputs|printf
+  - putchar把字符输出到屏幕，等同于使用printf输出一个字符
+  - 将参数字符串显示在屏幕（stdout）上，并且自动在字符串末尾添加换行符
+  - fputs 是puts针对文件的定制版，第二个参数是写入数据的文件，不会在末尾加换行
+  ```c
+    puts("Hello World");
 
+    char line[81];
+    while(fgets(line,81,stdin)){
+        fputs(line,stdout)
+    }
   ```
 * strlen
   - strlen 的原型在标准库的 string.h文件中定义
@@ -437,15 +450,6 @@
   - 程序运行到这个命令就会暂停，等待用户从键盘输入，等同于使用scanf()方法读取一个字符
   - 不会忽略起首的空白字符，总是返回当前读取的第一个字符
   - 读取失败，返回常量 EOF，由于 EOF 通常是-1，所以返回值的类型要设为 int，而不是 char。
-* putchar
-  - 把字符输出到屏幕，等同于使用printf()输出一个字符
-  - 由于getchar()和putchar()这两个函数的用法，要比scanf()和printf()更简单，而且通常是用宏来实现，所以要比scanf()和printf()更快。如果操作单个字符，建议优先使用这两个函数。
-* puts
-  - 将参数字符串显示在屏幕（stdout）上，并且自动在字符串末尾添加换行符
-  ```c
-    puts("Here are some messages:");
-    puts("Hello World");
-  ```
 ## 内存管理
 > C 语言的内存管理，分成两部分。一部分是系统管理的，另一部分是用户手动管理的。
 * 系统管理的内存：
@@ -551,288 +555,28 @@
   }
   // memcpy 可以取代 strcpy 进行字符串拷贝，而且是更好的方法，不仅更安全，速度也更快，它不检查字符串尾部的\0字符。
   ```
-## 结构体
-> C语言内置的数据类型，除了最基本的几种原始类型，只有数组属于复合类型,实际使用中，需要更灵活强大的复合类型。C 语言没有其他语言的对象（object）和类（class）的概念，struct 结构很大程度上提供了对象和类的功能。
-  ```c
-    // 注意结尾分好不能省略
-    struct fraction {
-        int numerator;
-        int denominator;
-    };
-    struct fraction f1;
-
-    f1.numerator = 22;
-    f1.denominator = 7;
-
-    // 一次性对 struct 结构的所有属性赋值
-    struct car {
-        char* name;
-        float price;
-        int speed;
-    };
-
-    struct car saturn = { "Saturn SL/2", 16000.99, 175 };
-
-    // 声明变量的同时，对变量赋值。
-    struct {
-        char title[500];
-        char author[100];
-        float value;
-    } b1 = {"Harry Potter", "J. K. Rowling", 10.0},
-    b2 = {"Cancer Ward", "Aleksandr Solzhenitsyn", 7.85};
-
-    // typedef 命令可以为 struct 结构指定一个别名
-    typedef struct cell_phone {
-        int cell_no;
-        float minutes_of_charge;
-    } phone;
-
-    phone p = { 5551234, 5 };
-
-    // 指针变量指向结构体
-    struct book {
-        char title[500];
-        char author[100];
-        float value;
-    };
-    struct book* b1;
-
-    // struct 结构占用的存储空间，不是各个属性存储空间的总和，而是最大内存占用属性的存储空间的倍数，其他属性会添加空位与之对齐。这样可以提高读写效率。
-
-    // 为什么浪费这么多空间进行内存对齐呢？这是为了加快读写速度，把内存占用划分成等长的区块，就可以快速在 Struct 结构体中定位到每个属性的起始地址。
-    struct foo {
-        int a; // 4
-        char* b; // 8
-        char c;  // 1
-    };
-    printf("%d\n", sizeof(struct foo)); // 24
-
-    // struct 的复制
-    // 赋值运算符（=）可以将 struct 结构每个属性的值，一模一样复制一份，拷贝给另一个 struct 变量。这一点跟数组完全不同，使用赋值运算符复制数组，不会复制数据，只会共享地址。
-
-    // struct 的嵌套
-
-    struct species {
-        char* name;
-        int kinds;
-    };
-
-    struct fish {
-        char* name;
-        int age;
-        struct species breed;
-    };
-
-    // 赋值的多种写法
-    // 写法一
-    struct fish shark = {"shark", 9, {"Selachimorpha", 500}};
-
-    // 写法二
-    struct species myBreed = {"Selachimorpha", 500};
-    struct fish shark = {"shark", 9, myBreed};
-
-    // 写法三
-    struct fish shark = {
-        .name="shark",
-        .age=9,
-        .breed={"Selachimorpha", 500}
-    };
-
-    // 写法四
-    struct fish shark = {
-        .name="shark",
-        .age=9,
-        .breed.name="Selachimorpha",
-        .breed.kinds=500
-    };
-
-    printf("Shark's species is %s", shark.breed.name);
-
-    // 位字段：用来定义二进制位组成的数据结构，这对于操作底层的二进制数据非常有用。
-    struct {
-        unsigned int ab:1;
-        unsigned int cd:1;
-        unsigned int ef:1;
-        unsigned int gh:1;
-    } synth;
-
-    synth.ab = 0;
-    synth.cd = 1;
-    // 每个属性后面的:1，表示指定这些属性只占用一个二进制位，所以这个数据结构一共是4个二进制位。
-    // 注意，定义二进制位时，结构内部的各个属性只能是整数类型。
-  ```
-## typedef
-  > 命令用来为某个类型起别名。
-  ```c
-     // typedef 命令可以为 struct 结构指定一个别名
-    typedef struct cell_phone {
-        int cell_no;
-        float minutes_of_charge;
-    } phone;
-
-    phone p = { 5551234, 5 };
-  ```
-* 好处：
-  - 更好的代码可读性。
-  - 为 struct、union、enum 等命令定义的复杂数据结构创建别名，从而便于引用。
-  - typedef 方便以后为变量改类型。
-  - 可移植性:某一个值在不同计算机上的类型，可能是不一样的。C 语言的解决办法，就是提供了类型别名，在不同计算机上会解释成不同类型，比如int32_t。
-## Union 结构
-> 有时需要一种数据结构，不同的场合表示不同的数据类型,C 语言提供了 Union 结构，用来自定义可以灵活变更的数据结构
-  ```c
-  union quantity {
-    short count;
-    float weight;
-    float volume;
-  };
-
-   // 写法一
-    union quantity q;
-    q.count = 4;
-
-    // 写法二
-    union quantity q = {.count=4};
-    // Union 结构的好处，主要是节省空间。它将一段内存空间，重用于不同类型的数据。定义了三个属性，但同一时间只用到一个，使用 Union 结构就可以节省另外两个属性的空间。Union 结构占用的内存长度，等于它内部最长属性的长度。
-  ```
-## Enum 类型
-  ```c
-    // C 语言会自动从0开始递增，为常量赋值。但是，C 语言也允许为 ENUM 常量指定值，不过只能指定为整数，不能是其他类型
-    enum colors {RED, GREEN, BLUE};
-
-    printf("%d\n", RED); // 0
-    printf("%d\n", GREEN);  // 1
-    printf("%d\n", BLUE);  // 2
-
-    enum { ONE = 1, TWO = 2 };
-
-    printf("%d %d", ONE, TWO);  // 1 2
-  ```
-## 预处理器
-> 预处理器首先会清理代码，进行删除注释、多行语句合成一个逻辑行等工作。然后，执行#开头的预处理指令。预处理指令可以出现在程序的任何地方，但是习惯上，往往放在代码的开头部分。所有预处理指令都是一行的，除非在行尾使用反斜杠，将其折行。指令结尾处不需要分号。
-* #define 
-  - 是最常见的预处理指令，用来将指定的词替换成另一个词
-  - 每条替换规则，称为一个宏（macro）
-  ```c
-    #define MAX 100
-    // 过长用反斜杠
-    #define OW "C programming language is invented \
-    in 1970s."
-
-    // 带参数的宏
-    #define SQUARE(X) X*X
-
-    // 由于宏不涉及数据类型，所以替换以后可能为各种类型的值。
-    // 如果希望替换后的值为字符串，可以在替换文本的参数前面加上#
-    #define STR(x) #x
-
-    // 等同于 printf("%s\n", "3.14159");
-    printf("%s\n", STR(3.14159));
-
-    // ##运算符。它起到粘合作用，将参数“嵌入”一个标识符之中。
-    #define MK_ID(n) i##n
-    int MK_ID(1), MK_ID(2), MK_ID(3);
-    // 替换成
-    int i1, i2, i3;
-  ```
-* #undef
-  - 用来取消已经使用#define定义的宏
-  ```C
-    #define LIMIT 400
-    #undef LIMIT
-  ```
-* #include
-  - 用于编译时将其他源码文件，加载进入当前文件
-  ```c
-    // 形式一
-    #include <foo.h> // 加载系统提供的文件
-    // 形式二
-    #include "foo.h" // 加载用户提供的文件
-    // 形式三
-    #include <stdio.h> // 加载编译器提供的标准库
-  ```
-  - std 是一个标准库
-  - <> 表示导入系统文件 
-  - ”“ 自定义文件
-* #if...#endif
-  - 指令用于预处理器的条件判断，满足条件时，内部的行会被编译，否则就被编译器忽略。
-  ```c
-    #if 0
-      const double pi = 3.1415; // 不会执行
-    #endif
-
-    #define FOO 1
-
-    #if FOO
-      printf("defined\n");
-    #else
-      printf("not defined\n");
-    #endif
-
-    // #if的常见应用就是打开（或关闭）调试模式。
-    #define DEBUG 1
-
-    #if DEBUG
-        printf("value of i : %d\n", i);
-        printf("value of j : %d\n", j);
-    #endif
-    // gcc -DDEBUG=1 foo.c
-  ```
-* #ifdef...#endif
-  - 用于判断某个宏是否定义过。
-  ```c
-    #ifdef MAVIS
-        #include "foo.h"
-        #define STABLES 1
-    #else
-        #include "bar.h"
-        #define STABLES 2
-    #endif
-  ```
-* defined 运算符
-  - #ifdef指令，等同于#if defined
-* 预定义宏
-  - C 语言提供一些预定义的宏，可以直接使用。
-  - __DATE__：编译日期，格式为“Mmm dd yyyy”的字符串（比如 Nov 23 2021）。
-  - __TIME__：编译时间，格式为“hh:mm:ss”。
-  - __FILE__：当前文件名。
-  - __LINE__：当前行号。
-  - __func__：当前正在执行的函数名。该预定义宏必须在函数作用域使用。
-  - __STDC__：如果被设为1，表示当前编译器遵循 C 标准。
-  - __STDC_HOSTED__：如果被设为1，表示当前编译器可以提供完整的标准库；否则被设为0（嵌入式系统的标准库常常是不完整的）。
-  - __STDC_VERSION__：编译所使用的 C 语言版本，是一个格式为yyyymmL的长整数，C99 版本为“199901L”，C11 版本为“201112L”，C17 版本为“201710L”。
-  ```c
-    #include <stdio.h>
-
-    int main(void) {
-        printf("This function: %s\n", __func__);
-        printf("This file: %s\n", __FILE__);
-        printf("This line: %d\n", __LINE__);
-        printf("Compiled on: %s %s\n", __DATE__, __TIME__);
-        printf("C Version: %ld\n", __STDC_VERSION__);
-    }
-
-    /* 输出如下
-    This function: main
-    This file: test.c
-    This line: 7
-    Compiled on: Mar 29 2021 19:19:37
-    C Version: 201710
-    */
-  ```
-* #pragma
-  - 用来修改编译器属性
-  ```c  
-    // 使用 C99 标准
-    #pragma c9x on
-  ```
-## 文件操作
+## 文件输入输出
+* fopen 
+  > 打开文件,函数声明在 stdio.h 中，它接受两个参数，第一个参数是文件名(可以包含路径)，第二个参数是模式字符串，指定对文件执行的操作，如r表示以读模式打开文件。返回文件指针
+    - r：读模式，只用来读取数据。如果文件不存在，返回 NULL 指针。
+    - w：写模式，只用来写入数据。如果文件存在，文件长度会被截为0，然后再写入；如果文件不存在，则创建该文件。
+    - a：写模式，只用来在文件尾部追加数据。如果文件不存在，则创建该文件。
+    - r+：读写模式。如果文件存在，指针指向文件开始处，可以在文件头部添加数据。如果文件不存在，返回 NULL 指- 针。
+    - w+：读写模式。如果文件存在，文件长度会被截为0，然后再写入数据。这种模式实际上读不到数据，反而会擦掉数- 据。如果文件不存在，则创建该文件。
+    - a+：读写模式。如果文件存在，指针指向文件结尾，可以在现有文件末尾添加内容。如果文件不存在，则创建该文件
+    - x c11 新增了带x的写模式，两个特性：1、独占性，其他程序无法访问 2、fopen 失败也不丢失内容
+* fclose
+  - 关闭fp指定的文件，必要时刷新缓冲区，成功关闭返回0, 否则返回EOF
+* getc|putc
+  + 与getchar、putchar类似
+    - ch=getchar 从标准输入中获取一个字符，ch=getc(fp) 从fp指定的文件中获取一个字符
+    - putc(ch,fpout) 把字符 ch 放入 FILE 指针 fpout 指定的文件中
 * 文件指针
   - C 语言提供了一个 FILE 数据结构，记录了操作一个文件所需要的信息，该结构定义在头文件stdio.h
   - 开始操作一个文件之前，就要定义一个指向该文件的 FILE 指针，相当于获取一块内存区域，用来保存文件信息。
   ```c
-    // 读取文件完整的示例
+    // 案例1：读取文件完整的示例
     #include <stdio.h>
-
     int main(void) {
     
         FILE* fp;
@@ -852,33 +596,33 @@
         return 0;
     }
 
+    // 案例2：读取文件字符，一直读完为止
+    // EOF:getc 读到最后一个字符返回的特殊值
+    int ch;
+    FILE* fp;
+    fp = fopen("hello.txt", "r");
+    while((ch=getc(fp))!=EOF){
+        putchar(ch);
+    }
   ```
-* fopen
-  - 它接受两个参数。第一个参数是文件名(可以包含路径)，第二个参数是模式字符串，指定对文件执行的操作，比如下面的例子中，r表示以读取模式打开文件。
-  + fopen()的模式字符串有以下几种。
-    - r：读模式，只用来读取数据。如果文件不存在，返回 NULL 指针。
-    - w：写模式，只用来写入数据。如果文件存在，文件长度会被截为0，然后再写入；如果文件不存在，则创建该文件。
-    - a：写模式，只用来在文件尾部追加数据。如果文件不存在，则创建该文件。
-    - r+：读写模式。如果文件存在，指针指向文件开始处，可以在文件头部添加数据。如果文件不存在，返回 NULL 指- 针。
-    - w+：读写模式。如果文件存在，文件长度会被截为0，然后再写入数据。这种模式实际上读不到数据，反而会擦掉数- 据。如果文件不存在，则创建该文件。
-    - a+：读写模式。如果文件存在，指针指向文件结尾，可以在现有文件末尾添加内容。如果文件不存在，则创建该文件
 * 标准流
   + Linux 系统默认提供三个已经打开的文件，它们的文件指针如下。
     - stdin（标准输入）：默认来源为键盘，文件指针编号为0。
     - stdout（标准输出）：默认目的地为显示器，文件指针编号为1。
     - stderr（标准错误）：默认目的地为显示器，文件指针编号为2。
-* fprintf
-  - 用于向文件写入格式化字符串，用法与printf()类似
+* fprintf|fscanf|fgets|fputs
+  - 用于向文件写入格式化字符串，用法与 printf 类似
   ```c
     // fprintf()可以替代printf()。
     printf("Hello, world!\n");
     fprintf(stdout, "Hello, world!\n");
   ```
+* fseek|ftell
+  - fseek 函数可把文件看做数组，在fopen打开的额文件中直接移动到任意字节处
 * fwrite
   - 用来一次性写入较大的数据块，主要用途是将数组数据一次性写入文件，适合写入二进制数据
   ```c
     #include <stdio.h>
-
     int main(void) {
         FILE* fp;
         unsigned char bytes[] = {5, 37, 0, 88, 255, 12};
@@ -886,68 +630,143 @@
         fp = fopen("output.bin", "wb");
         fwrite(bytes, sizeof(char), sizeof(bytes), fp);
         fclose(fp);
-    return 0;
-    }
-
-  ```
-## 多文件项目
-* 新建一个xx.h的头文件，include 导入
-  ```c
-    // File bar.h
-    int add(int, int);
-
-    // File foo.c
-    #include <stdio.h>
-    #include "bar.h"
-
-    int main(void) {
-      printf("%d\n", add(2, 3));  // 5!
-    }
-  ```
-* 重复加载的问题
-  ```c
-    // File bar.h
-    #ifndef BAR_H
-        #define BAR_H
-        int add(int, int);
-    #endif
-
-    // 上面示例中，头文件 bar.h 使用#ifndef和 #endif 设置了一个条件判断。每当加载这个头文件时，就会执行这个判断，查看有没有设置过宏 BAR_H。如果设置过了，表明这个头文件已经加载过了，就不再重复加载了，反之就先设置一下这个宏，然后加载函数原型。
-  ```
-* make 命令
-  - 大型项目的编译，如果全部手动完成，是非常麻烦的，容易出错。一般会使用专门的自动化编译工具，比如 make。
-  - make 是一个命令行工具，使用时会自动在当前目录下搜索配置文件 makefile（也可以写成 Makefile）
-  - 该文件定义了所有的编译规则，每个编译规则对应一个编译产物。为了得到这个编译产物，它需要知道两件事。依赖项（生成该编译产物，需要用到哪些文件），生成命令（生成该编译产物的命令）
-## 命令行环境
-> C 语言提供了 getenv()函数（原型在stdlib.h）用来读取命令行环境变量。
-  ```c
-    #include <stdio.h>
-    #include <stdlib.h>
-
-    int main(void) {
-        char* val = getenv("HOME");
-
-        if (val == NULL) {
-            printf("Cannot find the HOME environment variable\n");
-            return 1;
-        }
-
-        printf("Value: %s\n", val);
         return 0;
     }
+
   ```
-## 断言
-> 我们通常会使用断言，来对某种需要支持程序正常运行的假设性条件进行检 查。而当条件不满足时，则在程序编译或运行时终止，并向用户抛出相应的错误信息
-* 静态断言:会在代码编译时进行检查
-* 动态断言:则会在程序运行过程中，执行到该断言语句时再进行检查。
-## 位运算
+## 结构体和其他数据形式
+> C语言内置的数据类型，除了最基本的几种原始类型，只有数组属于复合类型。C 语言没有其他语言的对象（object）和类（class）的概念，struct 结构很大程度上提供了对象和类的功能。
+* struct(结构体)
+  - 声明与赋值
+   ```c
+    // 方式一：注意结尾分好不能省略
+    struct fraction {
+        int numerator;
+        int denominator;
+    };
+    struct fraction f1;
+    f1.numerator = 22;
+    f1.denominator = 7;
+
+    // 方式二： 一次性对 struct 结构的所有属性赋值
+    struct car {
+        char* name;
+        float price;
+        int speed;
+    };
+    struct car saturn = { "Saturn SL/2", 16000.99, 175 };
+
+    // 方式三：声明变量的同时，对变量赋值。
+    struct {
+        char title[500];
+        char author[100];
+        float value;
+    } b1 = {"Harry Potter", "J. K. Rowling", 10.0},
+    b2 = {"Cancer Ward", "Aleksandr Solzhenitsyn", 7.85};
+
+  ```
+  + 结构体的存储空间
+    - struct 结构占用的存储空间，不是各个属性存储空间的总和，而是最大内存占用属性的存储空间的倍数，其他属性会添加空位与之对齐。这样可以提高读写效率。
+    - 这是为了加快读写速度，把内存占用划分成等长的区块，就可以快速在 Struct 结构体中定位到每个属性的起始地址。
+  + struct 的复制
+    - 赋值运算符（=）可以将 struct 结构每个属性的值，一模一样复制一份，拷贝给另一个 struct 变量。这一点跟数组完全不同，使用赋值运算符复制数组，不会复制数据，只会共享地址。
+  - struct 的嵌套
+    ```c
+        struct species {
+            char* name;
+            int kinds;
+        };
+
+        struct fish {
+            char* name;
+            int age;
+            struct species breed;
+        };
+    // 写法一
+    struct fish shark = {"shark", 9, {"Selachimorpha", 500}};
+    // 写法二
+    struct species myBreed = {"Selachimorpha", 500};
+    struct fish shark = {"shark", 9, myBreed};
+    // 写法三
+    struct fish shark = {
+        .name="shark",
+        .age=9,
+        .breed={"Selachimorpha", 500}
+        
+        // .breed.name="Selachimorpha",
+        // .breed.kinds=500
+    };
+    printf("Shark's species is %s", shark.breed.name);
+
+    ```
+  - 位字段：用来定义二进制位组成的数据结构，这对于操作底层的二进制数据非常有用
+   ```c
+    struct {
+        unsigned int ab:1;
+        unsigned int cd:1;
+        unsigned int ef:1;
+        unsigned int gh:1;
+    } synth;
+
+    synth.ab = 0;
+    synth.cd = 1;
+    // 每个属性后面的:1，表示指定这些属性只占用一个二进制位，所以这个数据结构一共是4个二进制位。
+    // 注意，定义二进制位时，结构内部的各个属性只能是整数类型。
+   ```
+* union 结构
+  - 有时需要一种数据结构，不同的场合表示不同的数据类型,C 语言提供了 Union 结构，用来自定义可以灵活变更的数据结构
+  ```c
+    union quantity {
+        short count;
+        float weight;
+        float volume;
+    };
+
+   // 写法一
+    union quantity q;
+    q.count = 4;
+
+    // 写法二
+    union quantity q = {.count=4};
+    // Union 结构的好处，主要是节省空间。它将一段内存空间，重用于不同类型的数据。定义了三个属性，但同一时间只用到一个，使用 Union 结构就可以节省另外两个属性的空间。Union 结构占用的内存长度，等于它内部最长属性的长度。
+  ```
+* Enum 类型
+  ```c
+    // C 语言会自动从0开始递增，为常量赋值。但是，C 语言也允许为 ENUM 常量指定值，不过只能指定为整数，不能是其他类型
+    enum colors {
+        RED,
+        GREEN,
+        BLUE
+    };
+    printf("%d\n", RED); // 0
+    printf("%d\n", GREEN);  // 1
+
+    enum { ONE = 1, TWO = 2 };
+    printf("%d %d", ONE, TWO);  // 1 2
+  ```
+* typedef
+  > 用来为某个类型起别名
+  ```c
+    // typedef 命令可以为 struct 结构指定一个别名
+    typedef struct cell_phone {
+        int cell_no;
+        float minutes_of_charge;
+    } phone;
+
+    phone p = { 5551234, 5 };
+  ```
+  + 好处：
+    - 更好的代码可读性，为 struct、union、enum 等命令定义的复杂数据结构创建别名，从而便于引用
+    - typedef 方便以后为变量改类型。
+    - 可移植性:某一个值在不同计算机上的类型，可能是不一样的。C 语言的解决办法，就是提供了类型别名，在不同计算机上会解释成不同类型，比如int32_t
+## 位操作
   ```c
     // 取反运算符～
     // 用来将每一个二进制位变成相反值，即0变成1，1变成0。
     // 返回 01101100
     ~ 10010011
 
-    // 与运算符& 
+    // 与运算符 & 
     // 将两个值的每一个二进制位进行比较，返回一个新的值。当两个二进制位都为1，就返回1，否则返回0。
     // 返回 00010001
     10010011 & 00111101
@@ -983,16 +802,175 @@
     // 1000101000
     10001010 << 2
 
-
     int val = 1;
     val = val << 2;
 
     // 简写为
     val <<= 2;
 
-
     // 右移运算符>>
     // 将左侧运算数的每一位，向右移动指定的位数，尾部无法容纳的值将丢弃，头部空出来的位置使用0填充。
     // 返回 00100010
     10001010 >> 2
+  ```
+## c预处理器与c库
+> 预处理器首先会清理代码，进行删除注释、多行语句合成一个逻辑行等工作。 然后，执行 # 开头的预处理指令。预处理指令可以出现在程序的任何地方，但是习惯上，往往放在代码的开头部分。所有预处理指令都是一行的，除非在行尾使用反斜杠，将其折行。指令结尾处不需要分号。
+* 预处理指令
+  + #define 
+    - 明示常量
+    ```c
+      #define MAX 100
+      // 过长用反斜杠
+      #define OW "C programming language is invented \
+      in 1970s."
+
+      // 带参数的宏
+      #define SQUARE(X) X*X
+
+      // 由于宏不涉及数据类型，所以替换以后可能为各种类型的值。
+      // 如果希望替换后的值为字符串，可以在替换文本的参数前面加上#
+      #define STR(x) #x
+      // 等同于 printf("%s\n", "3.14159");
+      printf("%s\n", STR(3.14159));
+
+      // ##运算符。它起到粘合作用，将参数“嵌入”一个标识符之中。
+      #define MK_ID(n) i##n
+      int MK_ID(1), MK_ID(2), MK_ID(3);
+      // 替换成
+      int i1, i2, i3;
     ```
+  + #undef
+    - 用来取消已经使用 #define 定义的宏
+    ```C
+      #define LIMIT 400
+      #undef LIMIT
+    ```
+  + #include
+    - 用于编译时将其他源码文件，加载进入当前文件
+    ```c
+      // 形式一
+      #include <foo.h> // 加载系统提供的文件
+      // 形式二
+      #include "foo.h" // 加载用户提供的文件
+      // 形式三
+      #include <stdio.h> // 加载编译器提供的标准库
+    ```
+    - std 是一个标准库，<> 表示导入系统文件 
+    - ”“ 自定义文件
+  + #if...#endif
+    - 指令用于预处理器的条件判断，满足条件时，内部的行会被编译，否则就被编译器忽略。
+    ```c
+      #if 0
+        const double pi = 3.1415; // 不会执行
+      #endif
+
+      #define FOO 1
+      #if FOO
+        printf("defined\n");
+      #else
+        printf("not defined\n");
+      #endif
+
+      // #if的常见应用就是打开（或关闭）调试模式。
+      #define DEBUG 1
+
+      #if DEBUG
+          printf("value of i : %d\n", i);
+          printf("value of j : %d\n", j);
+      #endif
+      // gcc -DDEBUG=1 foo.c
+    ```
+  + #ifdef...#endif
+    - 用于判断某个宏是否定义过。
+    ```c
+      #ifdef MAVIS
+          #include "foo.h"
+          #define STABLES 1
+      #else
+          #include "bar.h"
+          #define STABLES 2
+      #endif
+    ```
+  + #pragma
+    - 用来修改编译器属性
+    ```c  
+      // 使用 C99 标准
+      #pragma c9x on
+    ```
+* 预定义宏
+  > C 语言提供一些预定义的宏，可以直接使用
+  - __DATE__：编译日期，格式为“Mmm dd yyyy”的字符串（比如 Nov 23 2021）
+  - __TIME__：编译时间，格式为“hh:mm:ss”
+  - __FILE__：当前文件名
+  - __LINE__：当前行号
+  - __func__：当前正在执行的函数名。该预定义宏必须在函数作用域使用
+  - __STDC__：如果被设为1，表示当前编译器遵循 C 标准
+  - __STDC_HOSTED__：如果被设为1，表示当前编译器可以提供完整的标准库；否则被设为0（嵌入式系统的标准库常常是不完整的）
+  - __STDC_VERSION__：编译所使用的 C 语言版本，是一个格式为yyyymmL的长整数，C99 版本为“199901L”，C11 版本为“201112L”，C17版本为“201710L”
+  ```c
+    #include <stdio.h>
+    int main(void) {
+        printf("This function: %s\n", __func__);
+        printf("This file: %s\n", __FILE__);
+        printf("This line: %d\n", __LINE__);
+        printf("Compiled on: %s %s\n", __DATE__, __TIME__);
+        printf("C Version: %ld\n", __STDC_VERSION__);
+    }
+    /* 输出如下
+    This function: main
+    This file: test.c
+    This line: 7
+    Compiled on: Mar 29 2021 19:19:37
+    C Version: 201710
+    */
+  ```
+## 多文件项目
+* 新建一个 xx.h 的头文件，include 导入
+  ```c
+    // File bar.h
+    int add(int, int);
+
+    // File foo.c
+    #include <stdio.h>
+    #include "bar.h"
+
+    int main(void) {
+      printf("%d\n", add(2, 3));  // 5!
+    }
+  ```
+* 重复加载的问题
+  ```c
+    // File bar.h
+    #ifndef BAR_H
+        #define BAR_H
+        int add(int, int);
+    #endif
+
+    // 上面示例中，头文件 bar.h 使用#ifndef和 #endif 设置了一个条件判断。每当加载这个头文件时，就会执行这个判断，查看有没有设置过宏 BAR_H。如果设置过了，表明这个头文件已经加载过了，就不再重复加载了，反之就先设置一下这个宏，然后加载函数原型。
+  ```
+* make 命令
+  - 大型项目的编译，如果全部手动完成，是非常麻烦的，容易出错。一般会使用专门的自动化编译工具如 make
+  - make 是一个命令行工具，使用时会自动在当前目录下搜索配置文件 makefile（也可以写成 Makefile）
+  - 该文件定义了所有的编译规则，每个编译规则对应一个编译产物。为了得到这个编译产物，它需要知道两件事。依赖项（生成该编译产物，需要用到哪些文件），生成命令（生成该编译产物的命令）
+## 命令行环境
+> C 语言提供了 getenv()函数（原型在stdlib.h）用来读取命令行环境变量。
+  ```c
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int main(void) {
+        char* val = getenv("HOME");
+
+        if (val == NULL) {
+            printf("Cannot find the HOME environment variable\n");
+            return 1;
+        }
+
+        printf("Value: %s\n", val);
+        return 0;
+    }
+  ```
+## 断言
+> 我们通常会使用断言，来对某种需要支持程序正常运行的假设性条件进行检 查。而当条件不满足时，则在程序编译或运行时终止，并向用户抛出相应的错误信息
+* 静态断言:会在代码编译时进行检查
+* 动态断言:则会在程序运行过程中，执行到该断言语句时再进行检查。

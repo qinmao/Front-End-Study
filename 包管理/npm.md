@@ -16,8 +16,13 @@
   ```bash
     # 查看配置信息
     npm config list    
-    npm config set registry https://registry.registry.npmmirror.com
-    npm config set registry http://r.cnpmjs.org
+
+    # 查看源
+    npm config get registry
+
+    npm config set registry https://registry.npmmirror.com
+    
+    npm config set registry https://mirrors.tuna.tsinghua.edu.cn/npm/
     # 科学上网后或者发布时移掉
     npm config rm registry
   ```
@@ -35,30 +40,48 @@
   ```
 ## npm 基础用法
 * install
-    - npm install  将 package.json 中的文件依赖的包从网上下载到本地
-    - npm install  包名 -save 将包下载下来并且加载到 dependencies中去（npm 5.x开始不需要-save）
-    - npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去 简写 -D
-    - npm install  包名 -g  全局安装
-    - npm install express@3.21.2 安装指导版本的包
-  ```bash
-    # 安装 electron 并打印安装日志
-    npm i electron -D --timeing=true --loglevel=verbose
-  ```
-    
-* ci 和 install 的区别
+  - npm install  将 package.json 中的文件依赖的包从网上下载到本地
+  - npm install  包名 -save 将包下载下来并且加载到 dependencies中去（npm 5.x开始不需要-save）
+  - npm install  包名 -save-dev  将包下载下来并且加载到devDependencies中去 简写 -D
+  - npm install  包名 -g  全局安装
+  - npm install express@3.21.2 安装指导版本的包
+  - npm i electron -D --timeing=true --loglevel=verbose  安装 electron 并打印安装日志
+  
+  + ci 和 install 的区别
   > ci 一般用在 CICD pipeline，比 install 更快
-  - 必须有个 package-lock.json
-  - 如果包锁定中的依赖项与 package.json 中的依赖项不匹配，npm ci 将退出并出现错误，而不是更新包锁定。
-  - 一次只能安装整个项目,不能使用此命令添加单个依赖项。
-  - 如果 node _ module 已经存在，那么将在 npm ci 开始安装之前自动删除它。
-  - 它永远不会写入 package.json 或任何包锁: 安装基本上是冻结的
+    - 必须有个 package-lock.json
+    - 如果包锁定中的依赖项与 package.json 中的依赖项不匹配，npm ci 将退出并出现错误，而不是更新包锁定。
+    - 一次只能安装整个项目,不能使用此命令添加单个依赖项。
+    - 如果 node _ module 已经存在，那么将在 npm ci 开始安装之前自动删除它。
+    - 它永远不会写入 package.json 或任何包锁: 安装基本上是冻结的
+    - npm ci --omit=dev 忽略安装开发依赖
+* update
+  - ncu（npm 检查更新）
+    ```bash
+        # 安装
+        npm install -g npm-check-updates
+        # 检查 package.json 的最新依赖项
+        ncu
+        # 检查单个版本
+        ncu vue
 
-  - npm ci --omit=dev 忽略安装开发依赖
+        #检查除某个包以外的所有包
+        ncu \!vue
+        ncu -x vue
+        ncu --reject vue
+
+        # 查看全局的安装包最新版本
+        ncu -g
+        
+        # 更新 package.json 的最新依赖项
+        ncu -u
+    ```
 * uninstall
     - npm uninstall  <package> 加-D 或-S 移除依赖
     - npm uninstall -g <package>
     + npm <command> -h  quick help on <command>
     + npm docs 包名 查看包的文档
+
 * npm rebuild 重新构建包：
     - 如：针对electron环境从新构建包
     - npm rebuild --runtime=electron --target=1.1.3 --disturl=https://atom.io/download/atom-shell --abi=102

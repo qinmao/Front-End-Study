@@ -4,54 +4,104 @@
 * getUserMedia 获取桌面上捕获的多媒体数据（视频、音频）
 * RTCPeerConnection 建立 P2P连接，传输多媒体数据
 * RTCDataChannel 传输数据
-## 捕获音视频(getUserMedia)
+
+## 音视频采集(getUserMedia)
+* 视频技术的相关概念参考
+  - [视频技术](./视频技术.md)
+* 摄像头：用于捕捉（采集）图像和视频。
+* 麦克风：
+   - 用于采集音频数据。它与视频一样，可以指定一秒内采样的次数，称为采样率。每个采样用几个 bit 表示，称为采样位深或采样大小。
+* 轨（Track）
+  - WebRTC 中的“轨”借鉴了多媒体的概念。火车轨道的特性你应该非常清楚，两条轨永远不会相交。“轨”在多媒体中表达的就是每条轨数据都是独立的，不会与其他轨相交，如 MP4 中的音频轨、视频轨，它们在 MP4 文件中是被分别存储的。
+* 流（Stream）：
+  - 可以理解为容器。在 WebRTC 中，“流”可以分为媒体流（MediaStream）和数据流（DataStream）。其中，媒体流可以存放 0 个或多个音频轨或视频轨；数据流可以存 0 个或多个数据轨。
+* getUserMedia 方法
   ```js
-    function handleStream (stream) {
-        const video = document.querySelector('#video')
-        video.srcObject = stream
-        video.onloadedmetadata = (e) => video.play()
-    }
+    var promise = navigator.mediaDevices.getUserMedia(mediaStreamConstraints);
+    // 如果 getUserMedia 调用成功，则可以通过 Promise 获得 MediaStream 对象，也就是说现在我们已经从音视频设备中获取到音视频数据了。
+    // 如果调用失败，比如用户拒绝该 API 访问媒体设备（音频设备、视频设备），或者要访问的媒体设备不可用，则返回的 Promise 会得到 PermissionDeniedError 或 NotFoundError 等错误对象。
+  ```
+* MediaStreamConstraints 参数
+  ```js
+    dictionary MediaStreamConstraints {
+        (boolean or MediaTrackConstraints) video = false,
+        (boolean or MediaTrackConstraints) audio = false
+    };
 
-    function handleError (e) {
-        console.log(e)
-    }
-     
-    async function getUserMedia(sourceId){
-       try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                audio: false,
-                // audio: {
-                //     mandatory: {
-                //         chromeMediaSource: 'desktop'
-                //     }
-                // },
-                video: {
-                    mandatory: {
-                        chromeMediaSource: 'desktop',
-                        // 获取整个桌面不要传
-                        // chromeMediaSourceId: sourceId,
-                        
-                        width: 1280,  // 视频的宽度
-                        height: 720,  // 视频高度
-                        // facingMode:   // 镜像模式
-                        // resizeMode    // 大小模式
-                        // aspectRatio:	比例
+    // 还可以通过 MediaTrackConstraints 进一步对每一条媒体轨进行限制
+    const mediaStreamContrains = {
+        video: {
+            frameRate: {min: 20},
+            width: {min: 640, ideal: 1280},
+            height: {min: 360, ideal: 720},
+            aspectRatio: 16/9
+        },
+        audio: {
+            // 开启回音消除、降噪以及自动增益功能。
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+        }
+    };
 
-                        // frameRate:{ max:30 } // 帧率
-                        // frameRate:15, 
+    // 其他参数
+    facingMode: （h5中使用）user 前置摄头 enviroment 后置 left 前置左、right前置右 
+    resizeMode: 是否允许调整图像大小
+    latency:  延迟大小
+    channalCount： 声道数
+    deviceId:     设备id 指定用哪个输出、输入设备
+    groupId:      设置组id
 
-                        // facingMode: 'enviroment', // 设置为后置摄像头 
-
-                    }
-                }
-            })
-            handleStream(stream)
-        } catch (e) {
-            handleError(e)
+  ```
+* 获取设备信息(设备检测):
+  - 如果存在多个摄像头、多个音频设备可以获取到
+    ```js
+        //判断浏览器是否支持这些 API
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            console.log("enumerateDevices() not supported.");
+            return;
         }
 
-    }
+        // 枚举 cameras and microphones.
+        navigator.mediaDevices.enumerateDevices()
+        .then(function(deviceInfos) {
+            //打印出每一个设备的信息
+            deviceInfos.forEach(function(deviceInfo) {
+                console.log(deviceInfo.kind + ": " + deviceInfo.label +
+                            " id = " + deviceInfo.deviceId);
+            });
+        })
+        .catch(function(err) {
+            console.log(err.name + ": " + err.message);
+        });
+    ```
+  - MediaDeviceInfo：它表示的是每个输入 / 输出设备的信息。包含以下三个重要的属性
+    1. deviceID，设备的唯一标识；
+    2. label，设备名称
+    3. kind，设备种类，可用于识别出是音频设备还是视频设备，是输入设备还是输出设备
+  - 注意：出于安全原因，除非用户已被授予访问媒体设备的权限（要想授予权限需要使用 HTTPS 请求），否则 label 字段始终为空   
+  - 案例:[音视频采集.html](./case/音视频采集.html)
+* 录制本地音视频
+  - MediaRecorder：
+  - 只能够实现一路视频和一路音视流的情况，一般在录制时一般不是录制音视频数据，而是录制桌面加音频
+   ```js
+    var mediaRecorder = new MediaRecorder(stream[, options]);
+    // 其参数含义如下：
+    // stream，通过 getUserMedia 获取的本地视频流或通过 RTCPeerConnection 获取的远程视频流。
+    // options，可选项，指定视频格式、编解码器、码率等相关信息，如 mimeType: 'video/webm;codecs=vp8'
+    // ondataavailable 事件。当 MediaRecoder 捕获到数据时就会触发该事件。通过它，我们才能将音视频数据录制下来。
+   ```
+* 抓取桌面
+  ```js
+    // 注意： 与 getUserMedia 采集的区别，在桌面采集的参数里却不能对音频进行限制了，也就是说，不能在采集桌面的同时采集音频
+    // //只有在 PC 下才能抓取桌面
+    const constraints={video: true}
+    const promise = navigator.mediaDevices.getDisplayMedia(constraints)
+    .then((stream)=>{
+        deskVideo.srcObject = stream;
+    }) .catch(handleError);
   ```
+
 ## 建立 P2P 连接(RTCPeerConnection)
 > RTCPeerConnection 是 WebRTC 实现网络连接、媒体管理、数据管理的统一接口。建立P2P连接需要用到 RTCPeerConnection 中的几个重要类：SDP、ICE、STUN/TURN。
 * SDP:会话描述信息 RTCSessionDescription
@@ -242,10 +292,12 @@
     - A 和 B 开始打洞，收集并通过 ws 交换 ice 信息；
     - 完成打洞后，A 和 B 开始为安全的媒体通信协商秘钥；
     - 至此， A 和 B 可以进行音视频通话。
+
 ## webRTC 原理
   - 由于网络环境复杂，两点之间建立连接可能会不成功，这时需要公网服务器上的 sturn/turn服务器协助建立连接。具体的过程是通过 sturn/turn 可以获得两个设备映射在公网上的ip和端口号，然后通过信令服务器告知双方。这个过程叫 p2p 打洞。Coturn 是一个实现 sturn/turn 协议的开源服务器
 
   涉及到信令服务器用于协调连接的建立和 SDP 交换。在实际应用中，还需要考虑 NAT 穿透
+
 ## 传输数据 (RTCDataChannel)
 * RTCDataChannelton 通过 RTCPeerConnection API可以建立点对点 P2P 互联，不需要中介服务器，延迟更低。
     ```js
@@ -283,6 +335,7 @@
         }; // 当对接创建数据通道时会回调该方法。
 
     ```
+
 ## NAT及ICE框架
 > ICE 集成了多种 NAT 穿越技术，比如 STUN、TURN，可以实现 NAT 穿透，在主机之间发现 P2P 传输路径机制。
 * 网络地址转换（ NAT）

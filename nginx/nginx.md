@@ -32,26 +32,28 @@
     # 优雅的停止：
     brew services quiet nginx
  ```
-+ 文件的位置
-  - nginx.conf 配置文件位置：/usr/local/etc/nginx/nginx.conf
-  - nginx 安装目录：/usr/local/Cellar/nginx
-  - nginx 网站目录：/usr/local/var/www
+  + 文件的位置
+    - nginx.conf 配置文件位置：/usr/local/etc/nginx/nginx.conf
+    - nginx 安装目录：/usr/local/Cellar/nginx
+    - nginx 网站目录：/usr/local/var/www
+
 * linux (需要加 systemctl)
   ```bash
     # 开机启动
     systemctl enable nginx
-    # 启动 
+    
+    # 启动和停止
     systemctl start nginx
-    # 查看 Nginx 运行状态：
-    systemctl status nginx
-
     systemctl stop nginx
 
+    # 查看 Nginx 运行状态：
+    systemctl status nginx
 
     # 热重启(重新加载配置文件,-s 表示发送信号)：
     nginx -s reload
     # 重启
     nginx -s reopen  
+
     # 停止
     nginx -s stop
 
@@ -62,7 +64,7 @@
     ps -ef | grep nginx
 
     # 强制停止
-    kill -9 nginx
+    kill -9 进程id
   ```
 ## nginx配置
 * nginx.conf 配置释义

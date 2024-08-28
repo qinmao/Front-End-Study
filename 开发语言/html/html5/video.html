@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Video</title>
+    </head>
+
+    <body>
+        <div class="video-wrapper">
+            <video
+                id="video"
+                width="320"
+                height="240"
+                src="./media/video/test.mp4"
+                controls
+                poster="./media/imgs/bg.png"
+            />
+        </div>
+        <script>
+            const video = document.querySelector("#video");
+
+            video.addEventListener("play", function () {
+                console.log("视频开始播放");
+            });
+
+            video.addEventListener("pause", function () {
+                console.log("视频暂停");
+            });
+
+            video.addEventListener("ended", function () {
+                console.log("视频播放完成");
+            });
+
+            video.addEventListener("timeupdate", function () {
+                // 获取当前视频播放时间（秒）
+                const currentTime = video.currentTime;
+                console.log("视频当前播放位置（秒）：", currentTime);
+
+                // 假设视频的帧率为30fps，计算当前帧索引
+                const frameRate = 30;
+                const frameIndex = Math.floor(currentTime * frameRate);
+
+                // 打印当前帧索引
+                console.log("Current frame index:", frameIndex);
+            });
+
+            video.addEventListener("loadedmetadata", function () {
+                console.log(
+                    "视频的元数据加载完成时触发，例如视频的时长和尺寸信息"
+                );
+                console.log(
+                    "视频尺寸（宽 x 高）：",
+                    video.videoWidth,
+                    "x",
+                    video.videoHeight,
+                    "视频时长（秒）：",
+                    video.duration
+                );
+            });
+
+            video.addEventListener("error", function () {
+                console.error("视频加载或播放时发生错误");
+            });
+        </script>
+    </body>
+</html>
