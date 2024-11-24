@@ -1,6 +1,6 @@
 # ffmpeg
   >ffmpeg 是一个开源的多媒体处理工具，广泛用于音频、视频和流媒体的处理、转码、录制和播放等任务。它提供了强大的命令行工具集，可以在不同的操作系统上运行。
-## 主要功能和用途
+## 主要功能和应用场景
 * 音视频转码和处理：
   - 支持几乎所有主流的音视频编解码器和格式，可以进行转码、压缩、裁剪、合并等操作。
   - 可以调整分辨率、帧率、比特率等参数，适应不同的播放环境和设备要求。
@@ -29,8 +29,8 @@
 * 输入设定
   + -f 
     - rawvideo: 声明输入格式为原始视频帧。
-  - -video_size [WIDTHxHEIGHT]: 设定输入视频的分辨率大小
-  - -framerate [FPS]: 输入视频的帧率，一般不设置默认是自动侦测
+  - -video_size  简写 -s [WIDTHxHEIGHT]: 设定输入视频的分辨率大小 
+  - -framerate  简写-r [FPS]: 输入视频的帧率，一般不设置默认是自动侦测 
   + -i: 指定输入的源
     - - 从标准输入读取
     - input_video.mp4: 输入视频文件的路径
@@ -49,7 +49,6 @@
   - -crf 23：视频质量设置，数值越低质量越高，取值范围一般是 0 到 51，推荐范围 18-28。
   - -g 60: 关键帧间隔，通常设置为帧率的倍数，例如帧率为30fps时设置为60。对于 HLS 流，关键帧设置很重要。
 
-  - -r 24    设置输出的帧率为 24 帧每秒
   + -pix_fmt：设置视频编码器使用的图像格式（如RGB还是YUV）
     - yuv420p:是一种颜色编码格式，常用于视频压缩和流式传输，尤其是在Web视频中常见
     - rgb24: 使用 RGB 色彩空间，每个像素使用 24 位（8 位红、8 位绿、8 位蓝）来表示。这种格式通常用于处理和编辑需要精确颜色表示的图像和视频。
@@ -60,7 +59,6 @@
   + -f 指定输出格式
     - flv
     - hls
-    - mpegts http://localhost:[PORT]/stream: 将流输出到HTTP服务器地址，替换为你的服务器地址和端口。这里将实时流作为MPEG-TS*数据流通过HTTP输出
   
   + hls 格式输出
     - -hls_time 10 设置 HLS 分段时长为 10 秒。
@@ -76,58 +74,51 @@
   ```bash
     # 输入设定：指定了输入文件的像素格式
     ffmpeg -i input.mp4 -pix_fmt yuv420p output.mp4
-
     # 输出设定：指定了输出文件或流的像素格式
     ffmpeg -i input.mp4 -c:v libx264 -pix_fmt yuv420p output.mp4
   ```
+  
+## 快速查看常用参数
+  ```bash
+  # 查看所有选项信息
+  ffmpeg --help full
 
-## 硬件加速
->在使用硬件加速时，确保您的系统上已经安装了相应的驱动程序和库
-* NVIDIA GPU 加速 (CUDA)
-  ```bash
-    ffmpeg -hwaccel cuda -i input.mp4 \
-       -c:v h264_nvenc -preset fast \
-       -c:a aac -b:a 128k \
-       -hls_time 4 -hls_list_size 6 -hls_flags delete_segments \
-       output.m3u8
-  ```
-* Intel QuickSync 加速
-  ```bash
-    ffmpeg -hwaccel qsv -c:v h264_qsv -i input.mp4 \
-       -c:a aac -b:a 128k \
-       -hls_time 4 -hls_list_size 6 -hls_flags delete_segments \
-       output.m3u8
-  ```
-* AMD GPU 加速 (AMF)
-  ```bash
-    ffmpeg -hwaccel amf -i input.mp4 \
-       -c:v h264_amf -preset fast \
-       -c:a aac -b:a 128k \
-       -hls_time 4 -hls_list_size 6 -hls_flags delete_segments \
-       output.m3u8
+  # 查看FLV的封装
+  ffmpeg -h muxer=flv
+
+  # 查看编码
+  ffmpeg -h encoder=libx264
+
+  # 查看 当前安装的 FFmpeg 中是否涵盖了 nvidia 的 H.264 编码器
+  ffmpeg -encoders|grep H.264
+
   ```
 
-## 音视频转码和处理
+## 应用：音视频转码和处理
   ```bash
     # 转码视频为H.264格式：
     ffmpeg -i input.mp4 -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 192k output.mp4
   ```
-  
-## 流媒体处理
+
+## 应用：录制和截取
   ```bash
-    # 将视频转换为HLS流：
-    ffmpeg -i input.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac -strict -2 -f hls output.m3u8
+    # Linux 采集本机摄像头的视频
+    ffmpeg -f v4l2 -i /dev/video0 -c:v libx264 -preset ultrafast -pix_fmt yuv420p output.mp4
 
-    # 使用ffmpeg将帧转换为实时流
-    ffmpeg -f rawvideo -pixel_format bgr24 -video_size 720x640 -framerate 30 -i - -c:v libx264 -preset fast -tune zerolatency -f mpegts http://localhost:[PORT]/stream
+    # macOS 采集本机摄像头的视频(未成功)
+    # 查找摄像头设备
+    ffmpeg -f avfoundation -list_devices true -i ""
+    # -r 30：设置帧率为 30fps,
+    # -t 10：设置录制时长为 10秒（可选）。
+    # -s 1920x1080 分辨率
+    ffmpeg -f avfoundation -i "0" -r 30 -t 10 output.mp4
 
-    # 使用硬件加速
-    ffmpeg -hwaccel cuda -f rawvideo -pixel_format bgr24 -video_size 720x640 -framerate 30 -i - -c:v h264_nvenc -preset fast -tune zerolatency -f mpegts http://localhost:[PORT]/stream
-  ```
+    # windows 
+    # 查看摄像头名称
+    ffmpeg -list_devices true -f dshow -i dummy
+    ffmpeg -f dshow -i video="你的摄像头名称" -c:v libx264 -preset ultrafast -pix_fmt yuv420p output.mp4
 
-## 录制和截取
-  ```bash
-    # 录制桌面视频:
+    # Linux 录制桌面视频:
     ffmpeg -f x11grab -framerate 30 -video_size 1920x1080 -i :0.0 output.mp4
 
     # 从视频中提取音频：
@@ -135,26 +126,104 @@
 
   ```
 
-## 音视频处理效果
-
-## 直播和流媒体服务器
+## 应用：流媒体处理
   ```bash
-    ffmpeg -re -i input_video.mp4 -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 60 -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv rtmp://your-streaming-server-url/your-stream-key
+    # 将视频转换为HLS流：
+    ffmpeg -i input.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac -strict -2 -f hls output.m3u8
+
+    # 使用ffmpeg将帧转换为实时流
+    # -f mpegts http://xxx.xxx 适用于基于 HTTP 的流媒体服务器，如 HLS 或 DASH。MPEG-TS 是一个容错性强的格式，适合网络传输和直播
+    # -f flv rtmp://IP/live/stream：适用于 RTMP 流媒体服务器。FLV（Flash Video）格式通常用于低延迟的实时流媒体传输，如直播流。
+    ffmpeg -f rawvideo -pixel_format bgr24 -video_size 720x640 -framerate 30 -i - -c:v libx264 -preset fast -tune zerolatency -f mpegts http://localhost:[PORT]/stream
+
+    # 推流
+    # 检测rtmp服务有没有在运行，没输出表示在运行
+    netstat -an | grep 1935
+
+    # -re：以实时速度读取输入（适用于推流）。
+    ffmpeg -re -i input_video.mp4 -c:v libx264 -preset veryfast -tune zerolatency  -pix_fmt yuv420p -f flv "rtmp://127.0.0.1/live/stream"
+
+    # mac 本机摄像头采集画面推流（只推画面）
+    #  -vf "hflip" 镜像 -video_size 简写 -s、  -framerate 简写 -r -an 禁用音频流 
+    # 输出 hls -f flv rtmp://127.0.0.1/hls/stream
+    ffmpeg -f avfoundation -r 25 -s 1280x720 -i "0" -c:v libx264 -preset ultrafast -tune zerolatency  -pix_fmt yuv420p  -an  -f flv rtmp://127.0.0.1/live/stream
+
+    # 远程监控摄像头
+    # 如：rtsp://username:password@camera_ip:port/stream
+    ffmpeg -i "<rtsp_url>" -c:v libx264 -preset ultrafast -tune zerolatency -f flv rtmp://127.0.0.1/live/stream
+
+    # 使用硬件加速
+    ffmpeg -hwaccel cuda -f rawvideo -pixel_format bgr24 -video_size 720x640 -framerate 30 -i - -c:v h264_nvenc -preset fast -tune zerolatency -f mpegts http://localhost:[PORT]/stream
   ```
 
-## 如何加快帧转流
-* 使用硬件加速 
-  - -hwaccel cuda 
-  - -c:v h264_nvenc -preset fast
-* 选择合适的编码器和参数：
-  - 通过调整编码参数如码率、GOP大小（Group of Pictures）、参考帧数等来优化转码速度和输出质量。
-* 分辨率和帧率调整：
-  - -vf scale=1280:720  设置输出分辨率为 1280x720
-* 优化分片设置：
-  - 调整 HLS 分片的大小和数量，可以影响整体生成速度和流畅度。通常较小的分片（如 2-10 秒）可以提高流的响应速度和适应性。
-* 并行处理和多线程：
-  - FFmpeg 支持多线程处理，可以通过设置 -threads 参数来指定线程数，以充分利用系统的多核处理能力。
-* 优化输出设置：
-  - 考虑使用 -hls_flags 参数来优化 HLS 输出设置，例如设置缓冲大小、预览时间等，以平衡速度和流畅度。
-* 优化服务器设置：
-  - 确保 HLS 服务器设置合理，能够有效地分发生成的流，避免瓶颈和延迟。
+## 应用：音视频处理效果
+  - TODO
+
+## 硬件加速
+>在使用硬件加速时，确保您的系统上已经安装了相应的驱动程序和库
+* NVIDIA GPU 加速 (CUDA)
+  ```bash
+    ffmpeg -i input.mp4 -c:v h264_nvenc -preset fast -b:v 5000k -f flv rtmp://server/stream
+
+  ```
+* Intel QuickSync 加速
+  ```bash
+    ffmpeg -i input.mp4 -c:v h264_qsv -preset fast -b:v 5000k -f flv rtmp://server/stream
+
+  ```
+* AMD VCE
+  ```bash
+    ffmpeg -i input.mp4 -c:v h264_amf -b:v 5000k -f flv rtmp://server/stream
+  ```
+
+## FFmpeg 中的模块
+* AvFormat
+  - 封装与解封装，传输协议的框架
+* Avcodec 
+  - 编码、解码的框架与子模块
+* Avfilter
+  - 滤镜模块与视频、音频、字幕的特效处理
+* Avdevice
+  - 输入、输出外设框架与设备模块
+* Swscale
+  - 视频图像的缩放与色彩转换
+* Swresample
+  - 音频的采样与重采样处理
+  
+## ffplay
+* 推流到媒体服务器后，拉流观看的方式
+```bash
+  # 直接播放摄像头的视频 Linux
+  ffplay -f v4l2 /dev/video0
+  # Macos
+  ffplay -f avfoundation -i "0" -vf "hflip" -framerate 25
+  # windows
+  ffplay -f dshow -i video="设备名称"
+
+  # 播放远程的摄像头画面 
+  # RTSP 端口通常是 554，HTTP 端口是 80 或 8080。
+  ffplay rtsp://<IP_ADDRESS>:<PORT>/
+  ffplay rtsp://username:password@<IP_ADDRESS>:<PORT>/
+
+  # 拉流
+  ffplay -vf "drawtext=text='%{eif\:mod(n\,60)\:d}':x=10:y=10:fontsize=24:fontcolor=white"  rtmp://127.0.0.1/live/stream  
+  ffplay http://localhost:8082/hls/stream/index.m3u8
+```
+
+## ffprobe
+> 多媒体信息分析器，它是 FFmpeg 提供的一个工具，能够用来分析音视频容器格式、音视频流信息、音视频包以及音视频帧等信息，在我们做音视频转码、故障分析时，这个工具提供很大的帮助
+* 常见用法
+  ```bash
+    # 基本文件信息
+    ffprobe filename.mp4
+
+    # 详细信息：
+    ffprobe -v verbose filename.mp4
+
+    # -show_streams 分析音视频流:以JSON格式输出分析信息
+    # -show_format 分析音视屏容器格式
+    # -show_packets 分析音视频包
+    # -show_frames  分析音视频帧
+    ffprobe -v quiet -print_format json -show_format -show_streams filename.mp4
+
+  ```

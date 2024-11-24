@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>音视频</title>
+        <style></style>
+    </head>
+    <body>
+        <!-- 生产环境需要：https -->
+        <!-- autoplay，表示当页面加载时可以自动播放视频；playsinline，表示在 HTML5 页面内播放视频，而不是使用系统播放器播放视频 -->
+        <video src="" id="video" autoplay playsinline></video>
+        <!-- 兼容性处理 -->
+        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+        <script>
+            const localVideo = document.querySelector("#video");
+
+            function downLoad(url, name) {
+                const oA = document.createElement("a");
+                oA.style.display = "none";
+                oA.download = name; // 设置下载的文件名，默认是'下载'
+                oA.href = url;
+                document.body.appendChild(oA);
+                oA.click();
+                oA.remove(); // 下载之后把创建的元素删除
+            }
+
+            function drawVideo(vdo) {
+                const cvs = document.createElement("canvas");
+                const ctx = cvs.getContext("2d");
+                cvs.width = vdo.videoWidth;
+                cvs.height = vdo.videoHeight;
+                // 对帧画面进一步处理：添加滤镜等等
+                // ctx.fillStyle = 'red';
+                // ctx.fillRect(10, 10, 180, 180);
+                ctx.drawImage(vdo, 0, 0, cvs.width, cvs.height);
+                // 将 canvas 内容转换为 JPEG 数据 URL
+                const dataURL = cvs.toDataURL("image/jpeg", 0.8); // 0.8 是 JPEG 的压缩质量
+                // document.body.appendChild(cvs);
+                return dataURL;
+            }
+
+            // 保存视频帧
+            function savebtnClick() {
+                const url = drawVideo(localVideo);
+                downLoad(url, "test.jpg");
+            }
+
+            // 录制本地音视频
+            let buffer, mediaRecorder;
+            function startRecord(stream) {
+                // 防止多次启动报错
+                if (mediaRecorder && mediaRecorder.state === "recording") {
+                    return;
+                }
+                buffer = [];
+                // 设置录制下来的多媒体格式
+                const options = {
+                    mimeType: "video/webm;codecs=vp8",
+                };
+                //判断浏览器是否支持录制
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                    console.error(`${options.mimeType} is not supported!`);
+                    return;
+                }
+
+                try {
+                    //创建录制对象
+                    mediaRecorder = new MediaRecorder(stream, options);
+                    // 当有音视频数据来了之后触发该事件
+                    mediaRecorder.ondataavailable = (e) => {
+                        if (e && e.data && e.data.size > 0) {
+                            buffer.push(e.data);
+
+                            // const blob = new Blob(buffer, {
+                            //     type: "video/webm",
+                            // });
+                            // const url = URL.createObjectURL(blob);
+                            // downLoad(url,'test.webm')
+                        }
+                    };
+
+                    // 开始录制 满10s 就发触发 ondataavailable
+                    // 设置一个毫秒级的时间片，这样录制的媒体数据会按照你设置的值分割成一个个单独的区块 提高效率
+                    mediaRecorder.start(10);
+                } catch (e) {
+                    console.error("Failed to create MediaRecorder:", e);
+                    return;
+                }
+            }
+
+            async function getDevices() {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                console.log("devices:", devices);
+            }
+
+            function gotLocalMediaStream(mediaStream) {
+                localVideo.srcObject = mediaStream;
+                // video.onloadedmetadata = (e) => video.play();
+            }
+
+            function handleLocalMediaStreamError(err) {
+                console.log("navigator.getUserMedia error: ", err);
+                if (
+                    err.name === "NotAllowedError" ||
+                    err.name === "PermissionDeniedError"
+                ) {
+                    // 用户拒绝了音视频权限，可以在此处提示用户开启权限
+                    console.log("用户拒绝了音视频权限,请点击允许");
+                } else if (
+                    err.name === "NotFoundError" ||
+                    err.name === "DevicesNotFoundError"
+                ) {
+                    // 没有检测到音视频设备
+                    console.log("没有检测到音视频设备");
+                } else {
+                    // 其他错误，可以进行相应处理
+                    console.log("其他错误");
+                }
+            }
+
+            // 获取本地摄像头采集的音视频
+            const mediaStreamContrains = {
+                // video: true,
+                video: {
+                    frameRate: { min: 20 },
+                    width: { min: 640, ideal: 1280 },
+                    height: { min: 360, ideal: 720 },
+                    aspectRatio: 16 / 9,
+                },
+                audio: false,
+                // audio: {
+                //     echoCancellation: true, // 开启回音消除
+                //     noiseSuppression: true, // 开启降噪
+                //     autoGainControl: true, // 开启自动增益
+                // },
+            };
+            navigator.mediaDevices
+                .getUserMedia(mediaStreamContrains)
+                .then(gotLocalMediaStream)
+                .catch(handleLocalMediaStreamError);
+
+            // 获取本地桌面：可选择窗口或者浏览器标签页或全屏
+            // navigator.mediaDevices
+            //     .getDisplayMedia({
+            //         // video: true,
+            //         video:{
+            //             cursor: 'always' // 显示光标
+            //         }
+            //     })
+            //     .then(gotLocalMediaStream)
+            //     .catch(handleError);
+        </script>
+    </body>
+</html>

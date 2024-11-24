@@ -749,7 +749,7 @@
 * 基本用法
   ```js
     const m = new Map();
-    const o = {p: 'Hello World'};
+    const o = { p: 'Hello World' };
 
     m.set(o, 'content')
     m.get(o) // "content"
@@ -758,7 +758,7 @@
     m.delete(o) // true
     m.has(o) // false
 
-    //Map 也可以接受一个数组作为参数。该数组的成员是一个个表示键值对的数组。
+    // Map 也可以接受一个数组作为参数。该数组的成员是一个个表示键值对的数组。
     const map = new Map([
         ['name', '张三'],
         ['title', 'Author']
@@ -1139,6 +1139,5 @@
         // ···
     };
   ```
-
 ## 详情参考
 - [详情参考](http://es6.ruanyifeng.com/)

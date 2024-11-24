@@ -33,14 +33,6 @@
   - 常见的是执行脚本：python myscript.py
 ## 执行过程
 * 源代码-> 解释器 -> 字节码-> python虚拟机 -> 执行
-* 交互和非交互解释环境
-  ```bash
-   # 非交互执行
-   python3 hello.py
-   # 交互执行
-   python3 -i hello.py
-
-  ```
 ## 基础语法
 ### 常见的数据类型
 * 数字类型
@@ -93,7 +85,26 @@
         for index, element in enumerate(arr):
             print(f"Index {index}: {element}")
 
+        # 排序
+        data = [
+            {"name": "Alice", "age": 30},
+            {"name": "Bob", "age": 25},
+            {"name": "Charlie", "age": 35}
+        ]
+
+        # 按照"age"字段升序排序
+        sorted_data = sorted(data, key=lambda x: x["age"])
+        # 按照"age"字段降序排序，缺失字段默认为 -1 或其他适当的值
+        sorted_data = sorted(data, key=lambda x: x.get("age", -1), reverse=True)
+
+        print(sorted_data)
+        # 输出: [{'name': 'Bob', 'age': 25}, {'name': 'Alice', 'age': 30}, {'name': 'Charlie', 'age': 35}]
+
+        # 修改原始列表并就地排序 就地按"age"字段升序排序
+        data.sort(key=lambda x: x["age"])
         
+        # 就地按"age"字段降序排序
+        data.sort(key=lambda x: x["age"], reverse=True)
 
     ```
   + tuple(元组)
@@ -163,8 +174,10 @@
     - del
 * 其他
   - 常量 None
-  - 逻辑值 True、false
+  - 逻辑值 True、False
   - 空集 "、（）、[]、{}、set() rang(0)
+* 类型转换
+  - TODO 
 ### 流程控制
 * 条件判断
   ```python
@@ -186,6 +199,13 @@
         print('500')
       case _:
         print('default')
+  ```
+* 三元表达式
+  - value_if_true if condition else value_if_false
+  ```python
+    x = 10
+    result = "Even" if x % 2 == 0 else "Odd"
+    print(result)  # 输出: Even
 
   ```
 * 格式化输出
@@ -195,6 +215,7 @@
 
     # 2 format 函数
     “{1} is {2} then {0}”.format("a","b","c")
+
     # 推荐 3 f-strings python3.6
     B="b1",a="1"
     f"{B}is {a}"
@@ -240,51 +261,49 @@
     # 自定义异常捕获
     class MyException(Exception):
         print('自定义异常')
-
     try:
         raise MyException
         except Exception as e:
             # 捕获指定异常后执行的代码
             print('发生异常了:',e)
 
+    # 导包的异常报错
+    try:
+        import onnxruntime
+    except ImportError:
+        raise ImportError(
+            "Unable to import dependency onnxruntime. "
+        )
   ```
 * 面向对象编程
 * 模块
-  - 自定义模块
-   ```py
-    # mymodule.py
-    def greet(name):
-        print(f"Hello, {name}!")
-    def add(a, b):
-        return a + b
-
-    # index.py
-    from mymodule import greet, add
-    greet("Bob")
-    result = add(2, 4)
-    print("Result:", result)
-
-
-    # 如果是导入：模块名称
-    if __name__=="__main__":
-        fun1()
-   ```
+  - 自定义模块见 demo_python 模块内容
+  - 自定义包发布见 demo_python 模块内容
 ### 进阶知识
 * 对象的比较复制
+
 * 参数的传递
+
 * 迭代器
+
 * 生成器
+
 * 装饰器
+
 * 元类
+
 * 操作符重载
+
 * 上下文管理器
+
 * 并发编程
-  - 多线程
-  - 多进程
+  - 见 demo_python 多线程
+  - 见 demo_python 多进程
 * 全局解释器锁
+
 * 垃圾回收机制
+
 * 和c++ 的混合使用
   - 使用 pythran 库将Python转换为c++
-
 ## 包管理
 * [pip使用](../../包管理/pip.md)

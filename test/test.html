@@ -5,102 +5,43 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>test</title>
-        <script>
-            // 题目1
-            // var tt = "aa";
-            // function test() {
-            //     alert(tt);
-            //     var tt = "dd";
-            //     alert(tt);
-            // }
-            // test();
-
-            // 题目2
-            // for (var index = 0; index < 10; index++) {
-            //     setTimeout(() => {
-            //         console.log(index);
-            //     }, 0);
-            // }
-            // for (let index = 0; index < 10; index++) {
-            //     setTimeout(() => {
-            //         console.log(index);
-            //     }, 0);
-            // }
-
-            // for (let index = 0; index < 10; index++) {
-            //     setTimeout(function(){
-            //         console.log(index);
-            //     }, 0);
-            // }
-
-            // for (var index = 0; index < 10; index++) {
-            //     (function(index){
-            //         setTimeout(function(){
-            //             console.log(index)
-            //         },0);
-            //     })(index);
-            // }
-
-            // 题目3
-            async function async1() {
-                console.log("async1 start");
-                await async2();
-                console.log("async1 end");
+        <style>
+            .item {
+                margin: 0 auto;
+                background: red;
+                /* 不知道具体宽度 */
+                width: 50%;
+                /* 存在兼容性问题，谷歌88-123+支持 */
+                aspect-ratio: 4/3;
             }
-            async function async2() {
-                console.log("async2");
+            .wrapper {
+                width: 50%;
+                margin: 0 auto;
+                background: red;
             }
-            setTimeout(function () {
-                console.log("setTimeout");
-            }, 0);
-            async1();
-            new Promise(function (resolve) {
-                console.log("promise1");
-                resolve();
-            }).then(function () {
-                console.log("promise2");
-            });
-            console.log("script end");
-
-            // 题目4
-            // function test(person) {
-            //     person.age = 26;
-            //     person = {
-            //         name: "yyy",
-            //         age: 30,
-            //     };
-            //     return person;
-            // }
-            // const p1 = {
-            //     name: "yck",
-            //     age: 25,
-            // };
-            // const p2 = test(p1);
-            // console.log(p1);
-            // console.log(p2);
-
-            // 定义两个时间戳（假设ts1和ts2为两个时间戳）
-            const ts1 = 1710320065900; // 第一个时间戳
-            const ts2 = 1710320125900; // 第二个时间戳
-
-            // 计算两个时间戳的差值（以毫秒为单位）
-            const timeDiffInMilliseconds = Math.abs(ts2 - ts1);
-            console.log("时间差（毫秒）: ", timeDiffInMilliseconds);
-
-            // 将毫秒转换为秒
-            const timeDiffInSeconds = timeDiffInMilliseconds / 1000;
-            console.log("时间差（秒）: ", timeDiffInSeconds);
-
-            // 将毫秒转换为分钟
-            const timeDiffInMinutes = timeDiffInMilliseconds / (1000 * 60);
-            console.log("时间差（分钟）: ", timeDiffInMinutes);
-
-            // 将毫秒转换为小时
-            const timeDiffInHours = timeDiffInMilliseconds / (1000 * 60 * 60);
-            console.log("时间差（小时）: ", timeDiffInHours);
-
-        </script>
+            .inner {
+                width: 100%;
+                padding-top: 75%;
+                height: 0;
+                position: relative;
+            }
+            .content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: green;
+            }
+        </style>
     </head>
 
-    <body></body>
+    <body>
+        <!-- <div class="item"><div> -->
+        <div class="wrapper">
+            <div class="inner">
+                <div class="content"></div>
+            </div>
+        </div>
+    </body>
 </html>

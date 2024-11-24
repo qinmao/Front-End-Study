@@ -2,10 +2,8 @@
 ## 数据类型
 * 7种原始类型（原始类型存储的都是值，是没有函数可以调用）
   + Boolean
-  + Null
-      - 空指针类型  没有指向任何一个对象
-  + Undefined
-    - 声明变量后不赋值
+  + Null:空指针类型  没有指向任何一个对象
+  + Undefined:声明变量后不赋值
   + Number
     - NaN 是 number 型 表示不是一个数字
       ```js
@@ -16,6 +14,7 @@
     - infinity(-infinity)表示无穷大 除数为0可得 infinity,-0 得到 -infinity
     + 非整数的运算存在的精度问题？
       ```js
+        // 小数运算不精确的根源主要在于计算机内部表示数字的方式以及浮点数的存储格式
         console.log( 0.1 + 0.2 == 0.3); // 0.30000000000000004 false
         console.log( 0.1 + 0.2 === 0.3); // false
         // 检查等式左右两边差的绝对值是否小于最小精度，才是正确的比较
@@ -57,7 +56,7 @@
     - 转布尔型：
     - 几种转换为 false: undefined NaN Null 0 -0 false "",其余全为true
     > tip:使用 parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不简单的转换,简单的类型转换Number(08)=8 会比parseInt 快
-* == vs ===(类型和值都相等)
+* 隐式类型转换
   + 如果对比双方的类型不一样的话，就会进行类型转换(判断流程如下)
     1. 首先会判断两者类型是否相同。相同的话就是比大小了
     2. 类型不相同的话，那么就会进行类型转换
@@ -94,29 +93,25 @@
   - 短路或：可以方便给变量赋初值
 ## 函数    
 * 函数有用的一些属性
-  + arguments 
-    - 伪数组对象
-    - 以数组形式，存储实参
-    - length 实参个数
-  + length: 定义形参的个数
+  - arguments 伪数组对象,存储实参
     ```js
-    // 1.
-    function b(x,y,z){
-        arguments[2]=10
-        alert(z) // 10
-    }
-    b(1,2,3) 
+        // 1.
+        function b(x,y,z){
+            arguments[2]=10
+            alert(z) // 10
+        }
+        b(1,2,3) 
 
-    // 2. 
-    function b(x,y,z){
-        z=10
-        alert(arguments[2]) // 10 
-    }
-    b(1,2,3)
+        // 2. 
+        function b(x,y,z){
+            z=10
+            alert(arguments[2]) // 10 
+        }
+        b(1,2,3)
     ```
 * 沙箱模式：
   - 防止全局变量和全局对象的污染，引出沙箱模式,实质就是匿名的自执行函数
-    ```javascript
+    ```js
       (function(global){
         // 代码块
         // 自执行
@@ -128,24 +123,72 @@
       }(window));
       // 一般开发插件时会用，如 jq 插件
     ```
+## 循环
+* break|continue 
+  - break 跳出循环，执行循环之后的代码
+  - continue 中断（循环中）的一个迭代，然后继续循环中的下一个迭代
+  ```js
+    for (let i = 0; i < 10; i++) {
+        console.log(i);
+        if (i === 5) {
+            console.log("条件满足，跳出循环！");
+            break;  // 当 i 等于 5 时，跳出循环
+        }
+    }
+    console.log("循环结束");
+
+    for (let i = 0; i < 10; i++) {
+        if (i === 5) {
+            console.log("跳过 i = 5");
+            continue;  // 当 i 等于 5 时，跳过当前迭代，继续下一个循环
+        }
+        console.log(i);  // 仅当 i 不等于 5 时才会打印
+    }
+    console.log("循环结束");
+
+  ```
+* 循环转递归公式
+  ```js
+   function demo1(){
+    // 前面的内容
+    for(初始代码；条件；后置代码){
+        // 循环体
+    }
+    // 后面的代码
+   }
+   function demo2(){
+        // 前面的内容
+      初始代码
+      function _m(){
+        if(!条件){
+            return
+        }
+        // 循环体
+        后置代码
+        _m()
+      }
+      _m()
+      // 后面的代码
+   }
+  ```
 ## js执行机制
 * 什么叫作用域：
-    - 指在程序中定义变量的区域，该位置决定了变量的生命周期。作用域就是变量与函数的可访问范围
-    - ES6之前只有2种作用域：全局和函数作用域，全局代码中任意位置都可以访问，函数只能在内部被访问，执行完销毁
+  - 指在程序中定义变量的区域，该位置决定了变量的生命周期。作用域就是变量与函数的可访问范围
+  - ES6之前只有2种作用域：全局和函数作用域，全局代码中任意位置都可以访问，函数只能在内部被访问，执行完销毁
 * 作用域链
   - 示例引出
     ```js
-    function bar() {
-        console.log(myName)
-    }
-    function foo() {
-        var myName = "极客邦"
-        bar()
-    }
-    var myName = "极客时间"
-    foo()
+        function bar() {
+            console.log(myName)
+        }
+        function foo() {
+            var myName = "极客邦"
+            bar()
+        }
+        var myName = "极客时间"
+        foo()
     ```
-  - 词法作用域：指作用域是由代码中函数声明的位置来决定的，由代码编译阶段就决定好的，和函数是怎么调用的没有关系。
+  - 词法作用域：函数声明的位置来决定的，由代码编译阶段就决定好的，和函数是怎么调用的没有关系。
   - 作用域链：通过作用域查找变量的链条称为作用域链。作用域链是由词法作用域决定的
   - 变量查找的过程：先在当前的执行上下文中查找，没有就去外部引用的执行上下文查找
 * 变量提升：js代码是按顺序执行的吗？
@@ -155,60 +198,55 @@
     - 确定变量的作用域。
     > 先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部
     ```js
-     function foo() {
-        var x = 'Hello, ' + y;
-        alert(x);
-        var y = 'Bob';
-     }
-     foo();
-     // 变量提升后代码：
-     function foo() {
-        var y; // 提升变量y的申明
-        var x = 'Hello, ' + y;
-        alert(x);
-        y = 'Bob';
-     }   
-     // hello undefined  
-     // 函数内变量的怪异声明模式:
-     function fun(){
-        num=10   // 没写var 就相当于全局变量
-     }
-     fun()
-     console.log(num) //10
+        function foo() {
+            var x = 'Hello, ' + y;
+            alert(x);
+            var y = 'Bob';
+        }
+        foo();
+        // 变量提升后代码：
+        function foo() {
+            var y; // 提升变量y的申明
+            var x = 'Hello, ' + y;
+            alert(x);
+            y = 'Bob';
+        }   
+        // hello undefined  
+        // 函数内变量的怪异声明模式:
+        function fun(){
+            num=10   // 没写var 就相当于全局变量
+        }
+        fun()
+        console.log(num) //10
     ```
 * 变量提升带来的问题：
   - 变量容易在不被察觉的情况下被覆盖掉
   - 本应销毁的变量没有被销毁
-     ```js
+    ```js
       function foo(){
-        for (var i = 0; i < 7; i++) {
-        }
+        for (var i = 0; i < 7; i++) {}
         console.log(i); 
         // 如果你使用 C 语言或者其他的大部分语言实现类似代码，在 for 循环结束之后，i 就已经被销毁了，但是在 js 代码中，i 的值并未被销毁，所以最后打印出来的是 7
         // 为了解决这些问题，ES6 引入了 let 和 const 关键字，从而使 JavaScript 也能像其他语言一样拥有了块级作用域
       }
       foo()
-     ```
-* es6是如何解决变量提升带来的缺陷
-  - 函数内部通过var声明的变量，在编译阶段全都被存放到变量环境里面了
-  - 通过let声明的变量，在编译阶段会被存放到词法环境（Lexical Environment）中
-  - 在函数的作用域块内部，通过let声明的变量没有被存放到词法环境中
-* var/let/const区别 
+    ```
+* var|let|const 区别 
    - var 在浏览器预解析时存在变量提升，未声明可以使用
    - let 不存在变量提升,未声明就使用，会报错（暂时性死区),只在代码块内有效
    - const 声明一个只读的常量。一旦声明常量的值就不能改变。
-    (对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指向实际数据的指针，const只能保证这个指针是固定的（即总是指向另一个固定的地址），至于它指向的数据结构是不是可变的，就完全不能控制了)
+    (对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指向实际数据的指针，const 只能保证这个指针是固定的（即总是指向另一个固定的地址），至于它指向的数据结构是不是可变的，就完全不能控制了)
    - 综合示例考察
-    ``` js
+    ```js
         for (var index = 0; index < 10; index++) {
                 setTimeout(() => {
                     console.log(index)
                 },0); 
         }
-        // 涉及到js 执行机制 执行栈同步执行完，把异步队列拿到栈执行10次 
-        // 输出10 次10 
+        // 涉及到 js 执行机制 执行栈同步执行完，把异步队列拿到栈执行10次 
+        // 输出10次10 
 
-        // 依次输出 0到9
+        // 依次输出 0 到 9
         for (let index = 0; index < 10; index++) {
             setTimeout(function(){
                 console.log(index);
@@ -236,7 +274,6 @@
     - 调用栈就是用来管理函数调用关系的一种栈结构
     - js 引擎追踪函数执行的一个机制
     - 开发中的使用：在浏览器soucre中打上一个断点，当执行该函数时，通过 call stack 查看当前调用栈的情况 anonymous 是全局的函数入口 或者通过 console.trace() 打印出当前函数的调用关系
-
   + 为什么会出现栈溢出的问题
     - 调用栈是有大小的，当入栈的执行上下文超过了，js 引擎就会报栈溢出的错误
     - 使用递归不当会导致该问题，所以要明确终止条件
@@ -276,40 +313,40 @@
 * 闭包
   - 写法示例：
     ```js
-    function foo() {
-        var myName = "极客时间"
-        let test1 = 1
-        var innerBar = {
-            getName(){
-                console.log(test1)
-                return myName
-            },
-            setName(newName){
-                myName = newName
+        function foo() {
+            var myName = "极客时间"
+            let test1 = 1
+            var innerBar = {
+                getName(){
+                    console.log(test1)
+                    return myName
+                },
+                setName(newName){
+                    myName = newName
+                }
             }
+            return innerBar
         }
-        return innerBar
-    }
-    var bar = foo()
-    bar.setName("极客邦")
-    bar.getName()
-    console.log(bar.getName())
-      
-    
-    var bar = {
-        myName:"time.geekbang.com",
-        printName: function () {
-            console.log(myName)
-        }    
-    }
-    function foo() {
-        let myName = "极客时间"
-        return bar.printName
-    }
-    let myName = "极客邦"
-    let _printName = foo()
-    _printName()
-    bar.printName()
+        var bar = foo()
+        bar.setName("极客邦")
+        bar.getName()
+        console.log(bar.getName())
+        
+        
+        var bar = {
+            myName:"time.geekbang.com",
+            printName: function () {
+                console.log(myName)
+            }    
+        }
+        function foo() {
+            let myName = "极客时间"
+            return bar.printName
+        }
+        let myName = "极客邦"
+        let _printName = foo()
+        _printName()
+        bar.printName()
     ```
   - 定义：根据词法作用域的规则，内部函数总是可以访问其外部函数中声明的变量，当通过调用一个外部函数返回一个内部函数后，即使该外部函数已经执行结束了，但是内部函数引用外部函数的变量依然保存在内存中。
   + 闭包使用中的问题：
@@ -429,8 +466,8 @@
     ``` 
 * 对象的属性
   + 两种访问方式：
-    - obj.propertyName  
-    - obj["propertyName"] 遍历属性并赋值时常用到  
+    - obj.propertyName  底层调用get
+    - obj["propertyName"] 遍历属性并赋值时常用到 底层调用get区别在于 会判断propertyName是不是symbol,是返回，否转成String
   + 检测:(hasOwnProperty)
     - 语法：<对象>.hasOwnProperty('propertyName')
     - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
@@ -448,16 +485,16 @@
             },
             xyz: []
         };
-    // 使用可选链操作符
-    // 如果任何中间属性不存在或为空，value 将为 undefined
-    const value1 = obj?.foo?.bar?.baz; 
+        // 使用可选链操作符
+        // 如果任何中间属性不存在或为空，value 将为 undefined
+        const value1 = obj?.foo?.bar?.baz; 
 
-    // 除了对属性的检查，还可以用于对数组下标及函数的检查
-    const value2 = obj?.xyz?.[0]?.fn?.();
-    
-    // 传统写法 需要手动检查每个属性
-    const value1 = obj && obj.foo && obj.foo.bar && obj.foo.bar.baz; 
-    const value2 = obj && obj.xyz && obj.xyz[0] && obj.xyz[0].fn && obj.xyz[0].fn();
+        // 除了对属性的检查，还可以用于对数组下标及函数的检查
+        const value2 = obj?.xyz?.[0]?.fn?.();
+        
+        // 传统写法 需要手动检查每个属性
+        const value1 = obj && obj.foo && obj.foo.bar && obj.foo.bar.baz; 
+        const value2 = obj && obj.xyz && obj.xyz[0] && obj.xyz[0].fn && obj.xyz[0].fn();
 
     ```
   + 空值合并操作符(??)
@@ -497,6 +534,13 @@
 * Math.round(x) 四舍五入
 ## JSON 转换 
 * object 转 string:JSON.stringify()
+  ```js
+    // 语法
+    JSON.stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string (+1 overload)
+    
+    // 第二个参数 null 表示不对结果进行任何替换，第三个参数 2 用于美化输出
+    console.log(JSON.stringify(treeData, null, 2))
+  ```
 * string 转 object:JSON.parse()   
 ## URI编码解码
 * URI 字符串的编码解码
@@ -504,12 +548,9 @@
     - decodeURI
 * URI 组件编码解码
     - encodeURIComponent
-## 循环：break/continue
-* break：跳出循环，执行循环之后的代码
-* Continue：发生指定的条件，中断（循环中）的一个迭代，然后继续循环中的下一个迭代
 ## setTimeout|setInterval
 * js中的计时器能否精确计时？为什么
-  - 硬件 层面不可能
+  - 硬件: 层面不可能
   - 系统：操作系统的计时
   - 标准w3c：>=5的嵌套层级，最小4ms
   - 事件循环:回调函数执行时，必须等待执行栈

@@ -1,12 +1,37 @@
 # Fetch
-  > Fetch API 提供了一个 JavaScript 接口，用于访问和操纵 HTTP 管道的一些具体部分，例如请求和响应。
-  > 它还提供了一个全局 fetch 方法，该方法提供了一种简单，合理的方式来跨网络异步获取资源。
+  > Fetch API 提供了一个 JavaScript 接口，用于访问和操纵 HTTP 管道的一些具体部分，例如请求和响应。它还提供了一个全局 fetch 方法，该方法提供了一种简单，合理的方式来跨网络异步获取资源。
 
 ## 与 xhr 的区别
-  - Fetch 默认情况下不会发送同源的 Cookie，需要设置 fetch(url, {credentials: 'include'})
-  - 服务器返回 400，500 等错误码时并不会 reject，只有网络错误导致请求不能完成时，fetch 才会被 reject。
-  - IE 均不支持原生 Fetch
+* Fetch 默认情况下不会发送同源的 Cookie，需要设置 fetch(url, {credentials: 'include'})
+* 服务器返回 400，500 等错误码时并不会 reject，只有网络错误导致请求不能完成时，fetch 才会被 reject。
+* IE 均不支持原生 Fetch
 
+## 数据流式读取
+  ```js
+    async function sendPost(){
+        // 第一个 awiat 等待的是请求头
+        const response = await fetch('https://example.com/profile/avatar', {
+            method: 'POST',
+            body: formData
+        })
+        // 第二个事请求体
+        // const resJson= await response.json()
+         const reader=response.body.getReader()
+         // 解码器
+         const textDecoder=new TextDecoder()
+         while(true){
+            const {done,value}= await reader.read()
+            if(done){
+                break
+            }
+            const txt=textDecoder.decode(value)
+            console.log(done,txt)
+         }
+         
+    }
+
+  ```
+  
 ## 几种使用方式
 ```js
     // 检测请求是否成功

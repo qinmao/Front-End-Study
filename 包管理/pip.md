@@ -58,8 +58,8 @@
   pip download -d pippackage/ -r requirements.txt
 
   # 进入虚拟环境离线安装包：
-  pip install --no-index --find-links=pipPackage xx1 xx2
-  pip install --no-index --find-links=pipPackage -r requirements.txt
+  pip install --no-index --find-links=pippackage xx1 xx2
+  pip install --no-index --find-links=pippackage -r requirements.txt
 ```
 ## 安装需要编译的包
   - TODO

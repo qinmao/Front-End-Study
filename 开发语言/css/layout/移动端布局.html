@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>移动端基本布局-首尾固定中间自适应</title>
+        <style>
+            .page-wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 400px;
+                height: 400px;
+            }
+            header {
+                height: 50px;
+                background-color: #f66;
+            }
+            footer {
+                height: 50px;
+                background-color: #66f;
+            }
+            main {
+                flex: 1;
+                background-color: #3c9;
+                overflow-y: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page-wrapper">
+            <header></header>
+            <main></main>
+            <footer></footer>
+        </div>
+    </body>
+</html>

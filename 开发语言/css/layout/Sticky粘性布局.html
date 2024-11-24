@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sticky粘性布局</title>
+        <style>
+            dl {
+                border: 1px solid red;
+            }
+            dt {
+                position: sticky;
+                top: 0px;
+                /* 
+                top:0 是相对于谁？
+                1. dt的运动空间在父元素中
+                2. top=0 相对于视口的
+                3. 如果给父元素设置 overflow 这永远不会top=0这个阈值出现，也就不会吸附
+                */
+                padding-left: 40px;
+                height: 40px;
+                background-color: aliceblue;
+            }
+            dd {
+                width: 200px;
+                height: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="demo">
+            <dl>
+                <dt>a</dt>
+                <dd>a1</dd>
+                <dd>a2</dd>
+                <dd>a3</dd>
+                <dd>a4</dd>
+                <dd>a5</dd>
+                <dd>a6</dd>
+                <dd>a7</dd>
+                <dd>a8</dd>
+            </dl>
+            <dl>
+                <dt>b</dt>
+                <dd>b1</dd>
+                <dd>b2</dd>
+                <dd>b3</dd>
+                <dd>b4</dd>
+                <dd>b5</dd>
+                <dd>b6</dd>
+                <dd>b7</dd>
+                <dd>b8</dd>
+            </dl>
+
+            <dl>
+                <dt>c</dt>
+                <dd>c1</dd>
+                <dd>c2</dd>
+                <dd>c3</dd>
+                <dd>c4</dd>
+                <dd>c5</dd>
+                <dd>c6</dd>
+                <dd>c7</dd>
+                <dd>c8</dd>
+            </dl>
+        </div>
+    </body>
+</html>

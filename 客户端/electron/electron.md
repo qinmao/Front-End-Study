@@ -12,8 +12,6 @@
   - 预编译的 ia32(i686) 和 x64(amd64) 版本 Electron 二进制文件都是在
   Ubuntu 12.04 下编译的
   - arm 版的二进制文件是在 ARM v7（硬浮点 ABI 与Debian Wheezy 版本的 NEON）下完成的。
-  
-* Electron 将在 Electron23 中开始结束 Windows 7, Windows 8 和 Windows 8.1 的支持。
 ## 发展历史
 * electron 的由来
   - 早期想开发一个桌面的GUI软件，希望能在Windows、Linux、和Mac 平台上运行，可选的框架不多，主要有GTK、Qt、wxWidgets。这三个框架都是C/C++ 开发的。受限于语言开发效率的限制，完成快速开发不太现实，对前端同学来说十分不友好
@@ -35,11 +33,27 @@
 * 当前的版本
   - electron 版本迭代的速度非常快,截止2020年12月6
   ![当前最新版本](./imgs/版本说明.png)
-  - electron v23.0.0 及以上版本需要windows10系统 
 * 能力:
   - 自定义代理
   - 截获网路请求
   - 注入脚本到目标网站
+## 安装
+  ```bash
+    # 安装最新版
+    npm install electron -D
+
+    # 指定版本位数
+    npm install --arch=ia32 electron -D
+
+    # 指定平台
+    npm install --platform=win32 electron -D
+
+    # 兼容Windows7及32位系统
+    # Electron23 中开始结束 Windows 7, Windows 8 和 Windows 8.1 的支持。
+    yarn add  electron@22
+
+    npm install  electron@22
+  ```
 ## 生态
 * electron-builder 是Electron的构建工具，提供自动下载、自动构建、自动打包、自动升级
   - electron-builder 比 electron-packager支持更多的平台，同时也支持自动更新
@@ -503,21 +517,10 @@
    powerSaveBlocker.start("prevent-display-sleep");
   ```
 ## 打包
-* ![打包](./imgs/构建.png)
-* electron-builder 打包过程
-  - 收集配置信息：如图标、应用名、应用id、附加资源，没有使用默认的
-  - 安装依赖
-  - 生成asar
-  - 准备二进制文件
-  - 准备附加资源
-  - 修改可执行程序：修改 electron.exe 如图标、应用名、应用id、附加资源
-  - 应用签名：如果指定了签名信息，会使用 winCodeSign 的工具来为可执行文件签名，目的是防止分发时被篡改
-  - 压缩资源
-  - 生成卸载程序
-  - 生成安装程序
+* [应用-构建打包](./应用-构建打包.md)
 ## 更新
 * 使用 electron-update
-  - mac:   把 xxx-mac.zip、xxx.dmg、latest.yaml 三个文件到升级服务器
+  - mac: 把 xxx-mac.zip、xxx.dmg、latest.yaml 三个文件到升级服务器
   - windows 把xxx-setup.exe 和 latest.yaml 两个文件放到升级服务器
   - linux  把 xxx.AppIamge 和 latest.yaml 两个文件放到升级服务器
 ## 监控

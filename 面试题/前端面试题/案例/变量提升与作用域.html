@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>test</title>
+        <script>
+            // 题目1
+            // function bar() {
+            //     console.log(myName);
+            // }
+            // function foo() {
+            //     var myName = "foo";
+            //     bar();
+            // }
+            // var myName = "test";
+            // foo();
+
+            // 题目2
+            var tt = "aa";
+            function test() {
+                console.log(tt);
+                var tt = "dd";
+                console.log(tt);
+            }
+            test();
+
+            // 题目3
+            // for (var index = 0; index < 10; index++) {
+            //     setTimeout(() => {
+            //         console.log(index);
+            //     }, 0);
+            // }
+            // for (let index = 0; index < 10; index++) {
+            //     setTimeout(() => {
+            //         console.log(index);
+            //     }, 0);
+            // }
+            // for (let index = 0; index < 10; index++) {
+            //     setTimeout(function () {
+            //         console.log(index);
+            //     }, 0);
+            // }
+            // for (var index = 0; index < 10; index++) {
+            //     (function (index) {
+            //         setTimeout(function () {
+            //             console.log(index);
+            //         }, 0);
+            //     })(index);
+            // }
+        </script>
+    </head>
+
+    <body></body>
+</html>

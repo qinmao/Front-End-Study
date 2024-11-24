@@ -11,7 +11,7 @@
 ## 安装
 * windows 直接官网下载安装包
   - 官网下载太慢可以到镜像站去下载
-  - 镜像站：https://registry.npmmirror.com/binary.html?path=python/3.8.10/
+  - 镜像站：https://registry.npmmirror.com/binary.html?path=python/3.12.5/
 * mac
   - 方式一：直接下载Mac安装包 https://registry.npmmirror.com/binary.html?path=python/
   - 方式二：homebrew 安装
@@ -115,92 +115,7 @@
     - 在 Unix 或 MacOS 上激活: source .venv/bin/activate 
   3. 在虚拟环境下安装包： pip install xxx
   4. 撤销虚拟环境：终端输入 deactivate
-* Conda
-  > 开源的包管理和环境管理系统，支持多种编程语言（包括 Python、R 等），不仅可以管理 Python 包，还可以管理其他软件包和依赖项。
-  + 安装:有两种方式
-    - Anaconda： 包含了大量常用的数据科学包，适合需要一站式解决方案的用户。
-    - Miniconda：Miniconda 只包含 Conda 本身和 Python 可以按需安装其他包
-   ```bash
-     # Linux 安装
-     bash Anaconda3-latest-Linux-x86_64.sh
-   ```
-  - 验证：conda --version
-  - 换源：
-    ```bash
-
-      # 查看源
-      conda config --show channels
-
-      conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-      conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-
-      conda config --add channels conda-forge
-      # 更换镜像源后，执行以下命令更新所有包：
-      conda update --all
-    ```
-  - 常用命令
-    ```bash
-        # 创建新环境
-        conda create --name py3.12 python=3.12
-        # 查找可用的 python3
-        conda search python
-
-        # 激活新环境
-        conda activate py3.12
-        # 删除环境
-        conda remove --name py3.12 --all
-
-        # 安装包,也可以使用pip安装包：
-        conda install numpy
-        conda remove xxx
-        conda update xxx
-
-        # 根据依赖关系批量安装
-        conda install --file requirements.txt
-
-        # 查看安装包的信息
-        conda list cudatoolkit
-
-        # 列出所有环境
-        conda env list
-
-        # 退出当前环境
-        conda deactivate
-        # 取消每次启动自动激活conda的基础环境 true 恢复
-        conda config --set auto_activate_base false
-
-        # 更新Conda
-        conda update conda
-
-        # 导出环境配置.yml 文件
-        conda env export > environment.yml
-        # 在新的机器上以你的导出的环境文件创建新环境
-        conda env create -f environment.yml
-
-    ```
-* Conda 离线环境安装
-  ```bash
-    # 在有网环境安装 conda-pack
-    # conda-pack 是一个用于打包 Conda 环境的工具，它可以将整个 Conda 环境及其依赖项打包成一个压缩文件，便于在不同环境之间传输和部署。
-    # conda-forge  是由全球社区维护和驱动的项目，软件包更新速度快
-    conda install conda-forge
-
-    # 表示从 conda-forge 频道安装 conda-pack
-    conda install -c conda-forge conda-pack
-    
-    conda install -c conda-forge ffmpeg
-
-    # 1. 在有网络环境打包环境
-    conda pack -n py3.12 -o py3.12.tar.gz
-
-    # 2. 解压虚拟环境压缩包，在生产环境上
-    cd /root/anaconda3/envs/ # cd到anaconda的envs目录
-    mkdir py3.12
-    tar -xzvf py3.12.tar.gz -C py3.12
-
-    # 3. 测试
-    conda env list
-  ```
+* [Conda](./conda.md)
 ## Python 的版本管理(类似于nvm)
 * brew 安装 pyenv 来管理 python 的版本
   ```bash

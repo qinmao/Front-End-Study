@@ -1,14 +1,14 @@
 # js原型
 ## 什么是原型？
   - 函数对象的 prototype 属性所引用的对象。
-  - 声明一个函数时，原型就随之而产生。此时默认原型 是一个空对象。但是具有一个默认的属性constructor，该属性指向其构造函数
+  - 声明一个函数时，原型就随之而产生。此时默认原型 是一个空对象。但是具有一个默认的属性 constructor，该属性指向其构造函数
 ## 原型的特性：
-  + 在原型上的成员(属性和方法),都可以直接被其实例访问，object 是基原型
+  + 在原型上的成员(属性和方法),都可以直接被其实例访问，Object 是基原型
   + 实例不可以直接修改原型上的任何成员
   + 动态性：
     - 如果在原有的原型上扩展成员，会直接反应到 已创建的对象和之后创建的对象上。
     - 如果替换了原有的原型，新原型的成员 在之前已创建的对象是不能访问到的，而在之后创建的对象是可以访问到的。
-    - 如果置换了原型，就可能会在新的原型上丢失默认的constructor属性,如果想要其有该属性，就只能自己手动添加上。
+    - 如果置换了原型，就可能会在新的原型上丢失默认的 constructor 属性,如果想要其有该属性，就只能自己手动添加上。
   + 所有的实例 只能共享一个原型。
 ## 获取原型的方式：
   - 通过函数： <fnName>.prototype
@@ -21,10 +21,10 @@
   - 原型对象都包含一个指向构造函数的指针,
   - 而实例(instance)都包含一个指向原型对象的内部指针.
 ## 原型的对象指向一个实例，原型链的过程?
-  -  constructor1.prototype = instance2
-    // 试图引用 constructor1 构造的实例instance1的某个属性 p1
-  - 首先会在instance1内部属性中找一遍;
-  - 接着会在instance1.__proto__(constructor1.prototype)中找一遍,而constructor  prototype 实际上是instance2, 也就是说在instance2中寻找该属性p1;
+  - constructor1.prototype = instance2
+    试图引用 constructor1 构造的实例instance1的某个属性 p1
+  - 首先会在 instance1 内部属性中找一遍;
+  - 接着会在 instance1.__proto__(constructor1.prototype)中找一遍,而constructor  prototype 实际上是instance2, 也就是说在instance2中寻找该属性p1;
   - 如果instance2中还是没有,此时程序不会灰心,它会继续在instance2.__proto  (constructor2.prototype)中寻找...直至Object的原型对象
   > 搜索轨迹: instance1--> instance2 --> constructor2.prototype…-->Objec  prototype
 ## 如何判断原型和实例的关系？
@@ -32,7 +32,6 @@
     - 语法：<对象> instanceof 函数
     - 功能：判断对象是否为指定函数的实例
     - 运算规则:若函数的原型，出现在该对象的原型链上 表达式返回true 否则false 
-
   + isPrototypeOf
     - 语法：<对象a>.isPrototypeOf(对象b)
     - 功能：判断对象a是不是对象b的原型
@@ -86,7 +85,7 @@
         // 优点: 构造函数可以传参，不会与父类引用属性共享，可以复用父类的函数
         // 缺点: 就是在继承父类函数的时候调用了父类构造函数，导致子类的原型上多了不需要的父类属性，存在内存上的浪费
     ```
-  - es5 提供的Object.create(obj) 的经典继承   
+  - es5 提供的 Object.create(obj) 的经典继承   
     ```js
         var obj = Object.create(obj1);
         // 原理是置换原型
@@ -108,6 +107,7 @@
        function Parent(value) {
            this.val = value
        }
+       
        Parent.prototype.getValue = function() {
            console.log(this.val)
        }

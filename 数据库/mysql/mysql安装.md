@@ -2,27 +2,22 @@
 ## centos7 安装 mysql(8.0.18)（使用yum安装）
 * 配置 mysql 的 yum 源
   - 在mysql 官网找到对应的源 https://dev.mysql.com/downloads/repo/yum/
-  - 下载 yum 源
-   ```
-     wget 'https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm' 
-   ```
-  - 安装yum 源 
-   ```
-     rpm -Uvh mysql80-community-release-el7-3.noarch.rpm
-   ```
-  - 查看有哪些版本的 mysql
-  ```
-   yum repolist all | grep mysql
-  ```
-* 安装
-  ```
+   ```bash
+    # 下载 yum 源
+    wget 'https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm' 
+    
+    # 安装yum 源 
+    rpm -Uvh mysql80-community-release-el7-3.noarch.rpm
+   
+    # 查看有哪些版本的 mysql
+    yum repolist all | grep mysql
+
     # 检查是否有老版本,有干掉
     yum list installed | grep mysql
     yum -y remove xxx
 
     # 安装
     yum install -y mysql-community-server
-
   ```
 * 设置登录
   - 找到首次生成的密码，登录
@@ -39,15 +34,15 @@
     - 开放云服务器3306端口
     - 配置可远程访问
     ```bash
-     # 修改 host为 %,并刷新权限
-     use mysql;
-     select host, user, authentication_string, plugin from user
-     GRANT ALL ON *.* TO 'root'@'%';
-     flush privileges;
-  
-     # 查看是否修改好
-     use mysql;
-     select host, user, authentication_string, plugin from user
+        # 修改 host为 %,并刷新权限
+        use mysql;
+        select host, user, authentication_string, plugin from user
+        GRANT ALL ON *.* TO 'root'@'%';
+        flush privileges;
+    
+        # 查看是否修改好
+        use mysql;
+        select host, user, authentication_string, plugin from user
     ```
 * CentOS 命令
  ```bash
@@ -77,13 +72,13 @@
 * 服务启动或停止
   - 方式一：cmd中运行 services.msc 在服务中找到mysql服务右键启动或停止
   - 方式二：命令：
-    ```
+    ```bash
       net stop mysql
       net start mysql
     ``` 
 ## mac
-* 官网下载dmg
-* 推荐 Homebrew 安装（更改成国内镜像）
+* 方式一：官网下载 dmg
+* 方式二：推荐 Homebrew 安装（更改成国内镜像）
  ```bash
     # 安装最新
     brew install mysql 
@@ -94,8 +89,12 @@
     # 查看版本
     mysql -V
 
+    # 安装 MySQL9 
+    # 运行以下命令启动 MySQL 安全脚本，该脚本将帮助你设置 root 密码和其他安全选项：
+    mysql_secure_installation
+
     # 登录默认没有密码
-    mysql -uroot
+    mysql -u root -p
 
     # 登录成功后，你可以使用以下命令来设置 root 用户的密码。将 your_new_password 替换为你想要设置的密码。
     ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_new_password';
@@ -106,19 +105,22 @@
     # 刷新权限
     FLUSH PRIVILEGES;
 
-
-    # 服务状态
-    mysql.server status
+    # brew 中服务的命令
+    brew services list
 
     # 开始服务
     brew services start mysql
-    # 停止服务
-    brew services stop mysql
     brew services restart mysql
 
-    # 前台启动服务（关闭命令窗口停止服务)
-    mysql.server start
-    # 停止服务：
-    mysql.server stop
+    # 停止服务
+    brew services stop mysql
 
   ```
+## 卸载
+```bash
+   # mac 
+   brew uninstall mysql
+   # 移除配置文件
+   /usr/etc/my.cnf
+   /usr/local/var/mysql
+```
