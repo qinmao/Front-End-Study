@@ -17,6 +17,7 @@
 ## 生命周期
 * destroyed 生命周期选项被重命名为 unmounted
 * beforeDestroy 生命周期选项被重命名为 beforeUnmount
+
 ## 全局API
 * createApp
   ```js
@@ -65,7 +66,7 @@
   - $on，$off 和 $once 实例方法已被移除
 * 过滤器
   - 建议用方法调用或计算属性来替换
-* $children 当前实例的直接子组件 $refs代替
+* $children 当前实例的直接子组件 $refs 代替
 * Vue.extend 移除 defineComponent替代
 * 全局函数 set 和 delete 以及实例方法 $set 和 $delete。基于代理的变化检测已经不再需要它们了。
 ## 新增变化
@@ -192,7 +193,7 @@
     
     ```
 * Teleport 
-  - 例子说明:在子组件Header中使用到Dialog组件，此时Dialog就被渲染到一层层子组件内部，处理嵌套组件的定位、z-index和样式都变得困难。我们希望继续在组件内部使用Dialog,又希望渲染的DOM结构不嵌套在组件的DOM中.我们可以用 <Teleport> 包裹 Dialog, 此时就建立了一个传送门，可以将Dialog渲染的内容传送到任何指定的地方。
+  - 例子说明:在子组件Header中使用到Dialog组件，此时Dialog就被渲染到一层层子组件内部，处理嵌套组件的定位、z-index和样式都变得困难。我们希望继续在组件内部使用 Dialog,又希望渲染的DOM结构不嵌套在组件的DOM中.我们可以用 <Teleport> 包裹 Dialog, 此时就建立了一个传送门，可以将Dialog渲染的内容传送到任何指定的地方。
   - 使用案例
     ```html
         <body>

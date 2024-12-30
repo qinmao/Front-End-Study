@@ -116,7 +116,7 @@
   - ④ EventLoop 相关API:SetTimeout、SetInterval、SetImmediate
   - ⑤ Buffer数据类型和全局对象 global
 * 如何引入外部模块
-  - 引入外部模块有两种规范 Commonjs(早期es没有模块，nodejs 中的定义的模块规范) 和 ES的modules(es 标准)， 推荐使用 es 标准库模块。
+  - 引入外部模块有两种规范 Commonjs(早期es没有模块，nodejs 中的定义的模块规范) 和 ES的 modules(es 标准)， 推荐使用 es 标准库模块。
   - nodejs 现在已经支持标准库模块
 * 在 nodejs 中如何直接使用 es 标准库模块？
   > 从 Node.js 12 版本开始，Node.js 支持大部分 ECMAScript 标准库模块，无需额外安装或配置。

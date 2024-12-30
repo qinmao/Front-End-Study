@@ -22,6 +22,8 @@
   
   -O  把输出写到该文件中，保留远程文件的文件名
 
+  -I 这个选项表示 curl 只获取 HTTP 响应的头部信息，而不会下载页面内容
+
 ```
 
 ## 示例
@@ -34,11 +36,11 @@
   curl GET 'https://xxx.com/xxx'
   curl POST 'https://xxx.com/xxx'
 
-  # 发送 post 请求
+  # post 表单请求
   curl -X POST -d 'a=1&b=nihao' URL
-
-  # 发送json格式请求
+  # post json 请求
   curl -H "Content-Type: application/json" -X POST -d '{"abc":123,"bcd":"nihao"}' URL
+
   curl -H "Content-Type: application/json" -X POST -d @test.json URL
 
 ```

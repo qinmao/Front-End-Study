@@ -1,4 +1,5 @@
-const http = require("http");
+// const http = require("http");
+import http from "node:http";
 
 // 创建服务器:
 const server = http.createServer((req, res) => {

@@ -58,7 +58,7 @@
   + CMD 表示容器启动后执行,只能有一个CMD 命令 
 
 * 它是一个文本文件，用来配置 image。Docker 根据该文件生成二进制的 image 文件。
- ```Dockerfile
+  ```Dockerfile
     FROM node:18.16.0-bullseye-slim
     # 设置容器上海时间
     ENV TZ=Asia/Shanghai \
@@ -69,13 +69,12 @@
     WORKDIR /usr/src/app
 
     # 拷贝包管理文件到/usr/src/app 根目录下
-    COPY package*.json ./
+    COPY package*.json  package-lock.json* ./
 
     # npm 源，选用国内镜像源以提高下载速度
     RUN npm config set registry https://mirrors.cloud.tencent.com/npm/
-
     # npm 安装依赖
-    RUN npm install --only=production
+    RUN npm ci
 
     # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下
     COPY . ./
@@ -83,19 +82,18 @@
     EXPOSE 3000
 
     ENTRYPOINT ["npm", "run"]
-
     # 容器启动后执行
     CMD ["start"]
   ```
 
 * 生成image文件
-```bash
+  ```bash
   # -t 参数用来指定 image 文件的名字，后面还可以用冒号指定标签。如果不指定，默认的标签就是latest。
   # 点表示 Dockerfile 文件所在的路径
 
   # 执行命令后，根据 Dockerfile 配置文件 生成一个名为 gateway:0.0.1的 镜像文件
   docker build  -t gateway:0.0.1 .   
-```
+  ```
 
 ## 容器
 * 特性
@@ -198,6 +196,7 @@
 
     # 开放权限给这个IP
     mysql -u root -p
+    
     # 进入mysql后，开放权限，当root用户以pwd（密码记得换成自己的）从端口172.17.0.3登入时，允许它操作数据库的所有表，下面的单引号别省了
     grant all privileges on *.* to 'root'@'IP' identified by 'pwd' with grant option;
 

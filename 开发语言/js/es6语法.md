@@ -1,6 +1,18 @@
 # es6知识点
+## es的标准
+* ES6 / ES2015
+* ES7 / ES2016
+* ES8 / ES2017
+* ES9 / ES2018
+* ES10 / ES2019
+* ES11 / ES2020
+* ES12 / ES2021
+  - String.prototype.replaceAll
+  - Promise.any
+  - WeakRefs
+  - 逻辑赋值操作符（&&=, ||=, ??=）
 ## 解构赋值
- * 数组的解构赋值
+* 数组的解构赋值
     ```js
         let [a, b, c] = [1, 2, 3];
 
@@ -26,12 +38,12 @@
         z // []
     ```
 
- * 对象的解构赋值
+* 对象的解构赋值
     let { foo, bar } = { foo: "aaa", bar: "bbb" };
     foo // "aaa"
     bar // "bbb
 
- * 字符串的解构赋值
+* 字符串的解构赋值
         const [a, b, c, d, e] = 'hello';
         a // "h"
         b // "e"
@@ -39,14 +51,14 @@
         d // "l"
         e // "o"
 
- * 函数参数的解构赋值
+* 函数参数的解构赋值
     function add([x, y]){
         return x + y;
     }
 
     add([1, 2]); // 3
 
- * 应用场景
+* 应用场景
     1. 交换变量的值
         let x = 1;
         let y = 2;
@@ -235,8 +247,7 @@
     f(1, ,2) // 报错
     f(1, undefined, 2) // [1, 5, 2]
 
-    ```
-        
+    ```   
  * rest参数
     ```js
         function add(...values) {
@@ -254,15 +265,11 @@
 
         // rest参数的写法
         const sortNumbers = (...numbers) => numbers.sort();
-
         // 函数的length属性，不包括 rest 参数。
-
     ```
-
  * 扩展运算符
     - 简单定义：
         扩展运算符（spread）是三个点（...）。它好比 rest 参数的逆运算，将一个数组转为用逗号分隔的参数序列。
-
     - 基本语法：
         ```js
             console.log(...[1, 2, 3])
@@ -291,7 +298,6 @@
             // 等同于
             Math.max(14, 3, 77);
         ```
-
     + 应用:
         1. 合并数组
             // ES5
@@ -320,10 +326,8 @@
         4. 任何 Iterator 接口的对象，都可以用扩展运算符转为真正的数组。
             var nodeList = document.querySelectorAll('div');
             var array = [...nodeList]
-
  * 严格模式
     >《ECMAScript 2016标准》规定只要函数参数使用了默认值、解构赋值、或者扩展运算符，那么函数内部就不能显式设定为严格模式，否则会报错。
-
     + 两种方法可以规避这种限制。
        - 第一种是设定全局性的严格模式，这是合法的
             ```js
@@ -342,7 +346,6 @@
                     };
                 }());
             ```
-
  * name 属性
     ```js
         var f = function () {};
@@ -363,15 +366,11 @@
         (function(){}).bind({}).name // "bound "
 
     ```
-
  * 箭头函数
     ```js
         var f = v => v;
-
         var sum = (num1, num2) => num1 + num2;
-
         var sum = (num1, num2) => { return num1 + num2; }
-
         // 注意 this指向 不需要在函数外捕获 this
     ```
 ## 数组的扩展

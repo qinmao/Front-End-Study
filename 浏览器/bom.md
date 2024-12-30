@@ -97,21 +97,22 @@
 
 + 监听消息
   ```js
-      window.addEventListener('message', function(messageEvent) {
+    window.addEventListener('message', function(messageEvent) {
           var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
           console.info('message from child:', data);
-      }, false);
+    }, false);
 
     // 以上监听会导致收到消息后执行多次的问题，用以下的方式可以避免
+    // messageEvent: 
+    // data：顾名思义，是传递来的message
+    // source：发送消息的窗口对象
+    // origin：发送消息窗口的源（协议+主机+端口号）
     window.onmessage=function(messageEvent) {
-        var data = messageEvent.data; // messageEvent: {source, currentTarget, data}
+        var data = messageEvent.data;
         console.info('message from child:', data);
       }
   ```
-+ MessageEvent的属性
-  - data：顾名思义，是传递来的message
-  - source：发送消息的窗口对象
-  - origin：发送消息窗口的源（协议+主机+端口号）
+
 ## FileReader
 > FileReader 对象允许 Web 应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，使用 File 或 Blob 对象指定要读取的文件或数据。
 * 常见的用法

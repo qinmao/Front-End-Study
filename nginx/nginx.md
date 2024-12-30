@@ -148,10 +148,14 @@
 * 反向代理的配置
   ```
     location ~ ^/api {
+        # 重写路径：去掉 "/api" 前缀
+        rewrite ^/api/(.*)$ /$1 break;
+
         proxy_pass http://xxxx.com;
 
         # 获取代理时真实的请求
-        proxy_set_header Host        $host;
+        # proxy_set_header Host        $host; # 客户端的host
+        proxy_set_header Host        $remote_addr;   # 代理服务器的host
         proxy_set_header X-Real-IP   $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }

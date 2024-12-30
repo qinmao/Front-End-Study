@@ -39,17 +39,16 @@
 
 * 启动
   ```bash
-   # service 命令的用法
-   sudo service docker start
-
    # systemctl 命令的用法
+   systemctl enable docker    # 设置Docker开机自启动
+   systemctl status docker    # 查看Docker的运行状态
+
    systemctl start docker    # 启动 Docker 
    systemctl stop docker     # 停止 Docker服务
    systemctl restart docker  # 重启 Docker
 
-   systemctl enable docker    # 设置Docker开机自启动
-   systemctl status docker    # 查看Docker的运行状态
   ```
+
 ## mac 安装 Docker 软件
 * brew 安装
 * 客户端 安装

@@ -1,4 +1,19 @@
 # mysql 优化
+## 如何分析SQL执行耗时情况
+* 方案一：开启profiling 收集资源使用情况
+  ```sql
+    -- 查看开启情况
+    select @@profiling;
+    -- 开启
+    set profiling=1;
+    -- 执行一条 sql 查询
+    select * from xxx;
+
+    -- 查看当前会话产生的所有 profiles
+    show profiles;
+  ```
+* 方案二：navicat 工具中的剖析可以查看
+
 ## 查询有点慢语句如何优化？
 * 查询分析语句：帮助你了解 SQL 语句的执行计划，有助于你分析查询效率低下的原因
 * 语法：{ EXPLAIN | DESCRIBE | DESC }查询语句;
@@ -12,6 +27,7 @@
 * LIKE
   - WHERE字段 LIKE ‘aa%’，表示筛选出所有以“aa”开始的记录；
   - % 放在前面不可以利用索引，放后面可以
+  
 ## 如何充分利用系统资源？
 > MySQL 的配置文件中
 * 调整系统参数 InnoDB_flush_log_at_trx_commit=2

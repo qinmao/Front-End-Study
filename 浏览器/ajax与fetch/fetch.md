@@ -10,26 +10,45 @@
   ```js
     async function sendPost(){
         // 第一个 awiat 等待的是请求头
-        const response = await fetch('https://example.com/profile/avatar', {
-            method: 'POST',
-            body: formData
-        })
+       const response = await fetch("https://api.binjie.fun/api/generateStream?refer__1360=n4AxuDBDyDg0G%3DG8DlxGO4%2BrOb8p4iK03mQx", {
+            "headers": {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+                "content-type": "application/json",
+                "priority": "u=1, i",
+                "sec-ch-ua": "\"Microsoft Edge\";v=\"131\", \"Chromium\";v=\"131\", \"Not_A Brand\";v=\"24\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"macOS\"",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "cross-site"
+            },
+            "referrer": "https://chat18.aichatos58.com/",
+            "referrerPolicy": "strict-origin-when-cross-origin",
+            "body": "{\"prompt\":\"取对象数组最后三条记录\",\"userId\":\"#/chat/1733396635331\",\"network\":true,\"system\":\"\",\"withoutContext\":false,\"stream\":false}",
+            "method": "POST",
+            "mode": "cors",
+            "credentials": "omit"
+        });
         // 第二个事请求体
         // const resJson= await response.json()
          const reader=response.body.getReader()
          // 解码器
-         const textDecoder=new TextDecoder()
+         const textDecoder= new TextDecoder()
+         let contetent=''
          while(true){
             const {done,value}= await reader.read()
             if(done){
                 break
             }
             const txt=textDecoder.decode(value)
-            console.log(done,txt)
+            contetent+=txt
          }
+        console.log(contetent)
+
          
     }
-
+    sendPost()
   ```
   
 ## 几种使用方式

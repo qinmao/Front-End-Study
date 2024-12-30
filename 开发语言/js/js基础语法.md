@@ -49,7 +49,6 @@
 * 类型转换
   + 隐式转换 变量在运算过程中发生的类型转换
     - console.log(!!"abc")
-
   + 显示（强制）转换:
     - 转字符串：x.toString() number转string ''+number
     - 转数字型：parseInt parseFloat

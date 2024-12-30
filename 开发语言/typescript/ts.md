@@ -679,9 +679,9 @@
 ## 类型声明的三种来源
 > tsc 在编译的时候，会分别加载 lib 的，@types 下的，还有 include 和 files 的文件，进行类型检查
 * lib: ts 内置的类型 JS 引擎那些 api，还有浏览器提供的 api
-    - TypeScript 包下有个 lib 目录，里面有一堆 lib.xx.d.ts 的类型声明文件
-    - 这些只是声明类型，没有具体的 JS 实现，TS 就给单独设计了一种文件类型，也就是 d.ts， d 是 declare 的意思
-    - tsconfig.json文件下 配置一下就可以使用compilerOptions中lib:["dom","es5","es2019.array"]
+  - TypeScript 包下有个 lib 目录，里面有一堆 lib.xx.d.ts 的类型声明文件
+  - 这些只是声明类型，没有具体的 JS 实现，TS 就给单独设计了一种文件类型，也就是 d.ts， d 是 declare 的意思
+  - tsconfig.json文件下 配置一下就可以使用 compilerOptions中 lib:["dom","es5","es2019.array"]
 * @types:其他环境配置类型
     - ts 内置的声明是标准的，不常变的，所以可以配置类型，其余的环境的 api 可能没有标准，经常变，那自然就没法内置了，比如 node
     - 通过 @types/xxx 的包,ts 先加载内置的 lib 的类型声明，再去查找 @types 包下的类型声明（默认是放在 node_modules/@types）
@@ -693,7 +693,7 @@
 
     - 如果代码本身不是用 ts 写的，就需要单独写一个 @types/xxx 的包来声明 ts 类型，在 tsconfig.json 里配置下，加载进来。
 * include|files: 自己写的ts
-  - files单独包含的
+  - files 单独包含的
   - include 包含的
   - exclude 去掉的
   ```json
