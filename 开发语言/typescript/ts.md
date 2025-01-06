@@ -10,47 +10,127 @@
     tsc --all
   ```
 ## 编译 
-  >官方提供的编译器,可以将 TypeScript 脚本编译成 JavaScript 脚本
+* tsc
+  + 优点
+    - 官方提供的编译器,完全支持 TypeScript 的所有特性
+    - 配置简单，直接使用 tsconfig.json 文件。
+    - 支持增量编译，提高编译速度。
+  + 缺点：
+    - 编译速度相对较慢，尤其是在大型项目中。
+    - 仅负责编译，不处理模块打包、代码压缩等任务。
+  + 用法
+    ```bash
+        # 编译ts文件，支持一次编译多个
+        tsc demo1.ts demo2.ts
+
+        # 将多个 TypeScript 脚本编译成一个 JavaScript 文件
+        tsc file1.ts file2.ts --outFile app.js
+
+        # 编译结果默认都保存在当前目录，--outDir参数可以指定保存到其他目录
+        tsc app.ts --outDir dist
+
+        # 为了保证编译结果能在各种 js 引擎运行，tsc 默认会将 ts 代码编译成很低版本的js，即3.0版本（以es3表示）。
+        tsc --target es2015 app.ts
+    ```
+* Babel
+  + 优点：
+    - 编译速度快，适合大型项目。
+    - 支持最新的 JavaScript 特性和插件生态。
+    - 可以与其他工具（如 Webpack）无缝集成。
+  + 缺点：
+    - 需要额外配置才能支持 TypeScript。
+    - 不支持 TypeScript 的类型检查，只负责语法转换。
+* Webpack
+  + 优点：
+    - 支持模块打包、代码拆分、热模块替换等功能。
+    - 可以与 Babel、TypeScript 等工具集成，提供完整的构建解决方案。
+    - 丰富的插件和加载器生态。
+  + 缺点：
+    - 配置复杂，学习曲线较陡。
+    - 编译速度可能较慢，尤其是在开发模式下。
+* esbuild
+  + 优点：
+    - 编译速度极快，适合大型项目和开发环境。
+    - 支持最新的 JavaScript 和 TypeScript 特性。
+    - 配置简单，易于集成。
+  + 缺点：
+    - 生态系统相对较新，某些高级特性和插件可能不如 Webpack 完善。
+    - 类型检查支持有限，通常需要与 tsc 结合使用。
+* ts-node
+  - 是一个 TypeScript 执行引擎，可以直接在 Node.js 中运行 TypeScript 代码，而无需手动编译。它集成了 TypeScript 编译器，并在运行时进行即时编译。
+  - 安装 npm install -D ts-node
   ```bash
-    # 编译ts文件，支持一次编译多个
-    tsc demo1.ts demo2.ts
-
-    # 将多个 TypeScript 脚本编译成一个 JavaScript 文件
-    tsc file1.ts file2.ts --outFile app.js
-
-    # 编译结果默认都保存在当前目录，--outDir参数可以指定保存到其他目录
-    tsc app.ts --outDir dist
-
-    # 为了保证编译结果能在各种 JavaScript 引擎运行，tsc 默认会将 TypeScript 代码编译成很低版本的 JavaScript，即3.0版本（以es3表示）。
-    tsc --target es2015 app.ts
+    ts-node src/index.ts
   ```
-## tsconfig.json
-> TypeScript 允许将tsc的编译参数，写在配置文件 tsconfig.json。只要当前目录有这个文件，tsc就会自动读取，所以运行时可以不写参数。
-* 有了这个配置文件，编译时直接调用 tsc 命令就可以了
-* include:["src/*"]
-* exclude:["src/lib"] 默认是排除 node_modules
-* extends:"./tsconfig.base" 继承 tsconfig.base的配置
-* compilerOptions
-  - incremental:true  增量编译
-  - diagnostics:true  打印诊断信息
-  - target 生成代码语言的标准
-  - module 生成代码的模块标准
-  - lib:["dom","es5","es2019.array"]  内置的类型声明库
-  - types:["node"]  @types/xxx 声明包的配置
-  - typeRoots:["其他目录"]
-  - allowJs:true 允许编译js文件
-  - checkJs:true 通常与allowJs一起使用
-  - noImplicitAny:true 只要推断出any类型就会报错。
-  - outDir:'dist' 指定输出目录
-  - rootDir:"./"  指定输入文件目录
-  - baseUrl: "./" 解析非相对模块的基地址
-  - declaration:true 生成声明文件
-  - declarationDir:'./d'生成声明文件路径
-  - soureMap:true
-  - removeComments: true 删除注释
-* references 依赖
+## tsconfig.json 中常见的参数配置
+> TypeScript 允许将 tsc 的编译参数，写在配置文件 tsconfig.json。只要当前目录有这个文件，tsc就会自动读取，所以运行时可以不写参数。
+```json
+{
+    // "include": ["src/*"],
+    // "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+    "compilerOptions": {
+        /* 基本选项 */
+        "target": "ESNext" /* 将 TypeScript 代码转换为 JavaScript 代码时应使用的 ESNext 生成最新的 ECMAScript 标准的代码 */,
+        "module": "CommonJS" /* 生成代码的模块标准 */,
+        "baseUrl": "./",
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "rootDir": "./src" /* 输入文件的根目录 */,
+        "outDir": "./dist" /* 指定输出目录 */,
+
+        /* 项目选项 */
+        "incremental": true /* 开启增量编译 */,
+        // "composite": true,                                 /* 启用项目引用 */
+        // "tsBuildInfoFile": "./",                           /* 指定 .tsbuildinfo 增量编译文件的路径 */
+        // "disableSourceOfProjectReferenceRedirect": true,   /* 禁用引用项目时优先使用源文件而不是声明文件 */
+        // "disableSolutionSearching": true,                  /* 禁用多项目引用检查 */
+        // "disableReferencedProjectLoad": true,              /* 减少 TypeScript 自动加载的项目数量 */
+
+        /* 语言和环境 */
+        "lib": ["ESNext", "DOM"] /* 内置的类型声明库 */,
+        "experimentalDecorators": true /* 启用装饰器 */,
+        "emitDecoratorMetadata": true /* 启用装饰器元数据 */,
+        // "jsx": "react",                        /* 指定 JSX 代码生成方式 */
+        // "jsxFactory": "React.createElement",   /* 指定 JSX 工厂函数 */
+        // "jsxFragmentFactory": "React.Fragment", /* 指定 JSX 片段引用 */
+        // "jsxImportSource": "react",             /* 指定用于导入 JSX 工厂函数的模块 */
+        // "reactNamespace": React"",              /* 指定用于 `createElement` 的对象 */
+        // "noLib": true,                          /* 禁用包含任何库文件，包括默认的 lib.d.ts  */
+        // "useDefineForClassFields": true,        /* 生成符合 ECMAScript 标准的类字段 */
+
+        /* 模块 */
+        "moduleResolution": "node" /* 指定模块解析策略 */,
+        "esModuleInterop": true /* 生成额外的 JavaScript 代码，以便更好地支持从 CommonJS 模块导入 */,
+        "allowSyntheticDefaultImports": true /* 允许从没有设置默认导出的模块中默认导入 */,
+        "forceConsistentCasingInFileNames": true /* 强制检查导入路径的大小写是否与文件系统中的实际文件名一致 */,
+
+        /* JavaScript 支持 */
+        "allowJs": true /* 允许js文件作为项目的一部分. Use the `checkJS` option to get errors from these files. */,
+        "checkJs": true /* 启用对 JavaScript 文件的类型检查和错误报告. */,
+        "maxNodeModuleJsDepth": 1 /* 用于指定在 node_modules 目录中检查 JavaScript 文件时的最大文件夹深度。此选项仅在 allowJs 选项启用时适用. */,
+
+        /* Emit */
+        "declaration": true /* 生成 .d.ts 文件 */,
+        "declarationDir": "./" /* 生成 .d.ts 文件路径 */,
+        "sourceMap": true /* 生成 .map 文件 */,
+        "removeComments": true /* 删除注释. */,
+
+        /* 类型检查 */
+        "strict": true /* 启用所有严格类型检查选项 */,
+        "noImplicitAny": false /* 关闭对隐式 any 类型的错误报告*/,
+        "strictNullChecks": false /* 关闭严格空值检查 */,
+        "strictBindCallApply": false /* 关闭对 bind、call 和 apply 方法的参数进行严格检查 */,
+        "noFallthroughCasesInSwitch": true /* 启用对 switch 语句中贯穿情况的错误报告 */,
+
+        /* 完整性 */
+        "skipDefaultLibCheck": true /* 跳过对默认库文件（如 lib.d.ts）的类型检查。可以加快编译速度 */,
+        "skipLibCheck": true /* 跳过检测所有 .d.ts files. */
+    }
+}
+```
 ## ts的类型系统
-* js原始类型 number|bigint|string|boolean|undefined|null|symbol
+* 类型注解：js原始类型 number|bigint|string|boolean|undefined|null|symbol
   ```js
     const a: number = 3;
     const b: string = 3;
@@ -64,15 +144,14 @@
     let j: symbol=Symbol()
 
     // bigint 类型包含所有的大整数。
-    // ES2020 标准引入的。如果使用这个类型，TypeScript 编译的目标 JavaScript 版本不能低于 ES2020
+    // ES2020 标准引入的。如果使用这个类型，TypeScript 编译的目标 js 版本不能低于 ES2020
     const x:bigint = 123n;
     const y:bigint = 0xffffn;
 
     const x:bigint = 123; // 报错
     const y:bigint = 3.14; // 报错
   ```
-* js对象类型 object(数组对象，函数等对象)
-* TypeScript 的数组类型
+* ts的数组类型
   > JavaScript 数组在 TypeScript 里面分成两种类型，分别是数组（array）和元组（tuple）。
   ```ts
     // 数组的类型有两种写法。
@@ -87,15 +166,6 @@
     type Names = string[];
     type Name = Names[0]; // string
 
-    // 数组的类型推断
-    // 推断为 any[]
-    const arr = [];
-    arr.push(123);
-    arr // 推断类型为 number[]
-
-    arr.push('abc');
-    arr // 推断类型为 (string|number)[]
-
     // 只读数组
     const arr:readonly number[] = [0, 1];
 
@@ -104,7 +174,7 @@
     delete arr[0]; // 报错
 
   ```
-* TypeScript 的元组类型
+* ts的元组类型
   > 它表示成员类型可以自由设置的数组，即数组的各个成员的类型可以不同。
   ```ts
     // 由于成员的类型可以不一样，所以元组必须明确声明每个成员的类型。
@@ -131,7 +201,7 @@
     // 只读元组
     type t = Readonly<[number, string]>
   ```
-* TypeScript 的 symbol 类型
+* ts的 symbol 类型
   > Symbol 是 ES2015 新引入的一种原始类型的值。它类似于字符串，但是每一个 Symbol 值都是独一无二的，与其他任何值都不相等。
   ```ts
     // Symbol 值通过Symbol()函数生成
@@ -142,31 +212,54 @@
     // unique symbol表示单个值，这个类型的变量是不能修改值的，只能用const命令声明
     const x:unique symbol = Symbol();
   ```
-* ts 新增类型
+* ts联合类型
   ```ts
     // 联合类型  变量可以是两种类型之一
     let timer:number|null = null
     timer = setTimeout()
-    
-    // 枚举
-    enum error {
-        blue = 3,
-        "orange",
-    }
-    const f: error = error.orange;
-    console.log(f); //输出4
     // tips
     // 如果未赋值的上一个值是数字那么这个未赋值的值的是上一个值的值+1
     // 如果未赋值的上一个值未赋值那么输出的就是它的下标
     // 如果未赋值的上一个值的值是非数字,那么必须赋值
-
+  ```
+* ts的 void 类型
+  ```ts
     // void 指定方法类型，表示没有返回值,方法体中不能return
     function aa(): void {
         console.log(1);
     }
-    // 如果方法有返回值，可以加上返回值的类型
-    function bb(): number {
-        return 1;
+  ```
+* ts的枚举类型
+  ```ts
+   const enum Color {
+        Red=0,     
+        Green=1,   
+        Blue=2     
+    }
+    let c:Color = Color.Green; // 正确 推荐语义更好
+    let c:number = Color.Green; // 正确
+    
+    // 编译后
+    let Color = {
+        Red: 0,
+        Green: 1,
+        Blue: 2
+    };
+    // 加上const好处:编译为 JavaScript 代码后，代码中 Enum 成员会被替换成对应的值，这样能提高性能
+    const x = Color.Red;
+    const y = Color.Green;
+    const z = Color.Blue;
+    // 编译后
+    const x = 0 /* Color.Red */;
+    const y = 1 /* Color.Green */;
+    const z = 2 /* Color.Blue */;
+
+    // 字符串 Enum 
+    const enum Direction {
+        Up = 'UP',
+        Down = 'DOWN',
+        Left = 'LEFT',
+        Right = 'RIGHT',
     }
   ```
 ### ts的三种特殊类型
@@ -246,7 +339,7 @@
     function getUserInfo(name: string, age?: number, school: string = "清华大学") {
         return `name:${name}--age:${age}--school:${school}`;
     }
-    getUserInfo('qm','北京大学')   // ok
+    getUserInfo('qm','undefined','北京大学')   // ok
     getUserInfo('qm')            // ok
 
     // 参数解构: 与type 类型结合，可简化代码
@@ -368,40 +461,6 @@
         sleep(): void {
             console.log("睡觉");
         }
-    }
-  ```
-## Enum类型
-  ```ts
-   const enum Color {
-        Red=0,     
-        Green=1,   
-        Blue=2     
-    }
-    let c:Color = Color.Green; // 正确 推荐语义更好
-    let c:number = Color.Green; // 正确
-    
-    // 编译后
-    let Color = {
-        Red: 0,
-        Green: 1,
-        Blue: 2
-    };
-    // 加上const好处:编译为 JavaScript 代码后，代码中 Enum 成员会被替换成对应的值，这样能提高性能
-    const x = Color.Red;
-    const y = Color.Green;
-    const z = Color.Blue;
-
-    // 编译后
-    const x = 0 /* Color.Red */;
-    const y = 1 /* Color.Green */;
-    const z = 2 /* Color.Blue */;
-
-    // 字符串 Enum 
-    const enum Direction {
-        Up = 'UP',
-        Down = 'DOWN',
-        Left = 'LEFT',
-        Right = 'RIGHT',
     }
   ```
 ## 继承

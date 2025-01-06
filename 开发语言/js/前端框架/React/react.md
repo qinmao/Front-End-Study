@@ -140,8 +140,8 @@
   - 允许你将某些更新标记为“过渡”状态，这样 React 可以优先处理更重要的更新，比如用户输入，同时延迟处理过渡更新
   ```js
     const [isPending, startTransition] = useTransition();
-
   ```
+
 ## 路由
 * 安装 
   ```bash
