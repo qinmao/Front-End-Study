@@ -5,7 +5,7 @@
   + Vite
     - npm init vue@latest
 * IDE
-  - Volar插件
+  - vue-offical插件
 * 浏览器
   - 新的 Devtools 插件
 * 官方的库
@@ -17,7 +17,6 @@
 ## 生命周期
 * destroyed 生命周期选项被重命名为 unmounted
 * beforeDestroy 生命周期选项被重命名为 beforeUnmount
-
 ## 全局API
 * createApp
   ```js
@@ -67,7 +66,7 @@
 * 过滤器
   - 建议用方法调用或计算属性来替换
 * $children 当前实例的直接子组件 $refs 代替
-* Vue.extend 移除 defineComponent替代
+* Vue.extend 移除 defineComponent 替代
 * 全局函数 set 和 delete 以及实例方法 $set 和 $delete。基于代理的变化检测已经不再需要它们了。
 ## 新增变化
 * 自定义指令
@@ -193,7 +192,7 @@
     
     ```
 * Teleport 
-  - 例子说明:在子组件Header中使用到Dialog组件，此时Dialog就被渲染到一层层子组件内部，处理嵌套组件的定位、z-index和样式都变得困难。我们希望继续在组件内部使用 Dialog,又希望渲染的DOM结构不嵌套在组件的DOM中.我们可以用 <Teleport> 包裹 Dialog, 此时就建立了一个传送门，可以将Dialog渲染的内容传送到任何指定的地方。
+  - 例子说明:在子组件 Header 中使用到 Dialog 组件，此时 Dialog 就被渲染到一层层子组件内部，处理嵌套组件的定位、z-index和样式都变得困难。我们希望继续在组件内部使用 Dialog,又希望渲染的DOM结构不嵌套在组件的DOM中.我们可以用 <Teleport> 包裹 Dialog, 此时就建立了一个传送门，可以将Dialog渲染的内容传送到任何指定的地方。
   - 使用案例
     ```html
         <body>
@@ -275,9 +274,7 @@
       <div v-for="item in data">{{item}}</div>
     </template>
   ```
-## 组件通讯
-* prop
-* 事件
+## 组件通讯（新增优化）
 * provide inject
   - 层级过深 prop 传值的解决方案
   ```js
@@ -326,18 +323,73 @@
   ```
 * pinia
 ## watch 与 watchEffect 的用法
-* watch 是懒执行的：仅在侦听源变化时，才会执行回调
-  - watch 的第一个参数:可以是一个 ref (包括计算属性)、一个响应式对象、一个 getter 函数、或多个来源组成的数组：
-    ```js
-        // getter 函数
-        watch(
-            () => x.value + y.value,
-            (sum) => {
-                console.log(`sum of x + y is: ${sum}`)
-            }
-        )
-    ```
-  - 你不能侦听响应式对象的 property
+> 我们需要在响应式状态变化时执行一些“副作用”：如更改 DOM，或是根据异步操作的结果去修改另一处的状态。
+* watch 默认是懒执行的：仅当数据源变化时，才会执行回调
+  ```js
+    const x = ref(0)
+    const y = ref(0)
+    // 单个 ref
+    watch(x, (newX) => {
+        console.log(`x is ${newX}`)
+    })
+    // getter 函数
+    watch(
+        () => x.value + y.value,
+        (sum) => {
+            console.log(`sum of x + y is: ${sum}`)
+        }
+    )
+    // 多个来源组成的数组
+    watch([x, () => y.value], ([newX, newY]) => {
+        console.log(`x is ${newX} and y is ${newY}`)
+    })
+
+    // 1. 传入一个响应式对象，会隐式地创建一个深层侦听器——该回调函数在所有嵌套的变更时都会被触发：
+    const obj = reactive({ count: 0 })
+    watch(obj, (newValue, oldValue) => {
+        // 在嵌套的属性变更时触发
+        // 注意：`newValue` 此处和 `oldValue` 是相等的
+        // 因为它们是同一个对象！
+    })
+    obj.count++
+    // 深度侦听需要遍历被侦听对象中的所有嵌套的属性，当用于大型数据结构时，开销很大。因此请只在必要时才使用它，并且要留意性能。
+
+    // 2. 一个返回响应式对象的 getter 函数，只有在返回不同的对象时，才会触发回调：
+    watch(
+        () => state.someObject,
+        () => {
+            // 仅当 state.someObject 被替换时触发
+        }
+    )
+    // 3. 也可以给上面这个例子显式地加上 deep 选项，强制转成深层侦听器：
+    watch(
+        () => state.someObject,
+        (newValue, oldValue) => {
+            // 注意：`newValue` 此处和 `oldValue` 是相等的
+            // *除非* state.someObject 被整个替换了
+        },
+        { deep: true }
+    )
+    // 4. 即时回调的侦听器:某些场景中，我们希望在创建侦听器时，立即执行一遍回调
+    watch(
+        source,
+        (newValue, oldValue) => {
+            // 立即执行，且当 `source` 改变时再次执行
+        },
+        { immediate: true }
+    )
+    // Vue 3.5+ 中，deep 选项还可以是一个数字，表示最大遍历深度——即 Vue 应该遍历对象嵌套属性的级数
+
+    // 5. 一次性侦听器 3.4+
+    watch(
+        source,
+        (newValue, oldValue) => {
+            // 当 `source` 变化时，仅触发一次
+        },
+        { once: true }
+    )
+  ```
+  - 注意：你不能侦听响应式对象的属性值
     ```js
         const obj = reactive({ count: 0 })
         // 这不起作用，因为你是向 watch() 传入了一个 number
@@ -352,45 +404,67 @@
             }
         )
     ```
-  - 直接给 watch() 传入一个响应式对象，会隐式地创建一个深层侦听器——该回调函数在所有嵌套的变更时都会被触发：
-* watchEffect
-  - 某些场景中，我们希望在创建侦听器时，立即执行一遍回调
+* watchEffect 允许我们自动跟踪回调的响应式依赖
+  - 对于有多个依赖项的侦听器来说，使用 watchEffect() 可以消除手动维护依赖列表的负担
+  - 需要侦听一个嵌套数据结构中的几个属性，watchEffect() 可能会比深度侦听器更有效
   ```js
-    // 
-    const url = ref('https://...')
-    const data = ref(null)
-    async function fetchData() {
-        const response = await fetch(url.value)
-        data.value = await response.json()
-    }
-
-    // 立即获取
-    fetchData()
-    // ...再侦听 url 变化
-    watch(url, fetchData)
-
-    // 可用 watchEffect代替
+    const url=ref('')
     watchEffect(async () => {
         const response = await fetch(url.value)
         data.value = await response.json()
     })
-    // 在 watch 中访问更新后的 dom 
+  ```
+* watch vs. watchEffect 区别
+  - watch 只追踪明确侦听的数据源。它不会追踪任何在回调中访问到的东西。另外，仅在数据源确实改变时才会触发回调。watch 会避免在发生副作用时追踪依赖，因此，我们能更加精确地控制回调函数的触发时机。
+  - watchEffect，则会在副作用发生期间追踪依赖。它会在同步执行过程中，自动追踪所有能访问到的响应式属性。这更方便，而且代码往往更简洁，但有时其响应性依赖关系会不那么明确。
+* 副作用清理 onWatcherCleanup 3.5+
+  ```js
+    import { watch, onWatcherCleanup } from 'vue'
+    watch(id, (newId) => {
+        const controller = new AbortController()
+        fetch(`/api/${newId}`, { signal: controller.signal }).then(() => {
+            // 回调逻辑
+        })
+        onWatcherCleanup(() => {
+            // 终止过期请求
+            controller.abort()
+        })
+    })
+  ```
+* 回调触发时机
+  ```js
+    // 在侦听器回调中能访问被 Vue 更新之后的所属组件的 DOM
     watch(source, callback, {
         flush: 'post'
     })
+
     watchEffect(callback, {
         flush: 'post'
     })
+
     // 后置刷新的 watchEffect() 有个更方便的别名 watchPostEffect()：
     import { watchPostEffect } from 'vue'
     watchPostEffect(() => {
         /* 在 Vue 更新后执行 */
     })
   ```
+* 同步侦听器
+  ```js
+    watch(source, callback, {
+        flush: 'sync'
+    })
+    watchEffect(callback, {
+        flush: 'sync'
+    })
+    // 同步触发的 watchEffect() 有个更方便的别名 watchSyncEffect()：
+    import { watchSyncEffect } from 'vue'
+    watchSyncEffect(() => {
+      /* 在响应式数据变化时同步执行 */
+    })
+  ```
 ## TypeScript 类型支持
 * defineComponent  
-  - 在定义 Vue 组件时提供类型推导的辅助函数。
-  - 也支持对纯 JavaScript 编写的组件进行类型推导。
+  - 在定义 Vue 组件时提供类型推导的辅助函数。也支持对纯 js 编写的组件进行类型推导。
     ```js
     import { defineComponent } from 'vue'
     export default defineComponent({
@@ -423,24 +497,17 @@
     props.bar // number | undefined
 
     // 泛型定义
-    const props = defineProps<{
-        foo: string
-        bar?: number
-    }>()
-
     interface Props {
         foo: string
         bar?: number
     }
     const props = defineProps<Props>()
-
-
     import { Props } from './other-file'
     // 暂不支持！
     defineProps<Props>()
 
   ```
-* emit 
+* defineEmits 
   ```ts
     // 运行时
     const emit = defineEmits(['change', 'update'])
@@ -469,7 +536,7 @@
 * computed
   ```ts
     const double = computed<number>(() => {
-    // 若返回值不是 number 类型则会报错
+        // 若返回值不是 number 类型则会报错
     })
   ``` 
 ## 相对vue2做的优化
@@ -490,8 +557,6 @@
 ## jsx 使用注意
 * 使用 vModel 取代 v-model
 * 使用 onClick 取代 @click
-* 使用 map 映射取代 v-for
-* 使用三元表达式取代 v-if
 * 示例
   ```jsx
     export default defineComponent({

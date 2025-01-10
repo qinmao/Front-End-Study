@@ -359,71 +359,17 @@
   ```
 ## 接口
 > interface 是对象的模板，可以看作是一种类型约定
-* 属性接口
-  ```js
-    // 建议接口定义了哪些值就传哪些值,多传少传会报错
-    interface InterfaceName {
-        first: string;
-        second?: string; // 加个问号，接口属性就可以变成可传可不传了，不传默认是undefined。
-    }
-    // 打印变量
-    function logParam(name: InterfaceName): void {
-        console.log(name.first, name.second, 11);
-    }
-    // 定义参数
-    const obj = { first: "1", second: "fff", three: 1 };
-    // logParam({ first: "1", second: "1", three: 1 }); // 报错,只能传接口定义的值
-    logParam(obj);
-
-  ```
-* 函数接口
-  ```js
-    // 对方法传入的参数类型,以及返回值类型进行约束(不对参数名称进行约束),可批量进行约束。
-    interface keyMap {
-        (key: string, value: string): string;
-    }
-    let logKeyMap: keyMap = function (key1: string, value: string): string {
-        return key1 + value;
-    };
-    console.log(logKeyMap("key1", "value"));
-  ```
-* 可索引接口
-  ```js
-    // 约束数组
-    interface Arr {
-        [index: number]: string;
-    }
-    let ss: Arr = ["2121"];
-
-    // 约束对象
-    interface Obj {
-        [index: string]: string;
-    }
-    let interfaceArr: Obj = { aa: "1" };
-    // tips:
-    // 对数组进行约束,index后必须跟着number类型。
-    // 对对象进行约束,index后必须跟着string类型
-    // 索引签名参数类型必须为 "string" 或 "number"
-  ```
-* 类类型接口
-  ```js
-    interface Animals {
-        name: string;
-        eat(): void;
-    }
-
-    class Dogs implements Animals {
-        name: string;
-        constructor(name: string) {
-            this.name = name;
-        }
-        eat() {}
-    }
+  ```ts
+  interface Person {
+    name: string;
+    age: number;
+    greet(): void;
+  }
   ```
 ## 类
   ```js
     class Person {
-        // 私有变量
+        // 私有属性
         private name: string;
         
         // 构造函数
@@ -464,351 +410,215 @@
     }
   ```
 ## 继承
-* 类继承
-  ```js
+* public、protected、private
+  - public 当前类里面，子类，类外面都可以访问,属性不加修饰符,默认就是公有的
+  - protected 在当前类和子类内部可以访问，类外部无法访问
+  - private 在当前类内部可访问，子类，类外部都无法访问
+* 静态属性和静态方法 static
+  - 可以直接通过类名访问
+  + 应用场景：
+    - 静态方法工具类方法，不需要实例化就可以调用
+    - 静态属性用来存储常量
+   ```ts
     class Son extends Person {
-        // 静态属性
-        public static age: number = 18;
-        // 学校
-        public school: string;
-        //构造方法
-        constructor(name: string, school: string) {
-            // 访问派生类的构造函数中的 "this" 前，必须调用 "super",初始化父类构造函数 --并把参数传给父类
-            super(name); 
-            //把传进来的school赋值给全局变量
-            this.school = school;
-        }
-        // 静态方法
-        static run(name: string): string {
-            return `${name}在跑步,他的年龄才${this.age}`;
-        }
+    // 静态属性
+    public static age: number = 18;
+    public school: string;
+    constructor(name: string, school: string) {
+        // 访问派生类的构造函数中的 "this" 前，必须调用 "super",初始化父类构造函数 --并把参数传给父类
+        super(name);
+        //把传进来的school赋值给全局变量
+        this.school = school;
     }
+    // 静态方法
+    static run(name: string): string {
+        return `${name}在跑步,他的年龄才${this.age}`;
+    }
+    }
+
     let son = new Son("王五", "清华大学");
     son.setName("赵六"); // 私有类也不能在子类的外部访问,但可通过公开的方法中进行赋值和访问
-    console.log(son);
+
     console.log(Son.run("方七"));
     console.log(Son.age);
-    // tips:
-    // public 在当前类里面，子类，类外面都可以访问
-    // protected 在当前类和子类内部可以访问，类外部无法访问
-    // private 在当前类内部可访问，子类，类外部都无法访问。
-    // 属性不加修饰符,默认就是公有的 (public)
-
-  ```
-* 接口继承
-  ```js
-    interface Dog {
-        eat(): void;
-    }
-
-    interface Persons extends Dog {
-        work(): void;
-    }
-
-    class Cat {
-        code() {
-            console.log("猫在敲代码");
-        }
-    }
-
-    // 可继承类后再实现接口
-    class SuperMan extends Cat implements Persons {
-        eat(): void {
-            console.log(1);
-        }
-        work(): void {
-            console.log(2);
-        }
-    }
-    let superMan = new SuperMan();
-    superMan.code();
-  ```
+   ```
 ## 多态
-  ```js
-    // 抽象父类
+* 概念：面向对象编程中的一个重要概念，它允许对象以多种形式出现。多态性使得同一个方法可以根据对象的不同类型而表现出不同的行为。多态主要通过继承和接口实现。
+* 应用场景
+  - 方法重载：同一个方法名可以有不同的参数，从而实现不同的功能。
+  - 方法重写：子类可以重写父类的方法，从而实现不同的功能。
+  - 接口实现：不同的类可以实现同一个接口，从而实现不同的功能。
+  ```ts
     abstract class Animal {
-        private name: string;
-        constructor(name: string) {
-            this.name = name;
-        }
-        // 抽象成员--方法
-        abstract eat(): any;
-        // 抽象成员--属性
-        protected abstract ages: Number;
-        sleep(): void {
-            console.log("睡觉");
+        abstract makeSound(): void;
+    }
+
+    class Dog extends Animal {
+        makeSound(): void {
+            console.log("Bark");
         }
     }
 
-    class cat extends Animal {
-        ages: Number = 2;
-        constructor(name: string) {
-            super(name);
-        }
-        // 非抽象类“cat”不会自动实现继承自“Animal”类的抽象成员“eat”
-        // 必须手动定义父类中的抽象方法--多态
-        eat(): string {
-            return "猫吃鱼";
-        }
-
-        // 多态
-        sleep(): string {
-            return "猫在睡觉";
+    class Cat extends Animal {
+        makeSound(): void {
+            console.log("Meow");
         }
     }
-    console.log(new cat("33").sleep());
-    // tips:
-    // 抽象类无法实例化。
-    // 非抽象类继承抽象父类时不会自动实现来自父类的抽象成员,必须手动定义父类中的抽象成员，否则报错。
-    // 抽象成员包括属性和方法
+
+    // 使用多态
+    function makeAnimalSound(animal: Animal): void {
+        animal.makeSound();
+    }
+
+    const myDog = new Dog();
+    const myCat = new Cat();
+
+    makeAnimalSound(myDog); // 输出: Bark
+    makeAnimalSound(myCat); // 输出: Meow
   ```
 ## 泛型
-> 不预先设定类型，在使用的时候确定
-> 好处：1. 增强程序的拓展性 2. 不必写多条函数重载，联合类型声明 3. 灵活控制类型之间的约束
-* 函数的泛型
-    ```js
-        function getDate<T>(value: T): T {
-            return value;
-        }
-        console.log(getDate<number>(123));
-    ```
-* 类的泛型
-    ```js
-        class MinClass<T> {
-            public list: T[] = [];
-                //添加
-                add(value: T): void {
-                    this.list.push(value);
-                }
-                
-                //求最小值
-                min(): T {
-                    //假设这个值最小
-                    let minNum = this.list[0];
-                    for (let i = 0; i < this.list.length; i++) {
-                        //比较并获取最小值
-                        minNum = minNum < this.list[i] ? minNum : this.list[i];
-                    }
-                return minNum;
-            }
-        }
-        //实例化类 并且指定了类的T的类型是number
-        let minClass = new MinClass<number>(); 
-        minClass.add(23);
-        minClass.add(5);
-        minClass.add(2);
-        console.log(minClass.min());
-        //实例化类 并且指定了类的T的类型是string，则其方法的传参和返回都是string类型
-        let minClass2 = new MinClass<string>();
-        minClass2.add("23");
-        minClass2.add("5");
-        minClass2.add("2");
-        console.log(minClass2.min());
-
-    ```
-* 接口的泛型
-  ```js
-    // 第一种写法
-    interface ConfigFn {
-    //规范参数类型,返回值类型
-        <T>(value: T): T;
+> 不预先设定类型，在使用的时候确定 好处：1. 增强程序的拓展性 2. 不必写多条函数重载，联合类型声明 3. 灵活控制类型之间的约束
+  ```ts
+   // 泛型函数
+    function identity<T>(arg: T): T {
+        return arg;
     }
 
-    let getData: ConfigFn = function <T>(value: T): T {
-        return value;
-    };
+    let output1 = identity<string>("myString");
+    let output2 = identity<number>(100);
 
-    console.log(getData<string>("z11"));
-
-    interface ConfigFn<T> {
-        //参数类型 ，返回值类型
-        (value: T): T;
-    }
-    // 第二种写法
-    //接口方法
-    function getData<T>(value: T): T {
-        return value;
-    }
-    //使用接口
-    let myGetDate: ConfigFn<string> = getData;
-    console.log(myGetDate("3"));
-
-
-    //用户类--和数据库表字段进行映射
-    class User {
-        username: string | undefined;
-        password: string | undefined;
-        //构造函数-初始化参数
-        constructor(param: {
-            username: string | undefined;
-            password?: string | undefined;
-        }) {
-            this.username = param.username;
-            this.password = param.password;
-        }
+    // 泛型接口
+    interface GenericIdentityFn<T> {
+        (arg: T): T;
     }
 
-
-    // 数据库类
-    class Db<T> {
-        add(user: T): boolean {
-            console.log(user);
-            return true;
-        }
-        updated(user: T, id: number): boolean {
-            console.log(user, id);
-            return true;
-        }
+    function identityFn<T>(arg: T): T {
+        return arg;
     }
 
-    let u = new User({
-        username: "张三",
-    });
+    let myIdentity: GenericIdentityFn<number> = identityFn;
 
-    //u.username = "李四";
-    u.password = "111111";
-    let db = new Db<User>();
-    db.add(u);
-    db.updated(u, 1);
+    // 泛型类
+    class GenericNumber<T> {
+        zeroValue: T;
+        add: (x: T, y: T) => T;
+    }
+
+    let myGenericNumber = new GenericNumber<number>();
+    myGenericNumber.zeroValue = 0;
+    myGenericNumber.add = function(x, y) { return x + y; };
+
+    // 泛型约束
+    interface Lengthwise {
+        length: number;
+    }
+
+    function loggingIdentity<T extends Lengthwise>(arg: T): T {
+        console.log(arg.length);
+        return arg;
+    }
+
+    loggingIdentity({ length: 10, value: 3 });
   ```
 ## 装饰器
-* 确保在 tsconfig.json 中设置了 experimentalDecorators 与 emitDecoratorMetadata 为true。
-* TS中的装饰器实现本质是一个语法糖，它的本质是一个函数
-* 示例
+[装饰器](https://wangdoc.com/typescript/decorator)
+## declare 关键字
+* declare 关键字用来告诉编译器，某个类型是存在的，可以在当前文件中使用。
+  - 如自己的脚本使用外部库定义的函数，编译器会因为不知道外部函数的类型定义而报错，这时就可以在自己的脚本里面使用declare关键字，告诉编译器外部函数的类型。这样的话，编译单个脚本就不会因为使用了外部类型而报错。
+* declare 关键字可以描述以下类型。
+  - 变量（const、let、var 命令声明）
+  - type 或者 interface 命令声明的类型
+  - class
+  - enum
+  - 函数（function）
+  - 模块（module）
+  - 命名空间（namespace）
+* declare global
+  - 如果要为 js 引擎的原生对象添加属性和方法，可以使用declare global {}语法。
+  - 如为js原生的String对象添加了toSmallString()方法。declare global 给出这个新增方法的类型描述。
   ```ts
-    // 类装饰器
-    const doc: ClassDecorator = (target:any) => {
-        // target 就是 demo 的 constructor
-        console.log(target)
-        target.prototype.name='test'
-    };
-    @doc
-    class Demo{
-        constructor(){
+    export {}; // 作用是强制编译器将这个脚本当作模块处理。这是因为declare global必须用在模块里面
+    declare global {
+        interface String {
+            toSmallString(): string;
         }
     }
-    const demo=new Demo()
-    // demo.name 等于 test
-
-    // 属性装饰器
-    const doc: PropertyDecorator = (target:any,key:string|symbol) => {
-        // target 就是 demo 的 constructor
-        console.log(target)
-        target.prototype.name='test'
+    String.prototype.toSmallString = ():string => {
+        // 具体实现
+        return '';
     };
-    class Demo{
-        @doc
-        public name:string
-        constructor(){
-            this.name='test'
+
+    // 下面的示例是为 window 对象（类型接口为Window）添加一个属性myAppConfig。
+    export {};
+    declare global {
+        interface Window {
+            myAppConfig:object;
         }
     }
-
-    // 方法装饰器
-    const doc: MethodDecorator = (target:any,key:string|symbol,descriptor:any) => {
-        // target 就是 demo 的 constructor
-        console.log(target)
-        target.prototype.name='test'
-    };
-    class Demo{
-        constructor(){
-            this.name='test'
-        }
-        @doc
-        getName(){
-
-        }
-    }
-    // 参数装饰器
-    const doc: ParameterDecorator = (target:any,key:string|symbol,index:any) => {
-        // target 就是 demo 的 constructor
-        console.log(target)
-        target.prototype.name='test'
-    };
-    class Demo{
-        constructor(){
-            this.name='test'
-        }
-        getName(name:string,@doc age:number){
-
-        }
-    }
-
+    const config = window.myAppConfig;
   ```
-## 类型声明的三种来源
+* declare module 用于类型声明文件 
+  - 我们可以为每个模块脚本，定义一个.d.ts文件，把该脚本用到的类型定义都放在这个文件里面。但是，更方便的做法是为整个项目，定义一个大的.d.ts文件，在这个文件里面使用declare module定义每个模块脚本的类型。
+  ```ts
+    // 下面的示例是node.d.ts文件的一部分。
+    declare module "url" {
+        export interface Url {
+            protocol?: string;
+            hostname?: string;
+            pathname?: string;
+        }
+        export function parse(
+            urlStr: string,
+            parseQueryString?,
+            slashesDenoteHost?
+        ): Url;
+    }
+
+    declare module "path" {
+        export function normalize(p: string): string;
+        export function join(...paths: any[]): string;
+        export var sep: string;
+    }
+  ```
+  - 另一种情况是，使用declare module命令，为模块名指定加载路径。
+  ```ts
+    declare module "lodash" {
+        export * from "../../dependencies/lodash";
+        export default from "../../dependencies/lodash";
+    }
+  ```
+  - 使用时，自己的脚本使用三斜杠命令，加载这个类型声明文件。
+  ```ts
+  /// <reference path="node.d.ts"/>
+  ```
+## d.ts 类型声明文件
+* 单独使用的模块，一般会同时提供一个单独的类型声明文件（declaration file），把本模块的外部接口的所有类型都写在这个文件里面，便于模块使用者了解接口，也便于编译器检查使用者的用法是否正确。
+* 类型声明文件里面只有类型代码，没有具体的代码实现。它的文件名一般为[模块名].d.ts的形式，其中的d表示 declaration（声明）。
+## 类型声明文件的来源
 > tsc 在编译的时候，会分别加载 lib 的，@types 下的，还有 include 和 files 的文件，进行类型检查
-* lib: ts 内置的类型 JS 引擎那些 api，还有浏览器提供的 api
-  - TypeScript 包下有个 lib 目录，里面有一堆 lib.xx.d.ts 的类型声明文件
-  - 这些只是声明类型，没有具体的 JS 实现，TS 就给单独设计了一种文件类型，也就是 d.ts， d 是 declare 的意思
-  - tsconfig.json文件下 配置一下就可以使用 compilerOptions中 lib:["dom","es5","es2019.array"]
-* @types:其他环境配置类型
-    - ts 内置的声明是标准的，不常变的，所以可以配置类型，其余的环境的 api 可能没有标准，经常变，那自然就没法内置了，比如 node
-    - 通过 @types/xxx 的包,ts 先加载内置的 lib 的类型声明，再去查找 @types 包下的类型声明（默认是放在 node_modules/@types）
-    - @types/xxx 包是在 DefinitelyTyped 这个项目下统一管理的
-    - 扩展的这些 @types/xxx 的包也可以配置 compilerOptions中 types:["node"]、 typeRoots:["其他目录"]
-
-    - 如果代码本身是用 ts 写的，那编译的时候就可以开启 compilerOptions.declaration，来生成 d.ts 文件
-    - 在 package.json 里配置 types 来指定 dts 的位置 如：types:"dist/vue.d.ts",这样就不需要单独的 @types 包了。
-
-    - 如果代码本身不是用 ts 写的，就需要单独写一个 @types/xxx 的包来声明 ts 类型，在 tsconfig.json 里配置下，加载进来。
-* include|files: 自己写的ts
-  - files 单独包含的
-  - include 包含的
-  - exclude 去掉的
+* TypeScript 编译器自动生成。
+  - 下面是在tsconfig.json文件里面，打开这个选项。
   ```json
-    "files":[
-        "./golbal.d.ts"
-    ],
-    "include":[
-        "./types/**/*",
-        "./src/**/*"
-    ],
-    "exclude":[
-        "./src/xxx.ts"
-    ]
-
+    {
+    "compilerOptions": {
+        "declaration": true
+    }
+    }
   ```
-## 全局类型声明 vs 模块类型声明
-> 我们写的 JS 代码就是有的 api 是全局的，有的 api 是模块内的，所以 TS 需要支持这个
-> dts 的类型声明默认是全局的，除非有 es module 的 import、export 的声明，这时候就要手动 declare global 了。为了避免这种情况，可以用 reference 的编译器指令
-* 全局
-    ```js
-    // 方式一
-    declare function globalLib(options:globalLib.Options):void;
-    declare namespace globalLib{
-            const version:string
-            function doSomething():vold
-            interface Options{
-                [key:string]:any
-            }
-        }
-    // 方式二
-    declare global{
-        const version:string
-        function doSomething():vold
-        interface Options{
-            [key:string]:any
-        }
+* TypeScript 内置类型文件。
+  - 安装 TypeScript 语言时，会同时安装一些内置的类型声明文件，主要是内置的全局对象（JavaScript 语言接口和运行环境 API）的类型声明。
+  - 这些只是声明类型，没有具体的 JS 实现，TS 就给单独设计了一种文件类型，也就是 d.ts， d 是 declare 的意思
+  - TypeScript 编译器会自动根据编译目标target的值，加载对应的内置声明文件，所以不需要特别的配置。但是，可以使用编译选项lib，指定加载哪些内置声明文件。
+  ```json
+    {
+    "compilerOptions": {
+        "lib": ["dom", "es2021"]
     }
-    // 方式三
-    import type {xxx} from 'yyy';
-    ```
-* 模块
-    ```js
-    declare function moduleLib(options):void
-
-    interface Options{
-        [key:string]:any
     }
-
-    declare namespace moduleLib{
-        const version:string
-        function doSomething():vold
-    }
-    export = moduleLib
-    ```
-* reference:需要引入模块，但是也需要全局声明类型
-  ```ts
-    /// <reference types="node"> 
-    declare const func:(a:number):number
   ```
+* 外部类型声明文件  
+  - 如果项目中使用了外部的某个第三方代码库，那么就需要这个库的类型声明文件。分成三种情况。
+    1. 这个库自带了类型声明文件。
+    2. 这个库没有自带，但是可以找到社区制作的类型声明文件。这些声明文件都会作为一个单独的库，发布到 npm 的@types名称空间之下
+    3. 找不到类型声明文件，需要自己写。
+      - 有时实在没有第三方库的类型声明文件，又很难完整给出该库的类型描述，这时你可以告诉 TypeScript 相关对象的类型是any

@@ -117,9 +117,9 @@
   - Modules (模块)
 
 * vuex 优雅的提交改变
-  - mutations中如果出现同名的mutation就会后面的覆盖前面的
-  - mutation必须在同步中，参数是state
-  - 我们通过调用$store.commit(mutation的名字);就能触发数据的改变
+  - mutations中如果出现同名的 mutation就会后面的覆盖前面的
+  - mutation必须在同步中，参数是 state
+  - 我们通过调用 $store.commit(mutation的名字);就能触发数据的改变
 
 * 优雅的获取数据 getters
   - 默认我们可以通过this.$store.state.属性名获取数据的，也能修改数据

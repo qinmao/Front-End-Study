@@ -46,14 +46,15 @@
   - 单个子项设置了 flex-grow，大于1独享所有剩余空间、小于1则扩展的空间就总剩余空间和这个比例的计算值
 * flex-shrink
   - flex-shrink: <number>;  数值，默认值是 1 不支持负值
-  - flex-shrink 主要处理当flex容器空间不足时候，单个元素的收缩比例。
+  - flex-shrink 主要处理当 flex 容器空间不足时候，单个元素的收缩比例。
 * flex-basis
   - flex-basis: <length> | auto; 默认值是 auto 
   - 定义了在分配剩余空间之前元素的默认大小
 * flex
   - flex: none | auto | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
-  - flex属性是flex-grow，flex-shrink和flex-basis的缩写。
+  - flex 属性是 flex-grow，flex-shrink和flex-basis的缩写。
   - 第2和第3个参数（flex-shrink和flex-basis）是可选的。默认值为 0 1 auto。
+
 * align-self
   - align-self: auto | flex-start | flex-end | center | baseline | stretch;
   - 指控制单独某一个 flex 子项的垂直对齐方式

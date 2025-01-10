@@ -33,7 +33,6 @@
 * 结构选择器：+ ~
   - E[attrxxxx]+E   选择当前的元素 然后找到相邻的下一个元素
   - E[attrxxxx]~E   选择当前的元素 然后后面所有的元素    
-  
 ## 伪元素：
 * ::before ::after   
     
@@ -191,7 +190,6 @@
       animation-play-state:running;
     }
   ```
-
 * 事件:animationend
 * requestAnimationFrame 请求动画帧(实现高性能动画)
   - 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。
