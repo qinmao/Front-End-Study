@@ -1,32 +1,29 @@
 # mysql
-## centos7 安装 mysql(8.0.18)（使用yum安装）
+## centos7 安装 mysql(8.0.18)（使用yum|dnf安装）
 * 配置 mysql 的 yum 源
   - 在mysql 官网找到对应的源 https://dev.mysql.com/downloads/repo/yum/
    ```bash
-    # 下载 yum 源
-    wget 'https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm' 
+    # 安装 MySQL 官方仓库
+    dnf install https://dev.mysql.com/get/mysqlxx-community-release-el7-1.noarch.rpm
     
-    # 安装yum 源 
-    rpm -Uvh mysql80-community-release-el7-3.noarch.rpm
-   
-    # 查看有哪些版本的 mysql
-    yum repolist all | grep mysql
+    # 列出已安装的 MySQL 官方仓库包
+    dnf list installed | grep mysql
+    
+    # 卸载已安装的 MySQL 官方仓库包
+    dnf remove mysqlxx-community-release-el7-1.noarch
 
-    # 检查是否有老版本,有干掉
-    yum list installed | grep mysql
-    yum -y remove xxx
+    # 查看是否已经启用了该仓库：
+    dnf repolist all | grep mysql
 
     # 安装
-    yum install -y mysql-community-server
+    dnf install mysql-community-server
   ```
 * 设置登录
   - 找到首次生成的密码，登录
     ```bash
       grep 'temporary password' /var/log/mysqld.log
-
       # 执行命令，输入上一步生成的密码
       mysql -uroot -p
-
       # 修改密码,成功后，mysql -uroot -p 后加密码 
      ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_new_password';
     ```
@@ -45,7 +42,7 @@
         select host, user, authentication_string, plugin from user
     ```
 * CentOS 命令
- ```bash
+  ```bash
     # 服务启动停止
     systemctl status mysqld
     systemctl start mysqld

@@ -27,12 +27,12 @@
     brew services info redis
 
     # 查看redis服务进程
-    ps axu | grep redis
+    ps -ef | grep redis
 
   ```
 ## linux（centos）
 * 源码安装
- ```bash
+  ```bash
     wget https://download.redis.io/redis-stable.tar.gz
     tar -xzvf redis-stable.tar.gz
     cd redis-stable
@@ -52,33 +52,34 @@
  ```bash
     # 源上是 3.2的版本，如果安装最新版请安装第三方源
     # yum 安装 redis7，下载三方拓展源
-    wget http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-    
-    # 安装 remi.repo
-    rpm -ivh remi-release-7.rpm
-    # 更新yum 缓存
-    
-    yum clean all
-    yum makecache
-
+    dnf install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+    # 列出已安装的 MySQL 官方仓库包
+    dnf list installed | grep redis
     # 因为多个扩展源包含了redis源，默认 epel 源优先，我们可以使用–enablerepo参数指定安装源。
-    yum --enablerepo=remi install -y redis
-
+    dnf --enablerepo=remi install -y redis
     redis-server --version
 
+    # 查看和启动
+    systemctl status redis
+    systemctl start redis
+    #  Redis 在系统启动时自动启动
+    systemctl enable redis
+
     # 配置redis
-    vim /etc/redis.conf
+    # 默认情况下，Redis 仅允许从本地连接（127.0.0.1）。为了允许远程访问，您需要修改 Redis 配置文件中的 bind 和 protected-mode 设置。
+    vim /etc/redis/redis.conf
+
+    # 修改后
+    bind 0.0.0.0
+    protected-mode no
+    # 配置 Redis 密码（可选，但推荐）
+    requirepass your_password
+
+    systemctl restart redis
+
+    # 连接
+    redis-cli -h <redis-server-ip> -p 6379 -a yourpassword
+
   ```
-## windows
-  * TODO
-## 配置
-* 设置密码（默认是没有开启用户认证的）
-  - 修改配置文件 
- ```bash
-   nano /usr/local/etc/redis.conf
-   # 查找并修改 requirepass 配置项。如果该项被注释掉了（以 # 开头），则取消注释并设置密码。如果该项不存在，则在文件末尾添加以下内容：
-   requirepass your_password
-  ```
-  - 重启 redis 服务
 
  

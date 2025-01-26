@@ -38,14 +38,12 @@
     # 开机启动
     systemctl enable nginx
     
-    # 启动和停止
+    # 启动和停止 （推荐使用 systemctl 来管理 NGINX）
     systemctl start nginx
     systemctl stop nginx
 
     # 查看 Nginx 运行状态：
     systemctl status nginx
-
-    nginx  # 启动
     
     # 热重启(重新加载配置文件,-s 表示发送信号)：
     nginx -s reload
@@ -328,8 +326,7 @@
 ## 服务配置
 * [静态资源服务配置](./server.conf/8082.statc.server.conf)
 * [spa-web服务配置](./server.conf/8084.spa.conf)
-* [https服务配置](./server.conf/443.https.conf)
-* [http2服务配置](./server.conf/http2.conf)
+* [http2服务配置](./server.conf/443.http2.conf)
 * [负载均衡服务配置](./server.conf/8080.up_server.conf)
 
 ## 实时Web日志分析工具

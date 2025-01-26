@@ -52,22 +52,6 @@
 * v-if 与 v-for 的优先级
   - 2.x v-for 优先
   - 3.x v-if 优先
-* 移除 v-on.native 修饰符
-## 移除的 API
-* 按键修饰符
-  ```html
-    <!-- Vue 3 在 v-on 上使用按键修饰符 -->
-    <input v-on:keyup.page-down="nextPage">
-    <!-- 同时匹配 q 和 Q -->
-    <input v-on:keypress.q="quit">
-  ```
-* 事件API
-  - $on，$off 和 $once 实例方法已被移除
-* 过滤器
-  - 建议用方法调用或计算属性来替换
-* $children 当前实例的直接子组件 $refs 代替
-* Vue.extend 移除 defineComponent 替代
-* 全局函数 set 和 delete 以及实例方法 $set 和 $delete。基于代理的变化检测已经不再需要它们了。
 ## 新增变化
 * 自定义指令
   ```js
@@ -86,13 +70,11 @@
   ```html
     <template>
     <div>
-        <p>{{ text }}</p>
         <button @click="$emit('accepted')">OK</button>
     </div>
     </template>
     <script>
     export default {
-        props: ['text'],
         emits: ['accepted']
     }
     </script>
@@ -100,6 +82,28 @@
 * data 选项
   - 应始终被声明为一个函数
   - 合并操作现在是浅层次的而非深层次的 (只合并根级属性)
+* 可写计算属性
+  - 计算属性默认是只读的，可通过同时提供 getter 和 setter 来创建
+  ```vue
+  <script setup>
+    import { ref, computed } from 'vue'
+
+    const firstName = ref('John')
+    const lastName = ref('Doe')
+    const fullName = computed({
+      // getter
+      get() {
+        return firstName.value + ' ' + lastName.value
+      },
+      // setter
+      set(newValue) {
+        // 注意：我们这里使用的是解构赋值语法
+        // 运行 fullName.value = 'John Doe' 时，setter 会被调用而 firstName 和 lastName 会随之更新
+        [firstName.value, lastName.value] = newValue.split(' ')
+      }
+    })
+  </script>
+  ```
 * mount api
   - 2.x 被渲染的内容会替换我们要挂载的目标元素
   - 3.x 中，被渲染的应用会作为子元素插入，从而替换目标元素的 innerHTML
@@ -125,32 +129,6 @@
         <footer>...</footer>
     </template>
   ```  
-* ref 数组
-    ```html
-    <div v-for="item in list" :ref="setItemRef"></div>
-    ```
-    ```js
-    export default {
-        data() {
-            return {
-                itemRefs: []
-            }
-        },
-        methods: {
-            setItemRef(el) {
-                if (el) {
-                    this.itemRefs.push(el)
-                }
-            }
-        },
-        beforeUpdate() {
-            this.itemRefs = []
-        },
-        updated() {
-            console.log(this.itemRefs)
-        }
-    }
-    ```
 * 组合式 api 替代继承 mixin
     ```js
     import { fetchUserRepositories } from '@/api/repositories'
@@ -214,25 +192,24 @@
 * 几种响应式方案
 ![响应式方案](./imgs/响应式.png)
 * reactive
-  > 函数创建一个响应式对象或数组，返回的是一个原始对象的 Proxy,对一个已存在的代理对象调用 reactive() 会返回其本身
+  - 函数创建一个响应式对象或数组，返回的是一个原始对象的 Proxy,对一个已存在的代理对象调用 reactive() 会返回其本身
   - 仅对对象类型有效（对象、数组和 Map、Set 这样的集合类型），而对 string、number 和 boolean 这样的 原始类型 无效。
   - 是通过 property 访问进行追踪的，替换一个响应式对象，这将导致对初始引用的响应性连接丢失，当我们将响应式对象的 property 赋值或解构至本地变量时，或是将该 property 传入一个函数时，我们会失去响应性：
     ```js
       const state = reactive({ count: 0 })
 
-      // 失去响应性：1.赋值失去响应性连接
+      // 失去响应性：赋值失去响应性连接
       let n = state.count
       // 不影响原始的 state
       n++
-
       // 失去响应性：解构至本地变量时 count 也和 state.count 失去了响应性连接
       let { count } = state
-      // 不会影响原始的 state
-      count++
+      count++  // 不会影响原始的 state
     ```
 * ref
   - 为了解决 reactive 带来的限制，ref 方法来允许我们创建可以使用任何值类型的响应式
-  - ref 被传递给函数或是从一般对象上被解构时，不会丢失响应性：
+  - 当 ref 的值是一个对象时，ref() 也会在内部调用 reactive
+  - ref 被传递给函数或是从一般对象上被解构时，不会丢失响应性
   - 当 ref 在模板中作为顶层 property 被访问时，它们会被自动“解包”，所以不需要使用 .value
   ```js
     import { ref } from 'vue'
@@ -260,6 +237,8 @@
 
     // 仍然是响应式的
     const { foo, bar } = obj
+
+    // 注意：在模板渲染上下文中，只有顶级的 ref 属性才会被解包。
   ```
 ## 组件插槽
 * v-slot 合并了 slot 和 slot-scope 作用域插槽
@@ -275,18 +254,29 @@
     </template>
   ```
 ## 组件通讯（新增优化）
-* provide inject
-  - 层级过深 prop 传值的解决方案
+* 组件透传
+  - 定义一个组件，然后再组件上添加样式如class、style 会合并到组件的根元素上
+  - 禁用 Attributes 继承，你不想要一个组件自动地继承 attribute，你可以在组件选项中设置
+  ```vue
+  <script setup>
+    defineOptions({
+      inheritAttrs: false
+    })
+    // ...setup 逻辑
+  </script>
+
+  ```  
+* provide inject 解决 prop 逐级透传问题
   ```js
     const app = Vue.createApp({})
-    // 非实例数据
     app.component('todo-list', {
+        // 父组件提供
         provide: {
             user: 'John Doe'
         },
     })
     app.component('todo-list-statistics', {
-        inject: ['user'],
+        inject: ['user'], // 注入上层组件提供的数据
         created() {
             console.log(`Injected property: ${this.user}`) // > 注入的 property: John Doe
         }
@@ -295,13 +285,12 @@
     // setUp中使用
     import { provide } from 'vue'
     import MyMarker from './MyMarker.vue'
-
     export default {
         components: {
             MyMarker
         },
         setup() {
-            provide('location', 'North Pole')
+            // provide(/* 注入名 */ 'message', /* 值 */ 'hello!')
             provide('geolocation', {
                 longitude: 90,
                 latitude: 135
@@ -312,10 +301,9 @@
     import { inject } from 'vue'
     export default {
         setup() {
-            const userLocation = inject('location', 'The Universe')
+            // 注入上层组件提供的数据
             const userGeolocation = inject('geolocation')
             return {
-                userLocation,
                 userGeolocation
             }
         }
@@ -583,3 +571,11 @@
         }
     })
   ```
+## 移除的内容
+* 事件API
+  - $on，$off 和 $once 实例方法已被移除
+* 过滤器
+  - 建议用方法调用或计算属性来替换
+* $children 当前实例的直接子组件 $refs 代替
+* Vue.extend 移除 defineComponent 替代
+* 全局函数 set 和 delete 以及实例方法 $set 和 $delete。基于代理的变化检测已经不再需要它们了。

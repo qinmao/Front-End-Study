@@ -454,12 +454,6 @@
     console.log(JSON.stringify(treeData, null, 2))
   ```
 * string 转 object:JSON.parse()   
-## URI编码解码
-* URI 字符串的编码解码
-    - encodeUrI
-    - decodeURI
-* URI 组件编码解码
-    - encodeURIComponent
 ## setTimeout|setInterval
 * js中的计时器能否精确计时？为什么
   - 硬件: 层面不可能
