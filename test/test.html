@@ -43,5 +43,27 @@
                 <div class="content"></div>
             </div>
         </div>
+        <div id="parent">
+            <div id="child"></div>
+        </div>
+        <script>
+            const parentEl = document.getElementById("parent");
+            const childEl = document.getElementById("child");
+            // if (parentEl.contains(childEl)) {
+            //     console.log("childEl is a descendant of parentEl");
+            // } else {
+            //     console.log("childEl is not a descendant of parentEl");
+            // }
+            let currentEl=childEl;
+            let isChild=false;
+            while(currentEl){
+                if(currentEl===parentEl){
+                    isChild=true;
+                    break;
+                }
+                currentEl=currentEl.parentNode;
+            }
+            console.log('isChild',isChild);
+        </script>
     </body>
 </html>

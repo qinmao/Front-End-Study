@@ -1,6 +1,7 @@
 # axios
 ## responseType
-* 表示服务器响应的数据类型: 'arraybuffer','blob','document','json','text','stream' 默认是json
+* 表示服务器响应的数据类型: 
+  - 'arraybuffer','blob','document','json','text','stream' 默认是json
 ## 获取图片
 * node.js
     ```js
@@ -94,4 +95,16 @@
         },
         ],
     })
+  ```
+## axios 取消请求（v0.22.0+）
+  - Axios 支持以 fetch API方式—— AbortController 取消请求：
+  ```js
+    const controller = new AbortController();
+    axios.get('/foo/bar', {
+        signal: controller.signal
+    }).then(function(response) {
+        //...
+    });
+    // 取消请求
+    controller.abort()
   ```

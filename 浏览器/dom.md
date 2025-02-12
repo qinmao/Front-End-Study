@@ -81,7 +81,37 @@
 * 克隆
   - 要克隆的元素.cloneNode(false) 只克隆元素本身，不需要元素中的内容
   - 要克隆的元素.cloneNode(true) 两个都要
+* 包含
+  - 父元素是否包含子元素
+  ```js
+    // 方法一
+    const parentElement = document.getElementById('parent');
+    const childElement = document.getElementById('child');
 
+    if (parentElement.contains(childElement)) {
+        console.log('childElement 是 parentElement 的子元素');
+    } else {
+        console.log('childElement 不是 parentElement 的子元素');
+    }
+    // 方法二
+    const parentElement = document.getElementById('parent');
+    const childElement = document.getElementById('child');
+    let currentElement = childElement;
+    let isChild = false;
+    while (currentElement) {
+        if (currentElement === parentElement) {
+            isChild = true;
+            break;
+        }
+        currentElement = currentElement.parentElement;
+    }
+    if (isChild) {
+        console.log('childElement 是 parentElement 的子元素');
+    } else {
+        console.log('childElement 不是 parentElement 的子元素');
+    }
+  ```
+  
 ## 获取和设置节点内容
 * innerHTML:获取或设置元素的 HTML 内容
   + 注意:

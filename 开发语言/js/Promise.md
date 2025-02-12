@@ -73,6 +73,39 @@
 ## async 和 await
 * async：Promise 实例的语法糖
   - 一个函数如果加上 async ，那么该函数就会返回一个 Promise
-* await （内部 then 命令的语法糖）
+* await：内部 then 命令的语法糖
   - 表示在这里等待 promise 返回结果了，再继续执行。
   - await 后面跟着的应该是一个 promise 对象（其他返回值也没关系，只是会立即执行，不过那样就没有意义）
+* async/await 如何实现？
+  > async、await 使用了 Generator 和 Promise 两种技术
+  + 什么是生成器函数?
+    - 是一个带星号函数，而且是可以暂停执行和恢复执行的
+    ```js
+    function* genDemo() {
+      console.log("开始执行第一段")
+      yield 'generator 2'
+
+      console.log("开始执行第二段")
+      yield 'generator 2'
+
+      console.log("开始执行第三段")
+      yield 'generator 2'
+
+      console.log("执行结束")
+      return 'generator 2'
+    }
+    console.log('main 0')
+    let gen = genDemo()
+    console.log(gen.next().value)
+    console.log('main 1')
+    console.log(gen.next().value)
+    console.log('main 2')
+    console.log(gen.next().value)
+    console.log('main 3')
+    console.log(gen.next().value)
+    console.log('main 4')
+    ```
+    - 要搞懂函数为何能暂停和恢复，要了解协程的概念
+  + 协程:
+    - 可把协程看成是跑在线程上的任务，一个线程上可以存在多个协程，但是在线程上同时只能执行一个协程
+    - 协程不是被操作系统内核所管理，完全由程序所控制，不会像线程切换那样消耗资源

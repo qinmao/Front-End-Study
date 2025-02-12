@@ -34,7 +34,7 @@
   console.log(navigator.platform); // 获取操作系统平台
 ```
 
-## screen 对象：表示屏幕的信息，如屏幕分辨率、颜色深度等。
+## screen对象：表示屏幕的信息，如屏幕分辨率、颜色深度等。
   ```js
     console.log(screen.width); // 屏幕宽度
     console.log(screen.height); // 屏幕高度
