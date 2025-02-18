@@ -103,18 +103,39 @@
    - break-all：对于non-CJK (CJK 指中文/日文/韩文) 文本，可在任意字符间断行。
    - keep-all：CJK 文本不断行。 Non-CJK 文本表现同 normal。
 ## white-space 如何处理元素内的空白
-+ 属性：
+* 属性：
   - normal 默认。空白会被浏览器忽略。
   - pre 空白会被浏览器保留。其行为方式类似 HTML 中的 <pre> 标签
   - nowrap 文本会在在同一行上继续，直到遇到 <br> 标签为止
   - pre-wrap 保留空白符序列，但是正常地进行换行。
   - pre-line 合并空白符序列，但是保留换行符。
   - inherit	规定应该从父元素继承 white-space 属性的值。
-+ 应用场景：
-    - 一段接口返回的动态文本，用\n 来处理换行
-    - 前端p标签展示换行的动态文本，可以设置p标签 white-space：pre-line；样式实现换行的需求
-## 自定义滚动条样式
+* 应用场景
+  - 场景一:接口返回的动态文本，用\n 来处理换行，前端换行展示,设置p标签样式
     ```css
+      p{
+        white-space：pre-line;
+      }
+    ```
+  - 场景二：文本溢出省略号
+    ```css
+    /* 单行文本 */
+    .ellipsis{
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+   /* 多行文本 */
+   .mul-ellipsis{
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        /* 设置几行省略 */
+        -webkit-line-clamp:5; 
+        overflow:hidden;
+    }
+  ```
+## 自定义滚动条样式
+  ```css
     /* 定义滚动条高宽背景，高宽对应横竖滚动条的尺寸 */
     ::-webkit-scrollbar{
         width:6px;
@@ -132,5 +153,33 @@
         border-radius:10px;
         background-color:red
     }
-   
-    ```
+  ```
+## 清理浮动
+  ```css
+    /* 新浪 */
+    .clearfix 
+    :after{
+        content: "";
+        height: 0;
+        display: block;
+        visibility: hidden;
+        clear: both;
+    }
+    .clearfix{
+        zoom: 1;
+        /*兼容ie6*/
+    }
+
+    /*小米和淘宝*/
+    .clearfix:before,
+    .clearfix:after{
+        clear: both;
+        display: table;
+        /*表格模式*/
+    }
+    .clearfix{
+        zoom: 1;
+        /*兼容ie6*/
+    }
+  ```
+

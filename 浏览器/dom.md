@@ -167,7 +167,7 @@
         - 兼容写法:let nodeNext=el.nextSibling||el.nextElementSibling
 
 * 父节点
-    - parentNode
+  - parentNode
 
 ## DOM 属性操作
 * 获取和设置属性
@@ -339,7 +339,7 @@
   - 事件冒泡：从内向外执行，遇到相同的事件及执行
   - 事件捕获：执行顺序与冒泡相反（不推荐使用，因为ie使用 attachEvent 没有第三个参数）
 
-* 事件代理委托
+* 事件代理
    > 本质就是利用事件冒泡的原理，将事件绑定在父容器中，让父容器代为触发
    - 应用的场景：动态生成的子节点要注册事件，那么子节点需要注册事件的话应该注册在父节点上
    + 好处：
@@ -413,3 +413,59 @@
    const rect=DOM.getBoundingClientRect()
    // rect.width
   ````
+
+## DocumentFragment
+[DocumentFragment](./documentFragment.md)
+
+## 判断 DOM 元素是否在可视区域内 
+* IntersectionObserver
+  - 是一种现代浏览器提供的 API，用于检测元素是否进入或离开视口（viewport）。它可以用于实现懒加载、无限滚动、广告曝光统计等功能
+  + 常用的配置选项包括：
+    - root：指定用于检测可见性的根元素，默认为视口。
+    - rootMargin：用于扩展或缩小根元素的边界，类似于 CSS 的 margin 属性。
+    - threshold：指定触发回调的阈值，可以是单个值或数组，表示目标元素可见部分的比例
+  ```html
+  <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IntersectionObserver 示例</title>
+        <style>
+            .box {
+                width: 100px;
+                height: 100px;
+                margin: 50px;
+                background-color: lightblue;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box" id="box1"></div>
+        <div class="box" id="box2"></div>
+        <div class="box" id="box3"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const boxes = document.querySelectorAll('.box');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            console.log(`${entry.target.id} is in the viewport`);
+                        } else {
+                            console.log(`${entry.target.id} is out of the viewport`);
+                        }
+                    });
+                },{
+                root: container,
+                rootMargin: '0px',
+                threshold: 0.5
+            });
+                boxes.forEach(box => {
+                    observer.observe(box);
+                });
+            });
+        </script>
+    </body>
+    </html>
+
+  ```

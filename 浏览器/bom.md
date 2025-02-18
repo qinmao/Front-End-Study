@@ -95,7 +95,6 @@
     history.go(-1);    // 后退一个页面，等同于 history.back()
     history.go(1);     // 前进一个页面，等同于 history.forward()
   ```
- 
 * 哈希模式
   - 可以监听 hashchange 事件，url 中的哈希值（#后面的值）如果有变化，前端可以做到监听
     ```js

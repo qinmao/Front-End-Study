@@ -70,6 +70,9 @@
   + Promise.resolve 和 Promise.reject 功能类似
     - Promise.resolve('foo') 等价于 new Promise(resolve => resolve('foo'))
 
+## Promise.all 实现方式
+
+
 ## async 和 await
 * async：Promise 实例的语法糖
   - 一个函数如果加上 async ，那么该函数就会返回一个 Promise

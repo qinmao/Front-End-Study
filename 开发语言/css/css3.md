@@ -35,12 +35,6 @@
   - E[attrxxxx]~E   选择当前的元素 然后后面所有的元素    
 ## 伪元素：
 * ::before ::after   
-    
-* 出现省略号：
-  - white-space:nowrap;
-  - overflow:hidden;
-  - text-overflow:ellipsis;
-
 * 选中
   - ::first-letter 选择首字母
   - ::first-line   第一行
@@ -191,12 +185,8 @@
     }
   ```
 * 事件:animationend
-* requestAnimationFrame 请求动画帧(实现高性能动画)
-  - 描述：告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。
-  - 语法：window.requestAnimationFrame(callback);
-  - 返回值：一个 long 整数，请求 ID ，是回调列表中唯一的标识。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
-  + 优点：
-    - 运行在后台标签页或者隐藏的iframe 里时，requestAnimationFrame() 暂停调用以提升性能和电池寿命。
+* requestAnimationFrame
+  [requestAnimationFrame](../../浏览器/requestAnimationFrame.md)
 * animation 和 transition 实现动画的区别？
   - animation可以触发多次，transition 只能触发一次
   - animation 可以做成一组动画可以设置多个帧，而 transition 只有两帧
@@ -260,5 +250,3 @@
   ```
 ## flex
 [flex](./flex.md)
-## Grid
-* TODO
