@@ -88,15 +88,6 @@
 
 * npm list -g --depth 0  查看安装了哪些全局的包
 
-* npm 常用钩子
-  - preinstall 包安装前执行
-  - postinstall 包安装后执行
-
-  - postuninstall 包卸载后执行
-  - preuninstall 包卸载前执行
-
-  - prestart   npm start 执行前触发
-  - poststart  npm start 执行后触发
 ## package.json
 > npm init  创建package.json文件,--yes 获得默认值
 * npm 启动 node 
@@ -166,12 +157,26 @@
   2. npm ERR! you do not have permission to publish "your module name". Are you logged in as the correct user?
       - 提示没有权限，其实就是你的module名在npm上已经被占用啦，
       - 去npm搜索你的模块名称，搜不到，就能用，并且把 package.json里的name修改过来，重新npm publish         
-## npm install 发生了什么
+
+## npm install 发生了什么？
 ![npm install 过程](./imgs/npm-install.png)
+1. 命令解析与初始化:解析命令参数、定位项目根目录、加载配置
+2. 依赖解析与安装:
+  - 读取依赖信息
+  - 构建依赖树:扁平化处理(尝试复用相同版本的依赖)、版本冲突解决：根据 package-lock.json 安装固定版本
+  - 下载包：检查本地缓存、
+  - 更新元数据：生成/更新 package-lock.json：
+3. 生命周期脚本执行
+  - preinstall：安装前执行（如清理旧文件）。
+  - install：包安装后执行（较少使用）。
+  - postinstall：安装完成后执行（常见于编译原生模块，如 node-gyp rebuild）。
+  - 其他钩子：如 prepublish、prestart、posttest 等。
+  
 ## npm run xxx 发生了什么
-* 运行 npm run xxx的时候，npm 会先在当前目录的 node_modules/.bin 查找要执行的程序，如果找到则运行；
+* 运行 npm run xxx 的时候，npm 会先在当前目录的 node_modules/.bin 查找要执行的程序，如果找到则运行；
 * 没有找到则从全局的 node_modules/.bin 中查找，npm i -g xxx就是安装到到全局目录；
 * 如果全局目录还是没找到，那么就从 path 环境变量中查找有没有其他同名的可执行程序。
+
 ## 搭建私有仓库
 - [参考](https://blog.csdn.net/qq1195566313/article/details/132039589?spm=1001.2014.3001.5501)
 -  verdaccio

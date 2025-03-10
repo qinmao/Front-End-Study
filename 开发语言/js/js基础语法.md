@@ -1,5 +1,19 @@
 # js 基础
-## 数据类型
+
+## es的标准
+* ES6 / ES2015
+* ES7 / ES2016
+* ES8 / ES2017
+* ES9 / ES2018
+* ES10 / ES2019
+* ES11 / ES2020
+* ES12 / ES2021
+  - String.prototype.replaceAll
+  - Promise.any
+  - WeakRefs
+  - 逻辑赋值操作符（&&=, ||=, ??=）
+
+## 原始数据类型
 * 7种原始类型（原始类型存储的都是值，是没有函数可以调用）
   + Boolean
   + Null:空指针类型  没有指向任何一个对象
@@ -23,6 +37,26 @@
         // 由于整数不存在精度问题,所以推荐先换算成整数参与运算。最后除以倍数
       ```
   + String
+    - 字符串添加了遍历器接口(es6)
+    ```js
+    // 字符串可以被for...of循环遍历。
+    for (let codePoint of 'foo') {
+        console.log(codePoint)
+    }
+    ```
+    - 模板字符串(es6)
+    ```js
+        // 普通字符串
+        `In JavaScript '\n' is a line-feed.`
+        // 多行字符串
+        `In JavaScript this is
+        not legal.`
+        console.log(`string text line 1
+        string text line 2`);
+        // 字符串中嵌入变量
+        var name = "Bob", time = "today";
+        `Hello ${name}, how are you ${time}?`
+    ```
   + Symbol
   + BigInt(新增的数字类型): 表示用任意精度表示整数
 * 类型检测几种方案
@@ -41,7 +75,7 @@
     ```js
         Array.isArray([])
         // true
-        isNaN(',')
+        Number.isNaN(',')
         // true
     ```
   + 可检测任意类型：
@@ -54,7 +88,7 @@
     - 转数字型：parseInt parseFloat
     - 转布尔型：
     - 几种转换为 false: undefined NaN Null 0 -0 false "",其余全为true
-    > tip:使用 parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不简单的转换,简单的类型转换 Number(08)=8 会比parseInt 快
+    > tip:使用 parseInt(a,10)，否则会遇到0开头的八进制的问题，parseInt() 是解析而不简单的转换,简单的类型转换 Number(08)=8 会比 parseInt 快
 * 隐式类型转换
   + 如果对比双方的类型不一样的话，就会进行类型转换(判断流程如下)
     1. 首先会判断两者类型是否相同。相同的话就是比大小了
@@ -76,23 +110,47 @@
         3. ' '==0-->Number(' ') = 0;
         4. 0==0 true
     ```
-## 短路操作
-* 执行过程(当操作数不是bool值时)
-  1. 隐式转换
-  2. 从左往右
-  3. 哪个操作数可以决定结果，就返回这个原操作数
 
-+ 短路与&&
-  - 只要有一个false，就返回 该值false的子表达式的值
-  - 短路与：可以保证某个变量有值，在参与运算
-  - eg: Object.create&&Object.create(obj)
+## 引用类型-数组
+* 定义：用于存储有序数据集合
+* 数组的创建
+  1. 字面量创建
+    ```js
+      const arr = [1, 'a', { name: 'Alice' }, [2, 3]];
+    ```
+  2. 构造函数创建
+   ```js
+    const arr = new Array(3);      // 创建长度为3的空数组 [empty ×3]
+    const arr2 = new Array(1, 2);  // [1, 2]
+   ```
+  3. ES6+ 新增方法
+    ```js
+      Array.from('abc');       // ['a', 'b', 'c']（类数组转数组）
+      Array.of(1, 2, 3);       // [1, 2, 3]（解决 new Array(3) 的歧义）
+    ```
+* 常见的用法
+  ```js
+    // 快速去重
+    const uniqueArr = [...new Set([1, 2, 2, 3])]; // [1, 2, 3]
 
-+ 短路或||
-  - 只要有一个true，就返回 该 值true的子表达式的值
-  - 短路或：可以方便给变量赋初值
-## 函数    
-* 函数有用的一些属性
-  - arguments 伪数组对象,存储实参
+    // 清空数组
+    arr.length = 0;    // 推荐方式（直接修改原数组）
+
+    // 浅拷贝数组
+    const copy = [...arr];       // ES6扩展运算符
+    const copy2 = arr.slice();   // slice() 无参数
+
+    // 多维数组扁平化
+    const deepArr = [1, [2, [3]]];
+    deepArr.flat(Infinity);      // [1, 2, 3]
+
+    // 交换元素位置
+    [arr[i], arr[j]] = [arr[j], arr[i]]; // 解构赋值
+  ```
+
+## 引用类型-函数    
+* arguments 参数
+  - 伪数组对象,存储实参
     ```js
         // 1.
         function b(x,y,z){
@@ -108,6 +166,25 @@
         }
         b(1,2,3)
     ```
+* rest参数（es6）
+  ```js
+    function add(...values) {
+        let sum = 0;
+        for (let val of values) {
+            sum += val;
+        }
+        return sum;
+    }
+    add(2, 5, 3) // 10
+  ```
+* 函数参数的默认值(es6)
+  ```js
+    // es6 之前使用短路或操作给参数赋初值
+    function log(x, y = 'World') {
+        console.log(x, y);
+    }
+  ```
+* 扩展运算符(...) (es6)
 * 沙箱模式：
   - 防止全局变量和全局对象的污染，引出沙箱模式,实质就是匿名的自执行函数
     ```js
@@ -122,7 +199,141 @@
       }(window));
       // 一般开发插件时会用，如 jq 插件
     ```
-## 循环
+* 箭头函数(es6)
+  ```js
+    var sum = (num1, num2) => num1 + num2;
+    var sum = (num1, num2) => { return num1 + num2; }
+    // 注意 this指向 不需要在函数外捕获 this
+  ```
+
+## 引用类型-对象
+* 如何创建对象？
+  - 字面量:var obj={};
+  - 构造函数创建对象
+    ```js
+      function Student(name, age, sex) {
+          this.name = name
+          this.age = age
+          this.sex = sex
+          this.sayHi = function () {
+              console.log("你好" + this.name)
+          }
+      var s1 = new Student("小明", "12", "男");
+    ```
+  - 工厂模式创建对象 就是用一个方法实现对象的实例化
+    ```js
+       function initStu(name, age,sex) {
+            return new Student(name, age,sex);
+          }
+       var obj=initStu();
+      // 这种方式创建对象避免new的操作    
+    ``` 
+* 对象的属性
+  + 两种访问方式：
+    - obj.propertyName  底层调用get
+    - obj["propertyName"] 遍历属性并赋值时常用到 底层调用get区别在于 会判断propertyName是不是symbol,是返回，否转成String
+  + hasOwnProperty
+    - 语法：<对象>.hasOwnProperty('propertyName')
+    - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
+    - eg:obj.hasOwnProperty("name") // true
+  + Object.hasOwn 比“obj.hasOwnProperty”方法更加方便、安全
+    ```js
+        let obj = { age: 24 }
+        Object.hasOwn(obj, 'age') // true
+
+        let object2 = Object.create({ age: 24 })
+        Object.hasOwn(object2, 'age') // false  
+
+        let object3 = Object.create(null)
+        Object.hasOwn(object3, 'age') // false 
+    ```
+  + 属性的简洁表示法(es6)
+    ```js
+        var foo = 'bar';
+        var baz = {foo};
+        // 等同于
+        var baz = {foo: foo};
+
+        // 方法的简写
+        var o = {
+            method() {
+                return "Hello!";
+            }
+        };
+        // 模块简写
+        module.exports = { getItem, setItem, clear };
+        // 等同于
+        module.exports = {
+            getItem: getItem,
+            setItem: setItem,
+            clear: clear
+        };
+    ```
+* 对象属性非空的判断
+  > 开发中经常会遇到 cannot read properties of undefined 这种报错，因此对数据访问时的非空判断就变成了一件很繁琐且重要的事情。ECMAScript 2020 出了新语法方便我们开发
+  + 可选链操作符(?)：
+    - 允许您在访问对象属性或调用函数时，检查中间的属性是否存在或为 null/undefined。如果中间的属性不存在或为空，表达式将短路返回 undefined，而不会引发错误
+    ```js
+        const obj = {
+            foo: {
+                bar: {
+                    baz: 42
+                }
+            },
+            xyz: []
+        };
+        // 使用可选链操作符
+        // 如果任何中间属性不存在或为空，value 将为 undefined
+        const value1 = obj?.foo?.bar?.baz; 
+
+        // 除了对属性的检查，还可以用于对数组下标及函数的检查
+        const value2 = obj?.xyz?.[0]?.fn?.();
+        
+        // 传统写法 需要手动检查每个属性
+        const value1 = obj && obj.foo && obj.foo.bar && obj.foo.bar.baz; 
+        const value2 = obj && obj.xyz && obj.xyz[0] && obj.xyz[0].fn && obj.xyz[0].fn();
+
+    ```
+  + 空值合并操作符(??)
+    - 用于选择性地提供默认值，仅当变量的值为 null 或 undefined 时，才返回提供的默认值。否则，它将返回变量的实际值。
+    ```js
+        // 案例
+        const foo = null;
+        const bar = undefined;
+
+        const baz = 0;
+        const xyz = false;
+        const qux = '';
+
+        const value1 = foo ?? 'default'; // 'default'，因为 foo 是 null
+        const value2 = bar ?? 'default'; // 'default'，因为 bar 是 undefined
+
+        const value3 = baz ?? 'default'; // 0，因为 baz 不是 null 或 undefined
+        const value4 = qux ?? 'default'; // ''，因为 qux 不是 null 或 undefined
+        const value5 = xyz ?? 'default'; // false，因为 xyz 不是 null 或 undefined
+
+        // 可能存在的传统写法，除了 null,undefined, 无法兼容 0、''、false 的情况,使用时要特别小心
+        const value1 = foo || 'default'; // 'default'
+        const value2 = bar || 'default'; // 'default'
+
+        const value3 = baz || 'default'; // 'default'，因为 0 转布尔类型是 false
+        const value4 = qux || 'default'; // 'default'，因为 '' 转布尔类型是 false
+        const value5 = xyz || 'default'; // 'default'
+    ```
+
+## 条件判断与分支循环
+* 短路操作
+  + 执行过程(当操作数不是bool值时)
+    1. 隐式转换
+    2. 从左往右
+    3. 哪个操作数可以决定结果，就返回这个原操作数
+  + 短路与（&&）
+    - 只要有一个false，就返回 该值false的子表达式的值
+    - 短路与：可以保证某个变量有值，在参与运算
+    - eg: Object.create&&Object.create(obj)
+  + 短路或（||）
+    - 只要有一个true，就返回 该 值true的子表达式的值
+    - 短路或：可以方便给变量赋初值 
 * break|continue 
   - break 跳出循环，执行循环之后的代码
   - continue 中断（循环中）的一个迭代，然后继续循环中的下一个迭代
@@ -170,6 +381,7 @@
       // 后面的代码
    }
   ```
+
 ## js执行机制
 * 什么叫作用域：
   - 指在程序中定义变量的区域，该位置决定了变量的生命周期。作用域就是变量与函数的可访问范围
@@ -354,96 +566,7 @@
     - 如何解决：
       1. 如果该闭包会一直使用，那么它可以作为全局变量而存在；但如果使用频率不高，而且占用内存又比较大的话，那就尽量让它成为一个局部变量。
       2. 使用完闭包后，及时清除。（将闭包变量 赋值为 null）
-## 对象
-* 如何创建对象？
-  - 字面量或者叫直接量:var obj={};
-  - 构造函数创建对象
-    ```js
-      function Student(name, age, sex) {
-          this.name = name
-          this.age = age
-          this.sex = sex
-          this.sayHi = function () {
-              console.log("你好" + this.name)
-          }
-      var s1 = new Student("小明", "12", "男");
-    ```
-  - 工厂模式创建对象 就是用一个方法实现对象的实例化
-    ```js
-       function initStu(name, age,sex) {
-            return new Student(name, age,sex);
-          }
-       var obj=initStu();
-      // 这种方式创建对象避免new的操作    
-    ``` 
-* 对象的属性
-  + 两种访问方式：
-    - obj.propertyName  底层调用get
-    - obj["propertyName"] 遍历属性并赋值时常用到 底层调用get区别在于 会判断propertyName是不是symbol,是返回，否转成String
-  + 检测:(hasOwnProperty)
-    - 语法：<对象>.hasOwnProperty('propertyName')
-    - 功能：用来判断指定的属性是否为该对象自己拥有的，而不是继承下来的。
-    - eg:obj.hasOwnProperty("name") // true
-* 对象属性非空的判断
-  > 开发中经常会遇到 cannot read properties of undefined 这种报错，因此对数据访问时的非空判断就变成了一件很繁琐且重要的事情。ECMAScript 2020 出了新语法方便我们开发
-  + 可选链操作符(?)：
-    - 允许您在访问对象属性或调用函数时，检查中间的属性是否存在或为 null/undefined。如果中间的属性不存在或为空，表达式将短路返回 undefined，而不会引发错误
-    ```js
-        const obj = {
-            foo: {
-                bar: {
-                    baz: 42
-                }
-            },
-            xyz: []
-        };
-        // 使用可选链操作符
-        // 如果任何中间属性不存在或为空，value 将为 undefined
-        const value1 = obj?.foo?.bar?.baz; 
 
-        // 除了对属性的检查，还可以用于对数组下标及函数的检查
-        const value2 = obj?.xyz?.[0]?.fn?.();
-        
-        // 传统写法 需要手动检查每个属性
-        const value1 = obj && obj.foo && obj.foo.bar && obj.foo.bar.baz; 
-        const value2 = obj && obj.xyz && obj.xyz[0] && obj.xyz[0].fn && obj.xyz[0].fn();
-
-    ```
-  + 空值合并操作符(??)
-    - 用于选择性地提供默认值，仅当变量的值为 null 或 undefined 时，才返回提供的默认值。否则，它将返回变量的实际值。
-    ```js
-        // 案例
-        const foo = null;
-        const bar = undefined;
-
-        const baz = 0;
-        const xyz = false;
-        const qux = '';
-
-        const value1 = foo ?? 'default'; // 'default'，因为 foo 是 null
-        const value2 = bar ?? 'default'; // 'default'，因为 bar 是 undefined
-
-        const value3 = baz ?? 'default'; // 0，因为 baz 不是 null 或 undefined
-        const value4 = qux ?? 'default'; // ''，因为 qux 不是 null 或 undefined
-        const value5 = xyz ?? 'default'; // false，因为 xyz 不是 null 或 undefined
-
-        // 可能存在的传统写法，除了 null,undefined, 无法兼容 0、''、false 的情况,使用时要特别小心
-        const value1 = foo || 'default'; // 'default'
-        const value2 = bar || 'default'; // 'default'
-
-        const value3 = baz || 'default'; // 'default'，因为 0 转布尔类型是 false
-        const value4 = qux || 'default'; // 'default'，因为 '' 转布尔类型是 false
-        const value5 = xyz || 'default'; // 'default'
-    ```
-## Math 对象常用几个函数
-* 天花板函数 ceil Math.ceil(1.23)=2 向上返回最小的整数
-* 地板函数 floor Math.floor(1.23)=1 向下返回最小的整数
-* 随机数
-  - Math.random() 返回0-1 的随机数
-  - Math.floor(Math.random()*10) 返回 0-9 的随机数
-* Math.max() Math.min() 返回最大最小的值
-* Math.abs(x)返回一个绝对值
-* Math.round(x) 四舍五入
 ## JSON 转换 
 * object 转 string:JSON.stringify()
   ```js
@@ -454,12 +577,14 @@
     console.log(JSON.stringify(treeData, null, 2))
   ```
 * string 转 object:JSON.parse()   
+
 ## setTimeout|setInterval
 * js中的计时器能否精确计时？为什么
   - 硬件: 层面不可能
   - 系统：操作系统的计时
   - 标准w3c：>=5的嵌套层级，最小4ms
-  - 事件循环:回调函数执行时，必须等待执行栈
+  - 事件循环:回调函数执行时，必须等待调用栈执行完毕
+  
 ## js异常
 > js中所有的异常都是Error的实例，可通过构造函数，自定义一个异常对象
 * EvalError  运行时异常。 eval 函数调用时发生的异常

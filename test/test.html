@@ -9,22 +9,32 @@
     </head>
 
     <body>
+        <button id="create">创建元素</button>
+        <button id="clear">清除元素</button>
         <script>
-            let frameCount = 0;
-            let startTime = performance.now();
-            function monitorFPS() {
-                frameCount++;
-                const now = performance.now();
-                const elapsed = now - startTime;
-                if (elapsed >= 1000) {
-                    const fps = frameCount / (elapsed / 1000);
-                    console.log(`FPS: ${fps.toFixed(2)}`);
-                    frameCount = 0;
-                    startTime = now;
+            let elements = [];
+            function handleClick() {
+                console.log("点击元素");
+            } // 命名函数
+            document.getElementById("create").addEventListener("click", () => {
+                for (let i = 0; i < 1000; i++) {
+                    const element = document.createElement("div");
+                    element.textContent = "元素 " + i;
+
+                    // 添加事件监听器（但未移除）
+                    element.addEventListener("click", handleClick);
+                    document.body.appendChild(element);
+                    elements.push(element);
                 }
-                requestAnimationFrame(monitorFPS);
-            }
-            requestAnimationFrame(monitorFPS);
+            });
+            // 清除元素（仍有内存泄漏）
+            document.getElementById("clear").addEventListener("click", () => {
+                elements.forEach((element) => {
+                    // element.removeEventListener("click", handleClick); // 移除监听器
+                    document.body.removeChild(element);
+                });
+                elements = [];
+            });
         </script>
     </body>
 </html>
