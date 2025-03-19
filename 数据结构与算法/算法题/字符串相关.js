@@ -36,3 +36,14 @@ console.log(swapCase("Hello123")); // 输出: 'hELLO123'
 console.log(swapCase("àçÇ")); // 输出: 'ÀÇç'
 
 // 3. 如何判断一个字符串是否是回文字符串
+function isPalindrome(str) {
+    const len = str.length;
+    for (let i = 0; i < len / 2; i++) {
+        if (str[i] !== str[len - 1 - i]) {
+            return false;
+        }
+    }
+    return true;
+}
+console.log(isPalindrome("level")); // 输出: true
+console.log(isPalindrome("algorithm")); // 输出: false

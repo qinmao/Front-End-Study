@@ -52,8 +52,8 @@ Reflect 的方法与对象的内部方法一一对应，提供了一种更为一
     console.log(descriptor); // 输出: { value: 1, writable: true, enumerable: true, configurable: true }
   ```
   
-## 应用场景
-* 主要是配合 proxy 用的。在 proxy 直接调用对象本身会死循环 proxy。
+## 应用场景:避免 proxy 代理中死循环的问题
+  - 在 proxy 直接调用对象本身会死循环
   ```js
     const handler = {
         get(target, property, receiver) {

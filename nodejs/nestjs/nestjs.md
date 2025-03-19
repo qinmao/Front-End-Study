@@ -1,4 +1,4 @@
-# nest
+# nestjs
 > 基于 typescript 的 nodejs 企业级框架
 ## 特点
 * 大而全
@@ -167,193 +167,88 @@
     // 3. 避免冗余的代码
   }
   ```  
-
-## providers
-* providers是什么？
-  - Providers 是 Nest 的一个基本概念。许多 Nest 类可能被视为 provider - service, repository, factory, helper 等等。
-  - 通过 constructor 注入依赖，来创建各种关系
-  - Provider 只是一个用 @Injectable 装饰器注释的类。
-* service 第二种用法(自定义名称)
-  ```ts
-    @Module({
-        providers: [{
-            provide: "ABC",
-            useClass: DemoService
-        }]
-
-        // Controller 需要用对应的 Inject 取 不然会找不到的
-        export class DemoController {
-            constructor(
-                @Inject('ABC') private readonly demoService: DemoService,
-            ) {}
-        }
-  ```
-* 自定义注入值
-  ```ts
-    @Module({
-        providers: [{
-            provide: "JD",
-            useValue: ['TB', 'PDD', 'JD']
-        }]
-    })
-        // DemoService 需要用对应的 Inject 取 不然会找不到的
-        export class DemoService {
-            constructor(
-                @Inject('JD') private readonly shopList: string [],
-            ) {}
-        }
-  ```
-* 工厂模式：
-  - 如果服务之间有相互的依赖 或者逻辑处理 可以使用 useFactory
-  ```ts
-    @Module({
-        providers: [{
-            provide: "Test",
-            inject: [UserService2],
-            useFactory(userService2: UserService2) {
-                // 可以使用一些逻辑,支持异步 
-                return new UserService3(userService2)
-            }
-        }]
-    })
-  ```
-  - [参考](https://xiaoman.blog.csdn.net/article/details/126494064)
-
-## module
-* 共享模块
-  - exports 导出才能在别的模块使用
-* 全局模块
-  - @Global() 注册为全局模块
-  - 不需要再 imports 导入
-* 动态模块
-  ```ts
-  export class ConfigModule {
-    static forRoot(options: Options): DynamicModule {
-        return {
-            module: ConfigModule,
-            providers: [
-                {
-                  provide: "Config",
-                  useValue: { baseApi: "/api" + options.path }
-                }
-            ],
-            exports: [
-                {
-                  provide: "Config",
-                  useValue: { baseApi: "/api" + options.path }
-                }
-            ]
-        }
-    }
-  } 
-  ```
+* 请求生命周期
+  - 传入请求 -> 中间件(先全局后模块) -> 守卫（先全局次控制器后路由）-> 拦截器（先全局次控制器后路由）-> 管道(先全局次控制器后路由参数) -> 控制器 -> 服务 -> 异常过滤器（路由然后是控制器，然后是全局）-> 服务器响应
 
 ## middleware
-* 依赖注入中间件
-  - 中间件是在路由处理程序之前调用的函数
-  - 中间件函数可以访问请求和响应对象
-    ```ts
-     // 定义
+* 是什么？
+  - 是处理请求和响应的核心机制之一,可访问请求对象（Request）、响应对象（Response）和 next() 函数，用于在请求到达路由处理程序之前或之后执行特定逻辑。
+  - NestJS 支持两种中间件形式：函数式中间件和类中间件。
+
+* 中间件的核心作用
+  - 执行任意代码（如日志记录、请求验证）。
+  - 修改请求和响应对象。
+  - 结束请求-响应周期（如权限拦截）。
+  - 调用下一个中间件或路由处理程序。
+
+* 类中间件（Class Middleware）
+  - 通过 @Injectable() 装饰器实现 NestMiddleware 接口。
+  ```ts
+    // logger.middleware.ts
     import { Injectable, NestMiddleware } from '@nestjs/common';
     import { Request, Response, NextFunction } from 'express';
-
     @Injectable()
     export class LoggerMiddleware implements NestMiddleware {
         use(req: Request, res: Response, next: NextFunction) {
-            console.log('Request...');
-            next();
+            console.log(`[${new Date().toISOString()}] Request to ${req.path}`);
+            next(); // 必须调用 next() 否则请求会被挂起
         }
     }
-    // 应用
+    // 在模块的 configure 方法中注册（支持类和函数式中间件）。
     export class UserModule implements NestModule{
         configure (consumer:MiddlewareConsumer) {
-            consumer.apply(Logger).forRoutes('user')
+            consumer.apply(LoggerMiddleware).forRoutes('user')
             // .forRoutes({path:'user',method:RequestMethod.GET})
             // forRoutes(UserController)
         }
     }
+  ```
 
-    ```
-* 全局中间件
+* 函数式中间件（Functional Middleware）
+  - 适用于不需要依赖注入的简单场景。在 main.ts 中使用 app.use()，仅适用于函数式中间件。
   ```ts
-    import { NestFactory } from '@nestjs/core';
-    import { AppModule } from './app.module';
-    const whiteList = ['/list']
-    function middleWareAll(req,res,next) {
-        console.log(req.originalUrl,'我收全局的')
-        if(whiteList.includes(req.originalUrl)){
-            next()
-        }else{
-            res.send('小黑子露出鸡脚了吧')
-        }
+    // 定义
+    // logger.middleware.ts
+    import { Request, Response, NextFunction } from 'express';
+    export function loggerMiddleware(req: Request, res: Response, next: NextFunction) {
+        console.log(`[Functional Middleware] Request to ${req.path}`);
+        next();
     }
+    // 应用
     async function bootstrap() {
         const app = await NestFactory.create(AppModule);
-        app.use(middleWareAll)
+        app.use(loggerMiddleware)
         await app.listen(3000);
     }
     bootstrap();
-
   ```
 
-## 守卫
-* 内容
-  - 使用 @Injectable() 装饰器的类
-  - 应该实现 CanActivate 接口。
-  - 守卫在每个中间件之后执行，但在任何拦截器或管道之前执行
-  - 使用场景：处理授权问题， 它们根据运行时存在的某些条件（如权限、角色、ACL 等）确定给定请求是否将由路由处理程序
-    ```ts
-        import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-        import { Observable } from 'rxjs';
-
-        @Injectable()
-        export class TestGuard implements CanActivate {
-            canActivate(
-                context: ExecutionContext,
-            ): boolean | Promise<boolean> | Observable<boolean> {
-                console.log('经过了守卫');
-                return true;
-            }
-        }
-        // 1. controller 中使用
-        @UseGuards(TestGuard)
-        @Controller('demo')
-        export class DemoController {}
-
-       // 全局守卫
-       app.useGlobalGuards(new TestGuard())
-
-    ```
-* SetMetadata 装饰器
+* 依赖注入与中间件
+  - 类中间件支持依赖注入，可以在构造函数中注入服务。
   ```ts
-    import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-    import { Observable } from 'rxjs';
-    import { Reflector } from '@nestjs/core'
-    import type { Request } from 'express'
-
+   // auth.middleware.ts
     @Injectable()
-    export class RoleGuard implements CanActivate {
-        constructor(private Reflector: Reflector) { }
-        canActivate(
-            context: ExecutionContext,
-        ): boolean | Promise<boolean> | Observable<boolean> {
-            const admin = this.Reflector.get<string[]>('role', context.getHandler())
-            const request = context.switchToHttp().getRequest<Request>()
-            if (admin.includes(request.query.role as string)) {
-                return true;
-            }else{
-                return false
+    export class AuthMiddleware implements NestMiddleware {
+        constructor(private readonly authService: AuthService) {} // 依赖注入
+        use(req: Request, res: Response, next: NextFunction) {
+            if (!this.authService.validateToken(req.headers.token)) {
+                throw new UnauthorizedException();
             }
+            next();
         }
     }
-    // controller 中使用
-    @SetMetadata('role',['admin'])
+
+    // 在模块中提供 AuthService
+    @Module({
+        providers: [AuthService],
+    })
+    export class AppModule implements NestModule {
+        configure(consumer: MiddlewareConsumer) {
+            consumer.apply(AuthMiddleware).forRoutes('*');
+        }
+    }
   ```
 
-## 拦截器
-* 应用场景
-  - 服务响应统一数据格式
-  
 ## 管道(Pipe)
 * 可以分为 3 类：
   - parseXxx 把参数转为某种类型；
@@ -367,39 +262,10 @@
   - ParseArrayPipe
   - ParseUUIDPipe
   - ParseEnumPipe
-  - DefaultValuePipe
   - ParseFilePipe
-
-## 异常过滤器
-
-## 装饰器
-  ```ts
-    // 案例1
-    import { SetMetadata } from '@nestjs/common';
-    export const Role = (args: string[]) => {
-        return SetMetadata('role', args);
-    };
-    // controller 中使用
-    @Role('admin')
+  - DefaultValuePipe
 
 
-   // 案例2 参数装饰器
-   import { createParamDecorator,ExecutionContext ,applyDecorators } from '@nestjs/common';
-   import  { Request } from 'express'
-
-    export const ReqUrl = createParamDecorator((data:string,ctx:ExecutionContext)=>{
-      const req = ctx.switchToHttp().getRequest<Request>()
-      return req.url
-    })
-
-    // controller 中 findAll 方法使用
-    findAll(@ReqUrl()  url){
-      console.log(url)
-    }
-  ```
-
-## 请求生命周期
- - 传入请求 -> 中间件(先全局后模块) -> 守卫（先全局次控制器后路由）-> 拦截器（先全局次控制器后路由）-> 管道(先全局次控制器后路由参数) -> 控制器 -> 服务 -> 异常过滤器（路由然后是控制器，然后是全局）-> 服务器响应
 
 ## 定时任务
 * 任务的分类
