@@ -14,9 +14,6 @@
   - pinia 简化了 Vuex 推荐使用
 * 静态网站生成:  
   - VuePress -> VitePress
-## 生命周期
-* destroyed 生命周期选项被重命名为 unmounted
-* beforeDestroy 生命周期选项被重命名为 beforeUnmount
 ## 全局API
 * createApp
   ```js
@@ -230,15 +227,10 @@
         bar: ref(2)
     }
 
-    // 该函数接收一个 ref
-    // 需要通过 .value 取值
-    // 但它会保持响应性
+    // 该函数接收一个 ref,需要通过 .value 取值,会保持响应性
     callSomeFunction(obj.foo)
-
     // 仍然是响应式的
     const { foo, bar } = obj
-
-    // 注意：在模板渲染上下文中，只有顶级的 ref 属性才会被解包。
   ```
 ## 组件插槽
 * v-slot 合并了 slot 和 slot-scope 作用域插槽
@@ -542,35 +534,6 @@
 ### 如何更小
 * vue 拆分成独立的功能模块，按需引入，有更好的 tree shaking
 * composition API声明的一些响应式变量，就可以很安全地对变量名进行压缩，这种引用调用的方式，构建工具可以很轻松地利用 Tree shaking 去消除我们实际未使用到 “死代码“
-## jsx 使用注意
-* 使用 vModel 取代 v-model
-* 使用 onClick 取代 @click
-* 示例
-  ```jsx
-    export default defineComponent({
-        setup(props) {
-           let title = ref('')
-           let todos = ref([{ title: "学习 Vue 3", done: true },{ title: "睡觉", done: false}])
-           function addTodo(){
-                todos.value.push({
-                    title:title.value
-                })
-                title.value = ''
-            }
-        return () => <div>
-            <input type="text" vModel={title.value} />
-            <button onClick={addTodo}>添加</button>
-            <ul>
-            {
-                todos.value.length ? todos.value.map(todo=>{
-                    return <li>{todo.title}</li>
-                }): <li>no data</li>
-            }
-            </ul>
-            </div>
-        }
-    })
-  ```
 ## 移除的内容
 * 事件API
   - $on，$off 和 $once 实例方法已被移除

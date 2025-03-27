@@ -396,8 +396,7 @@
     getComputedStyle(DOM).width
   ```
 * DOM.style.width 
-  - 获取的是DOM树的尺寸
-  - 只能获取到行内样式
+  - 获取的是DOM树的尺寸，只能获取到行内样式
 * 一般使用如下几种
   > 获取的是布局树的尺寸（layout tree）
    - clientWidth/clientHeight 
@@ -416,6 +415,9 @@
 
 ## DocumentFragment
 [DocumentFragment](./documentFragment.md)
+
+## ResizeObserver
+TODO
 
 ## 判断 DOM 元素是否在可视区域内 
 * IntersectionObserver
