@@ -305,17 +305,16 @@
         const xyz = false;
         const qux = '';
 
-        const value1 = foo ?? 'default'; // 'default'，因为 foo 是 null
-        const value2 = bar ?? 'default'; // 'default'，因为 bar 是 undefined
+        const value1 = foo ?? 'default'; // 'default'
+        const value2 = bar ?? 'default'; // 'default'
+        const value3 = baz ?? 'default'; // 0，因为 baz 
+        const value4 = qux ?? 'default'; // ''，因为 qux 
+        const value5 = xyz ?? 'default'; // false，因为 xyz 
 
-        const value3 = baz ?? 'default'; // 0，因为 baz 不是 null 或 undefined
-        const value4 = qux ?? 'default'; // ''，因为 qux 不是 null 或 undefined
-        const value5 = xyz ?? 'default'; // false，因为 xyz 不是 null 或 undefined
-
-        // 可能存在的传统写法，除了 null,undefined, 无法兼容 0、''、false 的情况,使用时要特别小心
+        // 可能存在的传统写法，除了 null,undefined无法兼容 0、''、false 的情况,使用时要特别小心
         const value1 = foo || 'default'; // 'default'
         const value2 = bar || 'default'; // 'default'
-
+        
         const value3 = baz || 'default'; // 'default'，因为 0 转布尔类型是 false
         const value4 = qux || 'default'; // 'default'，因为 '' 转布尔类型是 false
         const value5 = xyz || 'default'; // 'default'

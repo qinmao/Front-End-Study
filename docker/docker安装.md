@@ -49,6 +49,25 @@
 
   ```
 
-## mac 安装 Docker 软件
+## mac
 * brew 安装
 * 客户端 安装
+
+## windows
+* 客户端 安装
+  ![版本要求](./版本要求.png)
+* 注意：新版的 docker 需要依赖 WSL2。版本不是2的要升级
+  ```powershell
+   wsl -l -v  # 检查 WSL 版本：
+
+  # 方式一
+   wsl --update   # 自动更新
+   wsl --install  # 在线安装的新 Linux 安装将默认设置为 WSL2，离线手动下载安装
+
+   wsl --shutdown # 更新完后重启一下
+   wsl --set-default-version 2 # 升级完成后 设置 WSL 2 为默认版本
+   
+   # 方式二：管理员运行 CMD 执行 
+   netsh winsock reset
+   wsl --shutdown  # 避免重启电脑
+  ```

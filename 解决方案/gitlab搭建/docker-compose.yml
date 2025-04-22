@@ -1,0 +1,79 @@
+version: "3.9"
+
+services:
+    gitlab:
+        image: gitlab/gitlab-ce:latest # 指定版本
+        container_name: gitlab
+        hostname: gitlab.example.com # 自定义域名
+        restart: unless-stopped # 自动重启策略
+        shm_size: "256m" # 共享内存大小
+        environment:
+            TZ: Asia/Shanghai # 容器时区设置
+            GITLAB_OMNIBUS_CONFIG: | # GITLAB的配置
+                # 基础配置
+                external_url 'http://gitlab.example.com'
+                gitlab_rails['time_zone'] = 'Asia/Shanghai'
+
+                # SSH 配置
+                gitlab_rails['gitlab_shell_ssh_port'] = 2222
+
+                # 资源优化
+                postgresql['shared_buffers'] = "256MB"
+                puma['worker_processes'] = 2
+                sidekiq['max_concurrency'] = 10
+
+                # 监控与日志
+                prometheus_monitoring['enable'] = false       # 关闭 Prometheus
+                logging['logrotate_frequency'] = 'daily'      # 日志轮转
+                logging['logrotate_size'] = '500M'
+                logging['logrotate_rotate'] = 30
+
+                # 邮件配置（示例）
+                # gitlab_rails['smtp_enable'] = true
+                # gitlab_rails['smtp_address'] = "smtp.example.com"
+                # gitlab_rails['smtp_port'] = 587
+                # gitlab_rails['smtp_user_name'] = "gitlab@example.com"
+                # gitlab_rails['smtp_password'] = "${SMTP_PASSWORD}"
+
+        healthcheck:
+            test: ["CMD", "/opt/gitlab/bin/gitlab-healthcheck"]
+            interval: 1m
+            timeout: 10s
+            retries: 3
+
+        ports:
+            - "80:80"
+            - "443:443"
+            - "2222:22"
+
+        volumes:
+            - gitlab_config:/etc/gitlab
+            - gitlab_logs:/var/log/gitlab
+            - gitlab_data:/var/opt/gitlab
+
+        networks:
+            - gitlab-network
+
+        deploy:
+            resources:
+                limits:
+                    cpus: "2.0"
+                    memory: 8G
+                reservations:
+                    memory: 2G
+
+volumes:
+    gitlab_config:
+        driver_opts:  # 使用绑定挂载，确保容器重建或升级时配置不丢失。
+            type: none
+            o: bind  
+            device: /docker-volumes/gitlab/config # 宿主机具体挂载路径
+    gitlab_logs:
+    gitlab_data:
+
+networks:
+    gitlab-network:
+        driver: bridge  # 创建独立的 bridge 网络，使 GitLab 容器与其他 Docker 网络隔离，提升安全性
+        ipam:
+            config:                      # 指定子网范围为 172.20.0.1 至 172.20.0.254
+                - subnet: 172.20.0.0/24  # 避免与宿主机或其他 Docker 网络（如默认的 172.17.0.0/16）发生 IP 冲突

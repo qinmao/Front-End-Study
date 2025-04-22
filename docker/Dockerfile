@@ -12,7 +12,7 @@ RUN npm config set registry https://mirrors.cloud.tencent.com/npm/
 # RUN npm config set registry http://npmmirror.com
 
 # 安装依赖
-RUN npm install
+RUN npm ci --omit=dev --ignore-scripts
 
 # 不变的放前面，变化的放后面，package*.json 如果不变，npm install 不会执行 利于使用缓存
 # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下
@@ -20,6 +20,7 @@ COPY . ./
 
 # 构架编译ts源码，构建完成删除源码
 RUN npm run build && rm -rf src
+
 
 FROM node:18.16.0-bullseye-slim  AS deploy
 
@@ -44,6 +45,9 @@ RUN npm ci --only=production
 COPY --from=build /usr/src/app/dist ./dist 
 COPY --from=build  /usr/src/app/config ./config
 COPY --from=build /usr/src/app/nest-cli.json ./ 
+
+# 非 root 用户运行：通过 user: "node" 防止权限升级
+USER node
 
 EXPOSE 3001
 

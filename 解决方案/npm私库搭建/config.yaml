@@ -1,0 +1,78 @@
+# /Users/xxx/.config/verdaccio/config.yaml
+# listen:
+# - localhost:4873            # default value
+# - http://localhost:4873     # same thing
+# - 0.0.0.0:4873              # listen on all addresses (INADDR_ANY)
+# - https://example.org:4873  # if you want to use https
+# - "[::1]:4873"                # ipv6
+# - unix:/tmp/verdaccio.sock    # unix socket
+
+# 监听地址和端口
+listen: 0.0.0.0:4873
+
+# https:
+#   key: ./path/verdaccio-key.pem
+#   cert: ./path/verdaccio-cert.pem
+#   ca: ./path/verdaccio-csr.pem
+
+# 存储 npm 包的地址，用绝对地址防止重启少包的问题
+storage: /Users/qinmao/.local/share/verdaccio/storage
+
+# 插件目录的位置。 对于基于 Docker/Kubernetes 的部署很有用
+# plugins: /plugins
+
+# 默认认证基于 htpasswd，并且是内置的。 你可以通过插件来修改这一行为
+auth:
+    htpasswd:
+        file: ./htpasswd
+        # max_users:-1 最多允许配置的用户个数，可以设置为-1关闭添加用户功能
+
+# 上行链路:当这些包在本地不可用时，上行链路增加了从远程注册表获取包的功能
+uplinks:
+    npmmirror:
+        url: https://registry.npmmirror.com/
+        # enabled: false  # 关闭上游同步
+    npmjs:
+        url: https://registry.npmjs.org/
+        # enabled: false  # 关闭上游同步
+
+# 允许您控制软件包的访问方式
+packages:
+    "@*/*":
+        # scoped packages
+        access: $all
+        publish: $authenticated # 只有注册的账号才可以发布私有库的包
+        unpublish: $authenticated
+        # publish: xxx   # 只有该账号可以发布包到私有库，多个账号用空格隔开
+        # unpublish: xxx # 只有该账号可以删除
+        proxy: npmjs
+    "**":
+        # 允许所有用户（包括未认证用户）读取和发布所有包
+        # 您可以指定用户名/组名（取决于您的认证插件）
+        # 和三个关键字："$all"、"$anonymous"、"$authenticated"
+        access: $all
+
+        # 允许所有已知用户发布包，默认情况下任何人都可以注册
+        publish: $authenticated
+        unpublish: $authenticated
+        proxy: npmjs
+
+publish:
+    allow_offline: true
+
+# https://verdaccio.org/docs/configuration#notifications
+# endpoint：就是上面钉钉机器人的webhook推送地址。
+# content: 要发送的消息内容主体
+
+# notify:
+#   'dingtalk': # 自定义
+#     method: POST
+#     headers: [{'Content-Type': 'application/json'}]
+#     endpoint: https://oapi.dingtalk.com/robot/send?access_token=access_token
+#     content: '{"msgtype": "text","text": {"content":"有新 npm 包发布了: 包名称：{{ name }}， 发布者：{{ publisher.name }}"}}'
+
+middlewares:
+    audit:
+        enabled: true
+
+logs: { type: stdout, format: pretty, level: http }

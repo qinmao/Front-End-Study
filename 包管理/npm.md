@@ -36,8 +36,8 @@
     phantomjs_cdnurl=http://registry.npmmirror.com/mirrors/phantomjs
     fse_binary_host_mirror=https://registry.npmmirror.com/mirrors/fsevents
     sass_binary_site=http://registry.npmmirror.com/mirrors/node-sass
-    
   ```
+
 ## npm 基础用法
 * install
   - npm install  将 package.json 中的文件依赖的包从网上下载到本地
@@ -107,7 +107,6 @@
 * bin 字段指定了各个内部命令对应的可执行文件的位置。如果全局安装模块报
   - npm 会使用符号链接把可执行文件链接到 /usr/local/bin，会链接到 ./node_modules/.bin/。
 * [package.json](http://www.mujiang.info/translation/npmjs/files/package.json.html)
-
 * npx (npm5.2以上自带)
     ```
     # 项目的根目录下执行
@@ -127,6 +126,7 @@
     - " *、' '、X "  任意 npm会给你下最新版
     - "^" +版本号  不跃迁版本下载，^2.1.0 npm会下载大版本不变，去下载2.x.x版本里的最近版
     - "~" +版本号  会去下约等于这个版本的最新版，在大版本不变的情况下下一个比较新的版本
+
 ## 创建Node包,发布、更新
 * 创建
   - package.json文件被创建后，创建一个当你的模块被需要的时候加载的文件。该文件的默认名称是index.js。在该文件中，添加一个函数作为exports对象  一个属性。这将使该功能可用于其他代码。
@@ -165,7 +165,7 @@
   - 读取依赖信息
   - 构建依赖树:扁平化处理(尝试复用相同版本的依赖)、版本冲突解决：根据 package-lock.json 安装固定版本
   - 下载包：检查本地缓存、
-  - 更新元数据：生成/更新 package-lock.json：
+  - 更新元数据：生成/更新 package-lock.json
 3. 生命周期脚本执行
   - preinstall：安装前执行（如清理旧文件）。
   - install：包安装后执行（较少使用）。
@@ -177,6 +177,5 @@
 * 没有找到则从全局的 node_modules/.bin 中查找，npm i -g xxx就是安装到到全局目录；
 * 如果全局目录还是没找到，那么就从 path 环境变量中查找有没有其他同名的可执行程序。
 
-## 搭建私有仓库
-- [参考](https://blog.csdn.net/qq1195566313/article/details/132039589?spm=1001.2014.3001.5501)
--  verdaccio
+## npm私库搭建
+* [npm私库搭建](../解决方案/npm私库搭建/npm私有库搭建.md)

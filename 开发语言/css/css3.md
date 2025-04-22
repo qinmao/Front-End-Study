@@ -116,30 +116,7 @@
  * 径向渐变: background-image:radial-gradient(20px at 10px,red,green);
         
  * [参考](http://www.mrszhao.com/post/58.html)
-## 过渡
-* transition:过渡属性     过渡时间    过渡延迟     过渡速度
-   - transition-property 
-   - duration     
-   - delay    
-   - transition-timing-function:ease 、linear 、 ease-in 、ease-in-out
-   - example
-   ```css
-    transition: all 0.2s
-    /*过渡all所有变化的属性  0.2s代表属性从初始变化到结束所用的时间*/
-
-   ```
-
-* transitionend
-    ```js
-    node.addEvertListen('transitionend',()=>{
-        //do something
-    })
-    ```
-
-* cubic-bezier:
-    贝塞尔曲线 是 animation-timing-function 和 transition-timing-function 中一个重要的内容。
-    主要是为 animation 生成速度曲线的函数，规定是 cubic-bezier(<x1>, <y1>, <x2>, <y2>)。
-
+## transform
 * 2D转换:
     * 位移 translateX(),translateY(),translate(X,Y)
     * 旋转 rotate 值越大 是顺时针 反之则逆时针
@@ -150,60 +127,8 @@
     * translateZ() translate(X,Y,Z)
     * 视角：perspective
     * 3d转换：transform-style:flat 2d平面呈现 perserve-3d 3d空间呈现 
-## 动画
-* 定义动画：
-    ```css
-    /* 2种方式*/
-    @keyframes 动画名称{
-        0%{}
-        25%{}
-        50%{}
-        75%{}
-        100%{} 
-    }
-    from{},
-    to{} 
-    /* 类似0%-100% */
-    ```
-* 调用动画 
-  + animation: animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction 和 animation-fill-mode.
-    - 动画名称     animation-name  自定义的
-    - 动画总时间   animation-duration 时间
-    - 动画延迟     animation-delay    时间
-    - 动画速度     animation-timing-function  ease ease-in  ease-in-out linear steps(n)
-    - 动画次数     animation-iteration-count  数字  infinite(无限循环)
-    - 动画播放状态   animation-play-state    running  paused
-    - 动画完成时的状态 animation-fill-mode  backwards回到最初  forwards停留在最后完成时的态 none(default)不改变任何样式 both 动画将会执行 forwards 和 * * backwards 执行的动作
-    -  动画方向    animation-direction    reverse（反方向）
-* css 的动画暂停和播放
-  ```css
-    .contianer{
-      animation:rotate 20s liner infinite paused;
-    }
-    .contianer:hover{
-      animation-play-state:running;
-    }
-  ```
-* 事件:animationend
-* requestAnimationFrame
-  [requestAnimationFrame](../../浏览器/requestAnimationFrame.md)
-* animation 和 transition 实现动画的区别？
-  - animation可以触发多次，transition 只能触发一次
-  - animation 可以做成一组动画可以设置多个帧，而 transition 只有两帧
-* 连续动画
-  ```js
-    playScrollAnimate() {
-      const animateEl = this.$refs['scroll-ani']
-      animateEl.classList.remove('scroll-ani')
-      animateEl.style.display = 'none'
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          animateEl.classList.add('scroll-ani')
-          animateEl.style.display = 'block'
-        })
-      })
-    },
-  ```
+## css 动画
+* 详见[浏览器动画](/浏览器/动画.md)
 ## 单位
  - [前端界面单位及区别](./前端界面单位及区别.md)
 ## media 

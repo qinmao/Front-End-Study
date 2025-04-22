@@ -1,6 +1,7 @@
 # docker
 ## what Docker?它解决了什么问题？
-* 背景：开发最麻烦的事之一就是环境配置的问题，不同的环境代码运行可能存在问题
+* 容器是在主机上运行的沙盒进程，它与该主机上运行的所有其他进程隔离
+* 出现的背景：开发最麻烦的事之一就是环境配置的问题，不同的环境代码运行可能存在问题
 * 虚拟机：为了解决环境的问题出现了虚拟机，虚拟机自带环境但是有几个缺点
   - 资源占用多
   - 冗余步骤多
@@ -9,14 +10,14 @@
   - 启动快
   - 资源占用少
   - 体积小
-* docker 是属于linux 容器的一种封装，提供简单易用的容器使用接口。它是目前最流行的 Linux 容器解决方案。Docker 将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。有了 Docker，就不用担心环境问题。
+* docker 是属于 linux 容器的一种封装，提供简单易用的容器使用接口。它是目前最流行的 Linux 容器解决方案。Docker 将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。有了 Docker，就不用担心环境问题。
 
 ## Docker 实现原理的三大基础技术：
 * Namespace：实现各种资源的隔离
 * Control Group：实现容器进程的资源访问限制
 * UnionFS：实现容器文件系统的分层存储，写时复制，镜像合并
 
-## docker的用途
+## docker 的用途
   > Docker 的主要用途，目前有三大类。
   - 提供一次性的环境。比如，本地测试他人的软件、持续集成的时候提供单元测试和构建的环境。
   - 提供弹性的云服务。因为 Docker 容器可以随开随关，很适合动态扩容和缩容。
@@ -35,8 +36,6 @@
   + node:<version>-slim 基于 Debian，删除了很多默认公共的软件包，只有node运行的最小环境。除非你有空间限制，否则推荐使用默认镜像。
   + node:<version>-alpine 基于 alpine 比 Debian 小的多。如果想要最小的镜像，可以选择这个做为 base。需要注意的是，alpine 使用 musl 代替 glibc。一些c环境的软件可能不兼容
 
-  + 综合考虑选择 lts-bullseye-slim
-
 ## image 文件
 * 特性
   - Docker 把应用程序及其依赖，打包在 image 文件里面，通过这个文件，才能生成 Docker 容器，image 文件可以看作是容器的模板
@@ -45,21 +44,54 @@
 
 * 本地image管理
   ```bash
-    docker image ls   # 来列出本地主机上的image文件
+    docker image ls   # 来列出本地主机上的 image 文件
     docker image rmi [image_id|imageName] # 删除本地一个或多个镜像，-f 强制删除；
     docker rmi $(docker images -q)        # 删除所有docker镜像：
   ```
 
-## Dockerfile 文件
-* CMD与RUN命令
+## image 文件离线部署
+1. 在联网环境中导出镜像
+  ```bash
+    docker pull <镜像名称>:<标签>  # 例如：docker pull nginx:latest
+    docker image ls
+
+    docker save -o <输出文件名>.tar <镜像名称>:<标签>
+    # 示例：docker save -o nginx.tar nginx:latest
+
+    # 如果需要保存多个镜像，可以一次导出：
+    docker save -o all_images.tar <镜像1>:<标签> <镜像2>:<标签>
+
+    # 注意内外网 cpu 的架构兼容性
+    # 在 macOS（M1/M2/M3）上操作：
+    docker pull --platform=linux/amd64 <镜像名>:<标签>
+    # 示例：docker pull --platform=linux/amd64 nginx:latest
+
+    # 启用 buildx
+    docker buildx create --use
+    # 构建多平台镜像
+    docker buildx build --platform linux/amd64,linux/arm64 -t <镜像名>:<标签> .
+  ```
+2. 传输镜像文件到离线环境
+3. 在离线环境中导入镜像
+  ```bash
+    docker load -i <文件名>.tar  # 示例：docker load -i nginx.tar
+    
+    docker images   # 验证镜像是否导入成功
+  ```
+4. 运行容器
+
+## Dockerfile
+* Dockerfile 只是一个基于文本的文件，没有文件扩展名，其中包含指令脚本。Docker 使用此脚本构建容器镜像。
+* CMD 与 RUN 命令
   + RUN 
     - RUN 命令在 image 文件的构建阶段执行，执行结果都会打包进入 image 文件
-    - 一个 Dockerfile 可以包含多个RUN命令
+    - 一个 Dockerfile 可以包含多个 RUN 命令
   + CMD 表示容器启动后执行,只能有一个CMD 命令 
 
 * 它是一个文本文件，用来配置 image。Docker 根据该文件生成二进制的 image 文件。
   ```Dockerfile
     FROM node:18.16.0-bullseye-slim
+
     # 设置容器上海时间
     ENV TZ=Asia/Shanghai \
         DEBIAN_FRONTEND=noninteractive
@@ -68,31 +100,31 @@
     #  指定在容器上的工作目录
     WORKDIR /usr/src/app
 
-    # 拷贝包管理文件到/usr/src/app 根目录下
-    COPY package*.json  package-lock.json* ./
-
-    # npm 源，选用国内镜像源以提高下载速度
-    RUN npm config set registry https://mirrors.cloud.tencent.com/npm/
-    # npm 安装依赖
-    RUN npm ci
-
     # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下
     COPY . ./
 
-    EXPOSE 3000
+    # npm 源，选用国内镜像源以提高下载速度
+    RUN npm config set registry https://mirrors.cloud.tencent.com/npm/
+    
+    # npm 安装依赖
+    RUN npm ci
 
     ENTRYPOINT ["npm", "run"]
+
     # 容器启动后执行
     CMD ["start"]
+
+    EXPOSE 3000
+
   ```
 
-* 生成image文件
+* 生成 image 文件
   ```bash
-  # -t 参数用来指定 image 文件的名字，后面还可以用冒号指定标签。如果不指定，默认的标签就是latest。
-  # 点表示 Dockerfile 文件所在的路径
+    # -t 参数用来指定 image 文件的名字，后面还可以用冒号指定标签。如果不指定，默认的标签就是latest。
+    # .表示 Dockerfile 文件所在的路径
 
-  # 执行命令后，根据 Dockerfile 配置文件 生成一个名为 gateway:0.0.1的 镜像文件
-  docker build  -t gateway:0.0.1 .   
+    # 根据 Dockerfile 文件, 生成一个名为 gateway:0.0.1的 镜像文件
+    docker build  -t gateway:0.0.1 .   
   ```
 
 ## 容器
@@ -122,69 +154,206 @@
     docker run -p --name=c3 8000:3000 gateway:0.0.1      
     docker run -p 8000:3000 -itd gateway:0.0.1           
     docker run -p 8000:3000 -itd gateway:0.0.1 /bin/bash 
+
     docker run --rm -p 8000:3000 -itd gateway:0.0.1 /bin/bash 
 
-    # 使用 docker exec 命令启动一个新的进程在容器内运行：
     docker exec -it [containerID] /bin/bash  # 进入一个正在运行的 docker 容器
     docker exec -it [containerID] /bin/sh
 
-    # 启动已经生成、并停止运行的容器文件。
     docker start ${container_id} # 启动已终止的容器
     docker stop ${container_id}  # 停止容器
     docker stop $(docker ps -q) & docker rm $(docker ps -aq)  # 停用并删除容器
    
     docker kill <container_name_or_id> # 终止容器运行
-    docker kill $(docker ps -aq)       # 杀死docker有关的容器：
+    docker kill $(docker ps -aq)       # 杀死 docker 有关的容器：
 
   ```
-
-
 
 ## 镜像仓库
-* login
-  - 登陆到一个Docker镜像仓库,未指定镜像仓库地址，默认为官方仓库 Docker Hub
-  - 例子:docker login -u 用户名 -p 密码
-  - docker logout
-* 操作
-  - pull xxx:下载这xxx这个镜像
-  - push 将本地的镜像上传到镜像仓库,要先登陆到镜像仓库, 例子:docker push myapache:v1
-  - search: 从 Docker Hub 网站来搜索镜像,找适合的下载
+  ```bash
+   docker login -u 用户名 -p 密码  # 未指定镜像仓库地址，默认为官方仓库 Docker Hub
+   docker logout
+   
+   docker pull xxx  # 下载这个镜像 如 docker push YOUR-USER-NAME/getting-started
+   docker push xxx  # 要先登陆到镜像仓库, 例子:docker push myapache:v1
+   docker search xxx # 从 Docker Hub 网站来搜索镜像,找适合的下载
+  ```
 
 ## 数据卷
-* 概念
-  - 是宿主机中的一个目录或文件
-  - 容器目录和数据卷目录绑定后，对方的修改会立即同步
-  - 一个数据卷可被多个容器同时挂载
-  - 一个容器也可被挂载多个数据卷
+* 是什么？
+  - Docker 数据卷是一种 持久化存储数据 的机制，用于在容器生命周期之外保存和管理数据。
+  - 本质是由 Docker 管理的特殊目录，独立于容器的联合文件系统（UnionFS），存储在宿主机上。
 
-* 作用
-  - 容器数据持久化
-  - 外部机器和容器间接通信
-  - 容器之间数据交换
+* 核心特性
+  - 持久性：删除容器后，数据卷不会被自动删除。
+  - 高性能：绕过容器文件系统层，直接操作宿主机文件系统。
+  - 共享性：支持多个容器共享同一数据卷。
+  - 跨平台：由 Docker 统一管理，兼容 Linux、Windows 和 macOS。
 
-* 配置数据卷
-  - 语法：docker run .. -v 宿主机目录（文件）:容器内目录（文件）...
-  + 注意
-    - 目录必须是绝对路径
-    - 目录不存在会自动创建
-    - 可挂载多个数据卷
+* 数据卷 vs 绑定挂载（Bind Mount）
+  + 存储位置不同：
+    - 数据卷：
+      1. macos（/var/lib/docker/volumes/）
+      2. Windows：(\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\)
+    - 绑定挂载（Bind Mount）用户指定的宿主机任意目录
+  + 数据隔离
+    - 数据卷：高（仅通过 Docker 访问）
+    - 绑定挂载（Bind Mount）：低（直接暴露宿主机文件系统）
+  + 性能
+    - 数据卷：高（针对容器操作优化）
+    - 绑定挂载： 中（依赖宿主机文件系统性能）
+  + 备份/迁移
+    - 数据卷：容易（通过 Docker 命令）
+    - 需手动操作宿主机目录
+  + 适用场景
+    - 数据卷：数据库文件、应用数据持久化
+    - 绑定挂载：开发环境代码、配置文件等敏感数据使用绑定挂载
+
+* 数据卷的核心操作
   ```bash
-    docker run -it --name=c3 -v /home/data:/home/data centos:7
+    docker volume create todo-db     # 创建卷
+
+    docker volume ls                 # 列出所有数据卷
+    docker volume inspect my_volume  # 查看数据卷详细信息
+    docker system df -v              # 查看卷占用的磁盘空间
+
+    docker volume rm my_volume       # 删除
+    docker volume prune              # 删除所有未使用的数据卷
+
+    docker run -d \
+      --name my_container \
+      -v my_volume:/app/data \    # 挂载命名卷
+      nginx:latest
   ```
+
+* 备份与恢复
+  ```bash
+    # 备份数据卷到宿主机
+    docker run --rm \
+      -v my_volume:/data \          # 挂载需备份的卷
+      -v $(pwd):/backup \           # 挂载宿主机备份目录
+      alpine:latest \
+      tar czf /backup/my_volume_backup.tar.gz -C /data .
+
+    # 从备份恢复数据卷
+    docker run --rm \
+      -v my_volume:/data \          # 挂载目标卷
+      -v $(pwd):/backup \           # 挂载宿主机备份文件
+      alpine:latest \
+      tar xzf /backup/my_volume_backup.tar.gz -C /data
+  ```
+
+* 高级用法
+  ```bash
+    # 只读挂载
+    docker run -d \
+      -v my_volume:/app/data:ro \  # 容器内只读
+      nginx:latest
+
+    # 共享数据卷（多容器挂载）
+    # 容器1写入数据
+    docker run -d --name writer -v shared_vol:/data alpine:latest sh -c "echo 'Hello' > /data/test.txt"
+    # 容器2读取数据
+    docker run -d --name reader -v shared_vol:/data alpine:latest tail -f /data/test.txt
+
+    # 数据卷驱动（支持 NFS、云存储等）
+    # 使用 NFS 驱动创建卷
+    docker volume create --driver local \
+      --opt type=nfs \
+      --opt o=addr=192.168.1.100,rw \
+      --opt device=:/path/to/nfs/share \
+      nfs_volume
+
+      # 指定容器内用户权限
+    docker run -d \
+      -v my_volume:/data \
+      --user 1000:1000 \        # 指定 UID:GID
+      nginx:latest
+  ```
+
+## docker compose
+* 是什么？
+  - 是一个用于定义和运行多容器 Docker 应用的工具，通过 声明式 YAML 文件 描述应用的各个服务、网络、卷等组件，简化复杂多容器环境的部署与管理
   
-* 配置数据卷容器
-  ```bash
-    # 创建c3 数据卷容器 -v 参数设置数据卷
-    docker run -it --name=c3 -v /volume centos:7 /bin/bash
+* 核心功能
+  - 一键启动多容器应用：通过单条命令启动所有服务。
+  - 服务依赖管理：自动处理服务启动顺序和健康检查。
+  - 环境隔离与复用：支持多环境（开发、测试、生产）配置。
+  - 资源统一管理：集中定义网络、卷、环境变量等资源。
 
-    # 创建c1 c2 容器 使用 --volume-from 参数设置数据卷
-    docker run -it --name=c1 --volume-from c3 centos:7 /bin/bash
-    docker run -it --name=c2 --volume-from c3 /bin/bash
+* 核心概念
+  - 服务（Service）：定义单个容器的运行参数（镜像、端口、卷挂载等）。如一个 Web 服务 + 一个数据库服务。
+  - 项目（Project）：由一组关联的服务、网络和卷组成的完整应用。默认以当前目录名作为项目名（可通过 -p 参数指定）。
+  - 网络（Network）：自动创建自定义网络，实现服务间隔离通信。默认所有服务加入同一网络，可通过服务名互相访问。
+  - 卷（Volume）：定义持久化存储，供多个服务共享数据。
+
+* 安装
+  - 独立安装（Linux/macOS）
+    ```bash
+        # 下载最新版本（需替换为当前版本号）
+        sudo curl -L "https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+        # 添加执行权限
+        sudo chmod +x /usr/local/bin/docker-compose
+
+        # 验证安装
+        docker-compose --version
+    ```
+  - Docker Desktop 已内置无需安装
+
+* 配置示例
+  ```yaml
+    version: "3.9"  # Compose 文件版本
+    services:
+        demo-web:                     # 服务名称
+            image: nginx:latest       # 使用镜像
+            ports:
+                - "80:80"             # 端口映射
+            volumes:
+                - ./html:/usr/share/nginx/html  # 绑定挂载
+            depends_on:
+                - db                  # 依赖其他服务
+
+        db:
+            image: mysql:8.0
+            environment:              # 环境变量
+                MYSQL_ROOT_PASSWORD: secret
+            volumes:
+                - mysql_data:/var/lib/mysql  # 数据卷挂载
+
+    volumes:
+        mysql_data:                   # 定义数据卷
   ```
 
-## 容器部署遇到的问题
-* docker容器内应用访问宿主机的MySQL？
+* 常用命令
+  ```bash
+    docker compose build  #	构建或重新构建服务的镜像
+
+    docker compose up	  # 启动所有服务（-d 后台运行）
+    docker compose down	  # 停止并删除所有容器、网络（-v 同时删除卷）
+    
+    docker compose ps	  # 列出运行中的容器
+    docker compose logs	  # 查看服务日志（-f 实时跟踪）
+    docker compose config # 验证并查看最终的 Compose 配置
+
+    docker compose exec	  # 进入运行中的容器执行命令（如 exec web sh）
+
+    docker compose pull	  # 拉取服务所需的镜像
+
+  ```
+## 日志
  ```bash
+   docker logs --since 30m 容器id
+ ```
+
+## 网络问题
+* TODO
+
+
+
+## 遇到的一些问题
+* docker容器内应用访问宿主机的 MySQL？
+  ```bash
    # 1. 开放数据库端口
    # 开放3306端口
    firewall-cmd --zone=public --add-port=3306/tcp --permanent
@@ -202,14 +371,4 @@
 
   ```
 * docker容器内访问宿主机的或第三方接口？
-
-## 日志
- ```bash
-   docker logs --since 30m 容器id
- ```
-
-## 网络问题
-* TODO
-
-## docker compose
-* TODO
+  - TODO
