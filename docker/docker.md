@@ -1,16 +1,18 @@
 # docker
-## what Docker?它解决了什么问题？
+## what Docker，它解决了什么问题？
 * 容器是在主机上运行的沙盒进程，它与该主机上运行的所有其他进程隔离
 * 出现的背景：开发最麻烦的事之一就是环境配置的问题，不同的环境代码运行可能存在问题
 * 虚拟机：为了解决环境的问题出现了虚拟机，虚拟机自带环境但是有几个缺点
   - 资源占用多
   - 冗余步骤多
   - 启动慢
-* linux 容器：为了解决虚拟机的这些缺点，linux 发展出了另一种虚拟化技术：Linux 容器（Linux Containers，缩写为 LXC） Linux 容器不是模拟一个完整的操作系统，而是对进程进行隔离，由于容器是进程级别的，相比虚拟机有很多优势。
+* linux 容器：
+  - 为了解决虚拟机的这些缺点，linux 发展出了另一种虚拟化技术Linux 容器（Linux Containers，缩写为 LXC） Linux 容器不是模拟一个完整的操作系统，而是对进程进行隔离，由于容器是进程级别的，相比虚拟机有很多优势。
   - 启动快
   - 资源占用少
   - 体积小
-* docker 是属于 linux 容器的一种封装，提供简单易用的容器使用接口。它是目前最流行的 Linux 容器解决方案。Docker 将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。有了 Docker，就不用担心环境问题。
+* docker
+  - 是属于 linux 容器的一种封装，提供简单易用的容器使用接口。它是目前最流行的 Linux 容器解决方案。Docker 将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。有了 Docker，就不用担心环境问题。
 
 ## Docker 实现原理的三大基础技术：
 * Namespace：实现各种资源的隔离
@@ -29,12 +31,22 @@
   - 持续交付和部署
   - 快速部署、回滚
 
-## 镜像选择标准
-* 选择标准：官方的、经常维护的、体积小的
-* 案例：Node Docker tag
-  + node:<version>基于 Debian,官方默认镜像。当你不确定你需要什么的时候选择这个就对了。这个被设计成可以丢弃的镜像，也就是可以用作构建源码使用。体积挺大。
-  + node:<version>-slim 基于 Debian，删除了很多默认公共的软件包，只有node运行的最小环境。除非你有空间限制，否则推荐使用默认镜像。
-  + node:<version>-alpine 基于 alpine 比 Debian 小的多。如果想要最小的镜像，可以选择这个做为 base。需要注意的是，alpine 使用 musl 代替 glibc。一些c环境的软件可能不兼容
+## 镜像文件类型
+* 类型（nodejs为例）
+  + 完整版本镜像：x.y.z（例如 22.0.0） 或 x（例如 22）
+    - 这些镜像包含了完整的 Node.js 运行时环境以及对应的 npm 包管理器
+  + 精简版本镜像：x.y.z-alpine 或 x-alpine。
+    - 基于 Alpine Linux 构建，Alpine Linux 是一个轻量级的 Linux 发行版，因此这种镜像体积非常小
+    - 需要注意的是，alpine 使用 musl 代替 glibc。某些依赖于 glibc 的 Node.js 模块可能无法正常工作
+  + Slim 版本镜像：x.y.z-slim 或 x-slim。
+    - slim 版本只包含了运行 Node.js 应用所需的最小依赖，体积相对较小，适用于那些不需要完整开发工具链的生产环境
+  + 基于操作系统的镜像
+    - Debian 基础镜像：以 x.y.z-buster 或 x-buster 等形式存在。buster 是 Debian 10 的代号
+    - Ubuntu 基础镜像：如 x.y.z-focal 或 x-focal，focal 是 Ubuntu 20.04 的代号
+
+* 选择标准： 
+  - 官方的、经常维护的、体积小的
+  - 有操作系统系统要求的
 
 ## image 文件
 * 特性
@@ -56,7 +68,7 @@
     docker image ls
 
     docker save -o <输出文件名>.tar <镜像名称>:<标签>
-    # 示例：docker save -o nginx.tar nginx:latest
+    # 示例：docker save -o gitlab.tar gitlab/gitlab-ce:17.11.1-ce.0
 
     # 如果需要保存多个镜像，可以一次导出：
     docker save -o all_images.tar <镜像1>:<标签> <镜像2>:<标签>
@@ -181,7 +193,7 @@
 
 ## 数据卷
 * 是什么？
-  - Docker 数据卷是一种 持久化存储数据 的机制，用于在容器生命周期之外保存和管理数据。
+  - Docker 数据卷是一种 持久化存储数据的机制，用于在容器生命周期之外保存和管理数据。
   - 本质是由 Docker 管理的特殊目录，独立于容器的联合文件系统（UnionFS），存储在宿主机上。
 
 * 核心特性
@@ -211,7 +223,7 @@
 
 * 数据卷的核心操作
   ```bash
-    docker volume create todo-db     # 创建卷
+    docker volume create my_volume     # 创建卷
 
     docker volume ls                 # 列出所有数据卷
     docker volume inspect my_volume  # 查看数据卷详细信息
@@ -224,6 +236,16 @@
       --name my_container \
       -v my_volume:/app/data \    # 挂载命名卷
       nginx:latest
+
+    # 修改数据卷中的文件
+    docker exec -it 容器名或ID /bin/bash  # 或 /bin/sh
+    vim /容器内路径/配置文件               # 有编辑器的
+    docker restart 容器名或ID            # 改完重启生效
+
+    # 使用 docker cp 命令复制文件
+    docker cp 容器名或ID:/容器内路径/配置文件 ./临时本地路径         # 从容器复制文件到宿主机
+    docker cp ./临时本地路径/配置文件 容器名或ID:/容器内路径/配置文件  # 将文件复制回容器
+
   ```
 
 * 备份与恢复
@@ -313,7 +335,6 @@
                 - ./html:/usr/share/nginx/html  # 绑定挂载
             depends_on:
                 - db                  # 依赖其他服务
-
         db:
             image: mysql:8.0
             environment:              # 环境变量
@@ -327,20 +348,24 @@
 
 * 常用命令
   ```bash
-    docker compose build  #	构建或重新构建服务的镜像
+    # 在 docker-compose.yml 配置文件同级文件路径下
 
-    docker compose up	  # 启动所有服务（-d 后台运行）
+    docker compose stop      # 先停止但不删除容器
     docker compose down	  # 停止并删除所有容器、网络（-v 同时删除卷）
-    
+
+    docker compose up -d	 # 启动所有服务（-d 后台运行）应用新配置
+    docker compose up -d --force-recreate --no-deps app     # 只重启 app 服务（其他服务不受影响）
+
     docker compose ps	  # 列出运行中的容器
     docker compose logs	  # 查看服务日志（-f 实时跟踪）
     docker compose config # 验证并查看最终的 Compose 配置
 
-    docker compose exec	  # 进入运行中的容器执行命令（如 exec web sh）
+    docker compose exec	xxx /bin/bash # 进入运行中的容器执行命令（如 exec web sh）
 
     docker compose pull	  # 拉取服务所需的镜像
 
   ```
+
 ## 日志
  ```bash
    docker logs --since 30m 容器id
@@ -349,24 +374,22 @@
 ## 网络问题
 * TODO
 
-
-
 ## 遇到的一些问题
 * docker容器内应用访问宿主机的 MySQL？
   ```bash
    # 1. 开放数据库端口
-   # 开放3306端口
+   # 防火墙 开放 3306 端口
    firewall-cmd --zone=public --add-port=3306/tcp --permanent
    # 刷新一下
    firewall-cmd --reload
 
-    # 2. 查看容器是从哪个IP连宿主机MySQL
+    # 2. 查看容器是从哪个 IP 连宿主机 MySQL
     docker exec -it 容器ID ip addr
 
     # 开放权限给这个IP
     mysql -u root -p
     
-    # 进入mysql后，开放权限，当root用户以pwd（密码记得换成自己的）从端口172.17.0.3登入时，允许它操作数据库的所有表，下面的单引号别省了
+    # 进入 mysql 后，开放权限，当root用户以pwd（密码记得换成自己的）从端口 172.17.0.3 登入时，允许它操作数据库的所有表，下面的单引号别省了
     grant all privileges on *.* to 'root'@'IP' identified by 'pwd' with grant option;
 
   ```

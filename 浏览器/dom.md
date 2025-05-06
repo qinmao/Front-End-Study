@@ -389,8 +389,7 @@
     
 ## DOM 尺寸和位置
 * getComputedStyle
-  - 直接获取到样式上的宽高
-  - 获取的是CSSOM树
+  - 直接获取到样式上的宽高,获取的是CSSOM树
   - 除非特殊情况，不推荐获取，因为可能获取不是界面上的尺寸如设置了padding、border、或者弹性布局被压缩拉伸了等
   ```js
     getComputedStyle(DOM).width

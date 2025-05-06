@@ -10,25 +10,34 @@
 ## GIT 的基本使用
 * 仓库
   + 初始化本地仓库
-    - git init 
+    ```bash
+        git init 
+        git config core.ignorecase false  # 创建工程时 运行 配置 git大小写忽略
+    ```
     > git 在管理文件时，所有文件都具有三种状态:已修改、已暂存、已提交
     > 在上述三种状态，又对应三种目录空间
     - 已修改 -> 工作目录
     - 已暂存 -> 本地仓库的暂存区，通常就是在.git目录下的HEAD或INDEX文件
     - 已提交 -> 本地仓库的版本库
-  + 配置用户
+  + 配置用户,clone 远程仓库项目
+    > git客户端要连接仓库，就要先生成ssh key，ssh key有公钥和私钥，生成后把公钥填到 git 站点上
     + git config [option]
       - --global: 全局配置，在当前用户下的所有仓库都共享同一个用户的配置信息
       - --system：系统配置，在该电脑下的所有仓库都共享同一个用户的配置信息
       - --local： 本地配置，在该仓库下使用当前配置的用户信息
       ```bash
-        # 查看
-        git config --get user.name | git config --get user.email
-        git config --global user.name 'xx'
+        git config --get user.name | git config --get user.email       # 查看
+
+        # 1. 配置账号
+        git config --global user.name 'xx'  # 提交记录的时候会显示这个用户名
         git config --global user.email 'xxx@xxx.com'
 
-        # 创建工程时 运行 配置 git大小写忽略
-        git config core.ignorecase false
+        # 2. 生成ssh key
+        
+        cat ~/.ssh/id_rsa.pub  # 判断本地是否已经存在公钥 windows 保存在 C:\Users\登录用户下.ssh文件夹里
+        ssh-keygen -t rsa    # 没有生成公钥和私钥
+
+        # 3. 存在将本机的公钥放到代码托管仓库，如gitlab、github 在个人信息下的ssh秘钥选项中，添加秘钥，复制粘贴上去
         
       ```
   + 删除仓库：rm -rf .git  
@@ -42,11 +51,13 @@
     ```
   + 解除与远程仓库的关联：
     - git remote remove origin
+
 * Git的基本工作流程
-  1. 使用git init 或者 git clone 初始化 本地仓库；让git管理该目录下所有文件
+  1. 使用git init 或者 git clone 初始化 本地仓库，让git管理该目录下所有文件
   2. 在工作目录下，修改文件，新增文件，完成功能开发
   3. 将工作目录的文件提交到本地仓库的暂存区；
   4. 最后，再将暂存区文件 提交到 版本库，形成一个版本保存起来。每一次，从暂存区 提交到 版本库 都会形成一个新的版本。然后同指令来做版本的控制
+
 * 状态查看
   ```bash
     # 查看文件状态，注意：会忽略空的目录

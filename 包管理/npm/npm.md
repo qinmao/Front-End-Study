@@ -48,7 +48,7 @@
   - npm i electron -D --timeing=true --loglevel=verbose  安装 electron 并打印安装日志
   
   + ci 和 install 的区别
-  > ci 一般用在 CICD pipeline，比 install 更快
+    > ci 一般用在 CICD pipeline，比 install 更快
     - 必须有个 package-lock.json
     - 如果包锁定中的依赖项与 package.json 中的依赖项不匹配，npm ci 将退出并出现错误，而不是更新包锁定。
     - 一次只能安装整个项目,不能使用此命令添加单个依赖项。
@@ -86,27 +86,72 @@
     - 如：针对electron环境从新构建包
     - npm rebuild --runtime=electron --target=1.1.3 --disturl=https://atom.io/download/atom-shell --abi=102
 
-* npm list -g --depth 0  查看安装了哪些全局的包
+* npm ls -g  查看安装了哪些全局的包
 
 ## package.json
-> npm init  创建package.json文件,--yes 获得默认值
-* npm 启动 node 
-    ```json
-    "main": "lib/index.js",
-    "bin": {
-        "vm2": "./bin/vm2"
+> npm init  创建 package.json文件,-y 获得默认值
+  ```json
+    "name": "@antv/g6",
+    "version": "5.0.45",
+    "description": "A Graph Visualization Framework in JavaScript",
+    "keywords": ["antv","g6"],
+
+    "homepage": "https://g6.antv.antgroup.com/",
+    "bugs": {
+        "url": "https://github.com/antvis/g6/issues"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/antvis/g6"
+    },
+    "license": "MIT",
+    "author": "https://github.com/orgs/antvis/people",
+
+    "main": "lib/index.js",
+    "module": "esm/index.js",
+    "types": "lib/index.d.ts",
+    "files": ["src","esm","lib","dist","README"],
     "scripts": {
-        "start": "node ./bin/www",
-        "test": "node ./bin/test",
-        "qm":"node ./bin/test"
+        "build": "run-p build:*", // 并行执行所有构建命令（build:* 通配符匹配）。
+        "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib -p tsconfig.build.json",
+        "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm -p tsconfig.build.json",
+        "build:umd": "rimraf ./dist && rollup -c && npm run size",
+
+        "build:dev:watch": "npm run build:esm -- --watch",
+
+        "dev": "vite",
+        "start": "rimraf ./lib && tsc --module commonjs --outDir lib --watch",
+        "tag": "node ./scripts/tag.mjs",
+        "version": "node ./scripts/version.mjs"
     },
     "dependencies":{},
-    "devDependencies":{}
-    ```
-* bin 字段指定了各个内部命令对应的可执行文件的位置。如果全局安装模块报
-  - npm 会使用符号链接把可执行文件链接到 /usr/local/bin，会链接到 ./node_modules/.bin/。
-* [package.json](http://www.mujiang.info/translation/npmjs/files/package.json.html)
+    "devDependencies":{},
+     "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+  ```
+* 基础信息字段
+  - name 定义包的名称，遵循 npm 包命名规则。@antv 表示组织作用域，g6 是包名,唯一标识包，用户通过 npm install @antv/g6 安装。
+  - version: "5.0.45" 包的版本号
+  - description:包的简短描述，说明其主要功能。在 npm 搜索和包列表中展示，帮助用户快速理解包的用途
+  - "keywords": [...] 关键字列表，用于提高包在 npm 和其他平台的可搜索性
+
+* 项目元数据字段
+  - homepage 项目官方网站或文档的 URL
+  - bugs 报告项目问题的地址（通常是 GitHub Issues）
+  - repository: 代码仓库的地址和类型
+  - "license": "MIT" 项目的开源许可证类型（此处为 MIT 许可证）。
+  - author:项目作者或组织信息
+
+* 模块入口与构建配置
+  - main: 定义 CommonJS 模块的入口文件
+  - module: 定义 ES Module 入口文件
+  - types: TypeScript 类型声明文件的路径,提供类型提示
+  - files: 发布到 npm 时包含的目录和文件
+
+* 发包配置
+  - publishConfig：配置发布到指定的 npm 仓库
+
 * npx (npm5.2以上自带)
     ```
     # 项目的根目录下执行
@@ -117,6 +162,7 @@
 
     # 就是运行的时候，会到node_modules/.bin路径和环境变量$PATH里面，检查命令是否存在
     ```
+
 * 版本号
     - 1.2.3 (1表示重大更新,2表示向下兼容,3表示补丁包更新)
     - ">" +版本号   下载大于某个版本号，npm会下最新版
@@ -126,37 +172,6 @@
     - " *、' '、X "  任意 npm会给你下最新版
     - "^" +版本号  不跃迁版本下载，^2.1.0 npm会下载大版本不变，去下载2.x.x版本里的最近版
     - "~" +版本号  会去下约等于这个版本的最新版，在大版本不变的情况下下一个比较新的版本
-
-## 创建Node包,发布、更新
-* 创建
-  - package.json文件被创建后，创建一个当你的模块被需要的时候加载的文件。该文件的默认名称是index.js。在该文件中，添加一个函数作为exports对象  一个属性。这将使该功能可用于其他代码。
-  ```js
-      exports.printMsg = function() {
-          console.log("This is a message from the demo package");
-      }
-  ```
-* 发布和更新
-  - tip:发布时切回原始的源（从淘宝等镜像源切回npm）
-  - 注意： npm 对包名的限制：不能有大写字母/空格/下滑线!
-  - 你的项目里有部分私密的代码不想发布到npm上？将它写入.gitignore 或.npmignore中，上传就会被忽略了
-  - 第一次发布包：在终端输入npm adduser，输入账号。npm adduser成功的时候默认你已经登陆了。
-  - 非第一次发布包：在终端输入npm login，然后输入你创建的账号和密码，和邮箱
-  - npm publish 发布和更新
-  - npm view 查看是否发布成功
-  - 通过npm version <update_type>自动改变版本（或者手动更改package.json）
-  - update_type为patch, minor, or major其中之一，分别表示补丁，小改，大改
-* 撤销发布的包
-  - npm --force unpublish 你的模块名，来删除发布的模块（超过24小时就不能删除了）
-  - npm unpublish的推荐替代命令：npm deprecate <pkg>[@<version>] <message>
-  - 使用这个命令，并不会在社区里撤销你已有的包，但会在任何人尝试安装这个包的时候得到警告
-  - 例如：npm deprecate penghuwanapp '这个包我已经不再维护了哟～'
-* 发布遇到的问题
-  1. npm ERR! no_perms Private mode enable, only admin can publish this module:
-      - 这里注意的是因为国内网络问题，许多小伙伴把npm的镜像代理到淘宝或者别的地方了，这里要设置回原来的镜像。
-      - npm config set registry=http://registry.npmjs.org（推荐使用nrm来切换源）
-  2. npm ERR! you do not have permission to publish "your module name". Are you logged in as the correct user?
-      - 提示没有权限，其实就是你的module名在npm上已经被占用啦，
-      - 去npm搜索你的模块名称，搜不到，就能用，并且把 package.json里的name修改过来，重新npm publish         
 
 ## npm install 发生了什么？
 ![npm install 过程](./imgs/npm-install.png)

@@ -1,0 +1,91 @@
+# .gitlab-ci.yml
+
+# image: node:22.15.0-slim # 全局镜像，使用具体的nodejs版本镜像,避免歧义
+
+# 定义流水线阶段
+stages:
+    - build
+    - test
+    - document
+    - publish
+
+build_job:
+    tags:
+        - fe  # 执行job的 runner,runner中定义tag 来匹配
+    stage: build
+    script:
+        - echo "构建项目..."
+        - echo "🔧 正在安装依赖 (离线模式)..."
+        # 离线安装模式（严格依赖本地缓存）
+        - npm i
+        - echo "✅ 依赖安装完成"
+        # - npm run build
+        - echo "✅ 构建完成"
+    cache:
+        paths:
+            - node_modules/
+    # artifacts:
+    #     when: on_success # 前面阶段中的所有作业都成功时才执行
+    #     paths:
+    #         - dist/
+    rules:
+        - if: $CI_COMMIT_BRANCH == "main"
+
+# test_job:
+    # tags:
+    #     - fe
+#     stage: test
+#     script:
+#         - echo "运行测试..."
+#         - npm run test
+#     dependencies:
+#         - build
+#     cache:
+#         paths:
+#             - coverage/
+#     artifacts:
+#         # 在构建成功后，运行测试脚本，并且定义了测试覆盖率的缓存和构件。
+#         expire_in: 1 days
+#         when: on_success
+#         paths:
+#             - coverage/
+
+# document_job:
+    # tags:
+    #     - fe
+#     # 在构建成功后，将docs/目录下的文件复制到.public目录，并将.public目录重命名为public，
+#     # 将 public 目录作为构件保存。这个任务只在 master 分支和标签上执行
+#     stage: document
+#     dependencies:
+#         - build
+#     script:
+#         - echo "生成文档..."
+#         - mkdir .public
+#         - cp -r docs/* .public
+#         - mv .public public
+#     artifacts:
+#         paths:
+#             - public
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"
+#     - if: $CI_COMMIT_TAG
+
+# 发布到 GitLab NPM Registry
+publish_job:
+    tags:
+        - fe
+    stage: publish
+    variables:
+        # NPM_TOKEN: gldt-TBYaCo1VGsCZKeW4rxSh # privite-npm 包项目的部署 token，发布时认证用
+        NPM_TOKEN: ${NPM_TOKEN}
+    script:
+        # 动态生成 .npmrc 文件
+        - echo "发布..."
+        - npm publish
+        - echo "✅ 成功发布到内网仓库"
+    dependencies:
+        - build_job
+        # - test
+    rules:
+        - if: $CI_COMMIT_BRANCH == "main"
+        - if: $CI_COMMIT_TAG

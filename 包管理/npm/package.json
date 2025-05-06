@@ -1,0 +1,64 @@
+{
+    "name": "@antv/g6",
+    "version": "5.0.45",
+    "description": "A Graph Visualization Framework in JavaScript",
+    "keywords": [
+        "antv",
+        "g6",
+        "graph",
+        "graph analysis",
+        "graph editor",
+        "graph visualization",
+        "relational data"
+    ],
+    "homepage": "https://g6.antv.antgroup.com/",
+    "bugs": {
+        "url": "https://github.com/antvis/g6/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/antvis/g6"
+    },
+    "license": "MIT",
+    "author": "https://github.com/orgs/antvis/people",
+    "main": "lib/index.js",
+    "module": "esm/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "src",
+        "esm",
+        "lib",
+        "dist",
+        "README"
+    ],
+    "scripts": {
+        "build": "run-p build:*",
+        "build:cjs": "rimraf ./lib && tsc --module commonjs --outDir lib -p tsconfig.build.json",
+        "build:dev:watch": "npm run build:esm -- --watch",
+        "build:esm": "rimraf ./esm && tsc --module ESNext --outDir esm -p tsconfig.build.json",
+        "build:umd": "rimraf ./dist && rollup -c && npm run size",
+        "bundle-vis": "cross-env BUNDLE_VIS=1 npm run build:umd",
+        "ci": "run-s lint type-check build test",
+        "coverage": "jest --coverage",
+        "coverage:open": "open coverage/lcov-report/index.html",
+        "dev": "vite",
+        "fix": "eslint ./src ./__tests__ --fix && prettier ./src __tests__ --write ",
+        "jest": "node --expose-gc --max-old-space-size=1024 --unhandled-rejections=strict ../../node_modules/jest/bin/jest --coverage --logHeapUsage --detectOpenHandles",
+        "lint": "eslint ./src __tests__ --quiet && prettier ./src __tests__ --check",
+        "prepublishOnly": "run-s ci readme",
+        "readme": "cp ../../README.* ./",
+        "size": "limit-size",
+        "start": "rimraf ./lib && tsc --module commonjs --outDir lib --watch",
+        "tag": "node ./scripts/tag.mjs",
+        "test": "jest",
+        "test:integration": "npm run jest __tests__/integration",
+        "test:unit": "npm run jest __tests__/unit",
+        "type-check": "tsc --noEmit",
+        "version": "node ./scripts/version.mjs"
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    }
+}
